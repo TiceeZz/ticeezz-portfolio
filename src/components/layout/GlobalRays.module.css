@@ -1,0 +1,20 @@
+.rays {
+  position: fixed;
+  inset: -50%;
+  z-index: -3;
+  pointer-events: none;
+  background: conic-gradient(
+    from 90deg at 50% 50%,
+    transparent 0deg,
+    rgba(0, 242, 255, 0.15) 45deg,
+    transparent 90deg,
+    rgba(255, 60, 60, 0.15) 180deg,
+    transparent 225deg,
+    rgba(50, 255, 120, 0.1) 270deg,
+    transparent 315deg,
+    rgba(255, 200, 0, 0.1) 360deg
+  );
+  filter: blur(100px);
+  mix-blend-mode: screen;
+  animation: rotateRays 20s infinite linear;
+}

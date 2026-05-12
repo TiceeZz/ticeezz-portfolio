@@ -1,0 +1,142 @@
+.header {
+  margin-bottom: 80px;
+}
+
+.header h2 {
+  font-size: 3rem;
+  font-weight: 800;
+  letter-spacing: -1px;
+  margin-bottom: 10px;
+  color: #fff;
+}
+
+.header p {
+  font-size: 11px;
+  letter-spacing: 5px;
+  color: var(--ray-cyan);
+  text-transform: uppercase;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  max-width: 1200px;
+}
+
+.row {
+  display: flex;
+  border-top: 1px solid var(--border-line);
+  padding: 50px 0;
+  transition: background 0.3s;
+}
+
+.row:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.left {
+  width: 250px;
+  flex-shrink: 0;
+  padding-right: 40px;
+}
+
+.year {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1;
+  margin-bottom: 15px;
+}
+
+.tag {
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  border: 1px solid var(--ray-cyan);
+  color: var(--ray-cyan);
+  display: inline-block;
+}
+
+.right {
+  flex: 1;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 15px;
+  letter-spacing: 0.5px;
+}
+
+.desc {
+  font-size: 1.05rem;
+  color: var(--text-sub);
+  line-height: 1.8;
+  font-weight: 300;
+  margin-bottom: 20px;
+}
+
+.desc strong {
+  color: #fff;
+  font-weight: 500;
+}
+
+.keywords {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.keywords span {
+  font-size: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  padding: 5px 12px;
+  border-radius: 4px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-top: 80px;
+  border-top: 1px solid var(--border-line);
+  padding-top: 60px;
+}
+
+.gridBox {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-line);
+  padding: 40px;
+  border-radius: 8px;
+}
+
+.gridBox h3 {
+  font-size: 1.2rem;
+  color: var(--ray-cyan);
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.gridList {
+  list-style: none;
+}
+
+.gridList li {
+  font-size: 1rem;
+  color: var(--text-sub);
+  line-height: 1.8;
+  margin-bottom: 10px;
+  padding-left: 15px;
+  position: relative;
+}
+
+.gridList li::before {
+  content: '✦';
+  position: absolute;
+  left: 0;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  top: 2px;
+}
