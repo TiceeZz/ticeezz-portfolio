@@ -18,6 +18,10 @@
   background: linear-gradient(90deg, var(--bg-dark) 0%, transparent 10%, transparent 90%, var(--bg-dark) 100%);
 }
 
+@keyframes marquee-scroll {
+  to { transform: translateX(-50%); }
+}
+
 .track {
   display: flex;
   width: max-content;
