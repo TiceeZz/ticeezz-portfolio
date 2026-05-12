@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useLayoutEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import TimelineRow from '../ui/TimelineRow';
@@ -11,17 +11,21 @@ gsap.registerPlugin(ScrollTrigger);
 export default function Resume() {
   const rowsRef = useRef([]);
 
-  useEffect(() => {
-    rowsRef.current.forEach((row) => {
-      if (!row) return;
-      gsap.from(row, {
-        scrollTrigger: { trigger: row, start: 'top 90%' },
-        y: 50,
-        opacity: 0,
-        duration: 0.8,
-        ease: 'power2.out',
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      rowsRef.current.forEach((row) => {
+        if (!row) return;
+        gsap.from(row, {
+          scrollTrigger: { trigger: row, start: 'top 90%' },
+          y: 50,
+          opacity: 0,
+          duration: 0.8,
+          ease: 'power2.out',
+        });
       });
+      ScrollTrigger.refresh();
     });
+    return () => ctx.revert();
   }, []);
 
   return (
