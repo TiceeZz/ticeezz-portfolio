@@ -120,3 +120,57 @@
   opacity: 0.3;
   font-weight: 600;
 }
+
+/* =========================================
+   Mobile
+   ========================================= */
+@media (max-width: 768px) {
+  .gallery {
+    padding-top: 6vh;
+    padding-bottom: 8vh;
+  }
+
+  .subHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+  }
+
+  .subHeader h3 {
+    font-size: 1.1rem;
+  }
+
+  .track {
+    flex-direction: column;
+    height: auto;
+    gap: 12px;
+    margin-bottom: 40px;
+  }
+
+  .pillar {
+    flex: none;
+    height: 120px;
+    min-height: 120px;
+  }
+
+  .pillar:hover {
+    flex: none;
+    height: 200px;
+  }
+
+  .info {
+    bottom: 20px;
+    left: 20px;
+  }
+
+  .info h2 {
+    font-size: 1.3rem;
+  }
+
+  .num {
+    top: 16px;
+    left: 20px;
+  }
+}

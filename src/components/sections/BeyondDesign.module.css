@@ -121,3 +121,61 @@
   font-weight: 300;
   line-height: 1.6;
 }
+
+/* =========================================
+   Mobile
+   ========================================= */
+@media (max-width: 768px) {
+  .beyond {
+    padding-top: 6vh;
+    padding-bottom: 10vh;
+  }
+
+  .wrapper {
+    padding: 24px 0;
+  }
+
+  .track {
+    animation-duration: 30s;
+  }
+
+  .group {
+    gap: 16px;
+    padding-right: 16px;
+  }
+
+  .card {
+    width: 75vw;
+    min-width: 260px;
+    height: 40vh;
+    min-height: 280px;
+  }
+
+  .cardInfo {
+    padding: 24px 20px;
+  }
+
+  .label {
+    font-size: 9px;
+    letter-spacing: 3px;
+    margin-bottom: 8px;
+  }
+
+  .cardInfo h3 {
+    font-size: 1.3rem;
+    margin-bottom: 6px;
+  }
+
+  .cardInfo p {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    width: 80vw;
+    min-width: 240px;
+    height: 35vh;
+    min-height: 240px;
+  }
+}

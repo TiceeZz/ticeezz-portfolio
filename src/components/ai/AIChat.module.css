@@ -182,3 +182,38 @@
   height: 16px;
   fill: #000;
 }
+
+/* =========================================
+   Mobile: full‑screen chat panel
+   ========================================= */
+@media (max-width: 768px) {
+  .fab {
+    bottom: 20px;
+    right: 20px;
+    width: 48px;
+    height: 48px;
+  }
+
+  .fab svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .panel {
+    bottom: 0;
+    right: 0;
+    width: 100vw;
+    height: 100dvh;
+    border-radius: 0;
+    transform-origin: bottom;
+    transform: translateY(100%);
+    opacity: 1;
+    pointer-events: none;
+  }
+
+  .panel.active {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+}

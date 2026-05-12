@@ -37,3 +37,28 @@
 .left   { transform: rotateY(-90deg) translateZ(150px); }
 .top    { transform: rotateX(90deg) translateZ(150px); }
 .bottom { transform: rotateX(-90deg) translateZ(150px); }
+
+/* =========================================
+   Mobile
+   ========================================= */
+@media (max-width: 768px) {
+  .container {
+    top: 35%;
+    left: 70%;
+    width: 150px;
+    height: 150px;
+    opacity: 0.3;
+  }
+
+  .face {
+    width: 150px;
+    height: 150px;
+  }
+
+  .front  { transform: translateZ(75px); }
+  .back   { transform: rotateY(180deg) translateZ(75px); }
+  .right  { transform: rotateY(90deg) translateZ(75px); }
+  .left   { transform: rotateY(-90deg) translateZ(75px); }
+  .top    { transform: rotateX(90deg) translateZ(75px); }
+  .bottom { transform: rotateX(-90deg) translateZ(75px); }
+}

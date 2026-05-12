@@ -110,3 +110,28 @@
 
 .colUx .colHeader { color: var(--ray-yellow); }
 .colUx .fill { background: linear-gradient(90deg, transparent, var(--ray-yellow)); box-shadow: 0 0 10px rgba(255, 200, 0, 0.4); }
+
+/* =========================================
+   Mobile
+   ========================================= */
+@media (max-width: 768px) {
+  .skills {
+    padding-top: 6vh;
+    padding-bottom: 8vh;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin-top: 24px;
+  }
+
+  .col {
+    padding: 28px 20px;
+  }
+
+  .colHeader {
+    font-size: 1rem;
+    margin-bottom: 24px;
+  }
+}

@@ -7,8 +7,8 @@ export default function Nav() {
         </div>
         <div className="nav-item" style={{ opacity: 1 }}>TICEEZZ STUDIO</div>
       </div>
-      <div className="nav-item">TONG ZONGZHEN / SHANGHAI</div>
-      <div className="nav-item">UX · PRODUCT · AI DESIGN</div>
+      <div className="nav-item nav-right">TONG ZONGZHEN / SHANGHAI</div>
+      <div className="nav-item nav-right">UX · PRODUCT · AI DESIGN</div>
     </nav>
   );
 }

@@ -6,7 +6,7 @@
 }
 
 .title {
-  font-size: 8.5vw;
+  font-size: clamp(4rem, 8.5vw, 10rem);
   font-weight: 900;
   letter-spacing: -0.2vw;
   line-height: 0.9;
@@ -58,4 +58,45 @@
   font-size: 0.9rem;
   color: #fff;
   letter-spacing: 1px;
+}
+
+/* =========================================
+   Mobile
+   ========================================= */
+@media (max-width: 768px) {
+  .hero {
+    min-height: 100dvh;
+    padding-top: 80px;
+    padding-bottom: 60px;
+  }
+
+  .title {
+    font-size: clamp(3.2rem, 14vw, 5rem);
+    letter-spacing: -1px;
+  }
+
+  .subtitle {
+    margin-top: 24px;
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+  }
+
+  .infoStrip {
+    margin-top: 36px;
+    gap: 20px;
+    padding-top: 20px;
+  }
+
+  .infoItem {
+    gap: 4px;
+  }
+
+  .infoLabel {
+    font-size: 9px;
+    letter-spacing: 1px;
+  }
+
+  .infoValue {
+    font-size: 0.8rem;
+  }
 }

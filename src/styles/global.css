@@ -127,3 +127,33 @@ footer {
   text-align: right;
   margin-bottom: 8px;
 }
+
+/* =========================================
+   Mobile: Navigation
+   ========================================= */
+@media (max-width: 768px) {
+  section {
+    width: 100%;
+    padding: 0 5%;
+  }
+
+  nav {
+    padding: 20px 5%;
+    justify-content: center;
+  }
+
+  .nav-right {
+    display: none;
+  }
+
+  footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 6vh 5% 5vh;
+  }
+
+  .footer-info p {
+    text-align: left;
+  }
+}
