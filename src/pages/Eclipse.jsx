@@ -13,7 +13,7 @@ const boardImages = Array.from({ length: 2 }, (_, i) =>
 const sections = [
   { label: 'PPT方案', images: pptImages },
   { label: '展板', images: boardImages },
-  { label: '视频', images: [], type: 'video', embedUrl: 'https://player.bilibili.com/player.html?bvid=BV1bo556hEEj&page=1&high_quality=1&autoplay=0' },
+  { label: '视频', images: [], type: 'video', videos: [{ title: 'Eclipse · 月食', embedUrl: 'https://player.bilibili.com/player.html?bvid=BV1bo556hEEj&page=1&high_quality=1&autoplay=0' }] },
 ];
 
 const project = {
