@@ -182,6 +182,39 @@
   fill: #000;
 }
 
+/* suggestion chips */
+.suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.chip {
+  font-family: inherit;
+  font-size: 0.78rem;
+  color: var(--ray-cyan);
+  background: rgba(0, 242, 255, 0.06);
+  border: 1px solid rgba(0, 242, 255, 0.2);
+  border-radius: 14px;
+  padding: 5px 12px;
+  cursor: pointer;
+  transition: 0.25s;
+  opacity: 0;
+  animation: chipIn 0.35s ease forwards;
+}
+
+.chip:hover {
+  background: rgba(0, 242, 255, 0.18);
+  border-color: rgba(0, 242, 255, 0.5);
+  color: #fff;
+}
+
+@keyframes chipIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
 /* =========================================
    Mobile: full‑screen chat panel
    ========================================= */
