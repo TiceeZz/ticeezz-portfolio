@@ -10,8 +10,13 @@ import BeyondDesign from '../components/sections/BeyondDesign';
 import Footer from '../components/layout/Footer';
 import AIFab from '../components/ai/AIFab';
 import AIChatPanel from '../components/ai/AIChatPanel';
+import useDocumentTitle from '../hooks/useDocumentTitle';
 
 export default function Home() {
+  useDocumentTitle(
+    'TiceeZz (Tong Zongzhen) | UX · Product · AI Design',
+    'TiceeZz (Tong Zongzhen) — UX · Product · AI-Driven Design Portfolio. 童宗震设计作品集。'
+  );
   const [chatOpen, setChatOpen] = useState(false);
 
   return (

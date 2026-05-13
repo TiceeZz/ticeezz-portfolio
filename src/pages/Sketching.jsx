@@ -2,10 +2,10 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
 const works = [
-  { src: '/images/sketching/colored-pencil.png', title: '彩铅写实', medium: 'Colored Pencil', desc: '以极其细腻的超写实彩铅技法刻画自然张力与细节美学。' },
-  { src: '/images/sketching/gouache.png', title: '水粉静物', medium: 'Gouache', desc: '在色彩层叠中探索光线与质感的微妙平衡。' },
-  { src: '/images/sketching/marker-1.png', title: '马克笔表现 (一)', medium: 'Marker', desc: '快速捕捉形体与空间关系的设计表达。' },
-  { src: '/images/sketching/marker-2.png', title: '马克笔表现 (二)', medium: 'Marker', desc: '以线条疏密与笔触方向建构产品体量感。' },
+  { src: '/images/sketching/colored-pencil.jpg', title: '彩铅写实', medium: 'Colored Pencil', desc: '以极其细腻的超写实彩铅技法刻画自然张力与细节美学。' },
+  { src: '/images/sketching/gouache.jpg', title: '水粉静物', medium: 'Gouache', desc: '在色彩层叠中探索光线与质感的微妙平衡。' },
+  { src: '/images/sketching/marker-1.jpg', title: '马克笔表现 (一)', medium: 'Marker', desc: '快速捕捉形体与空间关系的设计表达。' },
+  { src: '/images/sketching/marker-2.jpg', title: '马克笔表现 (二)', medium: 'Marker', desc: '以线条疏密与笔触方向建构产品体量感。' },
 ];
 
 function useReveal() {
