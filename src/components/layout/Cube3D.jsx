@@ -12,9 +12,16 @@ export default function Cube3D() {
   const animating = useRef(true);
 
   useEffect(() => {
-    const raf = requestAnimationFrame(() => setFlat(false));
-    const t = setTimeout(() => { animating.current = false; }, 700);
-    return () => { cancelAnimationFrame(raf); clearTimeout(t); };
+    let raf1, raf2;
+    raf1 = requestAnimationFrame(() => {
+      raf2 = requestAnimationFrame(() => setFlat(false));
+    });
+    const t = setTimeout(() => { animating.current = false; }, 800);
+    return () => {
+      cancelAnimationFrame(raf1);
+      cancelAnimationFrame(raf2);
+      clearTimeout(t);
+    };
   }, []);
 
   useEffect(() => {
