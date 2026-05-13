@@ -13,5 +13,5 @@ const project = {
 };
 
 export default function Sensible() {
-  return <ProjectDetail project={project} sections={sections} cover="/images/projects/sensible/cover.jpg" projectSlug="/sensible" />;
+  return <ProjectDetail project={project} sections={sections} cover="/images/projects/sensible/cover.webp" projectSlug="/sensible" />;
 }

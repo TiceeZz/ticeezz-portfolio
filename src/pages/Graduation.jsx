@@ -27,5 +27,5 @@ const project = {
 };
 
 export default function Graduation() {
-  return <ProjectDetail project={project} sections={sections} cover="/images/projects/graduation/cover.jpg" projectSlug="/graduation" />;
+  return <ProjectDetail project={project} sections={sections} cover="/images/projects/graduation/cover.webp" projectSlug="/graduation" />;
 }

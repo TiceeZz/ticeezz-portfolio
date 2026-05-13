@@ -18,5 +18,5 @@ const project = {
 };
 
 export default function Fengjing() {
-  return <ProjectDetail project={project} sections={sections} cover="/images/projects/fengjing/cover.jpg" projectSlug="/fengjing" />;
+  return <ProjectDetail project={project} sections={sections} cover="/images/projects/fengjing/cover.webp" projectSlug="/fengjing" />;
 }

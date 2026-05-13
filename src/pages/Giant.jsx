@@ -13,5 +13,5 @@ const project = {
 };
 
 export default function Giant() {
-  return <ProjectDetail project={project} sections={sections} cover="/images/projects/giant/cover.jpg" projectSlug="/giant" />;
+  return <ProjectDetail project={project} sections={sections} cover="/images/projects/giant/cover.webp" projectSlug="/giant" />;
 }

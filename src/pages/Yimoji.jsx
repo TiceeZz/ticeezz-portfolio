@@ -13,5 +13,5 @@ const project = {
 };
 
 export default function Yimoji() {
-  return <ProjectDetail project={project} sections={sections} cover="/images/projects/yimoji/cover.jpg" projectSlug="/yimoji" />;
+  return <ProjectDetail project={project} sections={sections} cover="/images/projects/yimoji/cover.webp" projectSlug="/yimoji" />;
 }

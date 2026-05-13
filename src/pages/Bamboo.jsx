@@ -13,5 +13,5 @@ const project = {
 };
 
 export default function Bamboo() {
-  return <ProjectDetail project={project} sections={sections} cover="/images/projects/bamboo/cover.jpg" projectSlug="/bamboo" />;
+  return <ProjectDetail project={project} sections={sections} cover="/images/projects/bamboo/cover.webp" projectSlug="/bamboo" />;
 }

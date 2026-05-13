@@ -23,5 +23,5 @@ const project = {
 };
 
 export default function Vcrutch() {
-  return <ProjectDetail project={project} sections={sections} cover="/images/projects/vcrutch/cover.jpg" projectSlug="/vcrutch" />;
+  return <ProjectDetail project={project} sections={sections} cover="/images/projects/vcrutch/cover.webp" projectSlug="/vcrutch" />;
 }

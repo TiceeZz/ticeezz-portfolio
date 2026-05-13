@@ -9,7 +9,7 @@ const reportImages = Array.from({ length: 25 }, (_, i) =>
 const sections = [
   { label: '项目报告', images: reportImages },
   { label: '视频', images: [], type: 'video', videos: [
-    { title: '工作坊视频', poster: '/images/projects/seed/video-cover.jpg' },
+    { title: '工作坊视频', poster: '/images/projects/seed/video-cover.webp' },
   ] },
 ];
 
@@ -21,5 +21,5 @@ const project = {
 };
 
 export default function Seed() {
-  return <ProjectDetail project={project} sections={sections} cover="/images/projects/seed/cover.jpg" projectSlug="/seed" />;
+  return <ProjectDetail project={project} sections={sections} cover="/images/projects/seed/cover.webp" projectSlug="/seed" />;
 }

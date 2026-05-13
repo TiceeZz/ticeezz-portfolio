@@ -24,5 +24,5 @@ const project = {
 };
 
 export default function Eclipse() {
-  return <ProjectDetail project={project} sections={sections} cover="/images/projects/eclipse/cover.jpg" projectSlug="/eclipse" />;
+  return <ProjectDetail project={project} sections={sections} cover="/images/projects/eclipse/cover.webp" projectSlug="/eclipse" />;
 }

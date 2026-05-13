@@ -13,5 +13,5 @@ const project = {
 };
 
 export default function Nile() {
-  return <ProjectDetail project={project} sections={sections} cover="/images/projects/nile/cover.jpg" projectSlug="/nile" />;
+  return <ProjectDetail project={project} sections={sections} cover="/images/projects/nile/cover.webp" projectSlug="/nile" />;
 }
