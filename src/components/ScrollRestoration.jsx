@@ -1,36 +1,29 @@
-import { useEffect, useRef } from 'react';
-import { useLocation, useNavigationType } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
 const positions = new Map();
 
 export default function ScrollRestoration() {
-  const { pathname, key } = useLocation();
-  const navType = useNavigationType();
-  const saved = useRef(false);
+  const { pathname } = useLocation();
 
   useEffect(() => {
-    if (navType === 'POP') {
-      const y = positions.get(key);
-      if (y != null) {
-        saved.current = true;
-        window.scrollTo(0, y);
-        saved.current = false;
-      }
+    const saved = positions.get(pathname);
+    if (saved != null) {
+      // restore scroll on return, whether POP or PUSH
+      window.scrollTo(0, saved);
+      const frame = requestAnimationFrame(() => window.scrollTo(0, saved));
+      return () => cancelAnimationFrame(frame);
     } else {
       window.scrollTo(0, 0);
     }
-  }, [pathname, key, navType]);
 
-  useEffect(() => {
-    const onScroll = () => {
-      if (!saved.current) positions.set(key, window.scrollY);
-    };
+    const onScroll = () => positions.set(pathname, window.scrollY);
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => {
-      positions.set(key, window.scrollY);
+      positions.set(pathname, window.scrollY);
       window.removeEventListener('scroll', onScroll);
     };
-  }, [key]);
+  }, [pathname]);
 
   return null;
 }
