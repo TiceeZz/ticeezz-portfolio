@@ -16,7 +16,7 @@ export default function Life() {
         <Link to="/" style={{ color: 'var(--text-sub)', fontSize: '12px', letterSpacing: '3px', textDecoration: 'none', textTransform: 'uppercase' }}>← Back to Home</Link>
       </div>
 
-      <header style={{ padding: '60px 6% 50px', maxWidth: '720px' }}>
+      <header style={{ padding: '60px 4% 50px' }}>
         <span style={{ fontSize: '10px', letterSpacing: '4px', color: 'var(--ray-cyan)', border: '1px solid var(--ray-cyan)', padding: '3px 12px', borderRadius: '3px', display: 'inline-block' }}>LIFE FRAGMENTS</span>
         <h1 style={{ fontSize: 'clamp(2.4rem, 5vw, 4rem)', fontWeight: 800, marginTop: '20px', letterSpacing: '-2px', lineHeight: 1 }}>Daily Inspiration</h1>
         <p style={{ color: 'var(--text-sub)', marginTop: '16px', fontSize: '1rem', lineHeight: 2, maxWidth: '560px' }}>
@@ -24,33 +24,33 @@ export default function Life() {
         </p>
       </header>
 
-      <div style={{ maxWidth: '1100px', width: '100%', boxSizing: 'border-box', margin: '0 auto', padding: '0 4% 120px' }}>
+      <div style={{ width: '100%', boxSizing: 'border-box', padding: '0 4% 120px' }}>
 
         <section style={{ marginBottom: '72px', width: '100%' }}>
           <h2 style={{ fontSize: '1.3rem', fontWeight: 600, margin: '0 0 20px' }}>🐕 狗狗伙伴</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(300px, 100%), 1fr))', gap: '10px', marginBottom: '14px', maxWidth: '100%' }}>
-            <ImgCard src="/images/life/border-collie.jpg" alt="边牧" />
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '10px', marginBottom: '14px' }}>
+            <ImgCard src="/images/life/border-collie.jpg" alt="德牧" />
             <ImgCard src="/images/life/samoyed.jpg" alt="萨摩耶" />
           </div>
           <p style={{ color: 'var(--text-sub)', fontSize: '0.9rem', lineHeight: 2, maxWidth: '600px' }}>
-            这是我的<strong style={{ color: '#fff' }}>边牧</strong>和遇到的<strong style={{ color: '#fff' }}>萨摩耶</strong>——经常与狗狗打交道，它们教会我耐心与观察。
+            这是我的<strong style={{ color: '#fff' }}>德牧</strong>和遇到的<strong style={{ color: '#fff' }}>萨摩耶</strong>——经常与狗狗打交道，它们教会我耐心与观察。
           </p>
         </section>
 
         <section style={{ marginBottom: '72px', width: '100%' }}>
           <h2 style={{ fontSize: '1.3rem', fontWeight: 600, margin: '0 0 20px' }}>🎵 演出现场</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(300px, 100%), 1fr))', gap: '10px', marginBottom: '14px', maxWidth: '100%' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '10px', marginBottom: '14px' }}>
             <ImgCard src="/images/life/katy-perry.jpg" alt="Katy Perry" />
             <ImgCard src="/images/life/wolf-alice.jpg" alt="Wolf Alice" />
           </div>
           <p style={{ color: 'var(--text-sub)', fontSize: '0.9rem', lineHeight: 2, maxWidth: '600px' }}>
-            热爱欧美音乐，享受<strong style={{ color: '#fff' }}>线下 LIVE 的沉浸能量</strong>——声光张力持续滋养着我对节奏与氛围的感知。
+            看过<strong style={{ color: '#fff' }}>Katy Perry</strong>和<strong style={{ color: '#fff' }}>Wolf Alice</strong>的演唱会——线下 LIVE 的声光张力持续滋养着我对节奏与氛围的感知。
           </p>
         </section>
 
         <section style={{ marginBottom: '72px', width: '100%' }}>
           <h2 style={{ fontSize: '1.3rem', fontWeight: 600, margin: '0 0 20px' }}>🎭 COS 文化</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(300px, 100%), 1fr))', gap: '10px', marginBottom: '14px', maxWidth: '100%' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '10px', marginBottom: '14px' }}>
             <ImgCard src="/images/life/wuyang.jpg" alt="无漾" />
             <ImgCard src="/images/life/cos-wuyang.jpg" alt="COS 无漾" />
           </div>
@@ -61,7 +61,7 @@ export default function Life() {
 
         <section>
           <h2 style={{ fontSize: '1.3rem', fontWeight: 600, margin: '0 0 20px' }}>🧸 手办收集</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '10px', marginBottom: '14px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px', marginBottom: '14px' }}>
             <ImgCard src="/images/life/bangboo.jpg" alt="绝区零邦布" />
             <ImgCard src="/images/life/chimera.jpg" alt="崩铁奇美拉" />
             <ImgCard src="/images/life/luoke.jpg" alt="洛克王国" />
