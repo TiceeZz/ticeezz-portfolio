@@ -135,6 +135,11 @@
   }
 
   .wrapper {
+    width: 100%;
+    left: auto;
+    right: auto;
+    margin-left: 0;
+    margin-right: 0;
     padding: 24px 0;
     background: none;
   }
