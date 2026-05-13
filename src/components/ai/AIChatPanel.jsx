@@ -6,7 +6,7 @@ export default function AIChatPanel({ open, onClose }) {
   const [messages, setMessages] = useState([
     {
       sender: 'ai',
-      text: '你好！我是 TiceeZz 的数字简历助手。你可以问我关于他的教育、技能矩阵、或 Beyond Design 中的作品。',
+      text: '你好！我是 TiceeZz 的数字简历助手。你可以问我关于他的教育、技能矩阵、或作品集等问题。',
       suggestions: initialSuggestions,
     },
   ]);
