@@ -1,10 +1,19 @@
-import { useLayoutEffect, useEffect, useRef } from 'react';
+import { useLayoutEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 
 const positions = new Map();
 
 if (typeof window !== 'undefined' && 'scrollRestoration' in window.history) {
   window.history.scrollRestoration = 'manual';
+}
+
+// jump instantly, overriding CSS scroll-behavior: smooth
+function jump(y) {
+  const el = document.documentElement;
+  const prev = el.style.scrollBehavior;
+  el.style.scrollBehavior = 'auto';
+  window.scrollTo(0, y);
+  el.style.scrollBehavior = prev;
 }
 
 export default function ScrollRestoration() {
@@ -17,23 +26,20 @@ export default function ScrollRestoration() {
 
     const saved = positions.get(pathname);
     if (saved != null) {
-      const restore = () => window.scrollTo(0, saved);
+      const restore = () => jump(saved);
       restore();
       retries.current.push(
         setTimeout(restore, 0),
         setTimeout(restore, 50),
         setTimeout(restore, 150),
+        setTimeout(restore, 400),
       );
     } else {
-      window.scrollTo(0, 0);
+      jump(0);
     }
-  }, [pathname]);
 
-  useEffect(() => {
     const onScroll = () => positions.set(pathname, window.scrollY);
     window.addEventListener('scroll', onScroll, { passive: true });
-    // do NOT save in cleanup — by the time cleanup fires, the DOM
-    // has already switched to the next page and scrollY is wrong
     return () => window.removeEventListener('scroll', onScroll);
   }, [pathname]);
 
