@@ -48,6 +48,10 @@
   backdrop-filter: blur(10px);
   border-radius: 8px;
   cursor: pointer;
+  padding: 0;
+  color: inherit;
+  font-family: inherit;
+  text-align: left;
 }
 
 .pillar:hover {
@@ -194,5 +198,27 @@
   .num {
     top: 16px;
     left: 20px;
+  }
+
+  /* ---- Scroll-triggered glow ---- */
+  .pillar.lit {
+    border-color: rgba(255, 255, 255, 0.35);
+    box-shadow: 0 0 40px rgba(0, 242, 255, 0.12), inset 0 0 20px rgba(0, 242, 255, 0.04);
+  }
+
+  .pillar.lit .bgImg {
+    opacity: 0.5;
+  }
+
+  .pillar.lit .glow {
+    opacity: 0.75;
+  }
+
+  .pillar.lit .num {
+    opacity: 0.65;
+  }
+
+  .pillar.lit .info {
+    transform: translateY(-3px);
   }
 }

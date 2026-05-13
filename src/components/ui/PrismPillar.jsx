@@ -1,17 +1,42 @@
+import { useRef, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import s from '../sections/Gallery.module.css';
 
 export default function PrismPillar({ project }) {
   const navigate = useNavigate();
+  const ref = useRef(null);
+  const [lit, setLit] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setLit(true);
+          obs.unobserve(el);
+        }
+      },
+      { threshold: 0.35 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
 
   return (
-    <div className={s.pillar} onClick={() => navigate(project.href)}>
+    <button
+      ref={ref}
+      className={`${s.pillar}${lit ? ` ${s.lit}` : ''}`}
+      onClick={() => navigate(project.href)}
+      aria-label={`View project: ${project.title}`}
+    >
+      {project.img && <div className={s.bgImg} style={{ backgroundImage: `url(${project.img})` }} />}
       <div className={s.num}>{project.num}</div>
       <div className={s.glow} />
       <div className={s.info}>
         <h2>{project.title}</h2>
         <p>{project.desc}</p>
       </div>
-    </div>
+    </button>
   );
 }
