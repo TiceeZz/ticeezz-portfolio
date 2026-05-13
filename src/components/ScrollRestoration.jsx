@@ -1,4 +1,4 @@
-import { useLayoutEffect, useEffect, useRef } from 'react';
+import { useLayoutEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 
 const positions = new Map();
@@ -6,22 +6,6 @@ const positions = new Map();
 if (typeof window !== 'undefined' && 'scrollRestoration' in window.history) {
   window.history.scrollRestoration = 'manual';
 }
-
-// Intercept history.pushState / replaceState to save scroll position
-// BEFORE React processes the navigation. This catches <Link> clicks
-// which the scroll handler's cleanup misses (cleanup fires after DOM switch).
-const push = window.history.pushState.bind(window.history);
-const replace = window.history.replaceState.bind(window.history);
-
-window.history.pushState = function (state, title, url) {
-  positions.set(window.location.pathname, window.scrollY);
-  return push(state, title, url);
-};
-
-window.history.replaceState = function (state, title, url) {
-  positions.set(window.location.pathname, window.scrollY);
-  return replace(state, title, url);
-};
 
 function jump(y) {
   const el = document.documentElement;
@@ -33,33 +17,61 @@ function jump(y) {
 
 export default function ScrollRestoration() {
   const { pathname } = useLocation();
-  const retries = useRef([]);
+  const timers = useRef([]);
+  const watching = useRef(false);
 
   useLayoutEffect(() => {
-    retries.current.forEach(clearTimeout);
-    retries.current = [];
+    timers.current.forEach(clearTimeout);
+    timers.current = [];
+    watching.current = true;
 
     const saved = positions.get(pathname);
-    if (saved != null) {
-      const restore = () => jump(saved);
-      restore();
-      retries.current.push(
-        setTimeout(restore, 0),
-        setTimeout(restore, 50),
-        setTimeout(restore, 150),
-        setTimeout(restore, 400),
-      );
-    } else {
-      jump(0);
-    }
-  }, [pathname]);
+    const target = saved != null ? saved : 0;
 
-  // Keep position updated continuously while user scrolls
-  useEffect(() => {
+    // Jump immediately
+    jump(target);
+
+    // Keep jumping to top while page height is still settling
+    // (lazy components, images, iframes cause layout shifts)
+    let lastHeight = document.body.scrollHeight;
+    let stableCount = 0;
+    const MAX_WATCH_MS = 4000;
+    const CHECK_INTERVAL = 120;
+    const start = Date.now();
+
+    function tick() {
+      if (!watching.current) return;
+
+      const h = document.body.scrollHeight;
+      if (h === lastHeight) {
+        stableCount++;
+        // After 3 consecutive stable checks, do one final jump and stop
+        if (stableCount >= 3) {
+          jump(target);
+          return;
+        }
+      } else {
+        stableCount = 0;
+        lastHeight = h;
+        jump(target);
+      }
+
+      if (Date.now() - start < MAX_WATCH_MS) {
+        timers.current.push(setTimeout(tick, CHECK_INTERVAL));
+      }
+    }
+    timers.current.push(setTimeout(tick, CHECK_INTERVAL));
+
     const onScroll = () => positions.set(pathname, window.scrollY);
     window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+
+    return () => {
+      watching.current = false;
+      timers.current.forEach(clearTimeout);
+      window.removeEventListener('scroll', onScroll);
+    };
   }, [pathname]);
 
   return null;
 }
+

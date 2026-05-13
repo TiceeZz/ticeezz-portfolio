@@ -3,7 +3,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import TimelineRow from '../ui/TimelineRow';
 import SectionHeader from '../ui/SectionHeader';
-import timeline, { honors, leadership } from '../../data/timeline';
+import timeline, { honors, otherHonors, leadership } from '../../data/timeline';
 import s from './Resume.module.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -44,9 +44,15 @@ export default function Resume() {
 
       <div className={s.grid}>
         <div className={s.gridBox}>
-          <h3>HONORS & AWARDS</h3>
+          <h3>DESIGN AWARDS</h3>
           <ul className={s.gridList}>
             {honors.map((h) => <li key={h}>{h}</li>)}
+          </ul>
+        </div>
+        <div className={s.gridBox}>
+          <h3>OTHER HONORS</h3>
+          <ul className={s.gridList}>
+            {otherHonors.map((h) => <li key={h}>{h}</li>)}
           </ul>
         </div>
         <div className={s.gridBox}>

@@ -1,10 +1,21 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { allProjects } from '../../data/gallery';
+import useDocumentTitle from '../../hooks/useDocumentTitle';
 import s from './ProjectDetail.module.css';
 
-function ProjectDetail({ project, sections, cover }) {
+export default function ProjectDetail({ project, sections, cover, projectSlug }) {
   const [tab, setTab] = useState(0);
   const [lightbox, setLightbox] = useState(null);
+
+  useDocumentTitle(
+    `${project.title} | TiceeZz Portfolio`,
+    project.desc ? project.desc.replace(/<[^>]+>/g, '') : project.title
+  );
+
+  const idx = allProjects.findIndex((p) => p.href === projectSlug);
+  const prevProj = idx > 0 ? allProjects[idx - 1] : null;
+  const nextProj = idx < allProjects.length - 1 ? allProjects[idx + 1] : null;
 
   const current = sections[tab];
   const images = current?.images || [];
@@ -18,8 +29,8 @@ function ProjectDetail({ project, sections, cover }) {
     setLightbox(null);
     document.body.style.overflow = '';
   };
-  const prev = () => setLightbox((i) => (i > 0 ? i - 1 : images.length - 1));
-  const next = () => setLightbox((i) => (i < images.length - 1 ? i + 1 : 0));
+  const lightboxPrev = () => setLightbox((i) => (i > 0 ? i - 1 : images.length - 1));
+  const lightboxNext = () => setLightbox((i) => (i < images.length - 1 ? i + 1 : 0));
 
   const renderContent = () => {
     if (!isVideo) {
@@ -29,12 +40,13 @@ function ProjectDetail({ project, sections, cover }) {
           gap: '12px',
         }}>
           {images.map((src, i) => (
-            <div key={i} onClick={() => openLightbox(i)} className={s.galleryItem}>
+            <button key={i} onClick={() => openLightbox(i)} className={s.galleryItem}
+              aria-label={`View ${current.label} image ${i + 1}`}>
               <img src={src} alt={`${current.label} ${i + 1}`} loading="lazy" />
               <div className={s.pageLabel}>
                 {current.label} · {String(i + 1).padStart(2, '0')}
               </div>
-            </div>
+            </button>
           ))}
         </div>
       );
@@ -115,14 +127,32 @@ function ProjectDetail({ project, sections, cover }) {
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg-dark)', color: '#fff' }}>
-      {/* Back */}
-      <div style={{ padding: '30px 4% 0' }}>
+      {/* Top bar */}
+      <div style={{
+        padding: '30px 4% 0', display: 'flex', justifyContent: 'space-between',
+        alignItems: 'center', flexWrap: 'wrap', gap: '12px',
+      }}>
         <Link to="/" style={{
           color: 'var(--text-sub)', fontSize: '12px', letterSpacing: '3px',
           textDecoration: 'none', textTransform: 'uppercase',
         }}>
           ← Back to Home
         </Link>
+
+        {(prevProj || nextProj) && (
+          <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
+            {prevProj && (
+              <Link to={prevProj.href} className={s.projNav}>
+                ‹ {prevProj.title}
+              </Link>
+            )}
+            {nextProj && (
+              <Link to={nextProj.href} className={s.projNav}>
+                {nextProj.title} ›
+              </Link>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Hero */}
@@ -185,6 +215,31 @@ function ProjectDetail({ project, sections, cover }) {
         {renderContent()}
       </div>
 
+      {/* Bottom project nav */}
+      {(prevProj || nextProj) && (
+        <div style={{
+          padding: '40px 4% 80px', borderTop: '1px solid var(--border-line)',
+          display: 'flex', justifyContent: 'space-between', gap: '20px', flexWrap: 'wrap',
+        }}>
+          <div>
+            {prevProj && (
+              <Link to={prevProj.href} className={s.projNavLarge}>
+                ‹ Previous<br />
+                <span className={s.projNavTitle}>{prevProj.title}</span>
+              </Link>
+            )}
+          </div>
+          <div style={{ textAlign: 'right' }}>
+            {nextProj && (
+              <Link to={nextProj.href} className={s.projNavLarge}>
+                Next ›<br />
+                <span className={s.projNavTitle}>{nextProj.title}</span>
+              </Link>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Lightbox */}
       {lightbox !== null && (
         <div onClick={closeLightbox}
@@ -193,13 +248,15 @@ function ProjectDetail({ project, sections, cover }) {
             display: 'flex', alignItems: 'center', justifyContent: 'center',
           }}>
           <button onClick={(e) => { e.stopPropagation(); closeLightbox(); }}
+            aria-label="Close lightbox"
             style={{
               position: 'absolute', top: '20px', right: '20px', zIndex: 10,
               background: 'none', border: '1px solid rgba(255,255,255,0.3)',
               color: '#fff', fontSize: '20px', width: '40px', height: '40px',
               cursor: 'pointer', borderRadius: '50%',
             }}>✕</button>
-          <button onClick={(e) => { e.stopPropagation(); prev(); }}
+          <button onClick={(e) => { e.stopPropagation(); lightboxPrev(); }}
+            aria-label="Previous image"
             style={{
               position: 'absolute', left: '20px', zIndex: 10,
               background: 'none', border: '1px solid rgba(255,255,255,0.3)',
@@ -209,7 +266,8 @@ function ProjectDetail({ project, sections, cover }) {
           <img src={images[lightbox]} alt={`${current.label} ${lightbox + 1}`}
             onClick={(e) => e.stopPropagation()}
             style={{ maxWidth: '90vw', maxHeight: '90vh', objectFit: 'contain' }} />
-          <button onClick={(e) => { e.stopPropagation(); next(); }}
+          <button onClick={(e) => { e.stopPropagation(); lightboxNext(); }}
+            aria-label="Next image"
             style={{
               position: 'absolute', right: '20px', zIndex: 10,
               background: 'none', border: '1px solid rgba(255,255,255,0.3)',
@@ -225,5 +283,3 @@ function ProjectDetail({ project, sections, cover }) {
     </div>
   );
 }
-
-export default ProjectDetail;

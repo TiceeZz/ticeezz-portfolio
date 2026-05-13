@@ -14,9 +14,20 @@ html {
 body {
   background: var(--bg-dark);
   color: var(--text-main);
-  font-family: "SF Pro Display", "Helvetica Neue", "PingFang SC", sans-serif;
+  font-family: "SF Pro Display", "Helvetica Neue", "PingFang SC", "Segoe UI", system-ui, sans-serif;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+}
+
+/* Focus visible ring for keyboard users */
+:focus-visible {
+  outline: 2px solid var(--ray-cyan);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
 }
 
 section {
@@ -41,6 +52,22 @@ nav {
   background: linear-gradient(to bottom, rgba(1,2,4,0.9) 0%, transparent 100%);
 }
 
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nav-logo-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 0;
+}
+
 .nav-item {
   font-size: 11px;
   letter-spacing: 4px;
@@ -50,10 +77,31 @@ nav {
   opacity: 0.8;
 }
 
-.nav-brand {
+.nav-links {
   display: flex;
+  gap: 28px;
   align-items: center;
-  gap: 12px;
+}
+
+.nav-link {
+  font-size: 11px;
+  letter-spacing: 4px;
+  color: #fff;
+  text-transform: uppercase;
+  font-weight: 600;
+  opacity: 0.55;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px 0;
+  border-bottom: 1px solid transparent;
+  transition: opacity 0.3s, border-color 0.3s;
+}
+
+.nav-link:hover,
+.nav-link:focus-visible {
+  opacity: 1;
+  border-bottom-color: var(--ray-cyan);
 }
 
 /* =========================================
@@ -61,42 +109,43 @@ nav {
    ========================================= */
 .quantum-logo {
   position: relative;
-  width: 16px;
-  height: 16px;
-  perspective: 100px;
+  width: 17px;
+  height: 17px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
+/* Outer: thin diamond frame, slow drift */
 .quantum-logo::before {
   content: '';
   position: absolute;
   width: 100%;
   height: 100%;
-  border: 1px solid var(--ray-cyan);
-  box-shadow: inset 0 0 6px rgba(0, 242, 255, 0.4);
-  animation: q-spin 4s linear infinite;
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  transform: rotate(45deg);
+  animation: logo-drift 14s linear infinite;
 }
 
+/* Inner: vertical cyan line — structural counterpoint */
 .quantum-logo::after {
   content: '';
   position: absolute;
-  width: 55%;
-  height: 55%;
-  border: 1px solid var(--ray-red);
-  box-shadow: inset 0 0 6px rgba(255, 60, 60, 0.4);
-  animation: q-spin-reverse 3.2s linear infinite;
+  width: 1px;
+  height: 42%;
+  background: var(--ray-cyan);
+  box-shadow: 0 0 5px var(--ray-cyan);
 }
 
+/* Core: small filled diamond, warm accent */
 .quantum-core {
   position: absolute;
-  width: 2px;
-  height: 2px;
-  background: #fff;
-  border-radius: 50%;
-  box-shadow: 0 0 8px var(--ray-yellow), 0 0 4px #fff;
-  animation: q-pulse 1.5s ease-in-out infinite alternate;
+  width: 4px;
+  height: 4px;
+  background: var(--ray-red);
+  transform: rotate(45deg);
+  box-shadow: 0 0 6px rgba(255, 60, 60, 0.5);
+  animation: logo-pulse 3s ease-in-out infinite;
 }
 
 /* =========================================
@@ -142,7 +191,7 @@ footer {
     justify-content: center;
   }
 
-  .nav-right {
+  .nav-links {
     display: none;
   }
 

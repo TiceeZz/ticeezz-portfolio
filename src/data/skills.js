@@ -6,8 +6,8 @@ const skills = [
     items: [
       { name: 'Figma / Adobe Suite', sub: 'UI & Graphic', level: '95%' },
       { name: '3Ds Max / Rhino', sub: '3D Modeling', level: '85%' },
-      { name: 'CGI & Video Editing', sub: 'Visual Delivery', level: '90%' },
-      { name: 'Procreate', sub: 'Concept Sketch', level: '80%' },
+      { name: 'CGI & Video Production', sub: 'Visual Delivery', level: '90%' },
+      { name: 'Procreate', sub: 'Concept Sketching', level: '80%' },
     ],
   },
   {
@@ -17,7 +17,7 @@ const skills = [
     items: [
       { name: 'ComfyUI / SD', sub: 'Node Workflow', level: '90%' },
       { name: 'Seedance / Runway', sub: 'AIGC Video', level: '85%' },
-      { name: 'Midjourney', sub: 'Image Gen', level: '95%' },
+      { name: 'Midjourney', sub: 'Image Generation', level: '95%' },
       { name: 'LLM / Prompt Eng.', sub: 'AI Agent / RAG', level: '88%' },
     ],
   },

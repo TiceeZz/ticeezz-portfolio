@@ -13,7 +13,18 @@
   color: #fff;
   position: relative;
   z-index: 5;
-  text-shadow: 4px 0 15px rgba(0, 242, 255, 0.3), -4px 0 15px rgba(255, 60, 60, 0.3);
+}
+
+/* Dual-layer glow behind the hero title */
+.title::before {
+  content: '';
+  position: absolute;
+  inset: -30% -10%;
+  background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(0, 242, 255, 0.12) 0%, transparent 60%),
+              radial-gradient(ellipse 60% 50% at 40% 40%, rgba(255, 60, 60, 0.08) 0%, transparent 60%);
+  z-index: -1;
+  pointer-events: none;
+  filter: blur(40px);
 }
 
 .subtitle {

@@ -33,11 +33,15 @@ export default function Hero() {
         </div>
         <div className={s.infoItem}>
           <span className={s.infoLabel}>EDUCATION</span>
-          <span className={s.infoValue}>东华大学 (MA) · 四川农业大学 (BA)</span>
+          <span className={s.infoValue}>东华大学 (MA) · 四川农业大学 (BA) RANK 1/121</span>
         </div>
         <div className={s.infoItem}>
-          <span className={s.infoLabel}>CONTACT / EMAIL</span>
-          <span className={s.infoValue}>+86 199 7467 7449 · 1027208320@qq.com</span>
+          <span className={s.infoLabel}>CONTACT</span>
+          <span className={s.infoValue}>+86 199 7467 7449 / 180 8063 1096</span>
+        </div>
+        <div className={s.infoItem}>
+          <span className={s.infoLabel}>EMAIL</span>
+          <span className={s.infoValue}>1027208320@qq.com</span>
         </div>
         <div className={s.infoItem}>
           <span className={s.infoLabel}>LANGUAGE</span>
