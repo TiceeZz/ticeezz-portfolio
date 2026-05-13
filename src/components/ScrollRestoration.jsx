@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef } from 'react';
+import { useLayoutEffect, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 
 const positions = new Map();
@@ -7,7 +7,22 @@ if (typeof window !== 'undefined' && 'scrollRestoration' in window.history) {
   window.history.scrollRestoration = 'manual';
 }
 
-// jump instantly, overriding CSS scroll-behavior: smooth
+// Intercept history.pushState / replaceState to save scroll position
+// BEFORE React processes the navigation. This catches <Link> clicks
+// which the scroll handler's cleanup misses (cleanup fires after DOM switch).
+const push = window.history.pushState.bind(window.history);
+const replace = window.history.replaceState.bind(window.history);
+
+window.history.pushState = function (state, title, url) {
+  positions.set(window.location.pathname, window.scrollY);
+  return push(state, title, url);
+};
+
+window.history.replaceState = function (state, title, url) {
+  positions.set(window.location.pathname, window.scrollY);
+  return replace(state, title, url);
+};
+
 function jump(y) {
   const el = document.documentElement;
   const prev = el.style.scrollBehavior;
@@ -37,7 +52,10 @@ export default function ScrollRestoration() {
     } else {
       jump(0);
     }
+  }, [pathname]);
 
+  // Keep position updated continuously while user scrolls
+  useEffect(() => {
     const onScroll = () => positions.set(pathname, window.scrollY);
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
