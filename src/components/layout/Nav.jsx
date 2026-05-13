@@ -9,9 +9,9 @@ function jump(y) {
 }
 
 const anchors = [
+  { label: 'Works', target: 'gallery' },
   { label: 'Resume', target: 'resume' },
   { label: 'Skills', target: 'skills' },
-  { label: 'Works', target: 'gallery' },
   { label: 'Beyond', target: 'beyond-design' },
 ];
 

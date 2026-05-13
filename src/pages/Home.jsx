@@ -25,9 +25,9 @@ export default function Home() {
       <Cube3D />
       <Nav />
       <Hero />
+      <Gallery />
       <Resume />
       <Skills />
-      <Gallery />
       <BeyondDesign />
       <Footer />
       <AIFab onClick={() => setChatOpen(true)} />
