@@ -136,10 +136,20 @@
 
   .wrapper {
     padding: 24px 0;
+    background: none;
   }
 
   .track {
-    animation-duration: 50s;
+    animation: none;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 calc(50vw - 130px);
+    scrollbar-width: none;
+  }
+
+  .track::-webkit-scrollbar {
+    display: none;
   }
 
   .group {
@@ -147,11 +157,17 @@
     padding-right: 16px;
   }
 
+  .group[aria-hidden] {
+    display: none;
+  }
+
   .card {
     width: 75vw;
     min-width: 260px;
     height: 40vh;
     min-height: 280px;
+    flex-shrink: 0;
+    scroll-snap-align: center;
   }
 
   .cardInfo {
