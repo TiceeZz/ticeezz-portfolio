@@ -4,97 +4,77 @@
   right: 40px;
   width: 60px;
   height: 60px;
-  background: transparent;
-  border: none;
+  background: rgba(0, 242, 255, 0.08);
+  border: 1px solid rgba(0, 242, 255, 0.25);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   z-index: 9000;
+  box-shadow: 0 0 20px rgba(0, 242, 255, 0.1);
+  transition: transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 1),
+              box-shadow 0.4s,
+              background 0.4s,
+              border-color 0.4s;
   cursor: pointer;
-  transition: transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+  overflow: visible;
 }
 
 .fab:hover {
-  transform: scale(1.12);
+  transform: scale(1.08);
+  box-shadow: 0 0 30px rgba(0, 242, 255, 0.35), 0 0 60px rgba(0, 200, 255, 0.15);
+  border-color: rgba(0, 242, 255, 0.6);
+  background: rgba(0, 242, 255, 0.15);
 }
 
-/* ── Particle-beam energy core ── */
-.core {
+/* ── glow ring ── */
+.glowRing {
   position: absolute;
-  width: 14px;
-  height: 14px;
+  inset: -4px;
   border-radius: 50%;
-  background: radial-gradient(circle, #fff 0%, rgba(130, 210, 255, 0.9) 30%, transparent 70%);
-  z-index: 10;
-  box-shadow:
-    0 0 8px #fff,
-    0 0 20px rgba(100, 200, 255, 0.8),
-    0 0 40px rgba(100, 180, 255, 0.4),
-    0 0 60px rgba(130, 160, 255, 0.25);
-  animation: corePulse 1.8s ease-in-out infinite;
-}
-
-@keyframes corePulse {
-  0%, 100% { box-shadow: 0 0 8px #fff, 0 0 20px rgba(100, 200, 255, 0.8), 0 0 40px rgba(100, 180, 255, 0.4), 0 0 60px rgba(130, 160, 255, 0.25); }
-  50%      { box-shadow: 0 0 12px #fff, 0 0 30px rgba(150, 220, 255, 1), 0 0 55px rgba(130, 200, 255, 0.6), 0 0 80px rgba(160, 180, 255, 0.4); }
-}
-
-/* ── orbital rings ── */
-.ring {
-  position: absolute;
-  width: var(--size);
-  height: var(--size);
-  border-radius: 50%;
-  border: 1px solid rgba(140, 200, 255, 0.3);
-  transform: rotateX(var(--angle)) rotateY(0deg);
-  animation: ringSpin var(--speed) linear infinite;
+  border: 1px solid rgba(0, 242, 255, 0.2);
+  animation: ringSpin 6s linear infinite;
   pointer-events: none;
 }
 
-.ring::after {
+.glowRing::before {
   content: '';
   position: absolute;
-  top: -3px;
+  top: -2px;
   left: 50%;
-  width: 6px;
-  height: 6px;
+  width: 4px;
+  height: 4px;
   border-radius: 50%;
-  background: #fff;
-  box-shadow: 0 0 6px #fff, 0 0 14px rgba(130, 210, 255, 0.9), 0 0 24px rgba(100, 180, 255, 0.5);
+  background: var(--ray-cyan);
+  box-shadow: 0 0 6px var(--ray-cyan), 0 0 12px rgba(0, 242, 255, 0.6);
   transform: translateX(-50%);
 }
 
 @keyframes ringSpin {
-  to { transform: rotateX(var(--angle)) rotateY(360deg); }
+  to { transform: rotate(360deg); }
 }
 
-/* ── energy beams ── */
-.beam {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 1px;
+/* ── star icon ── */
+.fab svg {
+  width: 22px;
   height: 22px;
-  background: linear-gradient(to top, rgba(255,255,255,0.9), rgba(130,200,255,0.4), transparent);
-  transform-origin: bottom center;
-  transform: translate(-50%, -100%) rotate(var(--angle));
-  animation: beamRotate var(--speed) linear infinite;
-  pointer-events: none;
-  opacity: 0.6;
+  fill: #fff;
+  position: relative;
+  z-index: 2;
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.5));
+  animation: starGlow 2s ease-in-out infinite;
 }
 
-@keyframes beamRotate {
-  to { transform: translate(-50%, -100%) rotate(calc(var(--angle) + 360deg)); }
+@keyframes starGlow {
+  0%, 100% { opacity: 0.85; filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.4)); }
+  50%      { opacity: 1;    filter: drop-shadow(0 0 8px rgba(0, 242, 255, 0.7)); }
 }
 
-/* ── hover ── */
-.fab:hover .core {
-  animation-duration: 0.9s;
-}
-
-.fab:hover .ring {
-  border-color: rgba(180, 220, 255, 0.5);
+.fab:hover svg {
+  filter: drop-shadow(0 0 12px rgba(0, 242, 255, 0.9));
+  animation: none;
 }
 
 .panel {
@@ -293,17 +273,13 @@
     height: 48px;
   }
 
-  .core {
-    width: 11px;
-    height: 11px;
+  .fab svg {
+    width: 18px;
+    height: 18px;
   }
 
-  .beam {
-    height: 17px;
-  }
-
-  .ring {
-    --size: 32px;
+  .glowRing {
+    inset: -3px;
   }
 
   .panel {
