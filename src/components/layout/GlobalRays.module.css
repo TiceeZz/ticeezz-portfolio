@@ -28,6 +28,18 @@
   to { transform: rotate(360deg); }
 }
 
+@media (max-width: 768px) {
+  .rays {
+    width: 100vmax;
+    height: 100vmax;
+    margin-left: -50vmax;
+    margin-top: -50vmax;
+    filter: blur(40px);
+    animation-duration: 60s;
+    opacity: 0.6;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .rays {
     animation: none;

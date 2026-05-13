@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { allProjects } from '../../data/gallery';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
+import ImgLoader from './ImgLoader';
 import s from './ProjectDetail.module.css';
 
 export default function ProjectDetail({ project, sections, cover, projectSlug }) {
@@ -42,7 +43,7 @@ export default function ProjectDetail({ project, sections, cover, projectSlug })
           {images.map((src, i) => (
             <button key={i} onClick={() => openLightbox(i)} className={s.galleryItem}
               aria-label={`View ${current.label} image ${i + 1}`}>
-              <img src={src} alt={`${current.label} ${i + 1}`} loading="lazy" />
+              <ImgLoader src={src} alt={`${current.label} ${i + 1}`} loading="lazy" aspectRatio="4/3" objectFit="cover" />
               <div className={s.pageLabel}>
                 {current.label} · {String(i + 1).padStart(2, '0')}
               </div>
@@ -78,8 +79,8 @@ export default function ProjectDetail({ project, sections, cover, projectSlug })
                 position: 'relative', borderRadius: '8px', overflow: 'hidden',
                 border: '1px solid var(--border-line)',
               }}>
-                <img src={v.poster} alt={v.title}
-                  style={{ width: '100%', display: 'block', filter: 'brightness(0.4)' }} />
+                <ImgLoader src={v.poster} alt={v.title} loading="lazy" aspectRatio="16/9"
+                  imgStyle={{ filter: 'brightness(0.4)' }} />
                 <div style={{
                   position: 'absolute', inset: 0, display: 'flex',
                   flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
@@ -160,8 +161,8 @@ export default function ProjectDetail({ project, sections, cover, projectSlug })
         width: '100%', height: '55vh', overflow: 'hidden', position: 'relative',
         marginTop: '20px',
       }}>
-        <img src={cover} alt={project.title}
-          style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+        <ImgLoader src={cover} alt={project.title} loading="eager" aspectRatio="16/9"
+          objectFit="cover" style={{ height: '100%' }} />
         <div style={{
           position: 'absolute', inset: 0,
           background: 'linear-gradient(to top, rgba(5,7,12,0.95) 0%, transparent 50%)',
