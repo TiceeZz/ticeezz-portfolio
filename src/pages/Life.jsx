@@ -44,7 +44,7 @@ export default function Life() {
             <ImgCard src="/images/life/wolf-alice.jpg" alt="Wolf Alice" />
           </div>
           <p style={{ color: 'var(--text-sub)', fontSize: '0.9rem', lineHeight: 2, maxWidth: '600px' }}>
-            我爱看<strong style={{ color: '#fff' }}>LIVE</strong>，比如 Katy Perry、Wolf Alice 的演唱会——声光张力持续滋养着我对节奏与氛围的感知。
+            喜欢欧美音乐，我爱看<strong style={{ color: '#fff' }}>LIVE</strong>，比如 Katy Perry、Wolf Alice 的演唱会——声光张力持续滋养着我对节奏与氛围的感知。
           </p>
         </section>
 
