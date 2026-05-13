@@ -57,49 +57,64 @@
   z-index: 2;
 }
 
+.bgImg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 30% center;
+  opacity: 0.3;
+  transition: opacity 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.pillar:hover .bgImg {
+  opacity: 0.5;
+}
+
 .glow {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at bottom, rgba(0, 242, 255, 0.2), transparent 70%);
-  opacity: 0;
-  transition: 0.8s;
+  background: radial-gradient(circle at bottom, rgba(0, 242, 255, 0.15), transparent 70%);
+  opacity: 0.35;
+  transition: opacity 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
   pointer-events: none;
   mix-blend-mode: color-dodge;
 }
 
 .pillar:nth-child(2) .glow {
-  background: radial-gradient(circle at bottom, rgba(255, 60, 60, 0.2), transparent 70%);
+  background: radial-gradient(circle at bottom, rgba(255, 60, 60, 0.15), transparent 70%);
 }
 
 .pillar:nth-child(3) .glow {
-  background: radial-gradient(circle at bottom, rgba(255, 200, 0, 0.2), transparent 70%);
+  background: radial-gradient(circle at bottom, rgba(255, 200, 0, 0.15), transparent 70%);
+}
+
+.pillar:nth-child(4) .glow {
+  background: radial-gradient(circle at bottom, rgba(160, 120, 255, 0.15), transparent 70%);
 }
 
 .pillar:hover .glow {
-  opacity: 1;
+  opacity: 0.7;
 }
 
 .info {
   position: absolute;
-  bottom: 30px;
-  left: 30px;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: 0.8s;
+  bottom: 28px;
+  left: 28px;
+  right: 28px;
+  transition: transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
   z-index: 10;
   pointer-events: none;
 }
 
 .pillar:hover .info {
-  opacity: 1;
-  transform: translateY(0);
-  transition-delay: 0.2s;
+  transform: translateY(-4px);
 }
 
 .info h2 {
-  font-size: 2.2rem;
+  font-size: clamp(1rem, 2vw, 2.2rem);
   color: #fff;
-  margin-bottom: 5px;
+  margin-bottom: 4px;
   font-weight: 600;
 }
 
@@ -108,6 +123,7 @@
   letter-spacing: 3px;
   color: var(--text-sub);
   text-transform: uppercase;
+  line-height: 1.4;
 }
 
 .num {
@@ -117,8 +133,13 @@
   font-size: 10px;
   letter-spacing: 3px;
   color: #fff;
-  opacity: 0.3;
+  opacity: 0.35;
   font-weight: 600;
+  transition: opacity 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.pillar:hover .num {
+  opacity: 0.6;
 }
 
 /* =========================================
@@ -151,22 +172,23 @@
 
   .pillar {
     flex: none;
-    height: 120px;
-    min-height: 120px;
+    height: 160px;
+    min-height: 160px;
   }
 
   .pillar:hover {
     flex: none;
-    height: 200px;
+    height: 160px;
   }
 
   .info {
     bottom: 20px;
     left: 20px;
+    right: 20px;
   }
 
   .info h2 {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
   }
 
   .num {
