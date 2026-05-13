@@ -43,7 +43,7 @@ export default function ProjectDetail({ project, sections, cover, projectSlug })
           {images.map((src, i) => (
             <button key={i} onClick={() => openLightbox(i)} className={s.galleryItem}
               aria-label={`View ${current.label} image ${i + 1}`}>
-              <ImgLoader src={src} alt={`${current.label} ${i + 1}`} loading="lazy" aspectRatio="4/3" objectFit="cover" />
+              <ImgLoader src={src} alt={`${current.label} ${i + 1}`} loading="lazy" aspectRatio="16/9" objectFit="cover" />
               <div className={s.pageLabel}>
                 {current.label} · {String(i + 1).padStart(2, '0')}
               </div>
