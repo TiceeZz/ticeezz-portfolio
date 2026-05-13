@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import styles from './Cube3D.module.css';
@@ -8,9 +8,18 @@ gsap.registerPlugin(ScrollTrigger);
 export default function Cube3D() {
   const cubeRef = useRef(null);
   const containerRef = useRef(null);
+  const [flat, setFlat] = useState(true);
+  const animating = useRef(true);
+
+  useEffect(() => {
+    const raf = requestAnimationFrame(() => setFlat(false));
+    const t = setTimeout(() => { animating.current = false; }, 700);
+    return () => { cancelAnimationFrame(raf); clearTimeout(t); };
+  }, []);
 
   useEffect(() => {
     const handleMouse = (e) => {
+      if (animating.current) return;
       if (window.scrollY < window.innerHeight) {
         const rotY = (e.clientX / window.innerWidth - 0.5) * 60;
         const rotX = (e.clientY / window.innerHeight - 0.5) * -60;
@@ -42,7 +51,7 @@ export default function Cube3D() {
 
   return (
     <div ref={containerRef} className={styles.container}>
-      <div ref={cubeRef} className={styles.cube}>
+      <div ref={cubeRef} className={`${styles.cube}${flat ? ` ${styles.flat}` : ''}`}>
         {faces.map((face) => (
           <div key={face} className={`${styles.face} ${styles[face]}`} />
         ))}
