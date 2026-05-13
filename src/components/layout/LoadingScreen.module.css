@@ -1,6 +1,8 @@
 /* =========================================
-   Loading Screen — full-viewport overlay
-   Echoes the hero cube's glass/glow aesthetic
+   Loading Screen — light-beam opening
+   Echoes GlobalRays: conic gradient beams,
+   expands outward on exit for a seamless
+   crossfade into the main page.
    ========================================= */
 
 .overlay {
@@ -12,7 +14,9 @@
   align-items: center;
   justify-content: center;
   background: var(--bg-dark);
-  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 1;
+  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
 }
 
 .overlay.exiting {
@@ -20,231 +24,174 @@
   pointer-events: none;
 }
 
-/* ---- Cube scene ---- */
-.scene {
-  width: 260px;
-  height: 260px;
-  perspective: 1200px;
-  position: relative;
-}
-
-.cube {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  transform-style: preserve-3d;
-  animation: cubeRevolve 10s linear infinite, cubeFloat 4s ease-in-out infinite;
-}
-
-.face {
-  position: absolute;
-  width: 260px;
-  height: 260px;
-  background: rgba(255, 255, 255, 0.015);
-  border: 1.5px solid rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow:
-    inset 0 0 40px rgba(0, 242, 255, 0.06),
-    0 0 24px rgba(0, 242, 255, 0.04);
-}
-
-.front  { transform: translateZ(130px); }
-.back   { transform: rotateY(180deg) translateZ(130px); }
-.right  { transform: rotateY(90deg) translateZ(130px); }
-.left   { transform: rotateY(-90deg) translateZ(130px); }
-.top    { transform: rotateX(90deg) translateZ(130px); }
-.bottom { transform: rotateX(-90deg) translateZ(130px); }
-
-/* ---- Orbiting accent dots ---- */
-.orbit {
+/* ---- Light beams — same conic-gradient as GlobalRays ---- */
+.rays {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 340px;
-  height: 340px;
-  margin: -170px 0 0 -170px;
-  border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.04);
-  animation: orbitSpin 20s linear infinite;
+  width: 160vmax;
+  height: 160vmax;
+  margin-left: -80vmax;
+  margin-top: -80vmax;
+  background: conic-gradient(
+    from 90deg at 50% 50%,
+    transparent 0deg,
+    rgba(0, 242, 255, 0.18) 45deg,
+    transparent 90deg,
+    rgba(255, 60, 60, 0.18) 180deg,
+    transparent 225deg,
+    rgba(50, 255, 120, 0.12) 270deg,
+    transparent 315deg,
+    rgba(255, 200, 0, 0.12) 360deg
+  );
+  filter: blur(60px);
+  mix-blend-mode: screen;
+  animation: raysSpin 30s infinite linear, raysPulse 3s ease-in-out infinite;
   pointer-events: none;
 }
 
-.orbit:nth-child(2) {
-  width: 300px;
-  height: 300px;
-  margin: -150px 0 0 -150px;
-  animation-duration: 16s;
-  animation-direction: reverse;
+/* On exit: expand blur to match GlobalRays (100px) — seamless handoff */
+.overlay.exiting .rays {
+  filter: blur(100px);
+  transition: filter 0.6s ease-in;
 }
 
-.dot {
+/* ---- Central glow — the "ignition" point ---- */
+.glow {
   position: absolute;
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: var(--ray-cyan);
-  box-shadow: 0 0 8px var(--ray-cyan), 0 0 16px rgba(0, 242, 255, 0.4);
+  top: 50%;
+  left: 50%;
+  width: 500px;
+  height: 500px;
+  margin: -250px 0 0 -250px;
+  background: radial-gradient(
+    circle at center,
+    rgba(0, 242, 255, 0.25) 0%,
+    rgba(0, 242, 255, 0.06) 25%,
+    rgba(255, 60, 60, 0.03) 45%,
+    transparent 65%
+  );
+  filter: blur(20px);
+  animation: glowBreathe 2.5s ease-in-out infinite;
+  pointer-events: none;
+  transition: opacity 0.5s ease-in, transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.dot:nth-child(1) { top: 0; left: 50%; }
-.dot:nth-child(2) { bottom: 0; left: 50%; }
-.dot:nth-child(3) { left: 0; top: 50%; }
-.dot:nth-child(4) { right: 0; top: 50%; }
-
-.orbit:nth-child(2) .dot {
-  width: 3px;
-  height: 3px;
-  background: var(--ray-red);
-  box-shadow: 0 0 6px var(--ray-red), 0 0 12px rgba(255, 60, 60, 0.4);
-}
-
-.orbit:nth-child(2) .dot:nth-child(1) { top: 8%; left: 85%; }
-.orbit:nth-child(2) .dot:nth-child(2) { bottom: 8%; left: 15%; }
-.orbit:nth-child(2) .dot:nth-child(3) { left: 8%; bottom: 85%; }
-.orbit:nth-child(2) .dot:nth-child(4) { right: 8%; top: 85%; }
-
-/* ---- Brand text ---- */
-.brand {
-  margin-top: 48px;
-  font-size: 14px;
-  letter-spacing: 8px;
-  font-weight: 700;
-  color: rgba(255, 255, 255, 0.6);
-  text-transform: uppercase;
-  animation: brandPulse 2s ease-in-out infinite;
-}
-
-/* ---- Thin progress line ---- */
-.progress {
-  margin-top: 32px;
-  width: 120px;
-  height: 1px;
-  background: rgba(255, 255, 255, 0.08);
-  overflow: hidden;
-}
-
-.progressBar {
-  height: 100%;
-  width: 0%;
-  background: linear-gradient(90deg, transparent, var(--ray-cyan), transparent);
-  animation: progressFill 1.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-/* ---- Keyframes ---- */
-@keyframes cubeRevolve {
-  from { transform: rotateX(-18deg) rotateY(0deg); }
-  to   { transform: rotateX(-18deg) rotateY(360deg); }
-}
-
-@keyframes cubeFloat {
-  0%, 100% { margin-top: -8px; }
-  50%      { margin-top: 8px; }
-}
-
-@keyframes orbitSpin {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
-}
-
-@keyframes brandPulse {
-  0%, 100% { opacity: 0.4; }
-  50%      { opacity: 0.75; }
-}
-
-@keyframes progressFill {
-  0%   { width: 0%; }
-  100% { width: 100%; }
-}
-
-/* ---- Exit animation ---- */
-.overlay.exiting .cube {
-  animation: cubeRevolve 10s linear infinite, cubeFloat 4s ease-in-out infinite, cubeDissolve 0.5s ease-in forwards;
-}
-
-.overlay.exiting .orbit {
-  animation-play-state: paused;
+.overlay.exiting .glow {
   opacity: 0;
+  transform: scale(2.5);
+}
+
+/* ---- Brand ---- */
+.brand {
+  position: relative;
+  z-index: 1;
+  font-size: 15px;
+  letter-spacing: 10px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.55);
+  text-transform: uppercase;
+  animation: brandPulse 2.5s ease-in-out infinite;
   transition: opacity 0.4s ease-in;
 }
 
-.overlay.exiting .brand,
-.overlay.exiting .progress {
+.overlay.exiting .brand {
   opacity: 0;
-  transition: opacity 0.35s ease-in;
 }
 
-@keyframes cubeDissolve {
-  to {
-    opacity: 0;
-    filter: blur(8px);
-  }
+/* ---- Thin shimmer line ---- */
+.line {
+  position: relative;
+  z-index: 1;
+  margin-top: 28px;
+  width: 80px;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+    );
+  animation: shimmerLine 2s ease-in-out infinite;
 }
 
-/* =========================================
-   Mobile
-   ========================================= */
+.overlay.exiting .line {
+  opacity: 0;
+  transition: opacity 0.3s ease-in;
+}
+
+/* ---- Keyframes ---- */
+@keyframes raysSpin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes raysPulse {
+  0%, 100% { opacity: 0.8; }
+  50%      { opacity: 1; }
+}
+
+@keyframes glowBreathe {
+  0%, 100% { opacity: 0.7; transform: scale(0.95); }
+  50%      { opacity: 1; transform: scale(1.05); }
+}
+
+@keyframes brandPulse {
+  0%, 100% { opacity: 0.35; }
+  50%      { opacity: 0.7; }
+}
+
+@keyframes shimmerLine {
+  0%, 100% { opacity: 0.3; }
+  50%      { opacity: 0.8; }
+}
+
+/* ---- Mobile ---- */
 @media (max-width: 768px) {
-  .scene {
-    width: 170px;
-    height: 170px;
+  .rays {
+    width: 140vmax;
+    height: 140vmax;
+    margin-left: -70vmax;
+    margin-top: -70vmax;
+    filter: blur(40px);
   }
 
-  .face {
-    width: 170px;
-    height: 170px;
+  .overlay.exiting .rays {
+    filter: blur(80px);
   }
 
-  .front  { transform: translateZ(85px); }
-  .back   { transform: rotateY(180deg) translateZ(85px); }
-  .right  { transform: rotateY(90deg) translateZ(85px); }
-  .left   { transform: rotateY(-90deg) translateZ(85px); }
-  .top    { transform: rotateX(90deg) translateZ(85px); }
-  .bottom { transform: rotateX(-90deg) translateZ(85px); }
-
-  .orbit {
-    width: 220px;
-    height: 220px;
-    margin: -110px 0 0 -110px;
-  }
-
-  .orbit:nth-child(2) {
-    width: 195px;
-    height: 195px;
-    margin: -97px 0 0 -97px;
+  .glow {
+    width: 300px;
+    height: 300px;
+    margin: -150px 0 0 -150px;
   }
 
   .brand {
-    margin-top: 36px;
-    font-size: 12px;
-    letter-spacing: 6px;
+    font-size: 13px;
+    letter-spacing: 7px;
   }
 
-  .progress {
-    margin-top: 24px;
-    width: 90px;
+  .line {
+    margin-top: 22px;
+    width: 60px;
   }
 }
 
-/* ---- Respect reduced motion ---- */
+/* ---- Reduced motion ---- */
 @media (prefers-reduced-motion: reduce) {
-  .cube {
+  .rays {
     animation: none;
-    transform: rotateX(-18deg) rotateY(45deg);
+    filter: blur(80px);
+    opacity: 0.8;
   }
 
-  .orbit {
-    animation: none;
-    opacity: 0.5;
-  }
-
-  .brand {
+  .glow {
     animation: none;
     opacity: 0.6;
   }
 
-  .progressBar {
+  .brand,
+  .line {
     animation: none;
-    width: 100%;
+    opacity: 0.5;
   }
 }

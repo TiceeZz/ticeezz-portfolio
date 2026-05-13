@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import useReducedMotion from '../../hooks/useReducedMotion';
 import styles from './LoadingScreen.module.css';
 
-const MIN_DISPLAY = 2000;
+const MIN_DISPLAY = 2200;
 
 export default function LoadingScreen({ onComplete }) {
   const [exiting, setExiting] = useState(false);
@@ -10,13 +10,12 @@ export default function LoadingScreen({ onComplete }) {
 
   const finish = useCallback(() => {
     setExiting(true);
-    setTimeout(onComplete, 600);
+    setTimeout(onComplete, 800);
   }, [onComplete]);
 
   useEffect(() => {
     if (reduced) {
-      // Skip animation for reduced-motion users
-      const t = setTimeout(finish, 400);
+      const t = setTimeout(finish, 300);
       return () => clearTimeout(t);
     }
 
@@ -31,10 +30,8 @@ export default function LoadingScreen({ onComplete }) {
 
     const start = performance.now();
     let raf;
-
     const check = () => {
-      const elapsed = performance.now() - start;
-      if (ready && elapsed >= MIN_DISPLAY) {
+      if (ready && performance.now() - start >= MIN_DISPLAY) {
         finish();
       } else {
         raf = requestAnimationFrame(check);
@@ -48,27 +45,12 @@ export default function LoadingScreen({ onComplete }) {
     };
   }, [reduced, finish]);
 
-  const faces = ['front', 'back', 'right', 'left', 'top', 'bottom'];
-
   return (
     <div className={`${styles.overlay}${exiting ? ` ${styles.exiting}` : ''}`}>
-      <div className={styles.scene}>
-        <div className={styles.cube}>
-          {faces.map((face) => (
-            <div key={face} className={`${styles.face} ${styles[face]}`} />
-          ))}
-        </div>
-        <div className={styles.orbit}>
-          {[1, 2, 3, 4].map((n) => <div key={n} className={styles.dot} />)}
-        </div>
-        <div className={styles.orbit}>
-          {[1, 2, 3, 4].map((n) => <div key={n} className={styles.dot} />)}
-        </div>
-      </div>
-      <p className={styles.brand}>TiceeZz</p>
-      <div className={styles.progress}>
-        <div className={styles.progressBar} />
-      </div>
+      <div className={styles.rays} />
+      <div className={styles.glow} />
+      <span className={styles.brand}>TiceeZz</span>
+      <div className={styles.line} />
     </div>
   );
 }
