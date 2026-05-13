@@ -1,9 +1,10 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useState, useCallback } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { CursorProvider } from './components/cursor/CursorContext';
 import CursorDot from './components/cursor/CursorDot';
 import CursorRing from './components/cursor/CursorRing';
 import ScrollRestoration from './components/ScrollRestoration';
+import LoadingScreen from './components/layout/LoadingScreen';
 import Home from './pages/Home';
 
 const Eclipse = lazy(() => import('./pages/Eclipse'));
@@ -35,12 +36,16 @@ function PageLoader() {
 }
 
 export default function App() {
+  const [loading, setLoading] = useState(true);
+  const onLoadComplete = useCallback(() => setLoading(false), []);
+
   return (
     <BrowserRouter>
       <CursorProvider>
         <CursorDot />
         <CursorRing />
         <ScrollRestoration />
+        {loading && <LoadingScreen onComplete={onLoadComplete} />}
         <Suspense fallback={<PageLoader />}>
           <Routes>
             <Route path="/" element={<Home />} />
