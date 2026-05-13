@@ -1,55 +1,84 @@
-import { useRef, useEffect, useCallback } from 'react';
+import { useRef, useEffect } from 'react';
 import SectionHeader from '../ui/SectionHeader';
 import MarqueeCard from '../ui/MarqueeCard';
 import marqueeCards from '../../data/marquee';
 import s from './BeyondDesign.module.css';
 
-export default function BeyondDesign() {
-  const trackRef = useRef(null);
-  const timerRef = useRef(null);
-  const isMobile = useRef(false);
-
-  const advance = useCallback(() => {
-    const track = trackRef.current;
-    if (!track) return;
-    const card = track.querySelector(`.${s.card}`);
-    if (!card) return;
-    const step = card.offsetWidth + 16; // card width + gap
-    const maxScroll = track.scrollWidth - track.clientWidth;
-    let next = track.scrollLeft + step;
-    if (next >= maxScroll - 2) next = 0;
-    track.scrollTo({ left: next, behavior: 'smooth' });
-  }, []);
-
-  const startAuto = useCallback(() => {
-    if (!isMobile.current) return;
-    clearInterval(timerRef.current);
-    timerRef.current = setInterval(advance, 4000);
-  }, [advance]);
-
-  const stopAuto = useCallback(() => {
-    clearInterval(timerRef.current);
-  }, []);
+function useMobileMarquee(trackRef) {
+  const offsetRef = useRef(0);
+  const dragRef = useRef(null);
+  const rafRef = useRef(null);
+  const resumeTimer = useRef(null);
 
   useEffect(() => {
-    isMobile.current = window.matchMedia('(max-width: 768px)').matches;
-    if (!isMobile.current) return;
-
+    const mql = window.matchMedia('(max-width: 768px)');
     const track = trackRef.current;
-    if (!track) return;
+    if (!track || !mql.matches) return;
 
-    startAuto();
+    const DURATION = 50; // seconds for one full cycle (one group)
+    let lastTime = performance.now();
+    let groupWidth = track.scrollWidth / 2;
 
-    track.addEventListener('touchstart', stopAuto, { passive: true });
-    track.addEventListener('touchend', () => {
-      setTimeout(startAuto, 3000);
-    });
+    const tick = (now) => {
+      if (!dragRef.current) {
+        const dt = now - lastTime;
+        const speed = groupWidth / (DURATION * 1000); // px per ms
+        offsetRef.current -= speed * dt;
+        if (offsetRef.current <= -groupWidth) offsetRef.current += groupWidth;
+        if (offsetRef.current > 0) offsetRef.current -= groupWidth;
+      }
+      track.style.transform = `translateX(${offsetRef.current}px)`;
+      lastTime = now;
+      rafRef.current = requestAnimationFrame(tick);
+    };
+
+    // Recalc groupWidth on resize
+    const onResize = () => { groupWidth = track.scrollWidth / 2; };
+    window.addEventListener('resize', onResize);
+
+    rafRef.current = requestAnimationFrame(tick);
+
+    const onTouchStart = (e) => {
+      clearTimeout(resumeTimer.current);
+      dragRef.current = {
+        startX: e.touches[0].clientX,
+        startOffset: offsetRef.current,
+      };
+    };
+    const onTouchMove = (e) => {
+      if (!dragRef.current) return;
+      const dx = e.touches[0].clientX - dragRef.current.startX;
+      let newOffset = dragRef.current.startOffset + dx;
+      // wrap
+      if (newOffset <= -groupWidth) newOffset += groupWidth;
+      if (newOffset > 0) newOffset -= groupWidth;
+      offsetRef.current = newOffset;
+    };
+    const onTouchEnd = () => {
+      dragRef.current = null;
+      resumeTimer.current = setTimeout(() => {
+        // auto-resume is natural — next tick will advance without drag
+      }, 2000);
+    };
+
+    track.addEventListener('touchstart', onTouchStart, { passive: true });
+    track.addEventListener('touchmove', onTouchMove, { passive: true });
+    track.addEventListener('touchend', onTouchEnd);
 
     return () => {
-      clearInterval(timerRef.current);
-      track.removeEventListener('touchstart', stopAuto);
+      cancelAnimationFrame(rafRef.current);
+      clearTimeout(resumeTimer.current);
+      window.removeEventListener('resize', onResize);
+      track.removeEventListener('touchstart', onTouchStart);
+      track.removeEventListener('touchmove', onTouchMove);
+      track.removeEventListener('touchend', onTouchEnd);
     };
-  }, [startAuto, stopAuto]);
+  }, []);
+}
+
+export default function BeyondDesign() {
+  const trackRef = useRef(null);
+  useMobileMarquee(trackRef);
 
   return (
     <section id="beyond-design" className={s.beyond}>
