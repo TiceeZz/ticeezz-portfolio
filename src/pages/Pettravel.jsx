@@ -65,11 +65,14 @@ export default function Pettravel() {
       {/* Continuous page stream */}
       <div className={s.stream}>
         <div className={s.sectionLabel}>完整方案 · {pages.length} Pages</div>
-        {pages.map((p) => (
-          <div key={p.src} className={s.pageItem}>
-            <ImgLoader src={p.src} alt={p.alt} loading="lazy" objectFit="contain" aspectRatio="16/9" />
-          </div>
-        ))}
+        {pages.map((p, i) => {
+          const isLast = i === pages.length - 1;
+          return (
+            <div key={p.src} className={s.pageItem}>
+              <ImgLoader src={p.src} alt={p.alt} loading="lazy" objectFit="contain" aspectRatio={isLast ? '4000/8413' : '16/9'} />
+            </div>
+          );
+        })}
       </div>
 
       {/* Footer nav */}
