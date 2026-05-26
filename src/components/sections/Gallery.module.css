@@ -52,6 +52,7 @@
   color: inherit;
   font-family: inherit;
   text-align: left;
+  will-change: filter;
 }
 
 .pillar:hover {
@@ -83,6 +84,7 @@
   transition: opacity 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
   pointer-events: none;
   mix-blend-mode: color-dodge;
+  transform: translateZ(0);
 }
 
 .pillar:nth-child(2) .glow {

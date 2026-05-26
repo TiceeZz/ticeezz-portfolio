@@ -18,6 +18,7 @@
   transform-style: preserve-3d;
   transition: transform 0.1s;
   animation: floatCube 8s infinite ease-in-out alternate;
+  will-change: transform;
 }
 
 .face {
@@ -31,6 +32,7 @@
   box-shadow: inset 0 0 30px rgba(0, 242, 255, 0.05), 0 0 20px rgba(255, 60, 60, 0.05);
   transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
   overflow: hidden;
+  will-change: filter, transform;
 }
 
 /* ---- Metallic light sweep (sharp core) ---- */
@@ -48,6 +50,7 @@
   );
   mix-blend-mode: color-dodge;
   animation: lightSweep 4s ease-in-out infinite;
+  will-change: transform;
 }
 
 /* ---- Soft bloom halo (follows sweep) ---- */
@@ -65,6 +68,7 @@
   );
   mix-blend-mode: overlay;
   animation: lightSweep 4s ease-in-out infinite;
+  will-change: transform;
 }
 
 .face:nth-child(2)::before,

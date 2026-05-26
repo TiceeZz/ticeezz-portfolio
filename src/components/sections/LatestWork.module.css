@@ -58,6 +58,7 @@
   background: radial-gradient(ellipse, rgba(0, 242, 255, 0.06) 0%, transparent 70%);
   filter: blur(60px);
   animation: orbDrift1 8s ease-in-out infinite;
+  will-change: filter, transform;
 }
 
 .glassOrb2 {
@@ -69,6 +70,7 @@
   background: radial-gradient(ellipse, rgba(255, 60, 60, 0.04) 0%, transparent 70%);
   filter: blur(60px);
   animation: orbDrift2 10s ease-in-out infinite;
+  will-change: filter, transform;
 }
 
 @keyframes orbDrift1 {
@@ -91,6 +93,7 @@
   mix-blend-mode: color-dodge;
   pointer-events: none;
   z-index: 2;
+  transform: translateZ(0);
 }
 
 /* ---- Layout: left content + right mockup ---- */
@@ -125,6 +128,7 @@
   border-radius: 4px;
   background: rgba(0, 242, 255, 0.06);
   animation: badgeBreathe 3s ease-in-out infinite;
+  will-change: opacity;
 }
 
 @keyframes badgeBreathe {
@@ -204,6 +208,7 @@
   background: rgba(255, 255, 255, 0.04);
   backdrop-filter: blur(8px);
   transition: all 0.35s ease;
+  will-change: filter;
 }
 
 .cta:hover {
@@ -248,6 +253,7 @@
   pointer-events: none;
   z-index: 0;
   animation: breatheSpotlight 10s ease-in-out infinite;
+  will-change: filter, opacity;
 }
 
 @keyframes breatheSpotlight {
@@ -258,6 +264,7 @@
 .mockupFloat {
   height: 88%;
   animation: floatPhone 7s ease-in-out infinite;
+  will-change: transform;
 }
 
 .mockup {

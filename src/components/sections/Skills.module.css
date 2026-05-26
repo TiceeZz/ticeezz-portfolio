@@ -20,6 +20,7 @@
   transition: 0.4s;
   position: relative;
   overflow: hidden;
+  will-change: filter;
 }
 
 .col:hover {

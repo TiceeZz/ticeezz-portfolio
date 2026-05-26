@@ -48,6 +48,8 @@
   mix-blend-mode: screen;
   animation: raysSpin 30s infinite linear, raysPulse 3s ease-in-out infinite;
   pointer-events: none;
+  will-change: filter, transform;
+  transform: translateZ(0);
 }
 
 /* On exit: expand blur to match GlobalRays (100px) — seamless handoff */
@@ -74,6 +76,8 @@
   filter: blur(20px);
   animation: glowBreathe 2.5s ease-in-out infinite;
   pointer-events: none;
+  will-change: filter, transform, opacity;
+  transform: translateZ(0);
   transition: opacity 0.5s ease-in, transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -93,6 +97,7 @@
   text-transform: uppercase;
   animation: brandPulse 2.5s ease-in-out infinite;
   transition: opacity 0.4s ease-in;
+  will-change: opacity;
 }
 
 .overlay.exiting .brand {
@@ -113,6 +118,7 @@
     transparent
     );
   animation: shimmerLine 2s ease-in-out infinite;
+  will-change: opacity;
 }
 
 .overlay.exiting .line {

@@ -16,6 +16,7 @@
   cursor: pointer;
   overflow: visible;
   animation: fabBreathe 2s ease-in-out infinite;
+  will-change: filter, opacity;
 }
 
 .fab:hover {
@@ -56,6 +57,7 @@
   backdrop-filter: blur(25px);
   -webkit-backdrop-filter: blur(25px);
   z-index: 9000;
+  will-change: filter;
   display: flex;
   flex-direction: column;
   overflow: hidden;

@@ -19,6 +19,7 @@
   z-index: 9999;
   transition: width 0.3s, height 0.3s, border-color 0.3s;
   mix-blend-mode: difference;
+  transform: translateZ(0);
 }
 
 @media (hover: none) and (pointer: coarse) {

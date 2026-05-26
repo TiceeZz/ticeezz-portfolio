@@ -129,6 +129,7 @@ nav {
   border: 1.5px solid rgba(255, 255, 255, 0.25);
   transform: rotate(45deg);
   animation: logo-drift 14s linear infinite;
+  will-change: transform;
 }
 
 /* Inner: vertical cyan line — structural counterpoint */
@@ -150,6 +151,7 @@ nav {
   transform: rotate(45deg);
   box-shadow: 0 0 6px rgba(255, 60, 60, 0.5);
   animation: logo-pulse 3s ease-in-out infinite;
+  will-change: opacity;
 }
 
 /* =========================================
