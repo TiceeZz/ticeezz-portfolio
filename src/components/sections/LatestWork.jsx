@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Link } from 'react-router-dom';
+import useRevealOnScroll from '../../hooks/useRevealOnScroll';
 import s from './LatestWork.module.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -10,17 +11,10 @@ const tags = ['体验设计 (UX)', '情感化设计', '商业增长'];
 
 export default function LatestWork() {
   const phoneRef = useRef(null);
-  const badgeRef = useRef(null);
-  const tagsRef = useRef(null);
-  const titleRef = useRef(null);
-  const subRef = useRef(null);
-  const descRef = useRef(null);
-  const ctaRef = useRef(null);
-  const labelRef = useRef(null);
+  const frameRef = useRevealOnScroll();
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Parallax float on scroll
       ScrollTrigger.create({
         trigger: '#latest-work',
         start: 'top bottom',
@@ -29,28 +23,21 @@ export default function LatestWork() {
         animation: gsap.to(phoneRef.current, { y: '-5%' }),
       });
 
-      // Entrance animation
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: '#latest-work',
-          start: 'top 75%',
-          toggleActions: 'play none none none',
-        },
-      });
-
-      tl.fromTo(
+      gsap.fromTo(
         phoneRef.current,
         { y: 50, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1, ease: 'power3.out' },
-        0
-      )
-        .fromTo(badgeRef.current, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: 'power3.out' }, 0.15)
-        .fromTo(tagsRef.current, { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: 'power3.out' }, 0.25)
-        .fromTo(titleRef.current, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, ease: 'power3.out' }, 0.35)
-        .fromTo(subRef.current, { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: 'power3.out' }, 0.45)
-        .fromTo(descRef.current, { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: 'power3.out' }, 0.5)
-        .fromTo(ctaRef.current, { y: 12, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: 'power3.out' }, 0.55)
-        .fromTo(labelRef.current, { opacity: 0 }, { opacity: 1, duration: 0.5, ease: 'power2.out' }, 0.3);
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: '#latest-work',
+            start: 'top 75%',
+            toggleActions: 'play none none none',
+          },
+        }
+      );
     });
 
     return () => ctx.revert();
@@ -58,8 +45,7 @@ export default function LatestWork() {
 
   return (
     <section id="latest-work" className={s.section}>
-      <div className={s.frame}>
-        {/* Frosted glass background */}
+      <div ref={frameRef} className={s.frame}>
         <div className={s.glassBg}>
           <div className={s.glassOrb1} />
           <div className={s.glassOrb2} />
@@ -67,34 +53,32 @@ export default function LatestWork() {
         <div className={s.glow} />
 
         <div className={s.layout}>
-          {/* Left — text content */}
           <div className={s.content}>
-            <div ref={badgeRef} className={s.badge}>NEW</div>
+            <div className={`reveal-item ${s.badge}`} style={{ transitionDelay: '0.05s' }}>NEW</div>
 
-            <div ref={tagsRef} className={s.tags}>
+            <div className={`reveal-item ${s.tags}`} style={{ transitionDelay: '0.15s' }}>
               {tags.map((t) => (
                 <span key={t} className={s.tag}>{t}</span>
               ))}
             </div>
 
-            <h2 ref={titleRef} className={s.title}>
+            <h2 className={`reveal-item ${s.title}`} style={{ transitionDelay: '0.25s' }}>
               航旅纵横<span className={s.accent}>·</span>宠物出行
             </h2>
 
-            <p ref={subRef} className={s.sub}>完整 UX 设计提案</p>
+            <p className={`reveal-item ${s.sub}`} style={{ transitionDelay: '0.32s' }}>完整 UX 设计提案</p>
 
-            <p ref={descRef} className={s.desc}>
+            <p className={`reveal-item ${s.desc}`} style={{ transitionDelay: '0.38s' }}>
               千亿宠物经济下的"信任基建"——将复杂的航司规则与信息盲区，
               转化为清晰、可感知的模"芯"化体验，打造一条确定且安心的宠物出行专线。
             </p>
 
-            <Link ref={ctaRef} className={s.cta} to="/pettravel">
+            <Link className={`reveal-item ${s.cta}`} style={{ transitionDelay: '0.48s' }} to="/pettravel">
               查看完整方案
               <span className={s.ctaArrow}>→</span>
             </Link>
           </div>
 
-          {/* Right — iPhone mockup */}
           <div className={s.mockupWrap}>
             <div className={s.mockupFloat}>
               <div ref={phoneRef} className={s.mockup}>
@@ -108,7 +92,7 @@ export default function LatestWork() {
           </div>
         </div>
 
-        <span ref={labelRef} className={s.sectionLabel}>Latest Work</span>
+        <span className={`reveal-item ${s.sectionLabel}`} style={{ transitionDelay: '0.1s' }}>Latest Work</span>
       </div>
     </section>
   );

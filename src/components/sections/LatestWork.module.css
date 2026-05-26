@@ -127,13 +127,32 @@
   border: 1px solid rgba(0, 242, 255, 0.25);
   border-radius: 4px;
   background: rgba(0, 242, 255, 0.06);
-  animation: badgeBreathe 3s ease-in-out infinite;
-  will-change: opacity;
 }
 
 @keyframes badgeBreathe {
   0%, 100% { opacity: 0.85; border-color: rgba(0, 242, 255, 0.25); }
   50%      { opacity: 1;    border-color: rgba(0, 242, 255, 0.55); }
+}
+
+/* Start breathing animation only after scroll reveal completes */
+.badge:global(.reveal-item.is-visible) {
+  animation: badgeBreathe 3s ease-in-out infinite;
+  animation-delay: 0.65s;
+  will-change: opacity;
+}
+
+/* ---- Scroll reveal (Intersection Observer) ---- */
+.frame :global(.reveal-item) {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, opacity;
+}
+
+.frame :global(.reveal-item.is-visible) {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* ---- Tags ---- */
