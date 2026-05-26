@@ -22,6 +22,7 @@ const Sensible = lazy(() => import('./pages/Sensible'));
 const Nile = lazy(() => import('./pages/Nile'));
 const Sketching = lazy(() => import('./pages/Sketching'));
 const Life = lazy(() => import('./pages/Life'));
+const Pettravel = lazy(() => import('./pages/Pettravel'));
 const Photography = lazy(() => import('./pages/Photography'));
 
 function PageLoader() {
@@ -49,6 +50,7 @@ export default function App() {
         <Suspense fallback={<PageLoader />}>
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/pettravel" element={<Pettravel />} />
             <Route path="/eclipse" element={<Eclipse />} />
             <Route path="/musicfluere" element={<Musicfluere />} />
             <Route path="/smartbath" element={<Smartbath />} />

@@ -1,0 +1,250 @@
+.section {
+  position: relative;
+  width: 100%;
+  padding: 6vh 0 5vh;
+  z-index: 10;
+}
+
+/* ---- 2.35:1 cinematic frame (edge-to-edge) ---- */
+.frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2.35 / 1;
+  overflow: hidden;
+  background: rgba(10, 12, 18, 0.4);
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* ---- Cover image ---- */
+.bg {
+  position: absolute;
+  inset: 0;
+  background-image: url('/images/projects/pet-travel/cover.webp');
+  background-size: cover;
+  background-position: center 30%;
+  background-repeat: no-repeat;
+  will-change: transform;
+  z-index: 0;
+}
+
+/* ---- Dark shade overlay (text legibility) ---- */
+.shade {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(to top, rgba(1, 2, 4, 0.92) 0%, rgba(1, 2, 4, 0.65) 40%, rgba(1, 2, 4, 0.3) 70%, rgba(1, 2, 4, 0.1) 100%);
+  pointer-events: none;
+}
+
+/* ---- Glow overlay (matches gallery pillar .glow) ---- */
+.glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 70% 40%, rgba(0, 242, 255, 0.1), transparent 55%),
+              radial-gradient(circle at 30% 60%, rgba(255, 60, 60, 0.06), transparent 55%);
+  opacity: 0.5;
+  mix-blend-mode: color-dodge;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ---- Content layer ---- */
+.content {
+  position: absolute;
+  bottom: 48px;
+  left: 8%;
+  right: 8%;
+  z-index: 5;
+  max-width: 900px;
+}
+
+/* ---- "NEW" badge ---- */
+.badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 6px;
+  color: var(--ray-cyan);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  padding: 5px 14px;
+  border: 1px solid rgba(0, 242, 255, 0.25);
+  border-radius: 4px;
+  background: rgba(0, 242, 255, 0.06);
+  animation: badgeBreathe 3s ease-in-out infinite;
+}
+
+@keyframes badgeBreathe {
+  0%, 100% { opacity: 0.85; border-color: rgba(0, 242, 255, 0.25); }
+  50%      { opacity: 1;    border-color: rgba(0, 242, 255, 0.55); }
+}
+
+/* ---- Tags ---- */
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.tag {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  color: var(--text-sub);
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* ---- Title ---- */
+.title {
+  font-size: clamp(1.8rem, 3.5vw, 3.6rem);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: #fff;
+  margin-bottom: 12px;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.6);
+}
+
+.accent {
+  color: var(--ray-cyan);
+  font-weight: inherit;
+}
+
+/* ---- Subtitle ---- */
+.sub {
+  font-size: 0.9rem;
+  font-weight: 300;
+  letter-spacing: 3px;
+  color: var(--text-sub);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+/* ---- Description ---- */
+.desc {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+  line-height: 1.6;
+  max-width: 480px;
+  margin-bottom: 32px;
+}
+
+/* ---- CTA ---- */
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  color: #fff;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 12px 28px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(8px);
+  transition: all 0.35s ease;
+}
+
+.cta:hover {
+  border-color: var(--ray-cyan);
+  background: rgba(0, 242, 255, 0.08);
+  color: var(--ray-cyan);
+}
+
+.ctaArrow {
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+.cta:hover .ctaArrow {
+  transform: translateX(4px);
+}
+
+/* ---- Scroll hint ---- */
+.sectionLabel {
+  position: absolute;
+  top: 24px;
+  right: 8%;
+  z-index: 6;
+  font-size: 10px;
+  letter-spacing: 5px;
+  color: rgba(255, 255, 255, 0.55);
+  text-transform: uppercase;
+}
+
+/* =========================================
+   Mobile
+   ========================================= */
+@media (max-width: 768px) {
+  .section {
+    padding: 40px 0 30px;
+  }
+
+  .frame {
+    aspect-ratio: auto;
+    min-height: 360px;
+  }
+
+  .content {
+    bottom: 24px;
+    left: 5%;
+    right: 5%;
+  }
+
+  .badge {
+    font-size: 9px;
+    letter-spacing: 4px;
+    padding: 4px 10px;
+    margin-bottom: 14px;
+  }
+
+  .tags {
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+
+  .tag {
+    font-size: 9px;
+    letter-spacing: 1px;
+    padding: 3px 10px;
+  }
+
+  .title {
+    font-size: clamp(1.3rem, 5vw, 2rem);
+    margin-bottom: 8px;
+  }
+
+  .sub {
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+  }
+
+  .desc {
+    font-size: 0.75rem;
+    margin-bottom: 20px;
+  }
+
+  .cta {
+    font-size: 10px;
+    letter-spacing: 2px;
+    padding: 10px 20px;
+  }
+
+  .sectionLabel {
+    top: 16px;
+    right: 5%;
+    font-size: 8px;
+    letter-spacing: 3px;
+  }
+}

@@ -3,6 +3,7 @@ import Nav from '../components/layout/Nav';
 import GlobalRays from '../components/layout/GlobalRays';
 import Cube3D from '../components/layout/Cube3D';
 import Hero from '../components/sections/Hero';
+import LatestWork from '../components/sections/LatestWork';
 import Resume from '../components/sections/Resume';
 import Skills from '../components/sections/Skills';
 import Gallery from '../components/sections/Gallery';
@@ -25,6 +26,7 @@ export default function Home() {
       <Cube3D />
       <Nav />
       <Hero />
+      <LatestWork />
       <Gallery />
       <Resume />
       <Skills />
