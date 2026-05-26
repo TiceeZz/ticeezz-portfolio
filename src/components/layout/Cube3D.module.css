@@ -33,28 +33,50 @@
   overflow: hidden;
 }
 
-/* ---- Metallic light sweep ---- */
+/* ---- Metallic light sweep (sharp core) ---- */
 .face::before {
   content: '';
   position: absolute;
   inset: 0;
   background: linear-gradient(
     60deg,
-    transparent 30%,
-    rgba(255, 255, 255, 0.06) 45%,
-    rgba(255, 255, 255, 0.7) 50%,
-    rgba(255, 255, 255, 0.06) 55%,
-    transparent 70%
+    transparent 25%,
+    rgba(255, 255, 255, 0.04) 42%,
+    rgba(255, 255, 255, 0.75) 50%,
+    rgba(255, 255, 255, 0.04) 58%,
+    transparent 75%
   );
   mix-blend-mode: color-dodge;
   animation: lightSweep 4s ease-in-out infinite;
 }
 
-.face:nth-child(2)::before { animation-delay: -0.6s; }
-.face:nth-child(3)::before { animation-delay: -1.2s; }
-.face:nth-child(4)::before { animation-delay: -1.8s; }
-.face:nth-child(5)::before { animation-delay: -2.4s; }
-.face:nth-child(6)::before { animation-delay: -3.0s; }
+/* ---- Soft bloom halo (follows sweep) ---- */
+.face::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    60deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.01) 30%,
+    rgba(255, 255, 255, 0.08) 50%,
+    rgba(255, 255, 255, 0.01) 70%,
+    transparent 100%
+  );
+  mix-blend-mode: overlay;
+  animation: lightSweep 4s ease-in-out infinite;
+}
+
+.face:nth-child(2)::before,
+.face:nth-child(2)::after { animation-delay: -0.6s; }
+.face:nth-child(3)::before,
+.face:nth-child(3)::after { animation-delay: -1.2s; }
+.face:nth-child(4)::before,
+.face:nth-child(4)::after { animation-delay: -1.8s; }
+.face:nth-child(5)::before,
+.face:nth-child(5)::after { animation-delay: -2.4s; }
+.face:nth-child(6)::before,
+.face:nth-child(6)::after { animation-delay: -3.0s; }
 
 @keyframes lightSweep {
   0%   { transform: translateX(-140%) skewX(-10deg); }
