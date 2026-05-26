@@ -13,15 +13,24 @@ export default function Resume() {
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
-      rowsRef.current.forEach((row) => {
+      rowsRef.current.forEach((row, i) => {
         if (!row) return;
-        gsap.from(row, {
-          scrollTrigger: { trigger: row, start: 'top 90%' },
-          y: 50,
-          opacity: 0,
-          duration: 0.8,
-          ease: 'power2.out',
-        });
+        gsap.fromTo(
+          row,
+          { y: 30, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.7,
+            delay: i * 0.08,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: row,
+              start: 'top 85%',
+              toggleActions: 'play none none none',
+            },
+          }
+        );
       });
       ScrollTrigger.refresh();
     });
