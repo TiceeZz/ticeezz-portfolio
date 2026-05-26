@@ -11,53 +11,104 @@
   width: 100%;
   aspect-ratio: 2.35 / 1;
   overflow: hidden;
-  background: rgba(10, 12, 18, 0.4);
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(8, 10, 14, 0.7);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* ---- Cover image ---- */
-.bg {
+/* ---- Frosted glass background ---- */
+.glassBg {
   position: absolute;
   inset: 0;
-  background-image: url('/images/projects/pet-travel/cover.webp');
-  background-size: cover;
-  background-position: center 30%;
-  background-repeat: no-repeat;
-  will-change: transform;
   z-index: 0;
+  background:
+    radial-gradient(ellipse at 70% 50%, rgba(0, 242, 255, 0.04) 0%, transparent 60%),
+    radial-gradient(ellipse at 30% 50%, rgba(255, 60, 60, 0.03) 0%, transparent 60%),
+    linear-gradient(180deg, rgba(12, 16, 24, 0.95) 0%, rgba(8, 10, 16, 0.98) 100%);
 }
 
-/* ---- Dark shade overlay (text legibility) ---- */
-.shade {
+.glassBg::before {
+  content: '';
   position: absolute;
   inset: 0;
-  z-index: 1;
   background:
-    linear-gradient(to top, rgba(1, 2, 4, 0.92) 0%, rgba(1, 2, 4, 0.65) 40%, rgba(1, 2, 4, 0.3) 70%, rgba(1, 2, 4, 0.1) 100%);
-  pointer-events: none;
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(255, 255, 255, 0.008) 2px,
+      rgba(255, 255, 255, 0.008) 4px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 2px,
+      rgba(255, 255, 255, 0.005) 2px,
+      rgba(255, 255, 255, 0.005) 4px
+    );
+  opacity: 0.6;
 }
 
-/* ---- Glow overlay (matches gallery pillar .glow) ---- */
+.glassOrb1 {
+  position: absolute;
+  top: -30%;
+  right: 15%;
+  width: 60%;
+  height: 120%;
+  background: radial-gradient(ellipse, rgba(0, 242, 255, 0.06) 0%, transparent 70%);
+  filter: blur(60px);
+  animation: orbDrift1 8s ease-in-out infinite;
+}
+
+.glassOrb2 {
+  position: absolute;
+  bottom: -20%;
+  left: 25%;
+  width: 50%;
+  height: 80%;
+  background: radial-gradient(ellipse, rgba(255, 60, 60, 0.04) 0%, transparent 70%);
+  filter: blur(60px);
+  animation: orbDrift2 10s ease-in-out infinite;
+}
+
+@keyframes orbDrift1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%      { transform: translate(-2%, 2%) scale(1.05); }
+}
+
+@keyframes orbDrift2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%      { transform: translate(2%, -3%) scale(1.08); }
+}
+
+/* ---- Glow accent ---- */
 .glow {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 70% 40%, rgba(0, 242, 255, 0.1), transparent 55%),
-              radial-gradient(circle at 30% 60%, rgba(255, 60, 60, 0.06), transparent 55%);
-  opacity: 0.5;
+  background: radial-gradient(circle at 75% 50%, rgba(0, 242, 255, 0.08), transparent 50%),
+              radial-gradient(circle at 25% 50%, rgba(255, 60, 60, 0.04), transparent 50%);
+  opacity: 0.4;
   mix-blend-mode: color-dodge;
   pointer-events: none;
   z-index: 2;
 }
 
-/* ---- Content layer ---- */
-.content {
-  position: absolute;
-  bottom: 48px;
-  left: 8%;
-  right: 8%;
+/* ---- Layout: left content + right mockup ---- */
+.layout {
+  position: relative;
   z-index: 5;
-  max-width: 900px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  padding: 0 4%;
+}
+
+/* ---- Left — text content ---- */
+.content {
+  flex: 0 0 auto;
+  max-width: 480px;
+  padding-left: 4%;
 }
 
 /* ---- "NEW" badge ---- */
@@ -103,13 +154,12 @@
 
 /* ---- Title ---- */
 .title {
-  font-size: clamp(1.8rem, 3.5vw, 3.6rem);
+  font-size: clamp(1.6rem, 3vw, 3rem);
   font-weight: 900;
   letter-spacing: -0.03em;
   line-height: 1.1;
   color: #fff;
-  margin-bottom: 12px;
-  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.6);
+  margin-bottom: 10px;
 }
 
 .accent {
@@ -119,22 +169,22 @@
 
 /* ---- Subtitle ---- */
 .sub {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 300;
   letter-spacing: 3px;
   color: var(--text-sub);
   text-transform: uppercase;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 /* ---- Description ---- */
 .desc {
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   color: var(--text-muted);
   letter-spacing: 1px;
   line-height: 1.6;
-  max-width: 480px;
-  margin-bottom: 32px;
+  max-width: 420px;
+  margin-bottom: 28px;
 }
 
 /* ---- CTA ---- */
@@ -171,15 +221,40 @@
   transform: translateX(4px);
 }
 
-/* ---- Scroll hint ---- */
+/* ---- Right — iPhone mockup ---- */
+.mockupWrap {
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  position: relative;
+}
+
+.mockup {
+  height: 88%;
+  will-change: transform;
+  position: relative;
+  filter: drop-shadow(0 20px 60px rgba(0, 0, 0, 0.5))
+          drop-shadow(0 0 40px rgba(0, 242, 255, 0.08));
+}
+
+.phoneImg {
+  height: 100%;
+  width: auto;
+  display: block;
+  object-fit: contain;
+}
+
+/* ---- Section label ---- */
 .sectionLabel {
   position: absolute;
-  bottom: 48px;
-  right: 8%;
+  top: 24px;
+  right: 4%;
   z-index: 6;
   font-size: 10px;
   letter-spacing: 5px;
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(255, 255, 255, 0.45);
   text-transform: uppercase;
 }
 
@@ -193,13 +268,36 @@
 
   .frame {
     aspect-ratio: auto;
-    min-height: 360px;
+    min-height: auto;
+  }
+
+  .layout {
+    flex-direction: column-reverse;
+    padding: 40px 5% 32px;
   }
 
   .content {
-    bottom: 24px;
-    left: 5%;
-    right: 5%;
+    max-width: 100%;
+    padding-left: 0;
+    text-align: center;
+  }
+
+  .mockupWrap {
+    flex: none;
+    width: 100%;
+    height: auto;
+    padding: 10px 0 24px;
+  }
+
+  .mockup {
+    height: auto;
+    width: 75%;
+    margin: 0 auto;
+  }
+
+  .phoneImg {
+    width: 100%;
+    height: auto;
   }
 
   .badge {
@@ -212,6 +310,7 @@
   .tags {
     gap: 6px;
     margin-bottom: 12px;
+    justify-content: center;
   }
 
   .tag {
@@ -233,6 +332,7 @@
   .desc {
     font-size: 0.75rem;
     margin-bottom: 20px;
+    max-width: 100%;
   }
 
   .cta {
@@ -242,7 +342,7 @@
   }
 
   .sectionLabel {
-    bottom: 24px;
+    top: 16px;
     right: 5%;
     font-size: 8px;
     letter-spacing: 3px;
