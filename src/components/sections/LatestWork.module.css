@@ -246,15 +246,31 @@
   filter: blur(40px);
   pointer-events: none;
   z-index: 0;
+  animation: pulseSpotlight 5s ease-in-out infinite;
+}
+
+@keyframes pulseSpotlight {
+  0%, 100% { opacity: 0.85; transform: translate(-50%, -50%) scale(1); }
+  50%      { opacity: 1;    transform: translate(-50%, -50%) scale(1.06); }
+}
+
+.mockupFloat {
+  height: 88%;
+  animation: floatPhone 7s ease-in-out infinite;
 }
 
 .mockup {
-  height: 88%;
+  height: 100%;
   will-change: transform;
   position: relative;
   z-index: 1;
   filter: drop-shadow(0 20px 60px rgba(0, 0, 0, 0.5))
           drop-shadow(0 0 40px rgba(0, 242, 255, 0.08));
+}
+
+@keyframes floatPhone {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-10px); }
 }
 
 .phoneImg {

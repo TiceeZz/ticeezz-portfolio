@@ -10,16 +10,50 @@ const tags = ['体验设计 (UX)', '情感化设计', '商业增长'];
 
 export default function LatestWork() {
   const phoneRef = useRef(null);
+  const badgeRef = useRef(null);
+  const tagsRef = useRef(null);
+  const titleRef = useRef(null);
+  const subRef = useRef(null);
+  const descRef = useRef(null);
+  const ctaRef = useRef(null);
+  const labelRef = useRef(null);
 
   useEffect(() => {
-    const st = ScrollTrigger.create({
-      trigger: '#latest-work',
-      start: 'top bottom',
-      end: 'bottom top',
-      scrub: 1,
-      animation: gsap.to(phoneRef.current, { y: '-4%' }),
+    const ctx = gsap.context(() => {
+      // Parallax float on scroll
+      ScrollTrigger.create({
+        trigger: '#latest-work',
+        start: 'top bottom',
+        end: 'bottom top',
+        scrub: 1,
+        animation: gsap.to(phoneRef.current, { y: '-5%' }),
+      });
+
+      // Entrance animation
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: '#latest-work',
+          start: 'top 75%',
+          toggleActions: 'play none none none',
+        },
+      });
+
+      tl.fromTo(
+        phoneRef.current,
+        { y: 50, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1, ease: 'power3.out' },
+        0
+      )
+        .fromTo(badgeRef.current, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: 'power3.out' }, 0.15)
+        .fromTo(tagsRef.current, { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: 'power3.out' }, 0.25)
+        .fromTo(titleRef.current, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, ease: 'power3.out' }, 0.35)
+        .fromTo(subRef.current, { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: 'power3.out' }, 0.45)
+        .fromTo(descRef.current, { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: 'power3.out' }, 0.5)
+        .fromTo(ctaRef.current, { y: 12, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: 'power3.out' }, 0.55)
+        .fromTo(labelRef.current, { opacity: 0 }, { opacity: 1, duration: 0.5, ease: 'power2.out' }, 0.3);
     });
-    return () => st.kill();
+
+    return () => ctx.revert();
   }, []);
 
   return (
@@ -35,26 +69,26 @@ export default function LatestWork() {
         <div className={s.layout}>
           {/* Left — text content */}
           <div className={s.content}>
-            <div className={s.badge}>NEW</div>
+            <div ref={badgeRef} className={s.badge}>NEW</div>
 
-            <div className={s.tags}>
+            <div ref={tagsRef} className={s.tags}>
               {tags.map((t) => (
                 <span key={t} className={s.tag}>{t}</span>
               ))}
             </div>
 
-            <h2 className={s.title}>
+            <h2 ref={titleRef} className={s.title}>
               航旅纵横<span className={s.accent}>·</span>宠物出行
             </h2>
 
-            <p className={s.sub}>完整 UX 设计提案</p>
+            <p ref={subRef} className={s.sub}>完整 UX 设计提案</p>
 
-            <p className={s.desc}>
+            <p ref={descRef} className={s.desc}>
               千亿宠物经济下的"信任基建"——将复杂的航司规则与信息盲区，
               转化为清晰、可感知的模"芯"化体验，打造一条确定且安心的宠物出行专线。
             </p>
 
-            <Link className={s.cta} to="/pettravel">
+            <Link ref={ctaRef} className={s.cta} to="/pettravel">
               查看完整方案
               <span className={s.ctaArrow}>→</span>
             </Link>
@@ -62,17 +96,19 @@ export default function LatestWork() {
 
           {/* Right — iPhone mockup */}
           <div className={s.mockupWrap}>
-            <div ref={phoneRef} className={s.mockup}>
-              <img
-                src="/images/projects/pet-travel/iphone-mockup.png"
-                alt="航旅纵横宠物出行 — 手机界面"
-                className={s.phoneImg}
-              />
+            <div className={s.mockupFloat}>
+              <div ref={phoneRef} className={s.mockup}>
+                <img
+                  src="/images/projects/pet-travel/iphone-mockup.png"
+                  alt="航旅纵横宠物出行 — 手机界面"
+                  className={s.phoneImg}
+                />
+              </div>
             </div>
           </div>
         </div>
 
-        <span className={s.sectionLabel}>Latest Work</span>
+        <span ref={labelRef} className={s.sectionLabel}>Latest Work</span>
       </div>
     </section>
   );
