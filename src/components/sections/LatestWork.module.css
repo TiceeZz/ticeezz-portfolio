@@ -251,8 +251,8 @@
 }
 
 @keyframes breatheSpotlight {
-  0%, 100% { opacity: 0.15; transform: translate(-50%, -50%); }
-  50%      { opacity: 0.30; transform: translate(-50%, -50%); }
+  0%, 100% { opacity: 0.10; transform: translate(-50%, -50%); }
+  50%      { opacity: 0.50; transform: translate(-50%, -50%); }
 }
 
 .mockupFloat {
