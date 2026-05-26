@@ -231,10 +231,28 @@
   position: relative;
 }
 
+/* Spotlight — brand green (#10b981) diffused beam behind the phone */
+.mockupWrap::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 140%;
+  height: 140%;
+  background:
+    radial-gradient(ellipse at center, rgba(16, 185, 129, 0.18) 0%, rgba(16, 185, 129, 0.08) 30%, transparent 65%),
+    radial-gradient(ellipse at 55% 45%, rgba(16, 185, 129, 0.22) 0%, transparent 40%);
+  filter: blur(40px);
+  pointer-events: none;
+  z-index: 0;
+}
+
 .mockup {
   height: 88%;
   will-change: transform;
   position: relative;
+  z-index: 1;
   filter: drop-shadow(0 20px 60px rgba(0, 0, 0, 0.5))
           drop-shadow(0 0 40px rgba(0, 242, 255, 0.08));
 }
