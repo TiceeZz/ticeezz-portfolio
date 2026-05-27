@@ -112,10 +112,27 @@
 }
 
 .pageItem {
+  display: block;
+  width: 100%;
   margin-bottom: 4px;
   border-radius: 6px;
   overflow: hidden;
   background: rgba(255, 255, 255, 0.02);
+  border: 1px solid transparent;
+  padding: 0;
+  cursor: pointer;
+  transition: transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 1),
+              border-color 0.4s,
+              box-shadow 0.4s;
+}
+.pageItem:hover {
+  transform: scale(1.012);
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+}
+.pageItem:focus-visible {
+  outline: 2px solid var(--ray-cyan);
+  outline-offset: 2px;
 }
 
 /* ---- Footer nav ---- */

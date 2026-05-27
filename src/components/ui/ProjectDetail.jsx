@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { allProjects } from '../../data/gallery';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import Picture from './Picture';
+import Lightbox from './Lightbox';
 import s from './ProjectDetail.module.css';
 
 export default function ProjectDetail({ project, sections, cover, projectSlug }) {
@@ -242,45 +243,7 @@ export default function ProjectDetail({ project, sections, cover, projectSlug })
       )}
 
       {/* Lightbox */}
-      {lightbox !== null && (
-        <div onClick={closeLightbox}
-          style={{
-            position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(0,0,0,0.92)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-          }}>
-          <button onClick={(e) => { e.stopPropagation(); closeLightbox(); }}
-            aria-label="Close lightbox"
-            style={{
-              position: 'absolute', top: '20px', right: '20px', zIndex: 10,
-              background: 'none', border: '1px solid rgba(255,255,255,0.3)',
-              color: '#fff', fontSize: '20px', width: '40px', height: '40px',
-              cursor: 'pointer', borderRadius: '50%',
-            }}>✕</button>
-          <button onClick={(e) => { e.stopPropagation(); lightboxPrev(); }}
-            aria-label="Previous image"
-            style={{
-              position: 'absolute', left: '20px', zIndex: 10,
-              background: 'none', border: '1px solid rgba(255,255,255,0.3)',
-              color: '#fff', fontSize: '24px', width: '48px', height: '48px',
-              cursor: 'pointer', borderRadius: '50%',
-            }}>‹</button>
-          <img src={images[lightbox]} alt={`${current.label} ${lightbox + 1}`}
-            onClick={(e) => e.stopPropagation()}
-            style={{ maxWidth: '90vw', maxHeight: '90vh', objectFit: 'contain' }} />
-          <button onClick={(e) => { e.stopPropagation(); lightboxNext(); }}
-            aria-label="Next image"
-            style={{
-              position: 'absolute', right: '20px', zIndex: 10,
-              background: 'none', border: '1px solid rgba(255,255,255,0.3)',
-              color: '#fff', fontSize: '24px', width: '48px', height: '48px',
-              cursor: 'pointer', borderRadius: '50%',
-            }}>›</button>
-          <div style={{
-            position: 'absolute', bottom: '24px', left: '50%', transform: 'translateX(-50%)',
-            color: 'var(--text-muted)', fontSize: '13px',
-          }}>{lightbox + 1} / {images.length}</div>
-        </div>
-      )}
+      <Lightbox images={images} index={lightbox} onClose={closeLightbox} onPrev={lightboxPrev} onNext={lightboxNext} />
     </div>
   );
 }

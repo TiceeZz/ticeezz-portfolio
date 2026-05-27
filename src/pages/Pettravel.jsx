@@ -1,7 +1,9 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { allProjects } from '../data/gallery';
 import useDocumentTitle from '../hooks/useDocumentTitle';
 import Picture from '../components/ui/Picture';
+import Lightbox from '../components/ui/Lightbox';
 import s from './Pettravel.module.css';
 
 const IMG_DIR = '/images/projects/pet-travel';
@@ -19,6 +21,8 @@ const project = {
 };
 
 export default function Pettravel() {
+  const [lightboxIndex, setLightboxIndex] = useState(null);
+
   useDocumentTitle(
     `${project.title} | TiceeZz Portfolio`,
     project.desc.replace(/<[^>]+>/g, '')
@@ -27,6 +31,19 @@ export default function Pettravel() {
   const idx = allProjects.findIndex((p) => p.href === '/pettravel');
   const prevProj = idx > 0 ? allProjects[idx - 1] : null;
   const nextProj = idx < allProjects.length - 1 ? allProjects[idx + 1] : null;
+
+  const openLightbox = (i) => {
+    setLightboxIndex(i);
+    document.body.style.overflow = 'hidden';
+  };
+  const closeLightbox = () => {
+    setLightboxIndex(null);
+    document.body.style.overflow = '';
+  };
+  const prevImage = () => setLightboxIndex((i) => (i > 0 ? i - 1 : pages.length - 1));
+  const nextImage = () => setLightboxIndex((i) => (i < pages.length - 1 ? i + 1 : 0));
+
+  const pageSrcs = pages.map((p) => p.src);
 
   return (
     <div className={s.page}>
@@ -68,12 +85,22 @@ export default function Pettravel() {
         {pages.map((p, i) => {
           const isLast = i === pages.length - 1;
           return (
-            <div key={p.src} className={s.pageItem}>
+            <button key={p.src} className={s.pageItem} onClick={() => openLightbox(i)}
+              aria-label={`View page ${i + 1}`}>
               <Picture src={p.src} alt={p.alt} loading="lazy" objectFit="contain" aspectRatio={isLast ? '4000/8413' : '16/9'} />
-            </div>
+            </button>
           );
         })}
       </div>
+
+      {/* Lightbox */}
+      <Lightbox
+        images={pageSrcs}
+        index={lightboxIndex}
+        onClose={closeLightbox}
+        onPrev={prevImage}
+        onNext={nextImage}
+      />
 
       {/* Footer nav */}
       {(prevProj || nextProj) && (
