@@ -87,8 +87,10 @@
 .glow {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 75% 50%, rgba(0, 242, 255, 0.08), transparent 50%),
-              radial-gradient(circle at 25% 50%, rgba(255, 60, 60, 0.04), transparent 50%);
+  background:
+    radial-gradient(circle at 75% 50%, rgba(0, 242, 255, 0.08), transparent 50%),
+    radial-gradient(circle at 25% 50%, rgba(255, 60, 60, 0.04), transparent 50%),
+    radial-gradient(ellipse at 80% 50%, rgba(16, 185, 129, 0.06), transparent 60%);
   opacity: 0.4;
   mix-blend-mode: color-dodge;
   pointer-events: none;
@@ -256,29 +258,6 @@
   position: relative;
 }
 
-/* Spotlight — brand green (#10b981) diffused beam behind the phone */
-.mockupWrap::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 140%;
-  height: 140%;
-  background:
-    radial-gradient(ellipse at center, rgba(16, 185, 129, 0.45) 0%, rgba(16, 185, 129, 0.18) 35%, transparent 70%),
-    radial-gradient(ellipse at 55% 45%, rgba(16, 185, 129, 0.35) 0%, transparent 45%);
-  filter: blur(40px);
-  pointer-events: none;
-  z-index: 0;
-  animation: breatheSpotlight 10s ease-in-out infinite;
-  will-change: filter, opacity;
-}
-
-@keyframes breatheSpotlight {
-  0%, 100% { opacity: 0.10; transform: translate(-50%, -50%); }
-  50%      { opacity: 0.50; transform: translate(-50%, -50%); }
-}
 
 .mockupFloat {
   height: 88%;
@@ -394,6 +373,13 @@
     font-size: 0.75rem;
     margin-bottom: 20px;
     max-width: 100%;
+  }
+
+  .glow {
+    background:
+      radial-gradient(circle at 75% 50%, rgba(0, 242, 255, 0.08), transparent 50%),
+      radial-gradient(circle at 25% 50%, rgba(255, 60, 60, 0.04), transparent 50%),
+      radial-gradient(ellipse at 50% 30%, rgba(16, 185, 129, 0.06), transparent 55%);
   }
 
   .cta {
