@@ -82,11 +82,15 @@ export default function LatestWork() {
           <div className={s.mockupWrap}>
             <div className={s.mockupFloat}>
               <div ref={phoneRef} className={s.mockup}>
-                <img
-                  src="/images/projects/pet-travel/iphone-mockup.png"
-                  alt="航旅纵横宠物出行 — 手机界面"
-                  className={s.phoneImg}
-                />
+                <picture>
+                  <source srcSet="/images/projects/pet-travel/iphone-mockup.webp" type="image/webp" />
+                  <img
+                    src="/images/projects/pet-travel/iphone-mockup.png"
+                    alt="航旅纵横宠物出行 — 手机界面"
+                    className={s.phoneImg}
+                    loading="eager"
+                  />
+                </picture>
               </div>
             </div>
           </div>
