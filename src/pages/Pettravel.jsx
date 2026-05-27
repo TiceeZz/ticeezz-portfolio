@@ -1,21 +1,20 @@
 import { Link } from 'react-router-dom';
 import { allProjects } from '../data/gallery';
 import useDocumentTitle from '../hooks/useDocumentTitle';
-import ImgLoader from '../components/ui/ImgLoader';
 import s from './Pettravel.module.css';
 
-const IMG_DIR = '/images/projects/pet-travel';
-const COVER = `${IMG_DIR}/cover.webp`;
+const PDF_DIR = '/pdf/projects/compressify';
 const pages = Array.from({ length: 22 }, (_, i) => ({
-  src: `${IMG_DIR}/page_${String(i + 1).padStart(3, '0')}.jpg`,
+  src: `${PDF_DIR}/${i + 1}-(Compressify.io).pdf`,
   alt: `Page ${i + 1}`,
+  key: `page-${i + 1}`,
 }));
 
 const project = {
-  title: '航旅纵横 · 宠物出行',
+  title: 'Compressify',
   tag: 'UX Design',
-  desc: '面向<strong>千亿宠物经济</strong>的航旅服务体验重构。将复杂的航司规则与信息盲区，转化为清晰、可感知的<strong>模"芯"化体验</strong>——从竞品分析到全链路交互设计，打造一条确定且安心的宠物出行专线，以信任基建驱动商业增长。',
-  keywords: ['体验设计 (UX)', '情感化设计', '商业增长', '宠物经济', '服务设计'],
+  desc: '面向<strong>文件压缩服务</strong>的全链路体验设计——从用户研究到交互原型，构建简洁高效的压缩工具界面，以<strong>直观的操作流程</strong>降低用户认知负担，打造流畅的在线文件处理体验。',
+  keywords: ['体验设计 (UX)', '交互设计', '工具类产品', 'SaaS', '服务设计'],
 };
 
 export default function Pettravel() {
@@ -45,11 +44,6 @@ export default function Pettravel() {
         )}
       </div>
 
-      {/* Cover */}
-      <div className={s.coverWrap}>
-        <ImgLoader src={COVER} alt={project.title} loading="eager" objectFit="cover" aspectRatio="16/9" className={s.coverImg} />
-      </div>
-
       {/* Meta */}
       <div className={s.meta}>
         <div className={s.tag}>{project.tag}</div>
@@ -62,17 +56,20 @@ export default function Pettravel() {
         </div>
       </div>
 
-      {/* Continuous page stream */}
+      {/* PDF page stream */}
       <div className={s.stream}>
         <div className={s.sectionLabel}>完整方案 · {pages.length} Pages</div>
-        {pages.map((p, i) => {
-          const isLast = i === pages.length - 1;
-          return (
-            <div key={p.src} className={s.pageItem}>
-              <ImgLoader src={p.src} alt={p.alt} loading="lazy" objectFit="contain" aspectRatio={isLast ? '4000/8413' : '16/9'} />
-            </div>
-          );
-        })}
+        {pages.map((p) => (
+          <div key={p.key} className={s.pageItem}>
+            <iframe
+              src={p.src}
+              title={p.alt}
+              className={s.pdfEmbed}
+              loading="lazy"
+              sandbox="allow-scripts allow-same-origin"
+            />
+          </div>
+        ))}
       </div>
 
       {/* Footer nav */}

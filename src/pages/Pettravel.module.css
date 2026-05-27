@@ -28,30 +28,9 @@
   color: var(--ray-cyan);
 }
 
-/* ---- Cover hero ---- */
-.coverWrap {
-  width: 100%;
-  margin-top: 20px;
-  position: relative;
-  overflow: hidden;
-}
-
-.coverWrap::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, var(--bg-dark) 0%, transparent 55%);
-  pointer-events: none;
-}
-
-.coverImg {
-  width: 100%;
-  display: block;
-}
-
 /* ---- Meta ---- */
 .meta {
-  padding: 0 4%;
+  padding: 40px 4% 0;
   max-width: 900px;
 }
 
@@ -112,10 +91,19 @@
 }
 
 .pageItem {
-  margin-bottom: 4px;
+  margin-bottom: 8px;
   border-radius: 6px;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.02);
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.pdfEmbed {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  border: none;
+  display: block;
 }
 
 /* ---- Footer nav ---- */

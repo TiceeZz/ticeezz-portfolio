@@ -1,47 +1,11 @@
-import { useEffect, useRef } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Link } from 'react-router-dom';
 import useRevealOnScroll from '../../hooks/useRevealOnScroll';
 import s from './LatestWork.module.css';
 
-gsap.registerPlugin(ScrollTrigger);
-
-const tags = ['体验设计 (UX)', '情感化设计', '商业增长'];
+const tags = ['体验设计 (UX)', '交互设计', '工具类产品'];
 
 export default function LatestWork() {
-  const phoneRef = useRef(null);
   const frameRef = useRevealOnScroll();
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      ScrollTrigger.create({
-        trigger: '#latest-work',
-        start: 'top bottom',
-        end: 'bottom top',
-        scrub: 1,
-        animation: gsap.to(phoneRef.current, { y: '-5%' }),
-      });
-
-      gsap.fromTo(
-        phoneRef.current,
-        { y: 50, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 1,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: '#latest-work',
-            start: 'top 75%',
-            toggleActions: 'play none none none',
-          },
-        }
-      );
-    });
-
-    return () => ctx.revert();
-  }, []);
 
   return (
     <section id="latest-work" className={s.section}>
@@ -63,14 +27,14 @@ export default function LatestWork() {
             </div>
 
             <h2 className={`reveal-item ${s.title}`} style={{ transitionDelay: '0.25s' }}>
-              航旅纵横<span className={s.accent}>·</span>宠物出行
+              Compressify<span className={s.accent}>.</span>io
             </h2>
 
             <p className={`reveal-item ${s.sub}`} style={{ transitionDelay: '0.32s' }}>完整 UX 设计提案</p>
 
             <p className={`reveal-item ${s.desc}`} style={{ transitionDelay: '0.38s' }}>
-              千亿宠物经济下的"信任基建"——将复杂的航司规则与信息盲区，
-              转化为清晰、可感知的模"芯"化体验，打造一条确定且安心的宠物出行专线。
+              文件压缩 SaaS 工具的全链路体验设计——将复杂的压缩参数与操作流程，
+              转化为简洁直观的交互界面，打造流畅高效的在线文件处理工具。
             </p>
 
             <Link className={`reveal-item ${s.cta}`} style={{ transitionDelay: '0.48s' }} to="/pettravel">
@@ -79,17 +43,6 @@ export default function LatestWork() {
             </Link>
           </div>
 
-          <div className={s.mockupWrap}>
-            <div className={s.mockupFloat}>
-              <div ref={phoneRef} className={s.mockup}>
-                <img
-                  src="/images/projects/pet-travel/iphone-mockup.png"
-                  alt="航旅纵横宠物出行 — 手机界面"
-                  className={s.phoneImg}
-                />
-              </div>
-            </div>
-          </div>
         </div>
 
         <span className={`reveal-item ${s.sectionLabel}`} style={{ transitionDelay: '0.1s' }}>Latest Work</span>
