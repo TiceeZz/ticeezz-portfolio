@@ -30,7 +30,7 @@ export function vitePluginWebp(options = {}) {
         const { default: sharp } = await import('sharp');
 
         const images = [];
-        collectImages(outputDir, '', images);
+        collectImages(outputDir, '', images, extensions);
 
         for (const relPath of images) {
           const absPath = join(outputDir, relPath);
@@ -56,7 +56,7 @@ export function vitePluginWebp(options = {}) {
   };
 }
 
-function collectImages(dir, prefix, result) {
+function collectImages(dir, prefix, result, extensions) {
   let entries;
   try {
     entries = readdirSync(dir, { withFileTypes: true });
@@ -67,7 +67,7 @@ function collectImages(dir, prefix, result) {
     const fullPath = join(dir, entry.name);
     const relPath = prefix ? `${prefix}/${entry.name}` : entry.name;
     if (entry.isDirectory()) {
-      collectImages(fullPath, relPath, result);
+      collectImages(fullPath, relPath, result, extensions);
     } else if (entry.isFile()) {
       if (extensions.has(extname(entry.name).toLowerCase())) {
         result.push(relPath);
