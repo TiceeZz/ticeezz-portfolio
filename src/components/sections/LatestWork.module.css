@@ -96,22 +96,22 @@
   transform: translateZ(0);
 }
 
-/* ---- Layout: centered content ---- */
+/* ---- Layout: left content + right mockup ---- */
 .layout {
   position: relative;
   z-index: 5;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   height: 100%;
   padding: 0 4%;
 }
 
-/* ---- Text content ---- */
+/* ---- Left — text content ---- */
 .content {
   flex: 0 0 auto;
-  max-width: 520px;
-  text-align: center;
+  max-width: 480px;
+  padding-left: 4%;
 }
 
 /* ---- "NEW" badge ---- */
@@ -161,7 +161,6 @@
   flex-wrap: wrap;
   gap: 8px;
   margin-bottom: 16px;
-  justify-content: center;
 }
 
 .tag {
@@ -207,8 +206,8 @@
   color: var(--text-muted);
   letter-spacing: 1px;
   line-height: 1.6;
-  margin: 0 auto 28px;
-  max-width: 480px;
+  max-width: 420px;
+  margin-bottom: 28px;
 }
 
 /* ---- CTA ---- */
@@ -247,6 +246,67 @@
   transform: translateX(6px);
 }
 
+/* ---- Right — iPhone mockup ---- */
+.mockupWrap {
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  position: relative;
+}
+
+/* Spotlight — brand green (#10b981) diffused beam behind the phone */
+.mockupWrap::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 140%;
+  height: 140%;
+  background:
+    radial-gradient(ellipse at center, rgba(16, 185, 129, 0.45) 0%, rgba(16, 185, 129, 0.18) 35%, transparent 70%),
+    radial-gradient(ellipse at 55% 45%, rgba(16, 185, 129, 0.35) 0%, transparent 45%);
+  filter: blur(40px);
+  pointer-events: none;
+  z-index: 0;
+  animation: breatheSpotlight 10s ease-in-out infinite;
+  will-change: filter, opacity;
+}
+
+@keyframes breatheSpotlight {
+  0%, 100% { opacity: 0.10; transform: translate(-50%, -50%); }
+  50%      { opacity: 0.50; transform: translate(-50%, -50%); }
+}
+
+.mockupFloat {
+  height: 88%;
+  animation: floatPhone 7s ease-in-out infinite;
+  will-change: transform;
+}
+
+.mockup {
+  height: 100%;
+  will-change: transform;
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 20px 60px rgba(0, 0, 0, 0.5))
+          drop-shadow(0 0 40px rgba(0, 242, 255, 0.08));
+}
+
+@keyframes floatPhone {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-10px); }
+}
+
+.phoneImg {
+  height: 100%;
+  width: auto;
+  display: block;
+  object-fit: contain;
+}
+
 /* ---- Section label ---- */
 .sectionLabel {
   position: absolute;
@@ -273,11 +333,32 @@
   }
 
   .layout {
+    flex-direction: column-reverse;
     padding: 40px 5% 32px;
   }
 
   .content {
     max-width: 100%;
+    padding-left: 0;
+    text-align: center;
+  }
+
+  .mockupWrap {
+    flex: none;
+    width: 100%;
+    height: auto;
+    padding: 10px 0 24px;
+  }
+
+  .mockup {
+    height: auto;
+    width: 75%;
+    margin: 0 auto;
+  }
+
+  .phoneImg {
+    width: 100%;
+    height: auto;
   }
 
   .badge {

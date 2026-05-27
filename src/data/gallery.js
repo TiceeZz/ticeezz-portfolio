@@ -14,6 +14,6 @@ export const undergraduateProjects = [
   { num: '010', title: 'Yangtze to Nile', desc: '中埃文化 // 系列化家具', href: '/nile', img: '/images/projects/nile/cover.webp' },
 ];
 
-const latestProject = { num: '000', title: 'Compressify.io', desc: 'Compressify // 文件压缩工具UX设计', href: '/pettravel', img: '/images/projects/pet-travel/cover.webp' };
+const latestProject = { num: '000', title: '航旅纵横 · 宠物出行', desc: '航旅纵横 // 宠物出行UX设计', href: '/pettravel', img: '/images/projects/pet-travel/cover.webp' };
 
 export const allProjects = [latestProject, ...postgraduateProjects, ...undergraduateProjects];
