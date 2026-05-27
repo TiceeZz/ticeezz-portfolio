@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import ImgLoader from './ImgLoader';
+import Picture from './Picture';
 import s from '../sections/BeyondDesign.module.css';
 
 const labelColorMap = {
@@ -17,7 +17,7 @@ export default function MarqueeCard({ card }) {
       onClick={() => navigate(card.href)}
       aria-label={`View ${card.title}: ${card.desc}`}
     >
-      <ImgLoader src={card.img} alt={card.title} loading="lazy" objectFit="cover"
+      <Picture src={card.img} alt={card.title} loading="lazy" objectFit="cover"
         style={{ position: 'absolute', inset: 0, zIndex: -2 }}
         className={s.cardImg} />
       <div className={s.overlay} />

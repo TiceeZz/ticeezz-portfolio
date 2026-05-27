@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import ImgLoader from './ImgLoader';
+import Picture from './Picture';
 import s from './PortfolioBook.module.css';
 
 const IMG_DIR = '/images/projects/undergrad';
@@ -48,12 +48,12 @@ export default function PortfolioBook() {
 
           <div className={s.book}>
             <div className={s.pageLeft}>
-              <ImgLoader src={leftSrc} alt={`Page ${page + 1}`} loading="eager" objectFit="contain" />
+              <Picture src={leftSrc} alt={`Page ${page + 1}`} loading="eager" objectFit="contain" />
               <span className={s.pageNum}>{page + 1}</span>
             </div>
 
             <div className={s.pageRight}>
-              <ImgLoader src={rightSrc} alt={`Page ${page + 2}`} loading="eager" objectFit="contain" />
+              <Picture src={rightSrc} alt={`Page ${page + 2}`} loading="eager" objectFit="contain" />
               <span className={s.pageNum}>{page + 2}</span>
             </div>
           </div>
@@ -78,7 +78,7 @@ export default function PortfolioBook() {
                 onClick={() => setPage(Math.min(i, TOTAL - 2))}
                 aria-label={`Go to page ${i + 1}`}
               >
-                <ImgLoader src={src} alt={`Thumbnail ${i + 1}`} objectFit="cover" />
+                <Picture src={src} alt={`Thumbnail ${i + 1}`} objectFit="cover" />
                 <span>{i + 1}</span>
               </button>
             ))}

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { allProjects } from '../../data/gallery';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
-import ImgLoader from './ImgLoader';
+import Picture from './Picture';
 import s from './ProjectDetail.module.css';
 
 export default function ProjectDetail({ project, sections, cover, projectSlug }) {
@@ -43,7 +43,7 @@ export default function ProjectDetail({ project, sections, cover, projectSlug })
           {images.map((src, i) => (
             <button key={i} onClick={() => openLightbox(i)} className={s.galleryItem}
               aria-label={`View ${current.label} image ${i + 1}`}>
-              <ImgLoader src={src} alt={`${current.label} ${i + 1}`} loading="lazy" aspectRatio="16/9" objectFit="cover" />
+              <Picture src={src} alt={`${current.label} ${i + 1}`} loading="lazy" aspectRatio="16/9" objectFit="cover" />
               <div className={s.pageLabel}>
                 {current.label} · {String(i + 1).padStart(2, '0')}
               </div>
@@ -79,7 +79,7 @@ export default function ProjectDetail({ project, sections, cover, projectSlug })
                 position: 'relative', borderRadius: '8px', overflow: 'hidden',
                 border: '1px solid var(--border-line)',
               }}>
-                <ImgLoader src={v.poster} alt={v.title} loading="lazy" aspectRatio="16/9"
+                <Picture src={v.poster} alt={v.title} loading="lazy" aspectRatio="16/9"
                   imgStyle={{ filter: 'brightness(0.4)' }} />
                 <div style={{
                   position: 'absolute', inset: 0, display: 'flex',
@@ -161,7 +161,7 @@ export default function ProjectDetail({ project, sections, cover, projectSlug })
         width: '100%', height: '55vh', overflow: 'hidden', position: 'relative',
         marginTop: '20px',
       }}>
-        <ImgLoader src={cover} alt={project.title} loading="eager" aspectRatio="16/9"
+        <Picture src={cover} alt={project.title} loading="eager" aspectRatio="16/9"
           objectFit="cover" style={{ height: '100%' }} />
         <div style={{
           position: 'absolute', inset: 0,

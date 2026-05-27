@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import ImgLoader from '../components/ui/ImgLoader';
+import Picture from '../components/ui/Picture';
 
 const xh = (i) => `/images/photography/photo_${String(i).padStart(2, '0')}.jpg`;
 const ru = (i) => `/images/photography/ruo_${String(i).padStart(2, '0')}.jpg`;
@@ -60,7 +60,7 @@ function FilmDisc({ s, index, onSelect }) {
         <div style={{
           position: 'absolute', inset: 0, borderRadius: '50%', overflow: 'hidden',
         }}>
-          <ImgLoader src={s.cover} alt={s.title} loading="lazy" objectFit="cover"
+          <Picture src={s.cover} alt={s.title} loading="lazy" objectFit="cover"
             imgStyle={{
               filter: s.tone === 'cool' ? 'brightness(0.7) saturate(0.6) contrast(1.08)' : 'brightness(0.82) saturate(0.9)',
               transition: 'filter 0.7s',
@@ -170,7 +170,7 @@ function SeriesViewer({ series: s, onClose }) {
       onClick={() => setShowUI((v) => !v)}
     >
       {/* Image */}
-      <ImgLoader
+      <Picture
         key={imgIdx}
         src={s.images[imgIdx]}
         alt=""
@@ -232,7 +232,7 @@ function SeriesViewer({ series: s, onClose }) {
                 opacity: i === imgIdx ? 1 : 0.45,
                 transition: 'opacity 0.3s, border-color 0.3s',
               }}>
-                <ImgLoader src={src} alt="" objectFit="cover" />
+                <Picture src={src} alt="" objectFit="cover" />
               </div>
             ))}
           </div>

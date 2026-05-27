@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { allProjects } from '../data/gallery';
 import useDocumentTitle from '../hooks/useDocumentTitle';
-import ImgLoader from '../components/ui/ImgLoader';
+import Picture from '../components/ui/Picture';
 import s from './Pettravel.module.css';
 
 const IMG_DIR = '/images/projects/pet-travel';
@@ -47,7 +47,7 @@ export default function Pettravel() {
 
       {/* Cover */}
       <div className={s.coverWrap}>
-        <ImgLoader src={COVER} alt={project.title} loading="eager" objectFit="cover" aspectRatio="16/9" className={s.coverImg} />
+        <Picture src={COVER} alt={project.title} loading="eager" objectFit="cover" aspectRatio="16/9" className={s.coverImg} />
       </div>
 
       {/* Meta */}
@@ -69,7 +69,7 @@ export default function Pettravel() {
           const isLast = i === pages.length - 1;
           return (
             <div key={p.src} className={s.pageItem}>
-              <ImgLoader src={p.src} alt={p.alt} loading="lazy" objectFit="contain" aspectRatio={isLast ? '4000/8413' : '16/9'} />
+              <Picture src={p.src} alt={p.alt} loading="lazy" objectFit="contain" aspectRatio={isLast ? '4000/8413' : '16/9'} />
             </div>
           );
         })}
