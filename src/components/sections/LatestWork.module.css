@@ -96,6 +96,13 @@
   pointer-events: none;
   z-index: 2;
   transform: translateZ(0);
+  animation: glowBreathe 10s ease-in-out infinite;
+  will-change: opacity;
+}
+
+@keyframes glowBreathe {
+  0%, 100% { opacity: 0.30; }
+  50%      { opacity: 0.55; }
 }
 
 /* ---- Layout: left content + right mockup ---- */
