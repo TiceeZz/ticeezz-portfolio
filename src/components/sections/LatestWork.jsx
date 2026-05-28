@@ -14,14 +14,19 @@ export default function LatestWork() {
   const frameRef = useRevealOnScroll();
 
   useEffect(() => {
+    const isMobile = window.innerWidth <= 768;
+
     const ctx = gsap.context(() => {
-      ScrollTrigger.create({
-        trigger: '#latest-work',
-        start: 'top bottom',
-        end: 'bottom top',
-        scrub: 1,
-        animation: gsap.to(phoneRef.current, { y: '-5%' }),
-      });
+      // Parallax scrub — desktop only, too janky on touch scroll
+      if (!isMobile) {
+        ScrollTrigger.create({
+          trigger: '#latest-work',
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 1,
+          animation: gsap.to(phoneRef.current, { y: '-5%' }),
+        });
+      }
 
       gsap.fromTo(
         phoneRef.current,
