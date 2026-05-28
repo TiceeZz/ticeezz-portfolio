@@ -11,6 +11,7 @@ const tags = ['体验设计 (UX)', '情感化设计', '商业增长'];
 
 export default function LatestWork() {
   const phoneRef = useRef(null);
+  const floatRef = useRef(null);
   const frameRef = useRevealOnScroll();
 
   useEffect(() => {
@@ -41,14 +42,13 @@ export default function LatestWork() {
         }
       );
 
-      // Continuous float — managed by GSAP instead of CSS to avoid compositor conflicts
-      gsap.to(phoneRef.current, {
-        y: '-=8',
+      // Continuous float on the wrapper — separate layer from scroll parallax
+      gsap.to(floatRef.current, {
+        y: -8,
         duration: 3.5,
         repeat: -1,
         yoyo: true,
         ease: 'sine.inOut',
-        overwrite: false,
       });
     });
 
@@ -92,7 +92,7 @@ export default function LatestWork() {
           </div>
 
           <div className={s.mockupWrap}>
-            <div className={s.mockupFloat}>
+            <div ref={floatRef} className={s.mockupFloat}>
               <div ref={phoneRef} className={s.mockup}>
                 <picture>
                   <source srcSet="/images/projects/pet-travel/iphone-mockup.webp" type="image/webp" />
