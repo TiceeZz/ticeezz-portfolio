@@ -8,7 +8,11 @@ if (typeof window !== 'undefined' && 'scrollRestoration' in window.history) {
 }
 
 function jump(y) {
+  const el = document.documentElement;
+  const prev = el.style.scrollBehavior;
+  el.style.scrollBehavior = 'auto';
   window.scrollTo(0, y);
+  el.style.scrollBehavior = prev;
 }
 
 export default function ScrollRestoration() {
@@ -38,19 +42,18 @@ export default function ScrollRestoration() {
     function tick() {
       if (!watching.current) return;
 
-      // Read all layout values first to avoid forced reflow
       const h = document.body.scrollHeight;
       if (h === lastHeight) {
         stableCount++;
+        // After 3 consecutive stable checks, do one final jump and stop
         if (stableCount >= 3) {
-          // Batch write after read
-          requestAnimationFrame(() => jump(target));
+          jump(target);
           return;
         }
       } else {
         stableCount = 0;
         lastHeight = h;
-        requestAnimationFrame(() => jump(target));
+        jump(target);
       }
 
       if (Date.now() - start < MAX_WATCH_MS) {

@@ -81,8 +81,9 @@ export default function LatestWork() {
             <p className={`reveal-item ${s.sub}`} style={{ transitionDelay: '0.32s' }}>完整 UX 设计提案</p>
 
             <p className={`reveal-item ${s.desc}`} style={{ transitionDelay: '0.38s' }}>
-              千亿宠物经济下的"信任基建"——将复杂的航司规则与信息盲区，
-              转化为清晰、可感知的模"芯"化体验，打造一条确定且安心的宠物出行专线。
+              千亿宠物经济下的"信任基建"——针对传统活体托运中的资源盲盒与分离焦虑，
+              通过"前置运力感知"、"结构化表单降噪"与"全链路飞行可视化"，
+              将极具不确定性的物流黑盒，重构为一条确定且安心的数字化生命运输线。
             </p>
 
             <Link className={`reveal-item ${s.cta}`} style={{ transitionDelay: '0.48s' }} to="/pettravel">
