@@ -147,7 +147,6 @@
 .badge:global(.reveal-item.is-visible) {
   animation: badgeBreathe 3s ease-in-out infinite;
   animation-delay: 0.65s;
-  will-change: opacity;
 }
 
 /* ---- Scroll reveal (Intersection Observer) ---- */
@@ -156,7 +155,6 @@
   transform: translateY(24px);
   transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
               transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: transform, opacity;
 }
 
 .frame :global(.reveal-item.is-visible) {
@@ -236,7 +234,6 @@
   background: rgba(255, 255, 255, 0.04);
   backdrop-filter: blur(8px);
   transition: all 0.35s ease;
-  will-change: filter;
 }
 
 .cta:hover {
@@ -268,22 +265,14 @@
 
 .mockupFloat {
   height: 88%;
-  animation: floatPhone 7s ease-in-out infinite;
-  will-change: transform;
 }
 
 .mockup {
   height: 100%;
-  will-change: transform;
   position: relative;
   z-index: 1;
   filter: drop-shadow(0 20px 60px rgba(0, 0, 0, 0.5))
           drop-shadow(0 0 40px rgba(0, 242, 255, 0.08));
-}
-
-@keyframes floatPhone {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-10px); }
 }
 
 .phoneImg {
@@ -400,25 +389,5 @@
     right: 5%;
     font-size: 8px;
     letter-spacing: 3px;
-  }
-
-  /* Perf: kill expensive GPU effects on mobile */
-  .glassOrb1,
-  .glassOrb2 {
-    animation: none;
-    filter: none;
-  }
-
-  .glow {
-    animation: none;
-    mix-blend-mode: normal;
-  }
-
-  .mockupFloat {
-    animation: none;
-  }
-
-  .mockup {
-    filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.45));
   }
 }

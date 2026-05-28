@@ -14,34 +14,42 @@ export default function LatestWork() {
   const frameRef = useRevealOnScroll();
 
   useEffect(() => {
-    const isMobile = window.innerWidth <= 768;
-
     const ctx = gsap.context(() => {
-      // Parallax scrub — desktop only, too janky on touch scroll
-      if (!isMobile) {
-        ScrollTrigger.create({
-          trigger: '#latest-work',
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: 1,
-          animation: gsap.to(phoneRef.current, { y: '-5%' }),
-        });
-      }
+      // Scroll-driven parallax — instant follow (no lag)
+      ScrollTrigger.create({
+        trigger: '#latest-work',
+        start: 'top bottom',
+        end: 'bottom top',
+        scrub: true,
+        animation: gsap.to(phoneRef.current, { y: '-5%' }),
+      });
 
+      // Entrance reveal
       gsap.fromTo(
         phoneRef.current,
-        { y: 40 },
+        { y: 50, opacity: 0 },
         {
           y: 0,
-          duration: 0.8,
+          opacity: 1,
+          duration: 1,
           ease: 'power3.out',
           scrollTrigger: {
             trigger: '#latest-work',
-            start: 'top 85%',
+            start: 'top 75%',
             toggleActions: 'play none none none',
           },
         }
       );
+
+      // Continuous float — managed by GSAP instead of CSS to avoid compositor conflicts
+      gsap.to(phoneRef.current, {
+        y: '-=8',
+        duration: 3.5,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
+        overwrite: false,
+      });
     });
 
     return () => ctx.revert();
