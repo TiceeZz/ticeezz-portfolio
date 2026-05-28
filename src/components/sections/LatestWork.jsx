@@ -25,15 +25,14 @@ export default function LatestWork() {
 
       gsap.fromTo(
         phoneRef.current,
-        { y: 50, opacity: 0 },
+        { y: 40 },
         {
           y: 0,
-          opacity: 1,
-          duration: 1,
+          duration: 0.8,
           ease: 'power3.out',
           scrollTrigger: {
             trigger: '#latest-work',
-            start: 'top 75%',
+            start: 'top 85%',
             toggleActions: 'play none none none',
           },
         }
