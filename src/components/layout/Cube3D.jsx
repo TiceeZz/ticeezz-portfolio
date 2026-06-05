@@ -1,25 +1,15 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import useAsyncGSAP from '../../hooks/useAsyncGSAP';
 import styles from './Cube3D.module.css';
 
 export default function Cube3D() {
   const cubeRef = useRef(null);
   const containerRef = useRef(null);
-  const [flat, setFlat] = useState(true);
-  const animating = useRef(true);
+  const animating = useRef(false);
   const gst = useAsyncGSAP();
 
   useEffect(() => {
-    let raf1, raf2;
-    raf1 = requestAnimationFrame(() => {
-      raf2 = requestAnimationFrame(() => setFlat(false));
-    });
-    const t = setTimeout(() => { animating.current = false; }, 800);
-    return () => {
-      cancelAnimationFrame(raf1);
-      cancelAnimationFrame(raf2);
-      clearTimeout(t);
-    };
+    animating.current = false;
   }, []);
 
   useEffect(() => {
@@ -59,7 +49,7 @@ export default function Cube3D() {
 
   return (
     <div ref={containerRef} className={styles.container}>
-      <div ref={cubeRef} className={`${styles.cube}${flat ? ` ${styles.flat}` : ''}`}>
+      <div ref={cubeRef} className={styles.cube}>
         {faces.map((face) => (
           <div key={face} className={`${styles.face} ${styles[face]}`} />
         ))}
