@@ -181,14 +181,51 @@
 
   .pillar {
     flex: none;
-    height: 160px;
-    min-height: 160px;
+    height: 188px;
+    min-height: 188px;
+    transform: perspective(1200px) rotateX(10deg) rotateY(-12deg) translateZ(0);
+    transform-style: preserve-3d;
+    transform-origin: center center;
+    box-shadow:
+      20px 26px 48px rgba(0, 0, 0, 0.34),
+      -10px 0 24px rgba(255, 255, 255, 0.05),
+      inset 1px 0 0 rgba(255, 255, 255, 0.08),
+      inset -1px 0 0 rgba(0, 0, 0, 0.2);
   }
 
-  .pillar:hover {
-    flex: none;
-    height: 160px;
+  .pillar::before,
+  .pillar::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    transition: opacity 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
   }
+
+  .pillar::before {
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.12), transparent 22%, transparent 78%, rgba(0, 0, 0, 0.24));
+    opacity: 0.92;
+    mix-blend-mode: screen;
+  }
+
+  .pillar::after {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.12), transparent 28%, transparent 72%, rgba(0, 0, 0, 0.22));
+    opacity: 0.9;
+  }
+
+  .bgImg {
+    transform: translateZ(-6px) scale(1.02);
+  }
+
+  .glow {
+    transform: translateZ(8px);
+  }
+
+  .num,
+  .info {
+    transform: translateZ(18px);
+  }
+
 
   .info {
     bottom: 20px;
@@ -208,11 +245,17 @@
   /* ---- Scroll-triggered glow ---- */
   .pillar.lit {
     border-color: rgba(255, 255, 255, 0.35);
-    box-shadow: 0 0 40px rgba(0, 242, 255, 0.12), inset 0 0 20px rgba(0, 242, 255, 0.04);
+    box-shadow:
+      24px 30px 60px rgba(0, 0, 0, 0.4),
+      0 0 40px rgba(0, 242, 255, 0.12),
+      inset 0 0 20px rgba(0, 242, 255, 0.04),
+      inset 1px 0 0 rgba(255, 255, 255, 0.12),
+      inset -1px 0 0 rgba(0, 0, 0, 0.22);
   }
 
   .pillar.lit .bgImg {
     opacity: 0.5;
+    transform: scale(1.04);
   }
 
   .pillar.lit .glow {
@@ -224,6 +267,6 @@
   }
 
   .pillar.lit .info {
-    transform: translateY(-3px);
+    transform: translateY(-3px) translateZ(22px);
   }
 }

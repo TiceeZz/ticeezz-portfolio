@@ -1,6 +1,17 @@
 import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
+function Picture({ src, alt, loading = 'lazy', aspectRatio = '4 / 3', objectFit = 'cover' }) {
+  return (
+    <img
+      src={src}
+      alt={alt}
+      loading={loading}
+      style={{ width: '100%', aspectRatio, objectFit, display: 'block' }}
+    />
+  );
+}
+
 const works = [
   { src: '/images/sketching/colored-pencil.jpg', title: '彩铅写实', medium: 'Colored Pencil', desc: '以极其细腻的超写实彩铅技法刻画自然张力与细节美学。' },
   { src: '/images/sketching/gouache.jpg', title: '水粉静物', medium: 'Gouache', desc: '在色彩层叠中探索光线与质感的微妙平衡。' },

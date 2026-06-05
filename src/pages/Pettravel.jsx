@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { allProjects } from '../data/gallery';
 import useDocumentTitle from '../hooks/useDocumentTitle';
 import Lightbox from '../components/ui/Lightbox';
+import Picture from '../components/ui/Picture';
 import s from './Pettravel.module.css';
 
 const IMG_DIR = '/images/projects/pet-travel';
@@ -10,6 +11,7 @@ const COVER = `${IMG_DIR}/cover.webp`;
 const pages = Array.from({ length: 22 }, (_, i) => ({
   src: `${IMG_DIR}/page_${String(i + 1).padStart(3, '0')}.jpg`,
   alt: `Page ${i + 1}`,
+  className: i === 21 ? s.pagePictureTall : '',
 }));
 
 const project = {
@@ -63,7 +65,13 @@ export default function Pettravel() {
 
       {/* Cover */}
       <div className={s.coverWrap}>
-        <img src={COVER} alt={project.title} loading="eager" className={s.coverImg} />
+        <Picture
+          src={COVER}
+          alt={project.title}
+          loading="eager"
+          className={s.coverPicture}
+          imgStyle={{ objectFit: 'cover' }}
+        />
       </div>
 
       {/* Meta */}
@@ -81,15 +89,23 @@ export default function Pettravel() {
       {/* Continuous page stream */}
       <div className={s.stream}>
         <div className={s.sectionLabel}>完整方案 · {pages.length} Pages</div>
-        {pages.map((p, i) => {
-          const isLast = i === pages.length - 1;
-          return (
-            <button key={p.src} className={s.pageItem} onClick={() => openLightbox(i)}
-              aria-label={`View page ${i + 1}`}>
-              <img src={p.src} alt={p.alt} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }} />
-            </button>
-          );
-        })}
+        {pages.map((p, i) => (
+          <button
+            key={p.src}
+            className={s.pageItem}
+            onClick={() => openLightbox(i)}
+            aria-label={`View page ${i + 1}`}
+          >
+            <Picture
+              src={p.src}
+              alt={p.alt}
+              loading={i < 3 ? 'eager' : 'lazy'}
+              className={`${s.pagePicture} ${p.className}`.trim()}
+              imgStyle={{ objectFit: 'contain', background: '#0a0f16' }}
+            />
+            <span className={s.pageIndex}>{String(i + 1).padStart(2, '0')}</span>
+          </button>
+        ))}
       </div>
 
       {/* Lightbox */}
