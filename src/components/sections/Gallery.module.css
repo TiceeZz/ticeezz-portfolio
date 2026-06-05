@@ -65,11 +65,14 @@
 .bgImg {
   position: absolute;
   inset: 0;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: 30% center;
+  z-index: 0;
   opacity: 0.3;
   transition: opacity 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.bgImg img {
+  object-fit: cover;
+  object-position: 30% center;
 }
 
 .pillar:hover .bgImg {
