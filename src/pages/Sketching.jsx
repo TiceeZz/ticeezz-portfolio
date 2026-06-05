@@ -1,6 +1,5 @@
 import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import Picture from '../components/ui/Picture';
 
 const works = [
   { src: '/images/sketching/colored-pencil.jpg', title: '彩铅写实', medium: 'Colored Pencil', desc: '以极其细腻的超写实彩铅技法刻画自然张力与细节美学。' },
@@ -64,7 +63,12 @@ export default function Sketching() {
             border: '1px solid rgba(255,255,255,0.06)', borderRadius: '6px',
             overflow: 'hidden', background: 'rgba(255,255,255,0.015)',
           }}>
-            <Picture src={works[0].src} alt={works[0].title} loading="lazy" aspectRatio="4/3" objectFit="cover" />
+            <img
+              src={works[0].src}
+              alt={works[0].title}
+              loading="lazy"
+              style={{ width: '100%', aspectRatio: '4 / 3', objectFit: 'cover', display: 'block' }}
+            />
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginTop: '16px', padding: '0 4px' }}>
             <div>
@@ -83,7 +87,12 @@ export default function Sketching() {
                 border: '1px solid rgba(255,255,255,0.06)', borderRadius: '6px',
                 overflow: 'hidden', background: 'rgba(255,255,255,0.015)',
               }}>
-                <Picture src={w.src} alt={w.title} loading="lazy" aspectRatio="4/3" objectFit="cover" />
+                <img
+                  src={w.src}
+                  alt={w.title}
+                  loading="lazy"
+                  style={{ width: '100%', aspectRatio: '4 / 3', objectFit: 'cover', display: 'block' }}
+                />
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginTop: '14px', padding: '0 4px' }}>
                 <div>

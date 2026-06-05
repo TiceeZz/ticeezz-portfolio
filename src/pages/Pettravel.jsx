@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { allProjects } from '../data/gallery';
 import useDocumentTitle from '../hooks/useDocumentTitle';
-import Picture from '../components/ui/Picture';
 import Lightbox from '../components/ui/Lightbox';
 import s from './Pettravel.module.css';
 
@@ -64,7 +63,7 @@ export default function Pettravel() {
 
       {/* Cover */}
       <div className={s.coverWrap}>
-        <Picture src={COVER} alt={project.title} loading="eager" objectFit="cover" aspectRatio="16/9" className={s.coverImg} />
+        <img src={COVER} alt={project.title} loading="eager" className={s.coverImg} />
       </div>
 
       {/* Meta */}
@@ -87,7 +86,7 @@ export default function Pettravel() {
           return (
             <button key={p.src} className={s.pageItem} onClick={() => openLightbox(i)}
               aria-label={`View page ${i + 1}`}>
-              <Picture src={p.src} alt={p.alt} loading="lazy" objectFit="contain" aspectRatio={isLast ? '4000/8413' : '16/9'} />
+              <img src={p.src} alt={p.alt} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }} />
             </button>
           );
         })}

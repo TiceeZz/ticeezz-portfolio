@@ -1,10 +1,14 @@
 import { Link } from 'react-router-dom';
-import Picture from '../components/ui/Picture';
 
 function ImgCard({ src, alt }) {
   return (
     <div style={{ borderRadius: '6px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.07)' }}>
-      <Picture src={src} alt={alt} loading="lazy" aspectRatio="4/3" objectFit="cover" />
+      <img
+        src={src}
+        alt={alt}
+        loading="lazy"
+        style={{ width: '100%', aspectRatio: '4 / 3', objectFit: 'cover', display: 'block' }}
+      />
     </div>
   );
 }

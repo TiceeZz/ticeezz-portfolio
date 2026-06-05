@@ -21,7 +21,7 @@ export default function Picture({
 
   const webpSrc = getWebpSrc(src);
   const isWebpSource = isWebp(src);
-  const responsive = !import.meta.env.DEV ? getResponsiveSrcset(src) : null;
+  const responsive = !import.meta.env.DEV && !isWebpSource ? getResponsiveSrcset(src) : null;
   const shouldUsePicture = !import.meta.env.DEV && !isWebpSource && webpSrc && responsive;
 
   const handleLoad = () => setLoaded(true);
@@ -52,7 +52,7 @@ export default function Picture({
           src={src}
           alt={alt}
           loading={loading}
-          srcSet={responsive}
+          srcSet={responsive || undefined}
           sizes={responsive ? DEFAULT_SIZES : undefined}
           onLoad={handleLoad}
           onError={handleError}
