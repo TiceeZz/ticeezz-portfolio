@@ -29,7 +29,7 @@ export default function Picture({
       <div className={`${s.shimmer} ${loaded ? s.shimmerHidden : ''}`} aria-hidden="true" />
       {errored ? (
         <div className={s.error}>Failed to load</div>
-      ) : (webpSrc && !isDev) ? (
+      ) : (webpSrc && !import.meta.env.DEV) ? (
         <picture>
           <source
             srcSet={getResponsiveSrcset(src)}
