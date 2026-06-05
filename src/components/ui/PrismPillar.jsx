@@ -17,7 +17,7 @@ export default function PrismPillar({ project }) {
           obs.unobserve(el);
         }
       },
-      { threshold: 0.35 }
+      { threshold: 0.1, rootMargin: '300px 0px' }
     );
     obs.observe(el);
     return () => obs.disconnect();
@@ -30,7 +30,7 @@ export default function PrismPillar({ project }) {
       onClick={() => navigate(project.href)}
       aria-label={`View project: ${project.title}`}
     >
-      {project.img && <div className={s.bgImg} style={{ backgroundImage: `url(${project.img})` }} />}
+      {lit && project.img && <div className={s.bgImg} style={{ backgroundImage: `url(${project.img})` }} />}
       <div className={s.num}>{project.num}</div>
       <div className={s.glow} />
       <div className={s.info}>
