@@ -69,6 +69,8 @@ export default function Pettravel() {
           src={COVER}
           alt={project.title}
           loading="eager"
+          fetchPriority="high"
+          sizes="(max-width: 768px) 100vw, 1200px"
           className={s.coverPicture}
           imgStyle={{ objectFit: 'cover' }}
         />
@@ -99,7 +101,9 @@ export default function Pettravel() {
             <Picture
               src={p.src}
               alt={p.alt}
-              loading={i < 3 ? 'eager' : 'lazy'}
+              loading={i === 0 ? 'eager' : 'lazy'}
+              fetchPriority={i === 0 ? 'high' : undefined}
+              sizes="(max-width: 768px) 100vw, 980px"
               className={`${s.pagePicture} ${p.className}`.trim()}
               imgStyle={{ objectFit: 'contain', background: '#0a0f16' }}
             />

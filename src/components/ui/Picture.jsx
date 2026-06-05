@@ -11,6 +11,9 @@ export default function Picture({
   imgStyle,
   className = '',
   style,
+  sizes = DEFAULT_SIZES,
+  fetchPriority,
+  decoding = 'async',
   ...rest
 }) {
   const [loaded, setLoaded] = useState(false);
@@ -34,16 +37,18 @@ export default function Picture({
         <div className={s.error}>Failed to load</div>
       ) : shouldUsePicture ? (
         <picture>
-          <source srcSet={responsive} type="image/webp" sizes={DEFAULT_SIZES} />
+          <source srcSet={responsive} type="image/webp" sizes={sizes} />
           <img
             src={src}
             alt={alt}
             loading={loading}
+            fetchPriority={fetchPriority}
+            decoding={decoding}
             onLoad={handleLoad}
             onError={handleError}
             className={`${s.img} ${loaded ? s.visible : ''}`}
             style={{ objectFit, ...imgStyle }}
-            sizes={DEFAULT_SIZES}
+            sizes={sizes}
             {...rest}
           />
         </picture>
@@ -52,8 +57,10 @@ export default function Picture({
           src={src}
           alt={alt}
           loading={loading}
+          fetchPriority={fetchPriority}
+          decoding={decoding}
           srcSet={responsive || undefined}
-          sizes={responsive ? DEFAULT_SIZES : undefined}
+          sizes={responsive ? sizes : undefined}
           onLoad={handleLoad}
           onError={handleError}
           className={`${s.img} ${loaded ? s.visible : ''}`}
