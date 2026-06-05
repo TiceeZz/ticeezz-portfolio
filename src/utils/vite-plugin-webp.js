@@ -1,6 +1,8 @@
 import { existsSync, statSync, readdirSync } from 'fs';
 import { extname, join } from 'path';
 
+const RESPONSIVE_WIDTHS = [480, 960];
+
 export function vitePluginWebp(options = {}) {
   const {
     quality = 80,
@@ -37,18 +39,37 @@ export function vitePluginWebp(options = {}) {
           const webpRelPath = relPath.replace(/\.(jpe?g|png)$/i, '.webp');
           const webpAbsPath = join(outputDir, webpRelPath);
 
-          if (existsSync(webpAbsPath)) {
-            const origMtime = statSync(absPath).mtimeMs;
-            const webpMtime = statSync(webpAbsPath).mtimeMs;
-            if (webpMtime >= origMtime) continue;
+          const needsGeneration = !existsSync(webpAbsPath)
+            || statSync(absPath).mtimeMs > statSync(webpAbsPath).mtimeMs;
+
+          if (needsGeneration) {
+            try {
+              await sharp(absPath)
+                .webp({ quality })
+                .toFile(webpAbsPath);
+            } catch (err) {
+              console.warn(`[vite-plugin-webp] Failed: ${relPath}: ${err.message}`);
+              continue;
+            }
           }
 
-          try {
-            await sharp(absPath)
-              .webp({ quality })
-              .toFile(webpAbsPath);
-          } catch (err) {
-            console.warn(`[vite-plugin-webp] Failed to convert ${relPath}: ${err.message}`);
+          // Generate responsive variants
+          for (const w of RESPONSIVE_WIDTHS) {
+            const variantRel = relPath.replace(/\.(jpe?g|png)$/i, `-${w}w.webp`);
+            const variantAbs = join(outputDir, variantRel);
+            if (!existsSync(variantAbs) || needsGeneration) {
+              try {
+                const meta = await sharp(absPath).metadata();
+                if (meta.width > w) {
+                  await sharp(absPath)
+                    .resize(w)
+                    .webp({ quality })
+                    .toFile(variantAbs);
+                }
+              } catch (err) {
+                console.warn(`[vite-plugin-webp] Failed variant ${w}w: ${relPath}: ${err.message}`);
+              }
+            }
           }
         }
       },
