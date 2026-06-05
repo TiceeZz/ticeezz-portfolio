@@ -39,6 +39,8 @@
 }
 
 .pillar {
+  --glow-x: 50%;
+  --glow-y: 100%;
   flex: 1;
   background: rgba(10, 12, 18, 0.4);
   border: 1px solid rgba(255, 255, 255, 0.12);
@@ -82,24 +84,24 @@
 .glow {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at bottom, rgba(0, 242, 255, 0.15), transparent 70%);
+  background: radial-gradient(circle at var(--glow-x) var(--glow-y), rgba(0, 242, 255, 0.2), transparent 36%), radial-gradient(circle at bottom, rgba(0, 242, 255, 0.15), transparent 70%);
   opacity: 0.35;
-  transition: opacity 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
+  transition: opacity 0.8s cubic-bezier(0.25, 0.1, 0.25, 1), background-position 0.12s ease-out;
   pointer-events: none;
   mix-blend-mode: color-dodge;
   transform: translateZ(0);
 }
 
 .pillar:nth-child(2) .glow {
-  background: radial-gradient(circle at bottom, rgba(255, 60, 60, 0.15), transparent 70%);
+  background: radial-gradient(circle at var(--glow-x) var(--glow-y), rgba(255, 60, 60, 0.22), transparent 36%), radial-gradient(circle at bottom, rgba(255, 60, 60, 0.15), transparent 70%);
 }
 
 .pillar:nth-child(3) .glow {
-  background: radial-gradient(circle at bottom, rgba(255, 200, 0, 0.15), transparent 70%);
+  background: radial-gradient(circle at var(--glow-x) var(--glow-y), rgba(255, 200, 0, 0.22), transparent 36%), radial-gradient(circle at bottom, rgba(255, 200, 0, 0.15), transparent 70%);
 }
 
 .pillar:nth-child(4) .glow {
-  background: radial-gradient(circle at bottom, rgba(160, 120, 255, 0.15), transparent 70%);
+  background: radial-gradient(circle at var(--glow-x) var(--glow-y), rgba(160, 120, 255, 0.22), transparent 36%), radial-gradient(circle at bottom, rgba(160, 120, 255, 0.15), transparent 70%);
 }
 
 .pillar:hover .glow {
@@ -183,14 +185,12 @@
     flex: none;
     height: 188px;
     min-height: 188px;
-    transform: perspective(1200px) rotateX(10deg) rotateY(-12deg) translateZ(0);
-    transform-style: preserve-3d;
+    transform: none;
+    transform-style: flat;
     transform-origin: center center;
     box-shadow:
-      20px 26px 48px rgba(0, 0, 0, 0.34),
-      -10px 0 24px rgba(255, 255, 255, 0.05),
-      inset 1px 0 0 rgba(255, 255, 255, 0.08),
-      inset -1px 0 0 rgba(0, 0, 0, 0.2);
+      0 16px 36px rgba(0, 0, 0, 0.28),
+      0 0 0 1px rgba(255, 255, 255, 0.04);
   }
 
   .pillar::before,

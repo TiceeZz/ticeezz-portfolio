@@ -125,7 +125,9 @@
 
 /* ---- "NEW" badge ---- */
 .badge {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 6px;

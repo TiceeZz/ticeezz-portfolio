@@ -24,6 +24,39 @@ export default function PrismPillar({ project }) {
     return () => obs.disconnect();
   }, []);
 
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const setGlowPoint = (clientX, clientY) => {
+      const rect = el.getBoundingClientRect();
+      const x = ((clientX - rect.left) / rect.width) * 100;
+      const y = ((clientY - rect.top) / rect.height) * 100;
+      el.style.setProperty('--glow-x', `${Math.max(0, Math.min(100, x))}%`);
+      el.style.setProperty('--glow-y', `${Math.max(0, Math.min(100, y))}%`);
+    };
+
+    const handlePointerMove = (e) => setGlowPoint(e.clientX, e.clientY);
+    const handleTouchStart = (e) => {
+      const touch = e.touches[0];
+      if (touch) setGlowPoint(touch.clientX, touch.clientY);
+    };
+    const handleTouchMove = (e) => {
+      const touch = e.touches[0];
+      if (touch) setGlowPoint(touch.clientX, touch.clientY);
+    };
+
+    el.addEventListener('pointermove', handlePointerMove);
+    el.addEventListener('touchstart', handleTouchStart, { passive: true });
+    el.addEventListener('touchmove', handleTouchMove, { passive: true });
+
+    return () => {
+      el.removeEventListener('pointermove', handlePointerMove);
+      el.removeEventListener('touchstart', handleTouchStart);
+      el.removeEventListener('touchmove', handleTouchMove);
+    };
+  }, []);
+
   return (
     <button
       ref={ref}
