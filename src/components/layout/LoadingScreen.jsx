@@ -19,19 +19,10 @@ export default function LoadingScreen({ onComplete }) {
       return () => clearTimeout(t);
     }
 
-    let ready = false;
-    const onReady = () => { ready = true; };
-
-    if (document.readyState === 'complete') {
-      ready = true;
-    } else {
-      window.addEventListener('load', onReady);
-    }
-
     const start = performance.now();
     let raf;
     const check = () => {
-      if (ready && performance.now() - start >= MIN_DISPLAY) {
+      if (performance.now() - start >= MIN_DISPLAY) {
         finish();
       } else {
         raf = requestAnimationFrame(check);
@@ -39,10 +30,7 @@ export default function LoadingScreen({ onComplete }) {
     };
     raf = requestAnimationFrame(check);
 
-    return () => {
-      cancelAnimationFrame(raf);
-      window.removeEventListener('load', onReady);
-    };
+    return () => cancelAnimationFrame(raf);
   }, [reduced, finish]);
 
   return (
