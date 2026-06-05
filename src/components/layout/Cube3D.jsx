@@ -1,15 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import useAsyncGSAP from '../../hooks/useAsyncGSAP';
 import styles from './Cube3D.module.css';
-
-gsap.registerPlugin(ScrollTrigger);
 
 export default function Cube3D() {
   const cubeRef = useRef(null);
   const containerRef = useRef(null);
   const [flat, setFlat] = useState(true);
   const animating = useRef(true);
+  const gst = useAsyncGSAP();
 
   useEffect(() => {
     let raf1, raf2;
@@ -25,6 +23,9 @@ export default function Cube3D() {
   }, []);
 
   useEffect(() => {
+    if (!gst) return;
+    const { gsap, ScrollTrigger } = gst;
+
     const handleMouse = (e) => {
       if (animating.current) return;
       if (window.scrollY < window.innerHeight) {
@@ -52,7 +53,7 @@ export default function Cube3D() {
       window.removeEventListener('mousemove', handleMouse);
       st.kill();
     };
-  }, []);
+  }, [gst]);
 
   const faces = ['front', 'back', 'right', 'left', 'top', 'bottom'];
 

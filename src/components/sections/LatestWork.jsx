@@ -1,11 +1,9 @@
 import { useEffect, useRef } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Link } from 'react-router-dom';
 import useRevealOnScroll from '../../hooks/useRevealOnScroll';
+import useAsyncGSAP from '../../hooks/useAsyncGSAP';
+import ImgLoader from '../ui/ImgLoader';
 import s from './LatestWork.module.css';
-
-gsap.registerPlugin(ScrollTrigger);
 
 const tags = ['体验设计 (UX)', '情感化设计', '商业增长'];
 
@@ -13,8 +11,11 @@ export default function LatestWork() {
   const phoneRef = useRef(null);
   const floatRef = useRef(null);
   const frameRef = useRevealOnScroll();
+  const gst = useAsyncGSAP();
 
   useEffect(() => {
+    if (!gst) return;
+    const { gsap, ScrollTrigger } = gst;
     const ctx = gsap.context(() => {
       // Scroll-driven parallax — instant follow (no lag)
       ScrollTrigger.create({
@@ -53,7 +54,7 @@ export default function LatestWork() {
     });
 
     return () => ctx.revert();
-  }, []);
+  }, [gst]);
 
   return (
     <section id="latest-work" className={s.section}>
@@ -95,15 +96,12 @@ export default function LatestWork() {
           <div className={s.mockupWrap}>
             <div ref={floatRef} className={s.mockupFloat}>
               <div ref={phoneRef} className={s.mockup}>
-                <picture>
-                  <source srcSet="/images/projects/pet-travel/iphone-mockup.webp" type="image/webp" />
-                  <img
-                    src="/images/projects/pet-travel/iphone-mockup.png"
-                    alt="航旅纵横宠物出行 — 手机界面"
-                    className={s.phoneImg}
-                    loading="eager"
-                  />
-                </picture>
+                <ImgLoader
+                  src="/images/projects/pet-travel/iphone-mockup.webp"
+                  alt="航旅纵横宠物出行 — 手机界面"
+                  className={s.phoneImg}
+                  loading="eager"
+                />
               </div>
             </div>
           </div>

@@ -1,14 +1,14 @@
 import { useEffect, useRef } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import useAsyncGSAP from '../../hooks/useAsyncGSAP';
 import s from './Hero.module.css';
-
-gsap.registerPlugin(ScrollTrigger);
 
 export default function Hero() {
   const titleRef = useRef(null);
+  const gst = useAsyncGSAP();
 
   useEffect(() => {
+    if (!gst) return;
+    const { gsap, ScrollTrigger } = gst;
     const st = ScrollTrigger.create({
       trigger: '#hero',
       start: 'top top',
@@ -16,7 +16,7 @@ export default function Hero() {
       animation: gsap.to(titleRef.current, { y: -100, opacity: 0.1 }),
     });
     return () => st.kill();
-  }, []);
+  }, [gst]);
 
   return (
     <section id="hero" className={s.hero}>

@@ -1,17 +1,17 @@
 import { useLayoutEffect, useRef } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import useAsyncGSAP from '../../hooks/useAsyncGSAP';
 import TimelineRow from '../ui/TimelineRow';
 import SectionHeader from '../ui/SectionHeader';
 import timeline, { honors, otherHonors, leadership } from '../../data/timeline';
 import s from './Resume.module.css';
 
-gsap.registerPlugin(ScrollTrigger);
-
 export default function Resume() {
   const rowsRef = useRef([]);
+  const gst = useAsyncGSAP();
 
   useLayoutEffect(() => {
+    if (!gst) return;
+    const { gsap, ScrollTrigger } = gst;
     const ctx = gsap.context(() => {
       rowsRef.current.forEach((row, i) => {
         if (!row) return;
@@ -35,7 +35,7 @@ export default function Resume() {
       ScrollTrigger.refresh();
     });
     return () => ctx.revert();
-  }, []);
+  }, [gst]);
 
   return (
     <section id="resume" style={{ paddingTop: '10vh', paddingBottom: '5vh' }}>
