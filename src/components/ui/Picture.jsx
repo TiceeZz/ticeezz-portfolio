@@ -20,6 +20,7 @@ export default function Picture({
   if (aspectRatio) wrapperStyle.aspectRatio = aspectRatio;
 
   const webpSrc = getWebpSrc(src);
+  const responsive = !import.meta.env.DEV ? getResponsiveSrcset(src) : null;
 
   const handleLoad = () => setLoaded(true);
   const handleError = () => { setLoaded(true); setErrored(true); };
@@ -31,11 +32,7 @@ export default function Picture({
         <div className={s.error}>Failed to load</div>
       ) : (webpSrc && !import.meta.env.DEV) ? (
         <picture>
-          <source
-            srcSet={getResponsiveSrcset(src)}
-            type="image/webp"
-            sizes={DEFAULT_SIZES}
-          />
+          <source srcSet={responsive} type="image/webp" sizes={DEFAULT_SIZES} />
           <img
             src={src}
             alt={alt}
@@ -53,6 +50,8 @@ export default function Picture({
           src={src}
           alt={alt}
           loading={loading}
+          srcSet={responsive}
+          sizes={responsive ? DEFAULT_SIZES : undefined}
           onLoad={handleLoad}
           onError={handleError}
           className={`${s.img} ${loaded ? s.visible : ''}`}

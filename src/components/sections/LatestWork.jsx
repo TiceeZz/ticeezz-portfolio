@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import useRevealOnScroll from '../../hooks/useRevealOnScroll';
 import useAsyncGSAP from '../../hooks/useAsyncGSAP';
-import ImgLoader from '../ui/ImgLoader';
+import Picture from '../ui/Picture';
 import s from './LatestWork.module.css';
 
 const tags = ['体验设计 (UX)', '情感化设计', '商业增长'];
@@ -96,7 +96,7 @@ export default function LatestWork() {
           <div className={s.mockupWrap}>
             <div ref={floatRef} className={s.mockupFloat}>
               <div ref={phoneRef} className={s.mockup}>
-                <ImgLoader
+                <Picture
                   src="/images/projects/pet-travel/iphone-mockup.webp"
                   alt="航旅纵横宠物出行 — 手机界面"
                   className={s.phoneImg}
