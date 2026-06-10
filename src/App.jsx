@@ -24,6 +24,7 @@ const Sketching = lazy(() => import('./pages/Sketching'));
 const Life = lazy(() => import('./pages/Life'));
 const Pettravel = lazy(() => import('./pages/Pettravel'));
 const Photography = lazy(() => import('./pages/Photography'));
+const OSPage = lazy(() => import('./v2/OSPage'));
 
 function PageLoader() {
   return (
@@ -36,20 +37,24 @@ function PageLoader() {
   );
 }
 
+// /v2 是 TiceeZz OS：自带开机动画与系统光标，跳过经典版的加载屏和自定义光标
+const isV2 = typeof window !== 'undefined' && window.location.pathname.startsWith('/v2');
+
 export default function App() {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!isV2);
   const onLoadComplete = useCallback(() => setLoading(false), []);
 
   return (
     <BrowserRouter>
       <CursorProvider>
-        <CursorDot />
-        <CursorRing />
+        {!isV2 && <CursorDot />}
+        {!isV2 && <CursorRing />}
         <ScrollRestoration />
         {loading && <LoadingScreen onComplete={onLoadComplete} />}
         <Suspense fallback={<PageLoader />}>
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/v2" element={<OSPage />} />
             <Route path="/pettravel" element={<Pettravel />} />
             <Route path="/eclipse" element={<Eclipse />} />
             <Route path="/musicfluere" element={<Musicfluere />} />
