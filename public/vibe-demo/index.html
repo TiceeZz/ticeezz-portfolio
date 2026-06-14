@@ -35,24 +35,21 @@
         window.addEventListener('resize', fit);
       })();
 
-      // Wait for all images to load before hiding loader
+      // Wait for React mount before hiding loader
       window.__vibeReady = false;
-      var loader = document.getElementById('app-loader');
       function hideLoader() {
+        var loader = document.getElementById('app-loader');
         if (!loader) return;
         loader.classList.add('hidden');
         setTimeout(function() { if (loader.parentNode) loader.remove(); }, 500);
       }
       // React will set __vibeReady=true after mount
       var checkReady = setInterval(function() {
-        if (!window.__vibeReady) return;
-        var imgs = document.querySelectorAll('img[src]');
-        var pending = Array.from(imgs).filter(function(img) { return !img.complete; });
-        if (pending.length === 0) {
+        if (window.__vibeReady) {
           clearInterval(checkReady);
           hideLoader();
         }
-      }, 200);
+      }, 100);
       // Fallback: hide loader after 10s no matter what
       setTimeout(function() { clearInterval(checkReady); hideLoader(); }, 10000);
     </script>
