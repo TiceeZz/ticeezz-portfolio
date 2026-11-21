@@ -1,117 +1,49 @@
-import { allProjects, postgraduateProjects } from '../../data/gallery';
-import timeline, { honors } from '../../data/timeline';
+import { honors } from '../../data/timeline';
+import { V3_CASE_STUDIES } from './v3CaseStudies';
 
-export const V3_PROJECTS = allProjects.map((p) => {
-  const isLatest = p.num === '000';
-  const isPostgrad = postgraduateProjects.some((item) => item.num === p.num);
+export const V3_PROJECTS = V3_CASE_STUDIES.map((c) => ({
+  num: c.num,
+  slug: c.slug,
+  title: c.title,
+  enTitle: c.enTitle,
+  subtitle: c.subtitle,
+  year: c.year,
+  stageGroup: Number(c.num) <= 6 ? 'postgrad' : 'undergrad',
+  href: `/v3/work/${c.slug}`,
+  displayImg: c.cover,
+  isDevicePlate: Boolean(c.isDevicePlate),
+}));
 
-  const metaMap = {
-    '000': {
-      year: '2026',
-      stageGroup: 'postgrad',
-      subtitle: '宠物出行全链路 UX 提案',
-      accent: '#3B82FF',
-    },
-    '001': {
-      year: '2023',
-      stageGroup: 'postgrad',
-      subtitle: '汉斯格雅 · 适老化智能卫浴',
-      accent: '#67D5FF',
-    },
-    '002': {
-      year: '2025',
-      stageGroup: 'postgrad',
-      subtitle: '优秀硕士毕设 · AIGC 智慧养老',
-      accent: '#3B82FF',
-    },
-    '003': {
-      year: '2023',
-      stageGroup: 'postgrad',
-      subtitle: '无障碍出行就医 PSS 服务系统',
-      accent: '#67D5FF',
-    },
-    '004': {
-      year: '2023',
-      stageGroup: 'postgrad',
-      subtitle: '枫泾乡村振兴 · 农产品文创品牌',
-      accent: '#FFB24A',
-    },
-    '005': {
-      year: '2024',
-      stageGroup: 'postgrad',
-      subtitle: '中英合作 AHRC 种子基金工作坊',
-      accent: '#818CF8',
-    },
-    '006': {
-      year: '2021',
-      stageGroup: 'undergrad',
-      subtitle: '凉山彝族非遗文创 · 专利成果',
-      accent: '#FFB24A',
-    },
-    '007': {
-      year: '2021',
-      stageGroup: 'undergrad',
-      subtitle: '巨人餐厅 · 沉浸式室内空间',
-      accent: '#67D5FF',
-    },
-    '008': {
-      year: '2020',
-      stageGroup: 'undergrad',
-      subtitle: '筇竹模块书架 · 竹材家具设计',
-      accent: '#3B82FF',
-    },
-    '009': {
-      year: '2020',
-      stageGroup: 'undergrad',
-      subtitle: '情感化软体沙发 · 形态语义',
-      accent: '#818CF8',
-    },
-    '010': {
-      year: '2021',
-      stageGroup: 'undergrad',
-      subtitle: '中埃文化转译 · 系列家具系统',
-      accent: '#67D5FF',
-    },
-  };
-
-  const extra = metaMap[p.num] || {
-    year: isPostgrad ? '2024' : '2021',
-    stageGroup: isPostgrad || isLatest ? 'postgrad' : 'undergrad',
-    subtitle: p.desc,
-    accent: '#3B82FF',
-  };
-
-  return { ...p, ...extra };
-});
-
-export const HERO_REEL = [
-  {
-    num: '00',
-    title: '航旅纵横 · 宠物出行',
-    tag: '2026 · UX',
-    img: '/images/projects/pet-travel/cover.webp',
-    href: '/pettravel',
-  },
+// Pure cinematic plates for Hero (flagship 2026 Umetrip project first, matching 01–04 order)
+export const HERO_PLATES = [
   {
     num: '01',
-    title: 'Eclipse · 汉斯格雅',
-    tag: '2023 · PRODUCT',
-    img: '/images/projects/eclipse/cover.webp',
-    href: '/eclipse',
+    title: '航旅纵横 · 宠物出行',
+    sub: '打破活体托运黑盒的 UX 提案 · 2026',
+    img: '/images/projects/pet-travel/iphone-mockup.webp',
+    isDevicePlate: true,
+    href: '/v3/work/pettravel',
   },
   {
     num: '02',
-    title: '尊严的具现 · 毕设',
-    tag: '2025 · AIGC × PSS',
-    img: '/images/projects/graduation/cover.webp',
-    href: '/graduation',
+    title: 'Eclipse · 汉斯格雅',
+    sub: '适老化智能卫浴系统 · 2023',
+    img: '/images/projects/eclipse/cover.webp',
+    href: '/v3/work/eclipse',
   },
   {
     num: '03',
-    title: 'Easygoing · 医度',
-    tag: '2023 · SERVICE',
+    title: '尊严的具现',
+    sub: 'AIGC × 智慧养老硕士毕设 · 2025',
+    img: '/images/projects/graduation/cover.webp',
+    href: '/v3/work/graduation',
+  },
+  {
+    num: '04',
+    title: '医度 · Easygoing',
+    sub: '无障碍出行就医 PSS 服务系统 · 2023',
     img: '/images/projects/vcrutch/cover.webp',
-    href: '/vcrutch',
+    href: '/v3/work/vcrutch',
   },
 ];
 
@@ -119,94 +51,113 @@ export const KEYNOTE_PILLARS = [
   {
     id: '01',
     title: '前置运力感知',
-    summary: '服务大厅实时透出航班活体舱位状态，告别填完表单才无舱位的盲盒体验。',
-    metric: '3 → 1 步',
-    metricLabel: '舱位确认路径',
+    summary: '在入口大厅直接呈现活体舱位实时状态，消除填完长表单才被拒的资源盲盒。',
+    focusTag: '入口分流',
+    stageImg: '/images/projects/pet-travel/page_013.jpg',
+    stageKind: 'board',
+    stageCaption: '01 / 随机飞舱位联动 · 三种运力状态前置透出',
   },
   {
     id: '02',
-    title: '表单交互降噪',
-    summary: '将晦涩航司规则转译为品种检索弹窗与校验滑块，大幅降低填报门槛与误填率。',
-    metric: '-62%',
-    metricLabel: '阅读认知负荷',
+    title: '结构化表单降噪',
+    summary: '将复杂航司条款转译为品种检索与联动校验组件，大幅降低首次托运的认知负担。',
+    focusTag: '选择代替输入',
+    stageImg: '/images/projects/pet-travel/page_017.jpg',
+    stageKind: 'board',
+    stageCaption: '02 / 表单防错设计 · 品种与月龄半屏校验弹窗',
   },
   {
     id: '03',
-    title: '飞行状态可视化',
-    summary: '融合实时节点追踪与温情品牌 IP，让托运黑盒变为可感知的安心旅程。',
-    metric: '100%',
-    metricLabel: '核心节点透明',
+    title: '全链路飞行可视化',
+    summary: '以节点追踪与温情品牌 IP 替代物流黑盒，建立可感知的数字生命运输信任。',
+    focusTag: '透明追踪',
+    stageImg: '/images/projects/pet-travel/page_020.jpg',
+    stageKind: 'board',
+    stageCaption: '03 / 黑盒可视化 · 实时飞行地图沙盘与节点追踪',
   },
 ];
 
-export const CAPABILITY_TRACKS = [
+export const DISCIPLINES = [
   {
-    direction: -1,
-    speed: 34,
-    tone: 'cobalt',
-    items: [
-      'Service Design (PSS)',
-      'UX Architecture',
-      '2.5D Journey Mapping',
-      'Accessibility UX',
-      'Design Systems',
-      'User Research',
-    ],
+    num: '01',
+    title: '体验架构',
+    items: '服务设计 PSS · 信息架构 · 2.5D 旅程映射 · 无障碍体验 · 设计系统',
   },
   {
-    direction: 1,
-    speed: 38,
-    tone: 'sky',
-    items: [
-      'ComfyUI / Stable Diffusion',
-      'LLM Agent & Vibe Coding',
-      'Midjourney Concepting',
-      'Runway / Seedance Video',
-      'Prompt Engineering',
-      'Interactive Prototyping',
-    ],
+    num: '02',
+    title: 'AI 驱动工作流',
+    items: 'ComfyUI / SD 节点流 · LLM Agent 协作 · Midjourney · Runway / Seedance',
   },
   {
-    direction: -1,
-    speed: 30,
-    tone: 'amber',
-    items: [
-      'Figma & UI Craft',
-      'Rhino / 3Ds Max',
-      'CGI Visual Delivery',
-      'Brand & Cultural IP',
-      'Procreate Sketching',
-      'Portrait Photography',
-    ],
+    num: '03',
+    title: '视觉与空间表达',
+    items: 'Figma UI · Rhino / 3Ds Max · CGI 视觉渲染 · 品牌文创 · 手绘与摄影',
   },
 ];
 
-export const FILMSTRIP_TOP = [
-  { img: '/images/photography/photo_01.jpg', label: '人像摄影 · 01', href: '/photography' },
-  { img: '/images/sketch-tiger.webp', label: '彩铅手绘', href: '/sketching' },
-  { img: '/images/photography/ruo_01.jpg', label: '光影肖像', href: '/photography' },
-  { img: '/images/life-seaside.webp', label: '海边切片', href: '/life' },
-  { img: '/images/photography/photo_04.jpg', label: '人像摄影 · 04', href: '/photography' },
-  { img: '/images/sketching/marker-1.jpg', label: '马克笔草图', href: '/sketching' },
-  { img: '/images/photography/ruo_05.jpg', label: '情绪定格', href: '/photography' },
+// Curated edge-to-edge full-bleed photos & sketches (100% inside V3 /v3/beyond/:category)
+export const CURATED_FILMSTRIP = [
+  { img: '/images/life-seaside.webp', label: '海边切片', cat: 'LIFE', href: '/v3/beyond/life' },
+  { img: '/images/photography/ruo_01.jpg', label: '光影肖像', cat: 'PHOTO', href: '/v3/beyond/photography' },
+  { img: '/images/sketch-tiger.webp', label: '彩铅刻画', cat: 'SKETCH', href: '/v3/beyond/sketching' },
+  { img: '/images/life/wolf-alice.jpg', label: '蓝调现场', cat: 'LIFE', href: '/v3/beyond/life' },
+  { img: '/images/photography/ruo_03.jpg', label: '胶片人像', cat: 'PHOTO', href: '/v3/beyond/photography' },
+  { img: '/images/sketching/marker-1.jpg', label: '马克笔推演', cat: 'SKETCH', href: '/v3/beyond/sketching' },
+  { img: '/images/photography/ruo_05.jpg', label: '情绪定格', cat: 'PHOTO', href: '/v3/beyond/photography' },
+  { img: '/images/life/samoyed.jpg', label: '日常温度', cat: 'LIFE', href: '/v3/beyond/life' },
+  { img: '/images/sketching/marker-2.jpg', label: '产品草图', cat: 'SKETCH', href: '/v3/beyond/sketching' },
 ];
 
-export const FILMSTRIP_BOTTOM = [
-  { img: '/images/life/wolf-alice.jpg', label: '演出现场', href: '/life' },
-  { img: '/images/photography/photo_06.jpg', label: '人像摄影 · 06', href: '/photography' },
-  { img: '/images/sketching/marker-2.jpg', label: '工业手绘', href: '/sketching' },
-  { img: '/images/photography/ruo_03.jpg', label: '胶片色调', href: '/photography' },
-  { img: '/images/life/samoyed.jpg', label: '日常温度', href: '/life' },
-  { img: '/images/photography/photo_08.jpg', label: '人像摄影 · 08', href: '/photography' },
-  { img: '/images/sketching/gouache.jpg', label: '水粉肌理', href: '/sketching' },
+// Polished, publication-grade timeline (proper Chinese punctuation, no filler meta rows, linked directly to /v3/work/:slug)
+export const COMPACT_TIMELINE = [
+  {
+    year: '2026',
+    title: '航旅纵横 · 宠物出行全链路 UX 体验重构',
+    desc: '重构活体托运服务大厅的运力前置感知、结构化防错表单与飞行状态全链路追踪面板，将高焦虑物流黑盒转化为有温度的数字化服务体验。',
+    keywords: ['信息架构', '全链路 UX', '表单防错', '情感化设计'],
+    caseHref: '/v3/work/pettravel',
+  },
+  {
+    year: '2025',
+    title: '优秀硕士毕业设计 · 尊严的具现',
+    desc: '面向初老人群的智慧养老产品服务系统设计。独立完成服务蓝图、硬件交互与用户测试，系统融合 Stable Diffusion、Midjourney 与 Runway 赋能设计全流程。',
+    keywords: ['智慧养老', 'AIGC 工作流', '服务触点设计'],
+    caseHref: '/v3/work/graduation',
+  },
+  {
+    year: '2024',
+    title: '中英合作 AHRC SEED 种子基金项目',
+    desc: '独立完成中英双语研究报告排版、主导项目影像剪辑与视觉制作，策划落地跨文化工作坊全流程并运用 AI 辅助产品概念共创。',
+    keywords: ['跨国研究', '双语报告', '工作坊策划'],
+    caseHref: '/v3/work/seed',
+  },
+  {
+    year: '2024',
+    title: '学术书籍编撰 & 设计自媒体矩阵（2W+ 读者）',
+    desc: '参与编撰《AI 技术赋能居家养老服务实践》（独立撰写第四、九章）；运营个人成长与设计文献带读自媒体矩阵，全网累计 2W+ 粉丝。',
+    keywords: ['学术出版', '内容影响力', '2W+ 粉丝'],
+  },
+  {
+    year: '2023',
+    title: '德国汉斯格雅合作 · Eclipse 智慧养老卫浴',
+    desc: '从用户研究与服务蓝图出发，主导智能镜物理界面与移动端 App 交互设计，完成高精度 3D 产品渲染、场景可视化与概念影片制作。',
+    keywords: ['产品交互', 'App UX', '3D 可视化'],
+    caseHref: '/v3/work/eclipse',
+  },
+  {
+    year: '2023',
+    title: '「医度」无障碍出行就医 PSS 服务系统',
+    desc: '面向老龄化社区的服务系统设计，主导移动端 App 全链路交互与 UI 规范制定，输出 2.5D 服务流线图呈现完整就医闭环。',
+    keywords: ['PSS 服务设计', '全链路交互', 'UI 规范'],
+    caseHref: '/v3/work/vcrutch',
+  },
+  {
+    year: '2021',
+    title: '省级大创项目负责人 · 彝族非遗文创研究与专利',
+    desc: '专业唯一立项通过项目。发表学术论文 1 篇、获外观专利 1 项与多项国家级/省级设计大奖，统筹完成从田野调研到实体打样的完整交付。',
+    keywords: ['省级立项', '学术论文', '外观专利'],
+    caseHref: '/v3/work/yimoji',
+  },
 ];
-
-export const COMPACT_TIMELINE = timeline.map((t) => ({
-  year: t.year,
-  tag: t.tag,
-  title: t.title,
-  desc: t.desc,
-  keywords: t.keywords.slice(0, 4),
-}));
 
 export { honors };

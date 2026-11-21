@@ -1,89 +1,112 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import KineticMarquee from './KineticMarquee';
+import useV3Reveal from '../useV3Reveal';
+import V3Magnetic from './V3Magnetic';
 import { KEYNOTE_PILLARS } from '../data/v3Data';
 
 export default function V3Keynote() {
   const [activeIdx, setActiveIdx] = useState(0);
+  const revealRef = useV3Reveal(0.1);
+  const tiltRef = useRef(null);
+  const current = KEYNOTE_PILLARS[activeIdx];
+
+  const onStageMove = (e) => {
+    const el = tiltRef.current;
+    if (!el || window.matchMedia('(pointer: coarse)').matches) return;
+    const rect = el.getBoundingClientRect();
+    const px = (e.clientX - rect.left) / rect.width;
+    const py = (e.clientY - rect.top) / rect.height;
+    const ry = (px - 0.5) * 10;
+    const rx = (0.5 - py) * 8;
+    el.style.transform = `perspective(1000px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`;
+    el.style.setProperty('--glare-x', `${(px * 100).toFixed(1)}%`);
+    el.style.setProperty('--glare-y', `${(py * 100).toFixed(1)}%`);
+  };
+
+  const onStageLeave = () => {
+    const el = tiltRef.current;
+    if (!el) return;
+    el.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
+  };
 
   return (
     <div id="v3-keynote" className="v3-keynote">
-      <div className="v3-container">
-        <div className="v3-section-head">
-          <div className="v3-section-head__left">
-            <span className="v3-kicker">01 / FEATURED</span>
-            <h2 className="v3-section-title">航旅纵横 · 宠物出行</h2>
-          </div>
-          <Link to="/pettravel" className="v3-btn v3-btn--primary">
-            <span>查看完整提案</span>
-            <span className="v3-btn__arrow">↗</span>
-          </Link>
-        </div>
-
+      <div ref={revealRef} className="v3-container v3-reveal">
         <div className="v3-keynote__grid">
-          <div className="v3-keynote__pillars">
-            {KEYNOTE_PILLARS.map((p, i) => {
-              const active = i === activeIdx;
-              return (
-                <button
-                  key={p.id}
-                  className={`v3-pillar-item${active ? ' is-active' : ''}`}
-                  onClick={() => setActiveIdx(i)}
-                  aria-pressed={active}
-                >
-                  <div className="v3-pillar-item__head">
-                    <span className="v3-pillar-item__id">{p.id}</span>
-                    <h3>{p.title}</h3>
-                    <div className="v3-pillar-item__metric">
-                      <strong>{p.metric}</strong>
-                      <span>{p.metricLabel}</span>
+          <div className="v3-keynote__left">
+            <span className="v3-kicker">01 / FEATURED PROPOSAL · 2026</span>
+            <h2 className="v3-keynote__title">
+              航旅纵横 · 宠物出行
+              <span className="v3-title-sub-en">Pet Travel UX Proposal</span>
+            </h2>
+
+            <div className="v3-pillar-list">
+              {KEYNOTE_PILLARS.map((p, i) => {
+                const isActive = i === activeIdx;
+                return (
+                  <button
+                    key={p.id}
+                    className={`v3-pillar-row${isActive ? ' is-active' : ''}`}
+                    onClick={() => setActiveIdx(i)}
+                    aria-pressed={isActive}
+                  >
+                    <div className="v3-pillar-row__top">
+                      <span className="v3-pillar-row__id">{p.id}</span>
+                      <h3>{p.title}</h3>
+                      <span className="v3-pillar-row__tag">{p.focusTag}</span>
                     </div>
-                  </div>
-                  <p className="v3-pillar-item__summary">{p.summary}</p>
-                </button>
-              );
-            })}
+                    <p className="v3-pillar-row__summary">{p.summary}</p>
+                  </button>
+                );
+              })}
+            </div>
+
+            <div className="v3-keynote__cta">
+              <V3Magnetic>
+                <Link to="/v3/work/pettravel" className="v3-action-primary">
+                  <span>阅读 22 页完整提案</span>
+                  <span className="v3-action-arrow">↗</span>
+                </Link>
+              </V3Magnetic>
+            </div>
           </div>
 
-          <div className="v3-keynote__stage">
-            <div className="v3-keynote__stage-glow" aria-hidden="true" />
-            <img
-              src="/images/projects/pet-travel/iphone-mockup.webp"
-              alt="航旅纵横宠物出行界面展示"
-              className="v3-keynote__mockup"
-              loading="eager"
-            />
-          </div>
-        </div>
-      </div>
+          <div className="v3-keynote__visual">
+            <div className="v3-keynote__halo" aria-hidden="true" />
+            <Link
+              ref={tiltRef}
+              to="/v3/work/pettravel"
+              onPointerMove={onStageMove}
+              onPointerLeave={onStageLeave}
+              className={`v3-keynote__stage-frame is-${current.stageKind}`}
+              aria-label={`查看 ${current.title} 完整界面方案`}
+            >
+              <div className="v3-keynote__glare" aria-hidden="true" />
+              {KEYNOTE_PILLARS.map((p, idx) => (
+                <img
+                  key={p.id}
+                  src={p.stageImg}
+                  alt={p.title}
+                  className={`v3-keynote__stage-img is-${p.stageKind}${idx === activeIdx ? ' is-active' : ''}`}
+                  loading={idx === 0 ? 'eager' : 'lazy'}
+                />
+              ))}
+            </Link>
 
-      {/* Crossed Dual-Track Blue Kinetic Ribbons */}
-      <div className="v3-cross-ribbons" aria-hidden="true">
-        <div className="v3-cross-ribbon v3-cross-ribbon--dark">
-          <KineticMarquee speed={48} direction={1} velocityFactor={0.3} repeat={4}>
-            <span className="v3-ribbon-item">EXHIBITION LINEUP</span>
-            <span className="v3-ribbon-dot">◆</span>
-            <span className="v3-ribbon-item">SCROLL TO EXPLORE</span>
-            <span className="v3-ribbon-dot">◆</span>
-            <span className="v3-ribbon-item">2018 — 2026</span>
-            <span className="v3-ribbon-dot">◆</span>
-          </KineticMarquee>
-        </div>
-        <div className="v3-cross-ribbon v3-cross-ribbon--blue">
-          <KineticMarquee speed={62} direction={-1} velocityFactor={0.38} repeat={4}>
-            <span className="v3-ribbon-item">航旅纵横</span>
-            <span className="v3-ribbon-dot">/</span>
-            <span className="v3-ribbon-item">ECLIPSE</span>
-            <span className="v3-ribbon-dot">/</span>
-            <span className="v3-ribbon-item">尊严的具现</span>
-            <span className="v3-ribbon-dot">/</span>
-            <span className="v3-ribbon-item">EASYGOING</span>
-            <span className="v3-ribbon-dot">/</span>
-            <span className="v3-ribbon-item">枫泾文创</span>
-            <span className="v3-ribbon-dot">/</span>
-            <span className="v3-ribbon-item">AHRC SEED</span>
-            <span className="v3-ribbon-dot">/</span>
-          </KineticMarquee>
+            <div className="v3-keynote__stage-caption">
+              <span>{current.stageCaption}</span>
+              <div className="v3-keynote__stage-dots" aria-hidden="true">
+                {KEYNOTE_PILLARS.map((p, idx) => (
+                  <button
+                    key={p.id}
+                    className={idx === activeIdx ? 'is-active' : ''}
+                    onClick={() => setActiveIdx(idx)}
+                    aria-label={`切换到 ${p.title}`}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

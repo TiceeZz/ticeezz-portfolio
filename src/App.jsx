@@ -26,6 +26,8 @@ const Pettravel = lazy(() => import('./pages/Pettravel'));
 const Photography = lazy(() => import('./pages/Photography'));
 const OSPage = lazy(() => import('./v2/OSPage'));
 const V3Page = lazy(() => import('./v3/V3Page'));
+const V3WorkPage = lazy(() => import('./v3/V3WorkPage'));
+const V3BeyondPage = lazy(() => import('./v3/V3BeyondPage'));
 
 function PageLoader() {
   return (
@@ -56,6 +58,8 @@ function AppShell() {
           <Route path="/" element={<Home />} />
           <Route path="/v2" element={<OSPage />} />
           <Route path="/v3" element={<V3Page />} />
+          <Route path="/v3/work/:slug" element={<V3WorkPage />} />
+          <Route path="/v3/beyond/:category" element={<V3BeyondPage />} />
           <Route path="/pettravel" element={<Pettravel />} />
           <Route path="/eclipse" element={<Eclipse />} />
           <Route path="/musicfluere" element={<Musicfluere />} />

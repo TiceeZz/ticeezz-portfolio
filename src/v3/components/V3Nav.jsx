@@ -4,12 +4,11 @@ import { Link } from 'react-router-dom';
 const NAV_ITEMS = [
   { id: 'v3-keynote', label: '精选' },
   { id: 'v3-lineup', label: '展厅' },
-  { id: 'v3-capabilities', label: '能力' },
-  { id: 'v3-archive', label: '履历' },
-  { id: 'v3-beyond', label: '影像' },
+  { id: 'v3-index', label: '履历' },
+  { id: 'v3-beyond', label: '设计之外' },
 ];
 
-export default function V3Nav() {
+export default function V3Nav({ theme, onThemeChange }) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrollPct, setScrollPct] = useState(0);
@@ -17,7 +16,7 @@ export default function V3Nav() {
   useEffect(() => {
     const onScroll = () => {
       const y = window.scrollY;
-      setScrolled(y > 32);
+      setScrolled(y > 24);
       const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
       setScrollPct(Math.min(100, Math.round((y / max) * 100)));
     };
@@ -50,11 +49,11 @@ export default function V3Nav() {
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             aria-label="Back to top"
           >
-            <span className="v3-brand__dot" />
+            <span className="v3-brand__mark" />
             <span className="v3-brand__name">TICEEZZ</span>
           </button>
 
-          <div className="v3-nav-links" role="navigation" aria-label="Primary">
+          <nav className="v3-nav-links" aria-label="Primary">
             {NAV_ITEMS.map((item) => (
               <button
                 key={item.id}
@@ -64,13 +63,22 @@ export default function V3Nav() {
                 {item.label}
               </button>
             ))}
-          </div>
+          </nav>
 
           <div className="v3-header__right">
-            <div className="v3-ver-switch" aria-label="Switch edition">
-              <Link to="/" className="v3-ver-pill">v1</Link>
-              <Link to="/v2" className="v3-ver-pill">OS</Link>
-              <span className="v3-ver-pill is-active">v3</span>
+            <div className="v3-theme-switch" role="group" aria-label="切换主题">
+              <button
+                className={`v3-theme-btn${theme === 'light' ? ' is-active' : ''}`}
+                onClick={() => onThemeChange('light')}
+              >
+                浅色
+              </button>
+              <button
+                className={`v3-theme-btn${theme === 'dark' ? ' is-active' : ''}`}
+                onClick={() => onThemeChange('dark')}
+              >
+                深色
+              </button>
             </div>
 
             <button
@@ -88,6 +96,21 @@ export default function V3Nav() {
 
       <div className={`v3-drawer${menuOpen ? ' is-open' : ''}`} aria-hidden={!menuOpen}>
         <div className="v3-drawer__inner">
+          <div className="v3-drawer__theme-row">
+            <button
+              className={`v3-theme-btn${theme === 'light' ? ' is-active' : ''}`}
+              onClick={() => onThemeChange('light')}
+            >
+              浅色主题
+            </button>
+            <button
+              className={`v3-theme-btn${theme === 'dark' ? ' is-active' : ''}`}
+              onClick={() => onThemeChange('dark')}
+            >
+              深色主题
+            </button>
+          </div>
+
           <div className="v3-drawer__list">
             {NAV_ITEMS.map((item, idx) => (
               <button
@@ -106,7 +129,7 @@ export default function V3Nav() {
               <Link to="/" onClick={() => setMenuOpen(false)}>原版 v1 ↗</Link>
               <Link to="/v2" onClick={() => setMenuOpen(false)}>TiceeZz OS ↗</Link>
             </div>
-            <div className="v3-drawer__contact">1027208320@qq.com</div>
+            <div className="v3-drawer__contact">1027208320@qq.com · SHANGHAI</div>
           </div>
         </div>
       </div>

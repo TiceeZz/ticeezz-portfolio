@@ -56,8 +56,11 @@ export default function V3Exhibition() {
     setActiveIndex(0);
 
     const ctx = gsap.context(() => {
-      gsap.set(track, { x: 0 });
+      gsap.set(track, { x: 0, skewX: 0 });
       const getDistance = () => Math.max(0, track.scrollWidth - viewport.clientWidth);
+      const skewTo = gsap.quickTo(track, 'skewX', { duration: 0.38, ease: 'power3.out' });
+      const clampSkew = gsap.utils.clamp(-3.2, 3.2);
+      let skewResetTimer = null;
 
       const tween = gsap.to(track, {
         x: () => -getDistance(),
@@ -67,11 +70,16 @@ export default function V3Exhibition() {
           start: 'top top',
           end: () => `+=${Math.max(400, getDistance() * 1.05)}`,
           pin: true,
-          scrub: 0.6,
+          scrub: 0.65,
           anticipatePin: 1,
           invalidateOnRefresh: true,
           onUpdate: (self) => {
             setProgress(self.progress);
+            track.style.setProperty('--pan-p', String(self.progress));
+            const vel = self.getVelocity();
+            skewTo(clampSkew(vel / -420));
+            clearTimeout(skewResetTimer);
+            skewResetTimer = setTimeout(() => skewTo(0), 90);
             const idx = Math.min(
               items.length - 1,
               Math.max(0, Math.round(self.progress * (items.length - 1)))
@@ -123,29 +131,29 @@ export default function V3Exhibition() {
       <div className="v3-exhibition__shell">
         <div className="v3-exhibition__top">
           <div>
-            <span className="v3-kicker">02 / EXHIBITION</span>
+            <span className="v3-kicker">02 / PROJECT EXHIBITION · 2018—2026</span>
             <h2 className="v3-exhibition__heading">作品展厅</h2>
           </div>
 
           <div className="v3-exhibition__controls">
-            <div className="v3-filter-group" role="tablist" aria-label="Filter projects">
+            <div className="v3-filter-tabs" role="tablist" aria-label="Filter projects">
               {FILTERS.map((f) => (
                 <button
                   key={f.id}
                   role="tab"
                   aria-selected={filter === f.id}
-                  className={`v3-filter-btn${filter === f.id ? ' is-active' : ''}`}
+                  className={`v3-filter-tab${filter === f.id ? ' is-active' : ''}`}
                   onClick={() => setFilter(f.id)}
                 >
                   <span>{f.cn}</span>
-                  <small>{String(f.count).padStart(2, '0')}</small>
+                  <sup>{String(f.count).padStart(2, '0')}</sup>
                 </button>
               ))}
             </div>
 
             <div className="v3-exhibition__arrows">
               <button
-                className="v3-icon-btn"
+                className="v3-arrow-btn"
                 onClick={() => jumpToCard(activeIndex - 1)}
                 disabled={activeIndex <= 0}
                 aria-label="Previous project"
@@ -153,7 +161,7 @@ export default function V3Exhibition() {
                 ←
               </button>
               <button
-                className="v3-icon-btn"
+                className="v3-arrow-btn"
                 onClick={() => jumpToCard(activeIndex + 1)}
                 disabled={activeIndex >= items.length - 1}
                 aria-label="Next project"
@@ -164,6 +172,7 @@ export default function V3Exhibition() {
           </div>
         </div>
 
+        {/* Unobstructed Full-Bleed Gallery Track with Focus Depth & Image Parallax */}
         <div
           ref={viewportRef}
           className="v3-exhibition__viewport"
@@ -174,29 +183,29 @@ export default function V3Exhibition() {
               <Link
                 key={proj.num}
                 to={proj.href}
-                className={`v3-poster${idx === activeIndex ? ' is-focused' : ''}`}
-                style={{ '--poster-accent': proj.accent }}
+                className={`v3-work-plate${idx === activeIndex ? ' is-focused' : ''}`}
               >
-                <div className="v3-poster__media">
+                <div className={`v3-work-plate__media${proj.isDevicePlate ? ' is-device' : ''}`}>
                   <img
-                    src={proj.img}
+                    src={proj.displayImg}
                     alt={proj.title}
-                    className="v3-poster__img"
+                    className={`v3-work-plate__img${proj.isDevicePlate ? ' is-device' : ''}`}
                     loading={idx < 3 ? 'eager' : 'lazy'}
                   />
-                  <div className="v3-poster__vignette" />
-                  <span className="v3-poster__year">{proj.year}</span>
-                  <span className="v3-poster__giant-num" aria-hidden="true">
-                    {proj.num}
-                  </span>
                 </div>
 
-                <div className="v3-poster__body">
-                  <div className="v3-poster__text">
-                    <h3 className="v3-poster__title">{proj.title}</h3>
-                    <p className="v3-poster__subtitle">{proj.subtitle}</p>
+                <div className="v3-work-plate__meta">
+                  <div className="v3-work-plate__left">
+                    <div className="v3-work-plate__title-line">
+                      <span className="v3-work-plate__num">{proj.num}</span>
+                      <h3>{proj.title}</h3>
+                    </div>
+                    <p>{proj.subtitle}</p>
                   </div>
-                  <span className="v3-poster__arrow">↗</span>
+                  <div className="v3-work-plate__right">
+                    <span className="v3-work-plate__year">{proj.year}</span>
+                    <span className="v3-work-plate__arrow">↗</span>
+                  </div>
                 </div>
               </Link>
             ))}
@@ -211,28 +220,15 @@ export default function V3Exhibition() {
           </div>
 
           <div className="v3-exhibition__rail">
-            <div className="v3-exhibition__rail-track">
-              <div
-                className="v3-exhibition__rail-fill"
-                style={{ width: `${Math.max(6, progress * 100)}%` }}
-              />
-            </div>
-            <div className="v3-exhibition__dots">
-              {items.map((p, idx) => (
-                <button
-                  key={p.num}
-                  className={`v3-exhibition__dot${idx === activeIndex ? ' is-active' : ''}`}
-                  onClick={() => jumpToCard(idx)}
-                  title={p.title}
-                  aria-label={`Jump to ${p.title}`}
-                />
-              ))}
-            </div>
+            <div
+              className="v3-exhibition__rail-fill"
+              style={{ width: `${Math.max(5, progress * 100)}%` }}
+            />
           </div>
 
-          <div className="v3-exhibition__scroll-cue">
-            {isDesktop ? 'SCROLL →' : 'SWIPE →'}
-          </div>
+          <span className="v3-exhibition__cue">
+            {isDesktop ? '滚轮横向浏览 →' : '左右滑动 →'}
+          </span>
         </div>
       </div>
     </div>

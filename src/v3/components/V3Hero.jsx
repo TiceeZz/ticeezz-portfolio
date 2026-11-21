@@ -1,33 +1,35 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import KineticMarquee from './KineticMarquee';
-import { HERO_REEL } from '../data/v3Data';
+import V3AmbientCanvas from './V3AmbientCanvas';
+import V3Magnetic from './V3Magnetic';
+import { HERO_PLATES } from '../data/v3Data';
 
 const TICKER_ITEMS = [
-  'UX ARCHITECTURE',
-  'PRODUCT DESIGN',
-  'AI WORKFLOW',
-  'SERVICE SYSTEMS',
-  'SHANGHAI · 2026',
+  { en: 'UX DESIGN', cn: '用户体验' },
+  { en: 'PRODUCT & PSS', cn: '产品与服务系统' },
+  { en: 'AI WORKFLOW', cn: 'AI 驱动设计' },
+  { en: 'SPATIAL & VISUAL', cn: '空间与视觉表达' },
+  { en: '2018 — 2026', cn: '作品档案' },
 ];
 
-export default function V3Hero() {
-  const [activeReel, setActiveReel] = useState(0);
+export default function V3Hero({ theme }) {
+  const [active, setActive] = useState(0);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setActiveReel((prev) => (prev + 1) % HERO_REEL.length);
-    }, 4400);
-    return () => clearInterval(timer);
+    const id = setInterval(() => {
+      setActive((prev) => (prev + 1) % HERO_PLATES.length);
+    }, 5200);
+    return () => clearInterval(id);
   }, []);
 
-  const current = HERO_REEL[activeReel];
+  const current = HERO_PLATES[active];
 
-  const jump = (id) => {
+  const scrollTo = (id) => {
     const el = document.getElementById(id);
     if (el) {
       window.scrollTo({
-        top: el.getBoundingClientRect().top + window.scrollY - 64,
+        top: el.getBoundingClientRect().top + window.scrollY - 60,
         behavior: 'smooth',
       });
     }
@@ -35,91 +37,101 @@ export default function V3Hero() {
 
   return (
     <div className="v3-hero" id="v3-top">
-      <div className="v3-hero__grid-bg" aria-hidden="true" />
-      <div className="v3-hero__glow" aria-hidden="true" />
-      <div className="v3-hero__ghost-wrap" aria-hidden="true">
-        <KineticMarquee speed={22} direction={-1} velocityFactor={0.16} repeat={3}>
-          <span className="v3-hero__ghost-word">TICEEZZ</span>
-          <span className="v3-hero__ghost-sep">/</span>
-          <span className="v3-hero__ghost-word">PORTFOLIO</span>
-          <span className="v3-hero__ghost-sep">/</span>
-        </KineticMarquee>
-      </div>
+      <V3AmbientCanvas theme={theme} />
+      <div className="v3-hero__ambient" aria-hidden="true" />
 
-      <div className="v3-hero__stage">
-        <div className="v3-hero__left">
-          <div className="v3-hero__eyebrow">
-            <span className="v3-live-dot" />
-            <span>UX · PRODUCT · AI DESIGN</span>
-          </div>
+      <div className="v3-hero__body">
+        <div className="v3-container v3-hero__top">
+          <div className="v3-hero__headline-grid">
+            <h1 className="v3-hero__title">
+              <span className="v3-intro-mask">
+                <span className="v3-hero__wordmark v3-intro-rise">TICEEZZ</span>
+              </span>
+              <span className="v3-intro-mask v3-intro-mask--sig">
+                <span className="v3-hero__name-row v3-intro-rise v3-intro-rise--d1">
+                  <span className="v3-hero__cn">童宗震</span>
+                  <span className="v3-hero__sig">Tong Zongzhen</span>
+                </span>
+              </span>
+            </h1>
 
-          <h1 className="v3-hero__title">
-            <span>TICEEZZ</span>
-            <span className="v3-hero__cn">童宗震</span>
-          </h1>
-
-          <p className="v3-hero__lead">
-            以体验架构与 AI 工作流，重构有温度的数字产品。
-          </p>
-
-          <div className="v3-hero__actions">
-            <button className="v3-btn v3-btn--primary" onClick={() => jump('v3-lineup')}>
-              <span>探索作品展厅</span>
-              <span className="v3-btn__arrow">→</span>
-            </button>
-            <button className="v3-btn v3-btn--ghost" onClick={() => jump('v3-keynote')}>
-              <span>最新提案</span>
-            </button>
-          </div>
-        </div>
-
-        <div className="v3-hero__right">
-          <div className="v3-reel">
-            <Link to={current.href} className="v3-reel__viewport">
-              {HERO_REEL.map((item, idx) => (
-                <img
-                  key={item.num}
-                  src={item.img}
-                  alt={item.title}
-                  className={`v3-reel__img${idx === activeReel ? ' is-active' : ''}`}
-                  loading={idx === 0 ? 'eager' : 'lazy'}
-                />
-              ))}
-              <div className="v3-reel__scrim" />
-              <div className="v3-reel__caption">
-                <span className="v3-reel__tag">{current.tag}</span>
-                <div className="v3-reel__title-row">
-                  <h3>{current.title}</h3>
-                  <span className="v3-reel__go">↗</span>
-                </div>
-              </div>
-            </Link>
-
-            <div className="v3-reel__tabs">
-              {HERO_REEL.map((item, idx) => (
-                <button
-                  key={item.num}
-                  className={`v3-reel__tab${idx === activeReel ? ' is-active' : ''}`}
-                  onClick={() => setActiveReel(idx)}
-                  aria-label={`Preview ${item.title}`}
-                >
-                  <span className="v3-reel__tab-bar">
-                    <i key={idx === activeReel ? `run-${activeReel}` : 'idle'} />
-                  </span>
+            <div className="v3-hero__side v3-intro-rise v3-intro-rise--d2">
+              <span className="v3-hero__role">UX · PRODUCT · AI DESIGN</span>
+              <p className="v3-hero__lead">
+                用体验思维串联产品与服务，借助 AI 拓展设计表达的边界。
+              </p>
+              <div className="v3-hero__actions">
+                <V3Magnetic>
+                  <button className="v3-action-primary" onClick={() => scrollTo('v3-lineup')}>
+                    <span>进入作品展厅</span>
+                    <span className="v3-action-arrow">→</span>
+                  </button>
+                </V3Magnetic>
+                <button className="v3-action-link" onClick={() => scrollTo('v3-keynote')}>
+                  最新提案 · 航旅纵横
                 </button>
-              ))}
+              </div>
             </div>
           </div>
         </div>
+
+        <div className="v3-container v3-hero__plate-wrap v3-intro-plate">
+          <Link
+            to={current.href}
+            className={`v3-plate${current.isDevicePlate ? ' is-device' : ''}`}
+          >
+            <span className="v3-plate-corner is-tl" aria-hidden="true" />
+            <span className="v3-plate-corner is-tr" aria-hidden="true" />
+            <span className="v3-plate-corner is-bl" aria-hidden="true" />
+            <span className="v3-plate-corner is-br" aria-hidden="true" />
+            {HERO_PLATES.map((plate, idx) => (
+              <img
+                key={plate.num}
+                src={plate.img}
+                alt={plate.title}
+                className={`v3-plate__img${plate.isDevicePlate ? ' is-device' : ''}${idx === active ? ' is-active' : ''}`}
+                loading={idx === 0 ? 'eager' : 'lazy'}
+              />
+            ))}
+            <div className="v3-plate__scrim" />
+            <div className="v3-plate__caption">
+              <span className="v3-plate__num">{current.num}</span>
+              <div className="v3-plate__titles">
+                <strong>{current.title}</strong>
+                <span>{current.sub}</span>
+              </div>
+              <span className="v3-plate__open">查看完整案例 ↗</span>
+            </div>
+          </Link>
+
+          <div className="v3-plate-nav">
+            {HERO_PLATES.map((plate, idx) => (
+              <button
+                key={plate.num}
+                className={`v3-plate-nav__btn${idx === active ? ' is-active' : ''}`}
+                onClick={() => setActive(idx)}
+              >
+                <span className="v3-plate-nav__bar">
+                  <i key={idx === active ? `run-${active}` : 'idle'} />
+                </span>
+                <span className="v3-plate-nav__meta">
+                  <em>{plate.num}</em>
+                  <span>{plate.title}</span>
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
 
-      {/* Cobalt Kinetic Ribbon */}
-      <div className="v3-hero__ticker">
-        <KineticMarquee speed={56} direction={-1} velocityFactor={0.34} slowOnHover repeat={4}>
-          {TICKER_ITEMS.map((text, idx) => (
+      {/* Bilingual Syne + Noto Sans SC Kinetic Ticker */}
+      <div className="v3-hero-ticker" aria-hidden="true">
+        <KineticMarquee speed={44} direction={-1} velocityFactor={0.3} slowOnHover repeat={4}>
+          {TICKER_ITEMS.map((item, idx) => (
             <span key={idx} className="v3-ticker__chunk">
-              <span className="v3-ticker__text">{text}</span>
-              <span className="v3-ticker__star" aria-hidden="true">✦</span>
+              <span className="v3-ticker__en">{item.en}</span>
+              <span className="v3-ticker__cn">{item.cn}</span>
+              <span className="v3-ticker__sep">/</span>
             </span>
           ))}
         </KineticMarquee>
