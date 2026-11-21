@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import useAsyncGSAP from '../../hooks/useAsyncGSAP';
+import useV3Reveal from '../useV3Reveal';
 
 const PHRASES = [
   { text: '设计不只是解决问题，', accent: false },
@@ -8,20 +9,29 @@ const PHRASES = [
 ];
 
 /**
- * Scroll-scrubbed attitude manifesto interlude.
- * Phrases illuminate progressively as the visitor scrolls through.
+ * Attitude manifesto interlude.
+ * Desktop: scroll-scrubbed phrase illumination via GSAP.
+ * Mobile / touch: crisp one-shot reveal so scrolling stays silky and text never stalls dim.
  */
 export default function V3Manifesto() {
   const sectionRef = useRef(null);
   const wordsRef = useRef([]);
+  const revealRef = useV3Reveal(0.15);
   const gst = useAsyncGSAP();
 
   useEffect(() => {
     if (!gst || !sectionRef.current) return;
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduced) {
+    const isLightMotion =
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+      window.matchMedia('(pointer: coarse)').matches ||
+      window.innerWidth < 960;
+
+    if (isLightMotion) {
       wordsRef.current.forEach((el) => {
-        if (el) el.style.opacity = '1';
+        if (el) {
+          el.style.opacity = '1';
+          el.style.transform = 'none';
+        }
       });
       return;
     }
@@ -51,7 +61,7 @@ export default function V3Manifesto() {
 
   return (
     <div ref={sectionRef} className="v3-manifesto">
-      <div className="v3-container v3-manifesto__inner">
+      <div ref={revealRef} className="v3-container v3-manifesto__inner v3-reveal">
         <div className="v3-manifesto__eyebrow">
           <span className="v3-kicker">DESIGN STANCE · 设计态度</span>
           <span className="v3-manifesto__rule" aria-hidden="true" />

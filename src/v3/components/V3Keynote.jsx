@@ -33,13 +33,15 @@ export default function V3Keynote() {
     <div id="v3-keynote" className="v3-keynote">
       <div ref={revealRef} className="v3-container v3-reveal">
         <div className="v3-keynote__grid">
-          <div className="v3-keynote__left">
+          <div className="v3-keynote__head">
             <span className="v3-kicker">01 / FEATURED PROPOSAL · 2026</span>
             <h2 className="v3-keynote__title">
               航旅纵横 · 宠物出行
               <span className="v3-title-sub-en">Pet Travel UX Proposal</span>
             </h2>
+          </div>
 
+          <div className="v3-keynote__body">
             <div className="v3-pillar-list">
               {KEYNOTE_PILLARS.map((p, i) => {
                 const isActive = i === activeIdx;

@@ -36,6 +36,7 @@ export default function KineticMarquee({
     let scrollVelocity = 0;
     let smoothBoost = 0;
     let offset = 0;
+    let visible = true;
     let groupWidth = group.getBoundingClientRect().width || 1;
 
     const ro = new ResizeObserver(() => {
@@ -44,7 +45,17 @@ export default function KineticMarquee({
     });
     ro.observe(group);
 
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        visible = entry.isIntersecting;
+        if (visible) lastTime = performance.now();
+      },
+      { threshold: 0.01 }
+    );
+    if (containerRef.current) io.observe(containerRef.current);
+
     const onScroll = () => {
+      if (!visible) return;
       const curr = window.scrollY;
       const delta = curr - lastScrollY;
       lastScrollY = curr;
@@ -55,22 +66,22 @@ export default function KineticMarquee({
     window.addEventListener('scroll', onScroll, { passive: true });
 
     const tick = (now) => {
-      const dt = Math.min((now - lastTime) / 1000, 0.05);
-      lastTime = now;
+      if (visible && !prefersReduced) {
+        const dt = Math.min((now - lastTime) / 1000, 0.05);
+        lastTime = now;
 
-      // Decay scroll velocity smoothly
-      scrollVelocity *= 0.9;
-      smoothBoost += (scrollVelocity - smoothBoost) * 0.12;
+        // Decay scroll velocity smoothly
+        scrollVelocity *= 0.9;
+        smoothBoost += (scrollVelocity - smoothBoost) * 0.12;
 
-      const hoverScale = hoverState.current
-        ? pauseOnHover
-          ? 0
-          : slowOnHover
-          ? 0.22
-          : 1
-        : 1;
+        const hoverScale = hoverState.current
+          ? pauseOnHover
+            ? 0
+            : slowOnHover
+            ? 0.22
+            : 1
+          : 1;
 
-      if (!prefersReduced) {
         const baseStep = direction * speed * dt * hoverScale;
         const boostStep = direction * Math.abs(smoothBoost) * velocityFactor * 16 * dt * hoverScale;
         offset += baseStep + boostStep;
@@ -89,6 +100,7 @@ export default function KineticMarquee({
     return () => {
       cancelAnimationFrame(rafId);
       ro.disconnect();
+      io.disconnect();
       window.removeEventListener('scroll', onScroll);
     };
   }, [speed, direction, velocityFactor, pauseOnHover, slowOnHover]);

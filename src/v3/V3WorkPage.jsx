@@ -1,4 +1,4 @@
-import { useState, useEffect, useLayoutEffect, useCallback } from 'react';
+import { useState, useEffect, useLayoutEffect, useCallback, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import useDocumentTitle from '../hooks/useDocumentTitle';
 import useV3Theme from './useV3Theme';
@@ -14,7 +14,7 @@ export default function V3WorkPage() {
   const [tab, setTab] = useState(0);
   const [viewMode, setViewMode] = useState('stream');
   const [lightboxIdx, setLightboxIdx] = useState(null);
-  const [scrollPct, setScrollPct] = useState(0);
+  const progressRef = useRef(null);
 
   useLayoutEffect(() => {
     setTab(0);
@@ -34,8 +34,10 @@ export default function V3WorkPage() {
 
   useEffect(() => {
     const onScroll = () => {
+      if (!progressRef.current) return;
       const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-      setScrollPct(Math.min(100, Math.round((window.scrollY / max) * 100)));
+      const pct = Math.min(100, (window.scrollY / max) * 100);
+      progressRef.current.style.width = `${pct.toFixed(1)}%`;
     };
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
@@ -89,7 +91,7 @@ export default function V3WorkPage() {
     <div className="v3-root" data-v3-theme={theme}>
       {/* Sticky V3 Case Study Header */}
       <header className="v3-header is-scrolled">
-        <div className="v3-header__progress" style={{ width: `${scrollPct}%` }} />
+        <div ref={progressRef} className="v3-header__progress" />
         <div className="v3-header__inner">
           <Link to="/" className="v3-work-back">
             <span>←</span>

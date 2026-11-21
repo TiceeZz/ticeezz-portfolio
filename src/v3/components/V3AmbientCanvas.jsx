@@ -17,7 +17,9 @@ export default function V3AmbientCanvas({ theme }) {
 
     const reduced =
       typeof window !== 'undefined' &&
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      (window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+        window.matchMedia('(pointer: coarse)').matches ||
+        window.innerWidth < 768);
     if (reduced) return;
 
     let width = 0;

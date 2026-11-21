@@ -39,15 +39,23 @@ export default function V3Nav({ theme, onThemeChange }) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [verOpen, setVerOpen] = useState(false);
-  const [scrollPct, setScrollPct] = useState(0);
   const verRef = useRef(null);
+  const progressRef = useRef(null);
 
   useEffect(() => {
+    let prevScrolled = false;
     const onScroll = () => {
       const y = window.scrollY;
-      setScrolled(y > 24);
-      const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-      setScrollPct(Math.min(100, Math.round((y / max) * 100)));
+      const nextScrolled = y > 24;
+      if (nextScrolled !== prevScrolled) {
+        prevScrolled = nextScrolled;
+        setScrolled(nextScrolled);
+      }
+      if (progressRef.current) {
+        const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+        const pct = Math.min(100, (y / max) * 100);
+        progressRef.current.style.width = `${pct.toFixed(1)}%`;
+      }
     };
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
@@ -89,7 +97,7 @@ export default function V3Nav({ theme, onThemeChange }) {
   return (
     <>
       <header className={`v3-header${scrolled ? ' is-scrolled' : ''}`}>
-        <div className="v3-header__progress" style={{ width: `${scrollPct}%` }} />
+        <div ref={progressRef} className="v3-header__progress" />
 
         <div className="v3-header__inner">
           <button
