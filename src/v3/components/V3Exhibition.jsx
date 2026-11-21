@@ -4,17 +4,15 @@ import useAsyncGSAP from '../../hooks/useAsyncGSAP';
 import { V3_PROJECTS } from '../data/v3Data';
 
 const FILTERS = [
-  { id: 'all', label: 'ALL LINEUP', cn: '全部作品', count: V3_PROJECTS.length },
+  { id: 'all', cn: '全部', count: V3_PROJECTS.length },
   {
     id: 'postgrad',
-    label: 'POSTGRADUATE',
     cn: '硕士 & 最新',
     count: V3_PROJECTS.filter((p) => p.stageGroup === 'postgrad').length,
   },
   {
     id: 'undergrad',
-    label: 'UNDERGRADUATE',
-    cn: '本科优选',
+    cn: '本科',
     count: V3_PROJECTS.filter((p) => p.stageGroup === 'undergrad').length,
   },
 ];
@@ -46,7 +44,6 @@ export default function V3Exhibition() {
     return () => mql.removeEventListener('change', onChange);
   }, []);
 
-  // Desktop GSAP Pinned Vertical-to-Horizontal Scroll
   useEffect(() => {
     if (!isDesktop || !gst) return;
     const section = sectionRef.current;
@@ -60,7 +57,6 @@ export default function V3Exhibition() {
 
     const ctx = gsap.context(() => {
       gsap.set(track, { x: 0 });
-
       const getDistance = () => Math.max(0, track.scrollWidth - viewport.clientWidth);
 
       const tween = gsap.to(track, {
@@ -97,7 +93,6 @@ export default function V3Exhibition() {
     };
   }, [isDesktop, gst, items]);
 
-  // Mobile native horizontal scroll progress
   const onMobileScroll = () => {
     if (isDesktop) return;
     const vp = viewportRef.current;
@@ -126,13 +121,10 @@ export default function V3Exhibition() {
   return (
     <div id="v3-lineup" ref={sectionRef} className="v3-exhibition">
       <div className="v3-exhibition__shell">
-        {/* Top Stage Header */}
         <div className="v3-exhibition__top">
-          <div className="v3-exhibition__title-group">
-            <span className="v3-kicker">02 // EXHIBITION LINEUP</span>
-            <h2 className="v3-exhibition__heading">
-              作品展厅 <span className="v3-exhibition__heading-en">HORIZONTAL SHOWCASE</span>
-            </h2>
+          <div>
+            <span className="v3-kicker">02 / EXHIBITION</span>
+            <h2 className="v3-exhibition__heading">作品展厅</h2>
           </div>
 
           <div className="v3-exhibition__controls">
@@ -172,7 +164,6 @@ export default function V3Exhibition() {
           </div>
         </div>
 
-        {/* Horizontal Filmstrip Viewport */}
         <div
           ref={viewportRef}
           className="v3-exhibition__viewport"
@@ -194,41 +185,29 @@ export default function V3Exhibition() {
                     loading={idx < 3 ? 'eager' : 'lazy'}
                   />
                   <div className="v3-poster__vignette" />
-                  <div className="v3-poster__top-meta">
-                    <span className="v3-poster__stage">{proj.stage}</span>
-                    <span className="v3-poster__year">{proj.year}</span>
-                  </div>
+                  <span className="v3-poster__year">{proj.year}</span>
                   <span className="v3-poster__giant-num" aria-hidden="true">
                     {proj.num}
                   </span>
                 </div>
 
                 <div className="v3-poster__body">
-                  <div className="v3-poster__cat">{proj.category}</div>
-                  <div className="v3-poster__title-row">
+                  <div className="v3-poster__text">
                     <h3 className="v3-poster__title">{proj.title}</h3>
-                    <span className="v3-poster__arrow">↗</span>
+                    <p className="v3-poster__subtitle">{proj.subtitle}</p>
                   </div>
-                  <p className="v3-poster__summary">{proj.summary}</p>
-                  <div className="v3-poster__foot">
-                    <span className="v3-poster__role">{proj.role}</span>
-                    <span className="v3-poster__cta">EXPLORE CASE</span>
-                  </div>
+                  <span className="v3-poster__arrow">↗</span>
                 </div>
               </Link>
             ))}
           </div>
         </div>
 
-        {/* Bottom Scrub Progress & Telemetry Rail */}
         <div className="v3-exhibition__bottom">
           <div className="v3-exhibition__counter">
             <strong>{String(activeIndex + 1).padStart(2, '0')}</strong>
             <span>/</span>
             <span>{String(items.length).padStart(2, '0')}</span>
-            <span className="v3-exhibition__active-name">
-              {items[activeIndex]?.title}
-            </span>
           </div>
 
           <div className="v3-exhibition__rail">
@@ -244,7 +223,7 @@ export default function V3Exhibition() {
                   key={p.num}
                   className={`v3-exhibition__dot${idx === activeIndex ? ' is-active' : ''}`}
                   onClick={() => jumpToCard(idx)}
-                  title={`${p.num} · ${p.title}`}
+                  title={p.title}
                   aria-label={`Jump to ${p.title}`}
                 />
               ))}
@@ -252,7 +231,7 @@ export default function V3Exhibition() {
           </div>
 
           <div className="v3-exhibition__scroll-cue">
-            <span>{isDesktop ? 'SCROLL DOWN TO PAN →' : 'SWIPE TO EXPLORE →'}</span>
+            {isDesktop ? 'SCROLL →' : 'SWIPE →'}
           </div>
         </div>
       </div>

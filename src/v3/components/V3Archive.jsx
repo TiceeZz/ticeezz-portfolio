@@ -1,29 +1,26 @@
 import { useState } from 'react';
-import { timeline, honors, otherHonors, leadership } from '../data/v3Data';
+import { COMPACT_TIMELINE, honors } from '../data/v3Data';
 
 export default function V3Archive() {
-  const [openIdx, setOpenIdx] = useState(0);
+  const [openIdx, setOpenIdx] = useState(-1);
 
   return (
     <div id="v3-archive" className="v3-archive">
       <div className="v3-container">
         <div className="v3-section-head">
-          <div className="v3-section-head__left">
-            <span className="v3-kicker">04 // PRACTICE & CREDENTIALS</span>
-            <h2 className="v3-section-title">实践履历与荣誉</h2>
+          <div>
+            <span className="v3-kicker">04 / EXPERIENCE</span>
+            <h2 className="v3-section-title">实践履历</h2>
           </div>
-          <div className="v3-section-head__right">
-            <div className="v3-edu-strip">
-              <span><strong>东华大学</strong> 艺术设计 MA</span>
-              <i>/</i>
-              <span><strong>四川农业大学</strong> 产品设计 BA · RANK 1/121</span>
-            </div>
+          <div className="v3-edu-strip">
+            <span><strong>东华大学</strong> MA</span>
+            <i>·</i>
+            <span><strong>四川农业大学</strong> BA (1/121)</span>
           </div>
         </div>
 
-        {/* Interactive Spec-Sheet Accordion */}
         <div className="v3-spec-list">
-          {timeline.map((item, idx) => {
+          {COMPACT_TIMELINE.map((item, idx) => {
             const isOpen = openIdx === idx;
             return (
               <div
@@ -36,7 +33,6 @@ export default function V3Archive() {
                   aria-expanded={isOpen}
                 >
                   <span className="v3-spec-row__year">{item.year}</span>
-                  <span className="v3-spec-row__tag">{item.tag}</span>
                   <span className="v3-spec-row__title">{item.title}</span>
                   <span className="v3-spec-row__toggle" aria-hidden="true">
                     {isOpen ? '−' : '+'}
@@ -61,36 +57,13 @@ export default function V3Archive() {
           })}
         </div>
 
-        {/* 3-Column Honors & Leadership Deck */}
-        <div className="v3-honors-grid">
-          <div className="v3-honor-card v3-honor-card--accent">
-            <div className="v3-honor-card__head">
-              <span>01 // DESIGN AWARDS</span>
-              <strong>设计竞赛奖项</strong>
-            </div>
-            <ul>
-              {honors.map((h) => <li key={h}>{h}</li>)}
-            </ul>
-          </div>
-
-          <div className="v3-honor-card">
-            <div className="v3-honor-card__head">
-              <span>02 // ACADEMIC HONORS</span>
-              <strong>奖学金与综合荣誉</strong>
-            </div>
-            <ul>
-              {otherHonors.map((h) => <li key={h}>{h}</li>)}
-            </ul>
-          </div>
-
-          <div className="v3-honor-card">
-            <div className="v3-honor-card__head">
-              <span>03 // LEADERSHIP</span>
-              <strong>组织统筹与影响</strong>
-            </div>
-            <ul>
-              {leadership.map((l) => <li key={l}>{l}</li>)}
-            </ul>
+        {/* Clean Single-Row Awards Bar */}
+        <div className="v3-awards-bar">
+          <span className="v3-awards-bar__label">HONORS</span>
+          <div className="v3-awards-bar__list">
+            {honors.map((h) => (
+              <span key={h} className="v3-award-pill">{h}</span>
+            ))}
           </div>
         </div>
       </div>
