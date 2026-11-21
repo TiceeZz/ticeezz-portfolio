@@ -117,7 +117,7 @@ export default function ProjectDetail({ project, sections, cover, projectSlug })
   return (
     <div className={s.page}>
       <div className={s.topBar}>
-        <Link to="/" className={s.backLink}>
+        <Link to="/v1" className={s.backLink}>
           ← Back to Home
         </Link>
 

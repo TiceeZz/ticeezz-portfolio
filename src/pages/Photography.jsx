@@ -284,7 +284,7 @@ export default function Photography() {
     }}>
       {/* Back */}
       <div style={{ padding: '28px 4% 0', position: 'relative', zIndex: 2 }}>
-        <Link to="/" style={{ color: 'var(--text-sub)', fontSize: '12px', letterSpacing: '3px', textDecoration: 'none', textTransform: 'uppercase' }}>← Back to Home</Link>
+        <Link to="/v1" style={{ color: 'var(--text-sub)', fontSize: '12px', letterSpacing: '3px', textDecoration: 'none', textTransform: 'uppercase' }}>← Back to Home</Link>
       </div>
 
       {/* Center content */}

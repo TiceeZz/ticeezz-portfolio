@@ -14,7 +14,7 @@ export default function V3Page() {
   const [theme, setTheme] = useV3Theme();
 
   useDocumentTitle(
-    'TiceeZz — Portfolio v3',
+    'TiceeZz (童宗震) | UX · Product · AI Design',
     'TiceeZz (童宗震) — UX · Product · AI-Driven Design Portfolio.'
   );
 

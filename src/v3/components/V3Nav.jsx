@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
 const NAV_ITEMS = [
@@ -8,10 +8,39 @@ const NAV_ITEMS = [
   { id: 'v3-beyond', label: '设计之外' },
 ];
 
+const EDITIONS = [
+  {
+    code: 'v3',
+    date: '2026.11',
+    title: '新版作品集',
+    desc: '换了双主题，把注意力留给作品',
+    to: null,
+    current: true,
+  },
+  {
+    code: 'v2',
+    date: '2026.06',
+    title: 'TiceeZz OS',
+    desc: '试着把个人站做成桌面系统',
+    to: '/v2',
+    current: false,
+  },
+  {
+    code: 'v1',
+    date: '2026.05',
+    title: '初版网站',
+    desc: '第一次从零搭起来的暗黑版',
+    to: '/v1',
+    current: false,
+  },
+];
+
 export default function V3Nav({ theme, onThemeChange }) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [verOpen, setVerOpen] = useState(false);
   const [scrollPct, setScrollPct] = useState(0);
+  const verRef = useRef(null);
 
   useEffect(() => {
     const onScroll = () => {
@@ -30,8 +59,27 @@ export default function V3Nav({ theme, onThemeChange }) {
     return () => { document.body.style.overflow = ''; };
   }, [menuOpen]);
 
+  useEffect(() => {
+    if (!verOpen) return;
+    const onDocClick = (e) => {
+      if (verRef.current && !verRef.current.contains(e.target)) {
+        setVerOpen(false);
+      }
+    };
+    const onKey = (e) => {
+      if (e.key === 'Escape') setVerOpen(false);
+    };
+    document.addEventListener('mousedown', onDocClick);
+    window.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('mousedown', onDocClick);
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [verOpen]);
+
   const jumpTo = useCallback((id) => {
     setMenuOpen(false);
+    setVerOpen(false);
     const el = document.getElementById(id);
     if (!el) return;
     const top = el.getBoundingClientRect().top + window.scrollY - 64;
@@ -66,6 +114,66 @@ export default function V3Nav({ theme, onThemeChange }) {
           </nav>
 
           <div className="v3-header__right">
+            <div className="v3-ver-wrap" ref={verRef}>
+              <button
+                type="button"
+                className={`v3-ver-trigger${verOpen ? ' is-open' : ''}`}
+                onClick={() => setVerOpen((v) => !v)}
+                aria-expanded={verOpen}
+                aria-haspopup="menu"
+                title="切换网站版本"
+              >
+                <span>v3</span>
+                <span className="v3-ver-caret" aria-hidden="true">▾</span>
+              </button>
+
+              {verOpen && (
+                <div className="v3-ver-menu" role="menu" aria-label="网站版本">
+                  <div className="v3-ver-menu__head">
+                    <span>站点版本</span>
+                    <em>2026</em>
+                  </div>
+                  <div className="v3-ver-menu__list">
+                    {EDITIONS.map((ed) =>
+                      ed.current ? (
+                        <button
+                          key={ed.code}
+                          type="button"
+                          className="v3-ver-item is-current"
+                          onClick={() => setVerOpen(false)}
+                          role="menuitem"
+                        >
+                          <div className="v3-ver-item__top">
+                            <span className="v3-ver-item__code">{ed.code}</span>
+                            <span className="v3-ver-item__date">{ed.date}</span>
+                            <span className="v3-ver-item__badge">当前</span>
+                          </div>
+                          <strong>{ed.title}</strong>
+                          <p>{ed.desc}</p>
+                        </button>
+                      ) : (
+                        <Link
+                          key={ed.code}
+                          to={ed.to}
+                          className="v3-ver-item"
+                          onClick={() => setVerOpen(false)}
+                          role="menuitem"
+                        >
+                          <div className="v3-ver-item__top">
+                            <span className="v3-ver-item__code">{ed.code}</span>
+                            <span className="v3-ver-item__date">{ed.date}</span>
+                            <span className="v3-ver-item__go" aria-hidden="true">↗</span>
+                          </div>
+                          <strong>{ed.title}</strong>
+                          <p>{ed.desc}</p>
+                        </Link>
+                      )
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+
             <div className="v3-theme-switch" role="group" aria-label="切换主题">
               <button
                 className={`v3-theme-btn${theme === 'light' ? ' is-active' : ''}`}
@@ -125,9 +233,10 @@ export default function V3Nav({ theme, onThemeChange }) {
           </div>
 
           <div className="v3-drawer__footer">
+            <div className="v3-drawer__ed-label">其他版本</div>
             <div className="v3-drawer__versions">
-              <Link to="/" onClick={() => setMenuOpen(false)}>原版 v1 ↗</Link>
-              <Link to="/v2" onClick={() => setMenuOpen(false)}>TiceeZz OS ↗</Link>
+              <Link to="/v2" onClick={() => setMenuOpen(false)}>v2 · TiceeZz OS ↗</Link>
+              <Link to="/v1" onClick={() => setMenuOpen(false)}>v1 · 初版网站 ↗</Link>
             </div>
             <div className="v3-drawer__contact">1027208320@qq.com · SHANGHAI</div>
           </div>

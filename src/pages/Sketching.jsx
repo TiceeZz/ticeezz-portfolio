@@ -49,7 +49,7 @@ export default function Sketching() {
     <div style={{ minHeight: '100vh', background: '#06080c', color: '#fff' }}>
       {/* Back & Title */}
       <div style={{ padding: '30px 4% 0' }}>
-        <Link to="/" style={{ color: 'var(--text-sub)', fontSize: '12px', letterSpacing: '3px', textDecoration: 'none', textTransform: 'uppercase' }}>← Back to Home</Link>
+        <Link to="/v1" style={{ color: 'var(--text-sub)', fontSize: '12px', letterSpacing: '3px', textDecoration: 'none', textTransform: 'uppercase' }}>← Back to Home</Link>
       </div>
 
       <header style={{ padding: '80px 6% 60px', maxWidth: '760px' }}>

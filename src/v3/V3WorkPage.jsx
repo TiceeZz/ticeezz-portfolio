@@ -28,7 +28,7 @@ export default function V3WorkPage() {
   }, [slug, study?.defaultView]);
 
   useDocumentTitle(
-    study ? `${study.title} — TiceeZz v3` : 'Project Not Found — TiceeZz v3',
+    study ? `${study.title} — TiceeZz` : 'Project Not Found — TiceeZz',
     study?.desc || 'TiceeZz Design Case Study'
   );
 
@@ -79,7 +79,7 @@ export default function V3WorkPage() {
       <div className="v3-root" data-v3-theme={theme}>
         <div className="v3-work-empty">
           <p>未找到该项目案例。</p>
-          <Link to="/v3" className="v3-action-primary">← 返回作品展厅</Link>
+          <Link to="/" className="v3-action-primary">← 返回作品展厅</Link>
         </div>
       </div>
     );
@@ -91,7 +91,7 @@ export default function V3WorkPage() {
       <header className="v3-header is-scrolled">
         <div className="v3-header__progress" style={{ width: `${scrollPct}%` }} />
         <div className="v3-header__inner">
-          <Link to="/v3" className="v3-work-back">
+          <Link to="/" className="v3-work-back">
             <span>←</span>
             <span>返回展厅</span>
           </Link>
@@ -265,7 +265,7 @@ export default function V3WorkPage() {
               <strong>{data.prev.title}</strong>
             </Link>
           ) : (
-            <Link to="/v3" className="v3-work__pager-link">
+            <Link to="/" className="v3-work__pager-link">
               <span>← BACK</span>
               <strong>返回 V3 首页</strong>
             </Link>
@@ -277,7 +277,7 @@ export default function V3WorkPage() {
               <strong>{data.next.title}</strong>
             </Link>
           ) : (
-            <Link to="/v3" className="v3-work__pager-link is-right">
+            <Link to="/" className="v3-work__pager-link is-right">
               <span>EXHIBITION →</span>
               <strong>回到全部展厅</strong>
             </Link>

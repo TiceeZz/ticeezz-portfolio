@@ -88,7 +88,7 @@ export default function V3BeyondPage() {
   const activeCat = CATEGORY_TABS.some((t) => t.id === category) ? category : 'photography';
   const currentMeta = CATEGORY_TABS.find((t) => t.id === activeCat);
 
-  useDocumentTitle(`${currentMeta.label} — TiceeZz v3`, `TiceeZz 设计之外 · ${currentMeta.label}`);
+  useDocumentTitle(`${currentMeta.label} — TiceeZz`, `TiceeZz 设计之外 · ${currentMeta.label}`);
 
   useLayoutEffect(() => {
     setLightbox(null);
@@ -137,7 +137,7 @@ export default function V3BeyondPage() {
     <div className="v3-root" data-v3-theme={theme}>
       <header className="v3-header is-scrolled">
         <div className="v3-header__inner">
-          <Link to="/v3" className="v3-work-back">
+          <Link to="/" className="v3-work-back">
             <span>←</span>
             <span>返回首页</span>
           </Link>

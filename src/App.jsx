@@ -5,8 +5,9 @@ import CursorDot from './components/cursor/CursorDot';
 import CursorRing from './components/cursor/CursorRing';
 import ScrollRestoration from './components/ScrollRestoration';
 import LoadingScreen from './components/layout/LoadingScreen';
-import Home from './pages/Home';
+import V3Page from './v3/V3Page';
 
+const Home = lazy(() => import('./pages/Home'));
 const Eclipse = lazy(() => import('./pages/Eclipse'));
 const Musicfluere = lazy(() => import('./pages/Musicfluere'));
 const Smartbath = lazy(() => import('./pages/Smartbath'));
@@ -25,7 +26,6 @@ const Life = lazy(() => import('./pages/Life'));
 const Pettravel = lazy(() => import('./pages/Pettravel'));
 const Photography = lazy(() => import('./pages/Photography'));
 const OSPage = lazy(() => import('./v2/OSPage'));
-const V3Page = lazy(() => import('./v3/V3Page'));
 const V3WorkPage = lazy(() => import('./v3/V3WorkPage'));
 const V3BeyondPage = lazy(() => import('./v3/V3BeyondPage'));
 
@@ -40,10 +40,10 @@ function PageLoader() {
   );
 }
 
-// /v2 与 /v3 为独立版本：跳过经典版的加载屏和自定义光标
+// /、/v2 与 /v3* 为独立版本：跳过经典版 v1 的加载屏和自定义光标
 function AppShell() {
   const { pathname } = useLocation();
-  const isStandalone = pathname.startsWith('/v2') || pathname.startsWith('/v3');
+  const isStandalone = pathname === '/' || pathname.startsWith('/v2') || pathname.startsWith('/v3');
   const [loading, setLoading] = useState(!isStandalone);
   const onLoadComplete = useCallback(() => setLoading(false), []);
 
@@ -55,11 +55,12 @@ function AppShell() {
       {!isStandalone && loading && <LoadingScreen onComplete={onLoadComplete} />}
       <Suspense fallback={<PageLoader />}>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/v2" element={<OSPage />} />
+          <Route path="/" element={<V3Page />} />
           <Route path="/v3" element={<V3Page />} />
           <Route path="/v3/work/:slug" element={<V3WorkPage />} />
           <Route path="/v3/beyond/:category" element={<V3BeyondPage />} />
+          <Route path="/v1" element={<Home />} />
+          <Route path="/v2" element={<OSPage />} />
           <Route path="/pettravel" element={<Pettravel />} />
           <Route path="/eclipse" element={<Eclipse />} />
           <Route path="/musicfluere" element={<Musicfluere />} />

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { setSoundEnabled } from './sound';
 
 function useClock() {
@@ -31,7 +32,8 @@ export default function MenuBar({ theme, onToggleTheme }) {
         <span className="os-menubar__ver">v2.0</span>
       </div>
       <div className="os-menubar__right">
-        <a href="/" className="os-menubar__item" title="回到经典版网站">CLASSIC ↗</a>
+        <Link to="/" className="os-menubar__item" title="返回当前主打 V3 主站">V3 主站 ↗</Link>
+        <Link to="/v1" className="os-menubar__item" title="查看经典初版 v1">v1 ↗</Link>
         <button className="os-menubar__item" onClick={toggleSound} title="音效开关">
           {sound ? 'SND:ON' : 'SND:OFF'}
         </button>

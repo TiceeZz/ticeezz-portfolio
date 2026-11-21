@@ -9,7 +9,7 @@ export default function PlaceholderPage({ title }) {
     }}>
       <h1 style={{ fontSize: '3rem', fontWeight: 800, letterSpacing: '-1px' }}>{title}</h1>
       <p style={{ color: 'var(--text-sub)', fontSize: '1rem' }}>页面内容即将更新，敬请期待。</p>
-      <Link to="/" style={{
+      <Link to="/v1" style={{
         marginTop: '20px', padding: '12px 32px', border: '1px solid var(--ray-cyan)',
         color: 'var(--ray-cyan)', borderRadius: '4px', textDecoration: 'none',
         fontSize: '11px', letterSpacing: '4px', textTransform: 'uppercase',

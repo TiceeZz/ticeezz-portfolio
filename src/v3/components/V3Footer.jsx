@@ -49,9 +49,9 @@ export default function V3Footer() {
           <span>© 2026 TICEEZZ · 童宗震 · 上海</span>
           <div className="v3-footer__editions">
             <span className="v3-footer__ed-label">历史版本</span>
-            <Link to="/">经典版 v1</Link>
+            <Link to="/v1">初版 v1</Link>
             <span>/</span>
-            <Link to="/v2">桌面版 OS</Link>
+            <Link to="/v2">TiceeZz OS</Link>
           </div>
         </div>
       </div>

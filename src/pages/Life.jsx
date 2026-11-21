@@ -17,7 +17,7 @@ export default function Life() {
   return (
     <div style={{ minHeight: '100vh', background: '#06080c', color: '#fff', overflowX: 'hidden' }}>
       <div style={{ padding: '30px 4% 0' }}>
-        <Link to="/" style={{ color: 'var(--text-sub)', fontSize: '12px', letterSpacing: '3px', textDecoration: 'none', textTransform: 'uppercase' }}>← Back to Home</Link>
+        <Link to="/v1" style={{ color: 'var(--text-sub)', fontSize: '12px', letterSpacing: '3px', textDecoration: 'none', textTransform: 'uppercase' }}>← Back to Home</Link>
       </div>
 
       <header style={{ padding: '60px 4% 50px' }}>

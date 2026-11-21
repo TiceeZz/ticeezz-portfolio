@@ -1,4 +1,5 @@
 import { useCallback } from 'react';
+import { Link } from 'react-router-dom';
 
 function jump(y) {
   const el = document.documentElement;
@@ -44,6 +45,18 @@ export default function Nav() {
             {a.label}
           </button>
         ))}
+        <Link
+          to="/"
+          className="nav-link"
+          style={{
+            color: '#00f0ff',
+            textDecoration: 'none',
+            borderLeft: '1px solid rgba(255,255,255,0.16)',
+            paddingLeft: '16px',
+          }}
+        >
+          返回 V3 ↗
+        </Link>
       </div>
     </nav>
   );

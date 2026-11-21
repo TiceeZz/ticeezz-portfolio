@@ -50,7 +50,7 @@ export default function Pettravel() {
     <div className={s.page}>
       {/* Top bar */}
       <div className={s.topBar}>
-        <Link to="/" className={s.backLink}>← Back to Home</Link>
+        <Link to="/v1" className={s.backLink}>← Back to Home</Link>
         {(prevProj || nextProj) && (
           <div style={{ display: 'flex', gap: '20px' }}>
             {prevProj && (

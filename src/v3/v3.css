@@ -394,17 +394,185 @@ body.is-v3-active[data-v3-theme='dark'] {
   font-weight: 600;
 }
 
-.v3-ver-links {
+.v3-ver-wrap {
+  position: relative;
+}
+
+.v3-ver-trigger {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
+  height: 32px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  background: var(--bg-alt);
   font-family: var(--f-mono);
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--ink-2);
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+
+.v3-ver-trigger:hover,
+.v3-ver-trigger.is-open {
+  border-color: var(--blue);
+  color: var(--blue-text);
+  background: var(--blue-soft);
+}
+
+.v3-ver-caret {
+  font-size: 10px;
+  line-height: 1;
+  transition: transform 0.2s ease;
+}
+
+.v3-ver-trigger.is-open .v3-ver-caret {
+  transform: rotate(180deg);
+}
+
+.v3-ver-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 316px;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
+  box-shadow: 0 20px 50px rgba(8, 18, 48, 0.16);
+  z-index: 160;
+  animation: v3-ver-pop 0.16s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.v3-root[data-v3-theme='dark'] .v3-ver-menu {
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.55);
+}
+
+@keyframes v3-ver-pop {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.v3-ver-menu__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2px 6px 10px;
+  margin-bottom: 6px;
+  border-bottom: 1px solid var(--line);
   font-size: 11px;
+  font-weight: 600;
+  color: var(--ink-2);
+}
+
+.v3-ver-menu__head em {
+  font-family: var(--f-mono);
+  font-style: normal;
+  font-size: 10px;
+  letter-spacing: 0.14em;
   color: var(--ink-3);
 }
 
-.v3-ver-links a:hover {
+.v3-ver-menu__list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.v3-ver-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 10px 10px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.18s ease, border-color 0.18s ease;
+}
+
+.v3-ver-item:hover {
+  background: var(--bg-alt);
+  border-color: var(--line);
+}
+
+.v3-ver-item.is-current {
+  background: var(--blue-soft);
+  border-color: var(--blue);
+}
+
+.v3-ver-item__top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.v3-ver-item__code {
+  font-family: var(--f-mono);
+  font-size: 11px;
+  font-weight: 600;
   color: var(--blue-text);
+  letter-spacing: 0.04em;
+}
+
+.v3-ver-item__date {
+  font-family: var(--f-mono);
+  font-size: 10.5px;
+  color: var(--ink-3);
+}
+
+.v3-ver-item__badge {
+  margin-left: auto;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: var(--blue);
+  color: var(--on-blue);
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.v3-ver-item__go {
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--ink-3);
+  transition: transform 0.18s ease, color 0.18s ease;
+}
+
+.v3-ver-item:hover .v3-ver-item__go {
+  color: var(--blue-text);
+  transform: translate(2px, -2px);
+}
+
+.v3-ver-item strong {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 2px;
+}
+
+.v3-ver-item p {
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+
+.v3-drawer__ed-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--ink-3);
+  margin-bottom: 8px;
 }
 
 .v3-burger {
@@ -2613,7 +2781,6 @@ body.is-v3-active[data-v3-theme='dark'] {
    ========================================================================== */
 @media (max-width: 1040px) {
   .v3-root nav.v3-nav-links,
-  .v3-ver-links,
   .v3-work-crumb,
   .v3-beyond-nav {
     display: none;
@@ -2683,7 +2850,8 @@ body.is-v3-active[data-v3-theme='dark'] {
 }
 
 @media (max-width: 640px) {
-  .v3-theme-switch {
+  .v3-theme-switch,
+  .v3-ver-wrap {
     display: none;
   }
 
