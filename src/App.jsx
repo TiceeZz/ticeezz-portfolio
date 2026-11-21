@@ -1,5 +1,5 @@
 import { lazy, Suspense, useState, useCallback } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { CursorProvider } from './components/cursor/CursorContext';
 import CursorDot from './components/cursor/CursorDot';
 import CursorRing from './components/cursor/CursorRing';
@@ -25,6 +25,7 @@ const Life = lazy(() => import('./pages/Life'));
 const Pettravel = lazy(() => import('./pages/Pettravel'));
 const Photography = lazy(() => import('./pages/Photography'));
 const OSPage = lazy(() => import('./v2/OSPage'));
+const V3Page = lazy(() => import('./v3/V3Page'));
 
 function PageLoader() {
   return (
@@ -37,44 +38,51 @@ function PageLoader() {
   );
 }
 
-// /v2 是 TiceeZz OS：自带开机动画与系统光标，跳过经典版的加载屏和自定义光标
-const isV2 = typeof window !== 'undefined' && window.location.pathname.startsWith('/v2');
-
-export default function App() {
-  const [loading, setLoading] = useState(!isV2);
+// /v2 与 /v3 为独立版本：跳过经典版的加载屏和自定义光标
+function AppShell() {
+  const { pathname } = useLocation();
+  const isStandalone = pathname.startsWith('/v2') || pathname.startsWith('/v3');
+  const [loading, setLoading] = useState(!isStandalone);
   const onLoadComplete = useCallback(() => setLoading(false), []);
 
   return (
+    <CursorProvider>
+      {!isStandalone && <CursorDot />}
+      {!isStandalone && <CursorRing />}
+      <ScrollRestoration />
+      {!isStandalone && loading && <LoadingScreen onComplete={onLoadComplete} />}
+      <Suspense fallback={<PageLoader />}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/v2" element={<OSPage />} />
+          <Route path="/v3" element={<V3Page />} />
+          <Route path="/pettravel" element={<Pettravel />} />
+          <Route path="/eclipse" element={<Eclipse />} />
+          <Route path="/musicfluere" element={<Musicfluere />} />
+          <Route path="/smartbath" element={<Smartbath />} />
+          <Route path="/fengjing" element={<Fengjing />} />
+          <Route path="/seed" element={<Seed />} />
+          <Route path="/aiworkflow" element={<Aiworkflow />} />
+          <Route path="/vcrutch" element={<Vcrutch />} />
+          <Route path="/graduation" element={<Graduation />} />
+          <Route path="/yimoji" element={<Yimoji />} />
+          <Route path="/giant" element={<Giant />} />
+          <Route path="/bamboo" element={<Bamboo />} />
+          <Route path="/sensible" element={<Sensible />} />
+          <Route path="/nile" element={<Nile />} />
+          <Route path="/sketching" element={<Sketching />} />
+          <Route path="/life" element={<Life />} />
+          <Route path="/photography" element={<Photography />} />
+        </Routes>
+      </Suspense>
+    </CursorProvider>
+  );
+}
+
+export default function App() {
+  return (
     <BrowserRouter>
-      <CursorProvider>
-        {!isV2 && <CursorDot />}
-        {!isV2 && <CursorRing />}
-        <ScrollRestoration />
-        {loading && <LoadingScreen onComplete={onLoadComplete} />}
-        <Suspense fallback={<PageLoader />}>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/v2" element={<OSPage />} />
-            <Route path="/pettravel" element={<Pettravel />} />
-            <Route path="/eclipse" element={<Eclipse />} />
-            <Route path="/musicfluere" element={<Musicfluere />} />
-            <Route path="/smartbath" element={<Smartbath />} />
-            <Route path="/fengjing" element={<Fengjing />} />
-            <Route path="/seed" element={<Seed />} />
-            <Route path="/aiworkflow" element={<Aiworkflow />} />
-            <Route path="/vcrutch" element={<Vcrutch />} />
-            <Route path="/graduation" element={<Graduation />} />
-            <Route path="/yimoji" element={<Yimoji />} />
-            <Route path="/giant" element={<Giant />} />
-            <Route path="/bamboo" element={<Bamboo />} />
-            <Route path="/sensible" element={<Sensible />} />
-            <Route path="/nile" element={<Nile />} />
-            <Route path="/sketching" element={<Sketching />} />
-            <Route path="/life" element={<Life />} />
-            <Route path="/photography" element={<Photography />} />
-          </Routes>
-        </Suspense>
-      </CursorProvider>
+      <AppShell />
     </BrowserRouter>
   );
 }
