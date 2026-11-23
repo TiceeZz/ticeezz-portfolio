@@ -15,6 +15,17 @@ export default function V3WorkPage() {
   const [viewMode, setViewMode] = useState('stream');
   const [lightboxIdx, setLightboxIdx] = useState(null);
   const progressRef = useRef(null);
+  const heroRef = useRef(null);
+
+  const handleTabChange = useCallback((idx) => {
+    setTab(idx);
+    const el = heroRef.current;
+    if (!el) return;
+    const targetTop = el.getBoundingClientRect().bottom + window.scrollY - 60;
+    if (window.scrollY > targetTop + 8) {
+      window.scrollTo({ top: Math.max(0, targetTop), behavior: 'smooth' });
+    }
+  }, []);
 
   useLayoutEffect(() => {
     setTab(0);
@@ -118,13 +129,21 @@ export default function V3WorkPage() {
                 深色
               </button>
             </div>
+            <button
+              type="button"
+              className="v3-theme-mobile-btn"
+              onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+              aria-label="切换浅色或深色主题"
+            >
+              {theme === 'light' ? '深色' : '浅色'}
+            </button>
           </div>
         </div>
       </header>
 
       <main className="v3-work">
         {/* Editorial Hero Header */}
-        <div className="v3-container v3-work__hero">
+        <div ref={heroRef} className="v3-container v3-work__hero">
           <div className="v3-work__meta-bar">
             <span className="v3-kicker">{study.num} / {study.stage}</span>
             <span className="v3-mono-tag">{study.year}</span>
@@ -183,7 +202,7 @@ export default function V3WorkPage() {
                     role="tab"
                     aria-selected={tab === idx}
                     className={`v3-filter-tab${tab === idx ? ' is-active' : ''}`}
-                    onClick={() => setTab(idx)}
+                    onClick={() => handleTabChange(idx)}
                   >
                     <span>{sec.label}</span>
                     <sup>{String(count).padStart(2, '0')}</sup>

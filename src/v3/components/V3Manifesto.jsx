@@ -3,9 +3,9 @@ import useAsyncGSAP from '../../hooks/useAsyncGSAP';
 import useV3Reveal from '../useV3Reveal';
 
 const PHRASES = [
-  { text: '设计不只是解决问题，', accent: false },
-  { text: '更是替具体的人，', accent: false },
-  { text: '留住一份体面与温度。', accent: true },
+  { text: '设计最终会交到人手上，', accent: false },
+  { text: '所以所有的推演，', accent: false },
+  { text: '都应该从人开始。', accent: true },
 ];
 
 /**
@@ -82,11 +82,11 @@ export default function V3Manifesto() {
         </blockquote>
 
         <div className="v3-manifesto__foot">
-          <span>看见人的处境</span>
+          <span>以人为起点</span>
           <i>/</i>
-          <span>理性推演，感性落点</span>
+          <span>尊重真实习惯</span>
           <i>/</i>
-          <span>用体验化解不安</span>
+          <span>落回生活现场</span>
         </div>
       </div>
     </div>

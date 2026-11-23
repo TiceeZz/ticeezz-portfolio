@@ -394,6 +394,21 @@ body.is-v3-active[data-v3-theme='dark'] {
   font-weight: 600;
 }
 
+.v3-theme-mobile-btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  background: var(--bg-alt);
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--ink-2);
+  cursor: pointer;
+}
+
 .v3-ver-wrap {
   position: relative;
 }
@@ -2946,6 +2961,10 @@ body.is-v3-active[data-v3-theme='dark'] {
   .v3-theme-switch,
   .v3-ver-wrap {
     display: none;
+  }
+
+  .v3-theme-mobile-btn {
+    display: inline-flex;
   }
 
   .v3-kicker {

@@ -58,7 +58,7 @@ export default function V3Hero({ theme }) {
             <div className="v3-hero__side v3-intro-rise v3-intro-rise--d2">
               <span className="v3-hero__role">UX · PRODUCT · AI DESIGN</span>
               <p className="v3-hero__lead">
-                用体验思维串联产品与服务，借助 AI 拓展设计表达的边界。
+                关注产品体验与服务流程，结合 AI 工具把想法更快变成可触摸的方案。
               </p>
               <div className="v3-hero__actions">
                 <V3Magnetic>

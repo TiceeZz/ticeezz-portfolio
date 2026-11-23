@@ -8,24 +8,24 @@ const PHOTO_SERIES = [
   {
     id: 'ifexist',
     title: '假如存在',
-    en: 'Experimental Visual Poetry',
-    desc: '以实验性视觉语言探讨身体、光影、空间与情绪张力。',
+    en: 'Experimental Portraits',
+    desc: '试着用光影、肢体和空间关系，拍一组偏实验感的情绪人像。',
     images: Array.from({ length: 9 }, (_, i) => `/images/photography/ruo_${String(i + 1).padStart(2, '0')}.jpg`),
   },
   {
     id: 'xiaohu',
     title: '小胡的写真',
     en: 'Natural Light Portraits',
-    desc: '以自然光捕捉真实情绪，定格胶片颗粒与日常温度。',
+    desc: '自然光下随手记录的日常人像，保留一点胶片颗粒感。',
     images: Array.from({ length: 8 }, (_, i) => `/images/photography/photo_${String(i + 1).padStart(2, '0')}.jpg`),
   },
 ];
 
 const SKETCH_WORKS = [
-  { src: '/images/sketching/colored-pencil.jpg', title: '彩铅写实', medium: 'COLORED PENCIL', desc: '细腻超写实彩铅技法，刻画自然形态下的细节张力。' },
-  { src: '/images/sketching/marker-1.jpg', title: '马克笔表现 · 一', medium: 'MARKER STUDY', desc: '快速捕捉形体结构与空间关系的设计推演。' },
-  { src: '/images/sketching/marker-2.jpg', title: '马克笔表现 · 二', medium: 'INDUSTRIAL SKETCH', desc: '以线条疏密与笔触方向建构产品体量感。' },
-  { src: '/images/sketching/gouache.jpg', title: '水粉静物', medium: 'GOUACHE', desc: '在色彩层叠中探索光线与材质肌理的平衡。' },
+  { src: '/images/sketching/colored-pencil.jpg', title: '彩铅写实', medium: 'COLORED PENCIL', desc: '彩铅写实练习，慢慢磨毛发、光影和质感细节。' },
+  { src: '/images/sketching/marker-1.jpg', title: '马克笔表现 · 一', medium: 'MARKER STUDY', desc: '快速起稿练习，训练抓形和空间透视。' },
+  { src: '/images/sketching/marker-2.jpg', title: '马克笔表现 · 二', medium: 'INDUSTRIAL SKETCH', desc: '工业产品快题表现，用线条疏密交代体块和材质。' },
+  { src: '/images/sketching/gouache.jpg', title: '水粉静物', medium: 'GOUACHE', desc: '早期色彩静物练习，研究光线与明暗关系。' },
 ];
 
 const LIFE_CHAPTERS = [
@@ -33,7 +33,7 @@ const LIFE_CHAPTERS = [
     num: '01',
     title: '狗狗伙伴',
     en: 'Canine Companions',
-    desc: '我的德牧与偶遇的萨摩耶——它们教会我耐心与细腻观察。',
+    desc: '家里的德牧和路上偶遇的萨摩耶，陪着它们发呆很治愈。',
     images: [
       { src: '/images/life/border-collie.jpg', alt: '德牧' },
       { src: '/images/life/samoyed.jpg', alt: '萨摩耶' },
@@ -43,7 +43,7 @@ const LIFE_CHAPTERS = [
     num: '02',
     title: '演出现场',
     en: 'Live Music',
-    desc: 'Katy Perry、Wolf Alice 现场声光张力，持续滋养我对节奏与氛围的感知。',
+    desc: '很喜欢去 Live 现场，Katy Perry 和 Wolf Alice 的舞台声光每次看完都很有能量。',
     images: [
       { src: '/images/life/wolf-alice.jpg', alt: 'Wolf Alice Live' },
       { src: '/images/life/katy-perry.jpg', alt: 'Katy Perry Live' },
@@ -53,7 +53,7 @@ const LIFE_CHAPTERS = [
     num: '03',
     title: 'COS 表达',
     en: 'Character & Craft',
-    desc: '享受二次元文化中角色塑造与视觉演绎的创造力。',
+    desc: '偶尔玩玩二次元 COS，挺享受从妆造到还原角色的过程。',
     images: [
       { src: '/images/life/wuyang.jpg', alt: '无漾' },
       { src: '/images/life/cos-wuyang.jpg', alt: 'COS 无漾' },
@@ -63,7 +63,7 @@ const LIFE_CHAPTERS = [
     num: '04',
     title: '桌面玩伴',
     en: 'Collectibles',
-    desc: '绝区零邦布、崩铁奇美拉、洛克王国——触手可及的日常灵感小物件。',
+    desc: '绝区零邦布、崩铁奇美拉、洛克王国——摆在桌边陪我做设计的小东西。',
     images: [
       { src: '/images/life/bangboo.jpg', alt: '绝区零邦布' },
       { src: '/images/life/chimera.jpg', alt: '崩铁奇美拉' },
@@ -171,6 +171,14 @@ export default function V3BeyondPage() {
                 深色
               </button>
             </div>
+            <button
+              type="button"
+              className="v3-theme-mobile-btn"
+              onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+              aria-label="切换浅色或深色主题"
+            >
+              {theme === 'light' ? '深色' : '浅色'}
+            </button>
           </div>
         </div>
       </header>
