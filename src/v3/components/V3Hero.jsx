@@ -70,6 +70,7 @@ export default function V3Hero({ theme }) {
     <div className="v3-hero" id="v3-top">
       <V3AmbientCanvas theme={theme} />
       <div className="v3-hero__ambient" aria-hidden="true" />
+      <div className="v3-hero__prism" aria-hidden="true" />
 
       <div className="v3-hero__body">
         <div className="v3-container v3-hero__top">
