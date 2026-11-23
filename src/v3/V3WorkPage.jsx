@@ -2,6 +2,7 @@ import { useState, useEffect, useLayoutEffect, useCallback, useRef } from 'react
 import { useParams, Link } from 'react-router-dom';
 import useDocumentTitle from '../hooks/useDocumentTitle';
 import useV3Theme from './useV3Theme';
+import V3Lightbox from './components/V3Lightbox';
 import { getV3CaseStudy } from './data/v3CaseStudies';
 import './v3.css';
 
@@ -59,34 +60,6 @@ export default function V3WorkPage() {
   const images = currentSection?.images || [];
   const isVideo = currentSection?.type === 'video';
 
-  const closeLightbox = useCallback(() => setLightboxIdx(null), []);
-  const prevImg = useCallback(
-    () => setLightboxIdx((i) => (i === null ? null : i > 0 ? i - 1 : images.length - 1)),
-    [images.length]
-  );
-  const nextImg = useCallback(
-    () => setLightboxIdx((i) => (i === null ? null : i < images.length - 1 ? i + 1 : 0)),
-    [images.length]
-  );
-
-  useEffect(() => {
-    if (lightboxIdx === null) {
-      document.body.style.overflow = '';
-      return;
-    }
-    document.body.style.overflow = 'hidden';
-    const onKey = (e) => {
-      if (e.key === 'Escape') closeLightbox();
-      if (e.key === 'ArrowLeft') prevImg();
-      if (e.key === 'ArrowRight') nextImg();
-    };
-    window.addEventListener('keydown', onKey);
-    return () => {
-      document.body.style.overflow = '';
-      window.removeEventListener('keydown', onKey);
-    };
-  }, [lightboxIdx, closeLightbox, prevImg, nextImg]);
-
   if (!study) {
     return (
       <div className="v3-root" data-v3-theme={theme}>
@@ -118,13 +91,13 @@ export default function V3WorkPage() {
             <div className="v3-theme-switch" role="group" aria-label="切换主题">
               <button
                 className={`v3-theme-btn${theme === 'light' ? ' is-active' : ''}`}
-                onClick={() => setTheme('light')}
+                onClick={(e) => setTheme('light', e)}
               >
                 浅色
               </button>
               <button
                 className={`v3-theme-btn${theme === 'dark' ? ' is-active' : ''}`}
-                onClick={() => setTheme('dark')}
+                onClick={(e) => setTheme('dark', e)}
               >
                 深色
               </button>
@@ -132,7 +105,7 @@ export default function V3WorkPage() {
             <button
               type="button"
               className="v3-theme-mobile-btn"
-              onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+              onClick={(e) => setTheme(theme === 'light' ? 'dark' : 'light', e)}
               aria-label="切换浅色或深色主题"
             >
               {theme === 'light' ? '深色' : '浅色'}
@@ -306,21 +279,15 @@ export default function V3WorkPage() {
         </div>
       </main>
 
-      {/* V3 Native Lightbox */}
+      {/* Interactive V3 Lightbox (Swipe + 2x Zoom & Pan) */}
       {lightboxIdx !== null && images[lightboxIdx] && (
-        <div className="v3-lightbox" onClick={closeLightbox} role="dialog" aria-modal="true">
-          <div className="v3-lightbox__top" onClick={(e) => e.stopPropagation()}>
-            <span>
-              {study.title} · {String(lightboxIdx + 1).padStart(2, '0')} / {String(images.length).padStart(2, '0')}
-            </span>
-            <button onClick={closeLightbox} aria-label="关闭灯箱">✕</button>
-          </div>
-          <div className="v3-lightbox__stage" onClick={(e) => e.stopPropagation()}>
-            <button className="v3-lightbox__nav" onClick={prevImg} aria-label="上一张">←</button>
-            <img src={images[lightboxIdx]} alt={`${study.title} ${lightboxIdx + 1}`} />
-            <button className="v3-lightbox__nav" onClick={nextImg} aria-label="下一张">→</button>
-          </div>
-        </div>
+        <V3Lightbox
+          images={images}
+          index={lightboxIdx}
+          title={study.title}
+          onClose={() => setLightboxIdx(null)}
+          onIndexChange={setLightboxIdx}
+        />
       )}
     </div>
   );

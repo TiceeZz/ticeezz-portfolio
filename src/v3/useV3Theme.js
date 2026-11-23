@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { flushSync } from 'react-dom';
 
 const V3_FONT_URL =
   'https://fonts.googleapis.com/css2?' +
@@ -55,15 +56,79 @@ export default function useV3Theme() {
     }
   }, [theme]);
 
-  const switchTheme = (next) => {
-    document.documentElement.classList.add('v3-theme-switching');
-    setTheme(next);
-    requestAnimationFrame(() => {
+  const switchTheme = useCallback(
+    (next, event) => {
+      if (next === theme) return;
+
+      const reduced =
+        typeof window !== 'undefined' &&
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // Circular View Transition wave from pointer click origin
+      if (
+        typeof document !== 'undefined' &&
+        typeof document.startViewTransition === 'function' &&
+        !reduced
+      ) {
+        let x = window.innerWidth - 80;
+        let y = 30;
+        if (event && typeof event.clientX === 'number' && (event.clientX || event.clientY)) {
+          x = event.clientX;
+          y = event.clientY;
+        } else if (event?.currentTarget?.getBoundingClientRect) {
+          const rect = event.currentTarget.getBoundingClientRect();
+          x = rect.left + rect.width / 2;
+          y = rect.top + rect.height / 2;
+        }
+
+        const endRadius = Math.hypot(
+          Math.max(x, window.innerWidth - x),
+          Math.max(y, window.innerHeight - y)
+        );
+
+        document.documentElement.classList.add('v3-theme-switching');
+        const transition = document.startViewTransition(() => {
+          flushSync(() => {
+            setTheme(next);
+          });
+          document.body.setAttribute('data-v3-theme', next);
+        });
+
+        transition.ready
+          .then(() => {
+            document.documentElement.animate(
+              {
+                clipPath: [
+                  `circle(0px at ${x}px ${y}px)`,
+                  `circle(${endRadius.toFixed(1)}px at ${x}px ${y}px)`,
+                ],
+              },
+              {
+                duration: 560,
+                easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+                pseudoElement: '::view-transition-new(root)',
+              }
+            );
+          })
+          .catch(() => {});
+
+        transition.finished.finally(() => {
+          document.documentElement.classList.remove('v3-theme-switching');
+        });
+        return;
+      }
+
+      // Graceful instant fallback for browsers without View Transitions
+      document.documentElement.classList.add('v3-theme-switching');
+      setTheme(next);
       requestAnimationFrame(() => {
-        document.documentElement.classList.remove('v3-theme-switching');
+        requestAnimationFrame(() => {
+          document.documentElement.classList.remove('v3-theme-switching');
+        });
       });
-    });
-  };
+    },
+    [theme]
+  );
 
   return [theme, switchTheme];
 }

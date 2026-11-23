@@ -1,7 +1,8 @@
-import { useState, useLayoutEffect, useEffect, useCallback } from 'react';
+import { useState, useLayoutEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import useDocumentTitle from '../hooks/useDocumentTitle';
 import useV3Theme from './useV3Theme';
+import V3Lightbox from './components/V3Lightbox';
 import './v3.css';
 
 const PHOTO_SERIES = [
@@ -99,40 +100,6 @@ export default function V3BeyondPage() {
     html.style.scrollBehavior = prev;
   }, [activeCat]);
 
-  const closeLb = useCallback(() => setLightbox(null), []);
-  const prevLb = useCallback(
-    () =>
-      setLightbox((lb) =>
-        lb ? { ...lb, index: lb.index > 0 ? lb.index - 1 : lb.images.length - 1 } : null
-      ),
-    []
-  );
-  const nextLb = useCallback(
-    () =>
-      setLightbox((lb) =>
-        lb ? { ...lb, index: lb.index < lb.images.length - 1 ? lb.index + 1 : 0 } : null
-      ),
-    []
-  );
-
-  useEffect(() => {
-    if (!lightbox) {
-      document.body.style.overflow = '';
-      return;
-    }
-    document.body.style.overflow = 'hidden';
-    const onKey = (e) => {
-      if (e.key === 'Escape') closeLb();
-      if (e.key === 'ArrowLeft') prevLb();
-      if (e.key === 'ArrowRight') nextLb();
-    };
-    window.addEventListener('keydown', onKey);
-    return () => {
-      document.body.style.overflow = '';
-      window.removeEventListener('keydown', onKey);
-    };
-  }, [lightbox, closeLb, prevLb, nextLb]);
-
   return (
     <div className="v3-root" data-v3-theme={theme}>
       <header className="v3-header is-scrolled">
@@ -160,13 +127,13 @@ export default function V3BeyondPage() {
             <div className="v3-theme-switch" role="group" aria-label="切换主题">
               <button
                 className={`v3-theme-btn${theme === 'light' ? ' is-active' : ''}`}
-                onClick={() => setTheme('light')}
+                onClick={(e) => setTheme('light', e)}
               >
                 浅色
               </button>
               <button
                 className={`v3-theme-btn${theme === 'dark' ? ' is-active' : ''}`}
-                onClick={() => setTheme('dark')}
+                onClick={(e) => setTheme('dark', e)}
               >
                 深色
               </button>
@@ -174,7 +141,7 @@ export default function V3BeyondPage() {
             <button
               type="button"
               className="v3-theme-mobile-btn"
-              onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+              onClick={(e) => setTheme(theme === 'light' ? 'dark' : 'light', e)}
               aria-label="切换浅色或深色主题"
             >
               {theme === 'light' ? '深色' : '浅色'}
@@ -315,19 +282,13 @@ export default function V3BeyondPage() {
       </main>
 
       {lightbox && (
-        <div className="v3-lightbox" onClick={closeLb} role="dialog" aria-modal="true">
-          <div className="v3-lightbox__top" onClick={(e) => e.stopPropagation()}>
-            <span>
-              {lightbox.title} · {String(lightbox.index + 1).padStart(2, '0')} / {String(lightbox.images.length).padStart(2, '0')}
-            </span>
-            <button onClick={closeLb} aria-label="关闭灯箱">✕</button>
-          </div>
-          <div className="v3-lightbox__stage" onClick={(e) => e.stopPropagation()}>
-            <button className="v3-lightbox__nav" onClick={prevLb} aria-label="上一张">←</button>
-            <img src={lightbox.images[lightbox.index]} alt={lightbox.title} />
-            <button className="v3-lightbox__nav" onClick={nextLb} aria-label="下一张">→</button>
-          </div>
-        </div>
+        <V3Lightbox
+          images={lightbox.images}
+          index={lightbox.index}
+          title={lightbox.title}
+          onClose={() => setLightbox(null)}
+          onIndexChange={(nextIdx) => setLightbox((lb) => (lb ? { ...lb, index: nextIdx } : null))}
+        />
       )}
     </div>
   );

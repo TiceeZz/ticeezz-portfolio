@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import KineticMarquee from './KineticMarquee';
 import V3AmbientCanvas from './V3AmbientCanvas';
@@ -15,6 +15,7 @@ const TICKER_ITEMS = [
 
 export default function V3Hero({ theme }) {
   const [active, setActive] = useState(0);
+  const swipeRef = useRef({ x: 0, y: 0, swiped: false });
 
   useEffect(() => {
     const id = setInterval(() => {
@@ -24,6 +25,36 @@ export default function V3Hero({ theme }) {
   }, []);
 
   const current = HERO_PLATES[active];
+
+  const onPlateTouchStart = (e) => {
+    if (e.touches.length !== 1) return;
+    swipeRef.current = {
+      x: e.touches[0].clientX,
+      y: e.touches[0].clientY,
+      swiped: false,
+    };
+  };
+
+  const onPlateTouchEnd = (e) => {
+    if (e.changedTouches.length !== 1) return;
+    const dx = e.changedTouches[0].clientX - swipeRef.current.x;
+    const dy = e.changedTouches[0].clientY - swipeRef.current.y;
+    if (Math.abs(dx) > 42 && Math.abs(dx) > Math.abs(dy) * 1.2) {
+      swipeRef.current.swiped = true;
+      setActive((prev) =>
+        dx < 0
+          ? (prev + 1) % HERO_PLATES.length
+          : (prev - 1 + HERO_PLATES.length) % HERO_PLATES.length
+      );
+    }
+  };
+
+  const onPlateClick = (e) => {
+    if (swipeRef.current.swiped) {
+      e.preventDefault();
+      swipeRef.current.swiped = false;
+    }
+  };
 
   const scrollTo = (id) => {
     const el = document.getElementById(id);
@@ -79,6 +110,9 @@ export default function V3Hero({ theme }) {
           <Link
             to={current.href}
             className={`v3-plate${current.isDevicePlate ? ' is-device' : ''}`}
+            onTouchStart={onPlateTouchStart}
+            onTouchEnd={onPlateTouchEnd}
+            onClick={onPlateClick}
           >
             <span className="v3-plate-corner is-tl" aria-hidden="true" />
             <span className="v3-plate-corner is-tr" aria-hidden="true" />

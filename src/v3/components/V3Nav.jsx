@@ -39,11 +39,13 @@ export default function V3Nav({ theme, onThemeChange }) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [verOpen, setVerOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('');
   const verRef = useRef(null);
   const progressRef = useRef(null);
 
   useEffect(() => {
     let prevScrolled = false;
+    let prevActive = '';
     const onScroll = () => {
       const y = window.scrollY;
       const nextScrolled = y > 24;
@@ -55,6 +57,22 @@ export default function V3Nav({ theme, onThemeChange }) {
         const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
         const pct = Math.min(100, (y / max) * 100);
         progressRef.current.style.width = `${pct.toFixed(1)}%`;
+      }
+
+      // Lightweight ScrollSpy (only triggers React state when section actually changes)
+      const probe = window.innerHeight * 0.36;
+      let nextActive = '';
+      for (let i = NAV_ITEMS.length - 1; i >= 0; i--) {
+        const el = document.getElementById(NAV_ITEMS[i].id);
+        if (!el) continue;
+        if (el.getBoundingClientRect().top <= probe) {
+          nextActive = NAV_ITEMS[i].id;
+          break;
+        }
+      }
+      if (nextActive !== prevActive) {
+        prevActive = nextActive;
+        setActiveSection(nextActive);
       }
     };
     onScroll();
@@ -113,8 +131,9 @@ export default function V3Nav({ theme, onThemeChange }) {
             {NAV_ITEMS.map((item) => (
               <button
                 key={item.id}
-                className="v3-nav-link"
+                className={`v3-nav-link${activeSection === item.id ? ' is-active' : ''}`}
                 onClick={() => jumpTo(item.id)}
+                aria-current={activeSection === item.id ? 'location' : undefined}
               >
                 {item.label}
               </button>
@@ -185,13 +204,13 @@ export default function V3Nav({ theme, onThemeChange }) {
             <div className="v3-theme-switch" role="group" aria-label="切换主题">
               <button
                 className={`v3-theme-btn${theme === 'light' ? ' is-active' : ''}`}
-                onClick={() => onThemeChange('light')}
+                onClick={(e) => onThemeChange('light', e)}
               >
                 浅色
               </button>
               <button
                 className={`v3-theme-btn${theme === 'dark' ? ' is-active' : ''}`}
-                onClick={() => onThemeChange('dark')}
+                onClick={(e) => onThemeChange('dark', e)}
               >
                 深色
               </button>
@@ -215,13 +234,13 @@ export default function V3Nav({ theme, onThemeChange }) {
           <div className="v3-drawer__theme-row">
             <button
               className={`v3-theme-btn${theme === 'light' ? ' is-active' : ''}`}
-              onClick={() => onThemeChange('light')}
+              onClick={(e) => onThemeChange('light', e)}
             >
               浅色主题
             </button>
             <button
               className={`v3-theme-btn${theme === 'dark' ? ' is-active' : ''}`}
-              onClick={() => onThemeChange('dark')}
+              onClick={(e) => onThemeChange('dark', e)}
             >
               深色主题
             </button>
@@ -231,7 +250,7 @@ export default function V3Nav({ theme, onThemeChange }) {
             {NAV_ITEMS.map((item, idx) => (
               <button
                 key={item.id}
-                className="v3-drawer__item"
+                className={`v3-drawer__item${activeSection === item.id ? ' is-active' : ''}`}
                 onClick={() => jumpTo(item.id)}
               >
                 <span className="v3-drawer__idx">{String(idx + 1).padStart(2, '0')}</span>

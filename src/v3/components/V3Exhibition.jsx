@@ -224,6 +224,29 @@ export default function V3Exhibition() {
               className="v3-exhibition__rail-fill"
               style={{ width: `${Math.max(5, progress * 100)}%` }}
             />
+            <div className="v3-exhibition__nodes" role="group" aria-label="快速跳转至作品">
+              {items.map((proj, idx) => {
+                const pos = items.length > 1 ? (idx / (items.length - 1)) * 100 : 0;
+                const isActive = idx === activeIndex;
+                const isPassed = idx < activeIndex;
+                return (
+                  <button
+                    key={proj.num}
+                    type="button"
+                    className={`v3-exhibition__node${isActive ? ' is-active' : ''}${isPassed ? ' is-passed' : ''}`}
+                    style={{ left: `${pos}%` }}
+                    onClick={() => jumpToCard(idx)}
+                    aria-label={`跳转到 ${proj.num} ${proj.title}`}
+                  >
+                    <span className="v3-exhibition__node-dot" />
+                    <span className="v3-exhibition__node-tip">
+                      <em>{proj.num}</em>
+                      <span>{proj.title}</span>
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
           <span className="v3-exhibition__cue">
