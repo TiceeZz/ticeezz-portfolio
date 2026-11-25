@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import useDocumentTitle from '../hooks/useDocumentTitle';
 import useV3Theme from './useV3Theme';
 import V3Lightbox from './components/V3Lightbox';
+import V3PrismAssistant from './components/V3PrismAssistant';
 import './v3.css';
 
 const PHOTO_SERIES = [
@@ -290,6 +291,8 @@ export default function V3BeyondPage() {
           onIndexChange={(nextIdx) => setLightbox((lb) => (lb ? { ...lb, index: nextIdx } : null))}
         />
       )}
+
+      <V3PrismAssistant theme={theme} onThemeChange={setTheme} />
     </div>
   );
 }

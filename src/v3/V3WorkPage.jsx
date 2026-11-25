@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import useDocumentTitle from '../hooks/useDocumentTitle';
 import useV3Theme from './useV3Theme';
 import V3Lightbox from './components/V3Lightbox';
+import V3PrismAssistant from './components/V3PrismAssistant';
 import { getV3CaseStudy } from './data/v3CaseStudies';
 import './v3.css';
 
@@ -289,6 +290,8 @@ export default function V3WorkPage() {
           onIndexChange={setLightboxIdx}
         />
       )}
+
+      <V3PrismAssistant theme={theme} onThemeChange={setTheme} />
     </div>
   );
 }

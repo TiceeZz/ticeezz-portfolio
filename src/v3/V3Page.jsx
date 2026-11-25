@@ -8,6 +8,7 @@ import V3Exhibition from './components/V3Exhibition';
 import V3Index from './components/V3Index';
 import V3Filmstrip from './components/V3Filmstrip';
 import V3Footer from './components/V3Footer';
+import V3PrismAssistant from './components/V3PrismAssistant';
 import './v3.css';
 
 export default function V3Page() {
@@ -30,6 +31,7 @@ export default function V3Page() {
         <V3Filmstrip />
       </main>
       <V3Footer />
+      <V3PrismAssistant theme={theme} onThemeChange={setTheme} />
     </div>
   );
 }

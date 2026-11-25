@@ -1,0 +1,391 @@
+/**
+ * V3 Prism Assistant Knowledge Engine
+ * 同步 2026.11 最新履历、案例与高频面试问答
+ * 支持：页面上下文感知、引用案例卡片直达、页面交互指令（切换浅/深色主题、跳转区块、一键复制）
+ */
+
+export const QUICK_PROMPTS_HOME = [
+  '30 秒速览：核心优势与经历',
+  '拆解「航旅纵横」的设计判断',
+  '他的 AI 工作流具体怎么落地？',
+  '生成 3 句话推荐语发给老板',
+];
+
+const CASE_CARDS = {
+  pettravel: {
+    num: '01',
+    title: '航旅纵横 · 宠物出行',
+    meta: '全流程 UX 重构 · 2026',
+    href: '/v3/work/pettravel',
+  },
+  eclipse: {
+    num: '02',
+    title: 'Eclipse · 汉斯格雅',
+    meta: '智能硬件面板 + App 交互',
+    href: '/v3/work/eclipse',
+  },
+  graduation: {
+    num: '03',
+    title: '尊严的具现',
+    meta: '智慧养老服务系统 · 硕士毕设',
+    href: '/v3/work/graduation',
+  },
+  vcrutch: {
+    num: '04',
+    title: '医度 · Easygoing',
+    meta: '无障碍就医 PSS 服务系统',
+    href: '/v3/work/vcrutch',
+  },
+  seed: {
+    num: '06',
+    title: 'AHRC SEED 工作坊',
+    meta: '中英合作 · 双语报告与共创',
+    href: '/v3/work/seed',
+  },
+  yimoji: {
+    num: '07',
+    title: '彝 MOJI · 非遗文创',
+    meta: '省级大创 · 论文与外观专利',
+    href: '/v3/work/yimoji',
+  },
+  fengjing: {
+    num: '05',
+    title: '枫泾小院',
+    meta: '品牌视觉与文创包装',
+    href: '/v3/work/fengjing',
+  },
+};
+
+const REFERRAL_PITCH =
+  '推荐一位很稀缺的 AI 复合型产品/UX 设计师童宗震（东华大学艺术设计硕士、川农产品设计专业第 1/121，现居上海长宁随时到岗）：既有扎实的交互与视觉科班功底（做过航旅纵横全链路 UX 重构、新瞳眼科小程序改版、德国汉斯格雅软硬件协同项目），又能直接结合 Figma 与 Claude Code / Codex / Cursor / ComfyUI 把设计方案推进到可交互原型甚至上线产品（这个双主题作品集网站就是他独立设计并工程化落地的）。简历与作品集链接：https://ticeezz-portfolio.pages.dev';
+
+export function getWelcomePayload(pathname) {
+  if (pathname.startsWith('/v3/work/pettravel')) {
+    return {
+      text: '你好，我是 **Prism**，TiceeZz 的作品集导览助手。\n\n你正在看 **「航旅纵横 · 宠物出行」** 全链路 UX 重构提案。可以直接问我这个项目里最核心的 3 个设计取舍，或者让我 30 秒速览他的整体经历。',
+      suggestions: [
+        '拆解「航旅纵横」的设计判断',
+        '30 秒速览：核心优势与经历',
+        '他的 AI 工作流具体怎么落地？',
+      ],
+    };
+  }
+  if (pathname.startsWith('/v3/work/eclipse')) {
+    return {
+      text: '你好，我是 **Prism**。\n\n你正在看德国汉斯格雅校企合作项目 **「Eclipse · 月食」**。他在里面主导了硬件操作面板与配套 App 协同交互以及 3D 渲染演示。想了解项目细节或他的其他经历都可以直接问我。',
+      suggestions: [
+        '聊聊汉斯格雅软硬件协同设计',
+        '30 秒速览：核心优势与经历',
+        '如何联系童宗震？',
+      ],
+    };
+  }
+  if (pathname.startsWith('/v3/work/')) {
+    return {
+      text: '你好，我是 **Prism**，TiceeZz 的作品集导览助手。\n\n你可以随时问我他的项目背景、AI 工作流实践、过往经历，或者让我带你切回首页展厅与履历。',
+      suggestions: QUICK_PROMPTS_HOME,
+    };
+  }
+  return {
+    text: '你好，我是 **Prism**，童宗震（TiceeZz）的作品集导览助手。\n\n不用翻完整站，你可以直接按招聘视角挑下面的问题，或者直接输入想了解的经历、案例、AI 实践，甚至让我帮你**切换浅/深主题**或**直达某块内容**。',
+    suggestions: QUICK_PROMPTS_HOME,
+  };
+}
+
+function hasAny(q, words) {
+  return words.some((w) => q.includes(w));
+}
+
+export function generateV3Response(rawQuery, { theme = 'light' } = {}) {
+  const query = (rawQuery || '').trim();
+  const q = query.toLowerCase();
+
+  if (!q) {
+    return {
+      text: '可以直接输入你想了解的内容，或者点下方快捷问题开始。',
+      suggestions: QUICK_PROMPTS_HOME,
+    };
+  }
+
+  /* ════ 1. 页面控制指令：切换浅/深色主题 ════ */
+  if (
+    hasAny(q, ['深色', '暗色', '暗黑', '黑夜', '夜间', 'dark mode', 'dark']) &&
+    hasAny(q, ['切', '换', '开', '转', '变', '模式', '主题', '试'])
+  ) {
+    return {
+      text:
+        theme === 'dark'
+          ? '当前已经是**深色（暗夜蓝）主题**了。如果想看更偏画廊阅读感的「冰白 · 克莱因蓝」浅色版，也可以随时让我切回去。'
+          : '好，已经帮你切到**深色 · 暗夜蓝**主题（采用 View Transition 圆形扩散过渡）。深色版更适合沉浸看作品细节和光学棱镜质感。',
+      autoAction: theme === 'dark' ? null : { type: 'theme', value: 'dark' },
+      actions:
+        theme === 'dark'
+          ? [{ type: 'theme', value: 'light', label: '切换到浅色主题' }]
+          : [{ type: 'theme', value: 'light', label: '切回浅色主题' }],
+      suggestions: ['这个网站是怎么做出来的？', '30 秒速览：核心优势与经历'],
+    };
+  }
+
+  if (
+    hasAny(q, ['浅色', '亮色', '白色', '白天', 'light mode', 'light']) &&
+    hasAny(q, ['切', '换', '开', '转', '变', '模式', '主题', '试'])
+  ) {
+    return {
+      text:
+        theme === 'light'
+          ? '当前已经是**浅色（冰白 · 克莱因蓝）主题**了。想体验沉浸感更强的深海暗夜蓝版本，点下面就能切。'
+          : '已为你切到**浅色 · 冰白克莱因蓝**主题，文字阅读和案例排版会更轻盈通透。',
+      autoAction: theme === 'light' ? null : { type: 'theme', value: 'light' },
+      actions:
+        theme === 'light'
+          ? [{ type: 'theme', value: 'dark', label: '切换到深色主题' }]
+          : [{ type: 'theme', value: 'dark', label: '切回深色主题' }],
+      suggestions: ['这个网站是怎么做出来的？', '看看他的代表作品'],
+    };
+  }
+
+  if (hasAny(q, ['切换主题', '换主题', '换个颜色', '主题切换'])) {
+    const next = theme === 'light' ? 'dark' : 'light';
+    return {
+      text: `已帮你切换为**${next === 'dark' ? '深色 · 暗夜蓝' : '浅色 · 冰白克莱因蓝'}**主题。这套双主题和棱镜折射细节都是他在 v3 里重新梳理的。`,
+      autoAction: { type: 'theme', value: next },
+      suggestions: ['这个网站是怎么做出来的？', '30 秒速览：核心优势与经历'],
+    };
+  }
+
+  /* ════ 2. 实用彩蛋：3 句话推荐语发给老板/同事 ════ */
+  if (hasAny(q, ['推荐语', '转给老板', '发给老板', '推荐信', '转发', '一句话介绍', '总结一下给'])) {
+    return {
+      text: `可以直接复制下面这段发给业务负责人或团队：\n\n「${REFERRAL_PITCH}」`,
+      actions: [
+        { type: 'copy', value: REFERRAL_PITCH, label: '一键复制推荐语' },
+        { type: 'copy', value: '1027208320@qq.com', label: '复制邮箱' },
+      ],
+      suggestions: ['看看他的联系方式', '拆解「航旅纵横」的设计判断'],
+    };
+  }
+
+  /* ════ 3. 30 秒速览 / 核心优势 / 为什么值得约面 ════ */
+  if (
+    hasAny(q, [
+      '30 秒',
+      '30秒',
+      '速览',
+      '核心优势',
+      '为什么',
+      '值得约面',
+      '自我介绍',
+      '个人简介',
+      '介绍一下',
+      '童宗震',
+      '你是谁',
+      '履历',
+      '背景',
+      '总体',
+    ])
+  ) {
+    return {
+      text:
+        '**童宗震（TiceeZz）· 30 秒速览**\n\n' +
+        '• **教育底子**：东华大学（211）艺术设计硕士（2022–2025），四川农业大学（211）产品设计本科专业第 1/121。\n' +
+        '• **商业与项目**：在新瞳眼科负责会员私域视觉、核心小程序改版与组件规范，并搭起本地 ComfyUI 工作流产出 **200+ 可用素材**；做过**航旅纵横**全链路 UX 重构、**德国汉斯格雅**智能硬件+App 交互、中英 **AHRC SEED** 跨国项目与出版著作（独立撰写第 4、9 章）。\n' +
+        '• **稀缺差异化**：不止停留在静态稿——习惯把 Figma 与 **Antigravity、Claude Code、Codex、Cursor、MCP** 结合，能把复杂交互直接做到可交互原型甚至上线产品（你正在看的 v1→v3 网站就是他独立设计并上线的）。\n' +
+        '• **当前状态**：现居上海长宁，随时到岗，主看 **UX/产品设计** 及 **0–1 体验型 AI 产品/Builder** 机会。',
+      sources: [CASE_CARDS.pettravel, CASE_CARDS.eclipse],
+      actions: [
+        { type: 'scroll', value: 'v3-index', label: '跳到完整履历区 ↓' },
+        { type: 'copy', value: '1027208320@qq.com', label: '复制邮箱' },
+      ],
+      suggestions: ['拆解「航旅纵横」的设计判断', '他的 AI 工作流具体怎么落地？', '新瞳眼科和近期空窗怎么回事？'],
+    };
+  }
+
+  /* ════ 4. 航旅纵横 UX 深度拆解 ════ */
+  if (hasAny(q, ['航旅', '宠物', '托运', 'pettravel', '表单', '防错', '设计判断', '取舍'])) {
+    return {
+      text:
+        '**航旅纵横 · 宠物出行全链路 UX 重构（2026）**\n\n' +
+        '针对宠物航空托运里最真实的三个断点做了系统重构：\n' +
+        '1. **流程瘦身与舱位前置**：用服务蓝图拆解后发现，用户经常填完大半资料才发现航班没名额。重构后按四阶段重组服务大厅并前置展示有氧舱余量，核心预约路径从 **7 步缩到 5 步**。\n' +
+        '2. **复杂表单防错**：把原先一大段纯文字航司规则拆成可检索的品种弹窗和年龄校验滑块，折叠非必填项，用“选择和系统校验”替代用户死记规则。\n' +
+        '3. **过程可视化追踪**：针对托运后看不见宠物的焦虑，设计带飞行高度与物流节点的追踪面板，配合温和提示让等待过程透明可控。\n\n' +
+        '*注：这是他基于真实业务痛点独立推演并按上线标准完成的深度体验重构提案。*',
+      sources: [CASE_CARDS.pettravel],
+      actions: [{ type: 'scroll', value: 'v3-keynote', label: '看首页提案拆解 ↓' }],
+      suggestions: ['他的 AI 工作流具体怎么落地？', '聊聊汉斯格雅软硬件项目', '生成 3 句话推荐语发给老板'],
+    };
+  }
+
+  /* ════ 5. AI 工作流 / 网站开发 / 人机分工 / 复盘 ════ */
+  if (
+    hasAny(q, [
+      'ai',
+      '工作流',
+      'claude',
+      'codex',
+      'cursor',
+      'antigravity',
+      'mcp',
+      'comfyui',
+      'agent',
+      'vibe',
+      '网站',
+      '怎么做的',
+      '写代码',
+      '前端',
+      '原型',
+      '大模型',
+      'llm',
+      'aigc',
+      'sd',
+      'midjourney',
+    ])
+  ) {
+    return {
+      text:
+        '**他的 AI 辅助设计与工程工作流**\n\n' +
+        '• **日常工具栈**：Figma + Antigravity / Claude Code / Codex / Cursor / MCP，以及本地 ComfyUI / Stable Diffusion、Midjourney、Runway。\n' +
+        '• **落地实绩**：\n' +
+        '  1. **商业出图管线**：在新瞳眼科本地搭建 ComfyUI / SD 工作流，累计产出 **200+ 张商业概念与延展素材**；\n' +
+        '  2. **独立网站工程化**：你正在浏览的网站从 v1（暗黑 3D + 初代助手）→ v2（TiceeZz OS 桌面交互）→ v3（浅/深双主题画廊 + 本助手），均由他**自己定视觉规范、交互细节和验收标准**，拆解任务驱动 AI Coding 完成并部署上线，把高保真原型周期从按周缩到按天。\n' +
+        '• **产品反思**：v1/v2 时他一度偏重动效和炫技，v3 主动收敛成了高阅读效率的画廊结构——他很清楚技术表现永远要服务于用户的核心任务。',
+      sources: [CASE_CARDS.graduation, CASE_CARDS.pettravel],
+      actions: [
+        { type: 'theme', value: theme === 'light' ? 'dark' : 'light', label: `体验${theme === 'light' ? '深色' : '浅色'}主题切换` },
+      ],
+      suggestions: ['如果网站重做一次会改什么？', '他更适合做设计还是 AI 产品？', '30 秒速览：核心优势与经历'],
+    };
+  }
+
+  /* ════ 6. 新瞳眼科 / 离职原因 / 空窗期 ════ */
+  if (hasAny(q, ['新瞳', '眼科', '工作经历', '离职', '空窗', '几个月', '3个月', '三个月', '全职', '经验少', '年限'])) {
+    return {
+      text:
+        '**商业经历与近期节奏说明**\n\n' +
+        '• **新瞳眼科（2025.07–2025.10 · 体验与视觉设计）**：负责会员私域从线下礼盒到线上界面的整套视觉统一，参与核心小程序界面改版与基础组件规范整理，并在本地搭建 ComfyUI / SD 出图流程产出 **200+ 可用素材**。\n' +
+        '• **之后这段时间**：阶段性交付完成后，因原业务更偏传统医疗平面执行，他选择转向更契合长期方向的「产品体验设计 + AI 工具落地」；期间一方面保持独立设计协作，一方面系统完成了航旅纵横 UX 重构与作品集网站 v1–v3 工程化迭代。\n' +
+        '• **当前状态**：现居上海长宁，**随时可全职稳定到岗**。',
+      sources: [CASE_CARDS.pettravel],
+      actions: [{ type: 'scroll', value: 'v3-index', label: '查看履历时间线 ↓' }],
+      suggestions: ['他更适合做设计还是 AI 产品？', '他的 AI 工作流具体怎么落地？'],
+    };
+  }
+
+  /* ════ 7. 设计 vs AI 产品定位 ════ */
+  if (hasAny(q, ['产品经理', '设计岗', '适合', '定位', '职业规划', 'pm', 'builder', '转产品'])) {
+    return {
+      text:
+        '**关于「设计 vs AI 产品」的定位**\n\n' +
+        '他的核心底色是**产品与用户体验设计科班**，但工作方式天然偏 **Product Designer / AI Builder**：\n' +
+        '• 在 **UX / AI 产品设计岗**，他有扎实的审美、交互架构、软硬件协同功底，同时能自己用 AI 做出可交互原型，极大降低和研发的沟通损耗；\n' +
+        '• 在 **0–1 早期 AI 团队 / AI Builder 岗**，他习惯从用户场景拆解问题、自己动手做 Demo 快速验证，不靠空谈文档推动方案。',
+      sources: [CASE_CARDS.pettravel, CASE_CARDS.eclipse],
+      suggestions: ['30 秒速览：核心优势与经历', '如何联系童宗震？'],
+    };
+  }
+
+  /* ════ 8. 汉斯格雅 / 硬件与 App 协同 ════ */
+  if (hasAny(q, ['汉斯格雅', 'eclipse', '月食', '硬件', '卫浴', '智能镜', '3d', 'rhino', '渲染'])) {
+    return {
+      text:
+        '**德国汉斯格雅校企合作 · Eclipse 月食（适老化智能卫浴）**\n\n' +
+        '面向半失能老人家庭的通用智能洗漱方案。他从用户研究与服务蓝图切入，核心负责：\n' +
+        '• **软硬件协同交互**：智能镜物理操作面板 + 配套移动端 App 交互设计；\n' +
+        '• **空间与视觉表现**：用 Rhino / 3Ds Max 完成高精度 3D 产品渲染、场景图及演示视频制作。',
+      sources: [CASE_CARDS.eclipse, CASE_CARDS.graduation],
+      suggestions: ['硕士毕设做了什么？', '看看他的其他作品'],
+    };
+  }
+
+  /* ════ 9. 硕士毕设 / 养老 / 医度 ════ */
+  if (hasAny(q, ['毕设', '毕业设计', '尊严', '养老', '初老', '医度', 'easygoing', '服务设计', 'pss'])) {
+    return {
+      text:
+        '**服务设计与适老化代表项目**\n\n' +
+        '• **《尊严的具现》（东华硕士毕设 · 2025）**：面向初老人群的智慧养老产品服务系统，独立完成前期研究、触点规划、人机验证到用户测试，并用 Stable Diffusion、Midjourney、Runway 加速方案发散与测试反馈。\n' +
+        '• **「医度 · Easygoing」（2023）**：老龄化社区无障碍出行就医 PSS 服务系统，负责移动端 App 全链路交互、UI 规范与 2.5D 服务流程图。',
+      sources: [CASE_CARDS.graduation, CASE_CARDS.vcrutch],
+      suggestions: ['聊聊中英 AHRC SEED 和出版著作', '看看他的教育背景'],
+    };
+  }
+
+  /* ════ 10. 教育 / 英语 / AHRC SEED / 出版 / 奖项 ════ */
+  if (hasAny(q, ['教育', '学历', '学校', '东华', '川农', '硕士', '本科', '排名', '英语', '英文', 'ahrc', 'seed', '书', '出版', '论文', '奖', '荣誉'])) {
+    return {
+      text:
+        '**教育背景、学术与国际协作**\n\n' +
+        '• **东华大学（211）** · 艺术设计硕士（2022–2025）\n' +
+        '• **四川农业大学（211）** · 产品设计学士（2018–2022），**专业成绩第 1 / 121**，多次国家励志奖学金，曾任学生会执行主席。\n' +
+        '• **跨国与出版**：参与中英合作智慧养老种子基金（**AHRC SEED**），独立完成中英双语报告与线下工作坊策划，英语可用于文献阅读与日常工作沟通；参编出版图书《AI 技术赋能居家养老服务实践》（**独立撰写第 4、9 章**）；本科持有外观专利 1 项并发表论文 1 篇。\n' +
+        '• **核心竞赛**：华灿奖二等奖、米兰设计周三等奖、NCDA 一/二等奖、包豪斯国际设计大赛、中华设计奖优秀奖。',
+      sources: [CASE_CARDS.seed, CASE_CARDS.yimoji],
+      suggestions: ['30 秒速览：核心优势与经历', '如何联系童宗震？'],
+    };
+  }
+
+  /* ════ 11. 全部作品集 / 展厅导航 ════ */
+  if (hasAny(q, ['作品', '案例', '展厅', '项目', '看什么', '推荐看', 'portfolio', 'gallery'])) {
+    return {
+      text:
+        '建议按时间紧迫度优先看这 **3 个代表作**：\n\n' +
+        '1. **航旅纵横 · 宠物出行** — 看他的复杂业务拆解、表单防错与 C 端 UX 逻辑；\n' +
+        '2. **Eclipse · 汉斯格雅** — 看他的软硬件交互、产品思维与 3D 表达；\n' +
+        '3. **尊严的具现（硕士毕设）** — 看他的完整服务系统设计与 AIGC 辅助探索。',
+      sources: [CASE_CARDS.pettravel, CASE_CARDS.eclipse, CASE_CARDS.graduation],
+      actions: [{ type: 'scroll', value: 'v3-lineup', label: '跳到全部作品展厅 ↓' }],
+      suggestions: ['拆解「航旅纵横」的设计判断', '设计之外他有什么爱好？'],
+    };
+  }
+
+  /* ════ 12. 设计之外：摄影 / 手绘 / 生活 ════ */
+  if (hasAny(q, ['摄影', '手绘', '生活', '爱好', '兴趣', '设计之外', '狗', '演唱会', 'cos', '手办', '彩铅', '马克笔'])) {
+    return {
+      text:
+        '**设计之外的 TiceeZz**\n\n' +
+        '• **人像摄影**：喜欢自然光与胶片颗粒感，站内收有《假如存在》和《小胡的写真》两组系列；\n' +
+        '• **手绘基本功**：彩铅写实、马克笔产品快题、水粉静物；\n' +
+        '• **日常灵感**：养德牧、喜欢欧美 Live 现场（Katy Perry / Wolf Alice）、偶尔玩 COS，桌边摆着绝区零邦布和崩铁奇美拉。',
+      actions: [
+        { type: 'navigate', value: '/v3/beyond/photography', label: '看人像摄影 ↗' },
+        { type: 'navigate', value: '/v3/beyond/sketching', label: '看手绘作品 ↗' },
+      ],
+      suggestions: ['30 秒速览：核心优势与经历', '如何联系童宗震？'],
+    };
+  }
+
+  /* ════ 13. 联系方式 / 约面试 / 地点 ════ */
+  if (hasAny(q, ['联系', '邮箱', '电话', '手机', '微信', '坐标', '上海', '长宁', '到岗', '面试', '约面', '薪资', '期望'])) {
+    return {
+      text:
+        '**联系方式与求职状态**\n\n' +
+        '• **邮箱**：`1027208320@qq.com`\n' +
+        '• **电话**：`+86 199 7467 7449`\n' +
+        '• **现居**：上海 · 长宁区（支持线下面试，随时到岗）\n' +
+        '• **意向方向**：UX / 产品设计师、AI 产品设计师、0–1 体验型 AI 产品 / AI Builder。',
+      actions: [
+        { type: 'copy', value: '1027208320@qq.com', label: '复制邮箱' },
+        { type: 'copy', value: '19974677449', label: '复制电话' },
+      ],
+      suggestions: ['生成 3 句话推荐语发给老板', '30 秒速览：核心优势与经历'],
+    };
+  }
+
+  /* ════ 14. 网站重做反思（面试常考题） ════ */
+  if (hasAny(q, ['重做', '改进', '反思', '不足', '短板', '缺点'])) {
+    return {
+      text:
+        '**他自己对作品集和现阶段的坦诚复盘**\n\n' +
+        '• **关于作品集迭代**：v1/v2 时太想证明技术实现（3D、桌面系统），让只有 30 秒看案例的面试官找重点不够快；所以 v3 专门做减法，把阅读效率和案例直达放在第一位。\n' +
+        '• **关于现阶段短板**：25 年硕士毕业，论全职年限和大型 C 端线上数据复盘确实不如 3–5 年资深设计师；但他能用扎实的设计基本功 + AI 快速做出可交互原型的能力，帮中小创新团队更快把方案跑通落地。',
+      sources: [CASE_CARDS.pettravel],
+      suggestions: ['他的 AI 工作流具体怎么落地？', '如何联系童宗震？'],
+    };
+  }
+
+  /* ════ 15. 边界礼貌收敛（防跑题） ════ */
+  return {
+    text:
+      '我是专注于 **童宗震（TiceeZz）作品集与履历** 的轻量导览助手，其他闲聊就不乱编啦。\n\n你可以问我关于他的**项目拆解、AI 工作流、商业经历、教育与奖项、联系方式**，或者直接让我帮你**切换浅/深色主题**。',
+    suggestions: QUICK_PROMPTS_HOME,
+  };
+}
