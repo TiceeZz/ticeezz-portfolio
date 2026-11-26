@@ -93,67 +93,23 @@
   font-family: inherit;
 }
 
-/* Native iOS Status Bar — 1:1 Pixel-Matched to Figma iPhone 15 Pro Headers */
+/* Authentic Apple iOS Status Bar extracted 1:1 from Figma originals */
 .ptp-statusbar {
   position: relative;
   z-index: 25;
-  height: 52px;
-  padding: 12px 22px 8px 36px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-family: -apple-system, 'SF Pro Text', BlinkMacSystemFont, sans-serif;
-  font-size: 15px;
-  font-weight: 600;
-  letter-spacing: -0.02em;
+  width: 100%;
+  height: 53px;
   flex-shrink: 0;
-  color: #111513;
+  overflow: hidden;
+  pointer-events: none;
 }
 
-.ptp-statusbar.is-light {
-  color: #ffffff;
-}
-
-.ptp-island {
-  position: absolute;
-  top: 12px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 114px;
-  height: 32px;
-  border-radius: 999px;
-  background: #000000;
-}
-
-.ptp-island::before {
-  content: '';
-  position: absolute;
-  left: 16px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 11px;
-  height: 11px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 40% 40%, #1b314d, #05070b 72%);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
-}
-
-.ptp-island::after {
-  content: '';
-  position: absolute;
-  right: 17px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 38% 38%, #284b6b, #070b12 70%);
-}
-
-.ptp-status-icons {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
+.ptp-statusbar img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
 }
 
 .ptp-home-bar {
@@ -1187,6 +1143,45 @@
   min-height: 100%;
   object-fit: cover;
   object-position: top center;
+  transition: filter 0.25s ease;
+}
+
+.ptp-map-bg.is-sat {
+  filter: saturate(1.32) contrast(1.06) brightness(0.93) hue-rotate(-8deg);
+}
+
+.ptp-map-stage-pill {
+  position: absolute;
+  left: 46px;
+  top: 46px;
+  min-width: 74px;
+  z-index: 8;
+  background: rgba(246, 248, 249, 0.98);
+  border-radius: 7px;
+  padding: 2px 8px;
+  text-align: center;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #16221c;
+  box-shadow: 0 2px 8px rgba(15, 36, 26, 0.08);
+  pointer-events: none;
+}
+
+.ptp-map-weather-card {
+  position: absolute;
+  left: 14px;
+  right: 52px;
+  top: 90px;
+  z-index: 14;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: 10px 12px;
+  box-shadow: 0 10px 26px rgba(12, 34, 24, 0.16);
+  border: 1px solid #e4efe9;
+  font-size: 11px;
+  color: #2b3a32;
+  line-height: 1.55;
 }
 
 .ptp-track-sheet {

@@ -2,9 +2,12 @@
  * 航旅纵横 · 宠物出行 — 1:1 Figma 原稿视觉资产 + 全真实交互数据
  */
 
-const UI = (name) => `/images/projects/pet-travel/ui/${name}.webp?v=20261126b`;
+const UI = (name) => `/images/projects/pet-travel/ui/${name}.webp?v=20261126c`;
+const UI_PNG = (name) => `/images/projects/pet-travel/ui/${name}.png?v=20261126c`;
 
 export const HYBRID_ASSETS = {
+  iosBarDark: UI_PNG('ios-bar-dark'),
+  iosBarLight: UI_PNG('ios-bar-light'),
   splash: UI('00_splash'),
   hubHeader: UI('hub-header'),
   cardSolo: UI('card-solo'),

@@ -64,30 +64,8 @@ const CameraSvg = () => (
 );
 
 const StatusBar = ({ light = false, bg }) => (
-  <div className={`ptp-statusbar${light ? ' is-light' : ''}`} style={bg ? { background: bg } : undefined}>
-    <span>9:41</span>
-    <div className="ptp-island" />
-    <span className="ptp-status-icons" aria-hidden="true">
-      {/* 4-bar iOS Cellular Signal */}
-      <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor">
-        <rect x="0" y="7" width="2.8" height="4" rx="0.9" />
-        <rect x="4.5" y="4.8" width="2.8" height="6.2" rx="0.9" />
-        <rect x="9" y="2.5" width="2.8" height="8.5" rx="0.9" />
-        <rect x="13.5" y="0.2" width="2.8" height="10.8" rx="0.9" />
-      </svg>
-      {/* 3-arc iOS Wi-Fi */}
-      <svg width="16" height="11" viewBox="0 0 16 11" fill="none">
-        <path d="M1.2 3.6C4.9 0.3 11.1 0.3 14.8 3.6" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
-        <path d="M3.6 6.2C6.1 4 9.9 4 12.4 6.2" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
-        <circle cx="8" cy="9.4" r="1.4" fill="currentColor" />
-      </svg>
-      {/* iOS Rounded Battery */}
-      <svg width="25" height="12" viewBox="0 0 25 12" fill="none">
-        <rect x="0.8" y="0.8" width="20.6" height="10.4" rx="3" stroke="currentColor" strokeOpacity="0.48" strokeWidth="1.2" />
-        <rect x="2.5" y="2.5" width="17.2" height="7" rx="1.6" fill="currentColor" />
-        <path d="M23.1 4.1V7.9" stroke="currentColor" strokeOpacity="0.55" strokeWidth="1.7" strokeLinecap="round" />
-      </svg>
-    </span>
+  <div className="ptp-statusbar" style={bg ? { background: bg } : undefined} aria-hidden="true">
+    <img src={light ? HYBRID_ASSETS.iosBarLight : HYBRID_ASSETS.iosBarDark} alt="" />
   </div>
 );
 
@@ -139,6 +117,8 @@ export default function PetTravelPrototype() {
   const [onlyValidOrders, setOnlyValidOrders] = useState(true);
   const [detailScrolled, setDetailScrolled] = useState(false);
   const [formScrolled, setFormScrolled] = useState(false);
+  const [mapSatellite, setMapSatellite] = useState(false);
+  const [showWeatherCard, setShowWeatherCard] = useState(false);
 
   const showToast = useCallback((msg) => {
     setToast(msg);
@@ -261,22 +241,19 @@ export default function PetTravelPrototype() {
               </div>
             )}
 
-            {/* ══ 01: SERVICE HUB (Unified StatusBar + 1:1 Figma Header + Real Scroll & Buttons) ══ */}
+            {/* ══ 01: SERVICE HUB (Uncut 1:1 Figma Header + Real Scroll & Buttons) ══ */}
             {screen === 'hub' && (
               <div key="hub" className="ptp-view" style={{ background: '#f2f5f4' }}>
                 <div className="ptp-scroll">
-                  <div className="ptp-hub-top">
-                    <StatusBar light />
-                    <div className="ptp-figma-hdr">
-                      <img src={HYBRID_ASSETS.hubHeader} alt="宠物出行" />
-                      <button
-                        type="button"
-                        className="ptp-hdr-back"
-                        style={{ top: '2%', height: '38%' }}
-                        aria-label="返回开屏"
-                        onClick={() => navigate('splash')}
-                      />
-                    </div>
+                  <div className="ptp-figma-hdr">
+                    <img src={HYBRID_ASSETS.hubHeader} alt="宠物出行" />
+                    <button
+                      type="button"
+                      className="ptp-hdr-back"
+                      style={{ top: '34%', height: '30%' }}
+                      aria-label="返回开屏"
+                      onClick={() => navigate('splash')}
+                    />
                   </div>
 
                   <div className="ptp-hub-body">
@@ -346,22 +323,19 @@ export default function PetTravelPrototype() {
               </div>
             )}
 
-            {/* ══ 02B: RANDOM FLIGHT (Unified StatusBar + 1:1 Figma Header + Real 3-State Machine) ══ */}
+            {/* ══ 02B: RANDOM FLIGHT (Uncut 1:1 Figma Header + Real 3-State Machine) ══ */}
             {screen === 'random' && (
               <div key="random" className="ptp-view" style={{ background: '#f4f6f5' }}>
                 <div className="ptp-scroll">
-                  <div className="ptp-random-top">
-                    <StatusBar />
-                    <div className="ptp-figma-hdr">
-                      <img src={HYBRID_ASSETS.randomHeader} alt="宠物随机飞" />
-                      <button
-                        type="button"
-                        className="ptp-hdr-back"
-                        style={{ top: '2%', height: '30%' }}
-                        aria-label="返回"
-                        onClick={goBack}
-                      />
-                    </div>
+                  <div className="ptp-figma-hdr">
+                    <img src={HYBRID_ASSETS.randomHeader} alt="宠物随机飞" />
+                    <button
+                      type="button"
+                      className="ptp-hdr-back"
+                      style={{ top: '26%', height: '24%' }}
+                      aria-label="返回"
+                      onClick={goBack}
+                    />
                   </div>
 
                   <div className="ptp-quick-bar">
@@ -509,22 +483,19 @@ export default function PetTravelPrototype() {
               </div>
             )}
 
-            {/* ══ 02A: SOLO SEARCH (Unified StatusBar + 1:1 Figma Airplane Header + Real Search Controls) ══ */}
+            {/* ══ 02A: SOLO SEARCH (Uncut 1:1 Figma Airplane Header + Real Search Controls) ══ */}
             {screen === 'soloSearch' && (
               <div key="soloSearch" className="ptp-view" style={{ background: '#f4f6f5' }}>
                 <div className="ptp-scroll">
-                  <div className="ptp-solo-top">
-                    <StatusBar light />
-                    <div className="ptp-figma-hdr">
-                      <img src={HYBRID_ASSETS.soloHeader} alt="宠物单独飞" />
-                      <button
-                        type="button"
-                        className="ptp-hdr-back"
-                        style={{ top: '2%', height: '38%' }}
-                        aria-label="返回"
-                        onClick={goBack}
-                      />
-                    </div>
+                  <div className="ptp-figma-hdr">
+                    <img src={HYBRID_ASSETS.soloHeader} alt="宠物单独飞" />
+                    <button
+                      type="button"
+                      className="ptp-hdr-back"
+                      style={{ top: '34%', height: '28%' }}
+                      aria-label="返回"
+                      onClick={goBack}
+                    />
                   </div>
 
                   <div className="ptp-search-card">
@@ -1315,13 +1286,26 @@ export default function PetTravelPrototype() {
                         </button>
                       ))}
                     </div>
-                    <div style={{ background: '#eff2f1', borderRadius: 9, padding: '8px 10px', fontSize: 11, color: '#4d5d55', lineHeight: 1.5, display: 'flex', alignItems: 'flex-start', gap: 7 }}>
+                    <button
+                      type="button"
+                      style={{ width: '100%', background: '#eff2f1', borderRadius: 9, padding: '8px 10px', fontSize: 11, color: '#4d5d55', lineHeight: 1.5, display: 'flex', alignItems: 'flex-start', gap: 7, textAlign: 'left' }}
+                      onClick={() => setModal('timeline')}
+                    >
                       <span style={{ background: '#e3e8e6', color: '#2b3b33', fontWeight: 700, fontSize: 10.5, padding: '1px 6px', borderRadius: 5, flexShrink: 0 }}>{trackStage.summaryTime}</span>
                       <span>{trackStage.summaryText}</span>
-                    </div>
+                    </button>
                   </div>
                 </>
               );
+
+              const mapStatusOverride =
+                trackStageIdx === 0
+                  ? '揽收中'
+                  : trackStageIdx === 1
+                    ? '安检中'
+                    : trackStageIdx === 3
+                      ? '即将降落'
+                      : null;
 
               return (
                 <div key="tracking" className="ptp-view" style={{ background: '#d8edf7' }}>
@@ -1329,14 +1313,68 @@ export default function PetTravelPrototype() {
                     <img
                       src={isArrived ? HYBRID_ASSETS.mapArrived : HYBRID_ASSETS.mapFly}
                       alt="航旅纵横高德实景航线图"
-                      className="ptp-map-bg"
+                      className={`ptp-map-bg${mapSatellite ? ' is-sat' : ''}`}
                     />
+                    {/* Interactive Back Button */}
                     <button
                       type="button"
                       aria-label="返回"
-                      onClick={() => navigate('hub')}
-                      style={{ position: 'absolute', left: 10, top: 44, width: 38, height: 34, zIndex: 10 }}
+                      onClick={goBack}
+                      style={{ position: 'absolute', left: 10, top: 44, width: 34, height: 34, zIndex: 12 }}
                     />
+                    {/* Dynamic Map Status Badge when scrubbed to Stage 0 / 1 / 3 */}
+                    {mapStatusOverride && (
+                      <div className="ptp-map-stage-pill">{mapStatusOverride}</div>
+                    )}
+                    {/* Interactive Map Layer (平面) */}
+                    <button
+                      type="button"
+                      aria-label="切换地图图层"
+                      onClick={() => {
+                        setMapSatellite((v) => !v);
+                        showToast(!mapSatellite ? '已切换卫星地形视图' : '已切回标准平面地图');
+                      }}
+                      style={{ position: 'absolute', right: 8, top: 48, width: 34, height: 42, zIndex: 12 }}
+                    />
+                    {/* Interactive Weather Toggle (天气) & Airport Pills + GPS on Flying Map */}
+                    {!isArrived && (
+                      <>
+                        <button
+                          type="button"
+                          aria-label="航路天气"
+                          onClick={() => setShowWeatherCard((v) => !v)}
+                          style={{ position: 'absolute', right: 8, top: 92, width: 34, height: 38, zIndex: 12 }}
+                        />
+                        <button
+                          type="button"
+                          aria-label="目的机场信息"
+                          onClick={() => showToast('北京大兴国际机场 · T2 活体宠物专用提取处（恒温 22℃）')}
+                          style={{ position: 'absolute', left: '33%', top: 48, width: 88, height: 26, zIndex: 12 }}
+                        />
+                        <button
+                          type="button"
+                          aria-label="出发机场信息"
+                          onClick={() => showToast('上海虹桥货运站 · 活体专用通道已完成交接')}
+                          style={{ position: 'absolute', left: '62%', bottom: 26, width: 84, height: 28, zIndex: 12 }}
+                        />
+                        <button
+                          type="button"
+                          aria-label="重新定位"
+                          onClick={() => showToast(`已定位至「${petName || '小航'}」当前航迹：高度 10,600m`)}
+                          style={{ position: 'absolute', right: 8, bottom: 24, width: 32, height: 32, zIndex: 12 }}
+                        />
+                        {showWeatherCard && (
+                          <div className="ptp-map-weather-card" onClick={() => setShowWeatherCard(false)}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 700, marginBottom: 3 }}>
+                              <span>航路实时天气 · 适宜飞行</span>
+                              <span style={{ color: '#249b59' }}>关闭 ×</span>
+                            </div>
+                            <div>出发：上海虹桥 晴 21℃ · 东南风 2 级</div>
+                            <div>抵达：北京大兴 多云 19℃ · 有氧舱恒温 22℃</div>
+                          </div>
+                        )}
+                      </>
+                    )}
                   </div>
 
                   {isArrived ? (
