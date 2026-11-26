@@ -5,10 +5,18 @@
 
 .ptp-stage {
   display: grid;
-  grid-template-columns: minmax(340px, 412px) minmax(0, 1fr);
-  gap: clamp(28px, 4vw, 56px);
+  grid-template-columns: minmax(340px, 396px) minmax(0, 1fr);
+  gap: clamp(24px, 3.5vw, 52px);
   align-items: start;
   padding: 12px 0 44px;
+  max-width: 100%;
+}
+
+.ptp-phone-col,
+.ptp-director,
+.ptp-dir-card {
+  min-width: 0;
+  max-width: 100%;
 }
 
 .ptp-live-dot {
@@ -229,18 +237,23 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  background: linear-gradient(180deg, #74b8ec 0%, #9bd2f5 32%, #d4ecfa 100%);
-  padding: 68px 24px 36px;
+  background: linear-gradient(180deg, #6bb5ec 0%, #86caf5 28%, #c7e7fa 68%, #e4f3fc 100%);
+  padding: 64px 24px 32px;
   overflow: hidden;
 }
 
 .ptp-splash-bg {
   position: absolute;
-  inset: 0;
+  left: 0;
+  right: 0;
+  top: 174px;
+  bottom: 0;
   width: 100%;
-  height: 100%;
+  height: calc(100% - 174px);
   object-fit: cover;
-  object-position: center bottom;
+  object-position: center top;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 14%, #000 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 14%, #000 100%);
 }
 
 .ptp-splash-top {
@@ -324,8 +337,8 @@
 
 .ptp-hub-banner {
   position: relative;
-  padding: 2px 16px 14px;
-  min-height: 82px;
+  padding: 8px 16px 20px;
+  min-height: 92px;
   display: flex;
   align-items: flex-end;
 }
@@ -350,16 +363,17 @@
 
 .ptp-hub-mascot {
   position: absolute;
-  right: -4px;
-  top: -26px;
-  width: 148px;
-  height: 116px;
+  right: 2px;
+  top: -32px;
+  width: 136px;
+  height: 130px;
   object-fit: cover;
+  object-position: center 22%;
   pointer-events: none;
-  -webkit-mask-image: linear-gradient(to left, #000 58%, transparent 100%), linear-gradient(to bottom, #000 72%, transparent 100%);
-  -webkit-mask-composite: source-in;
-  mask-image: linear-gradient(to left, #000 58%, transparent 100%), linear-gradient(to bottom, #000 72%, transparent 100%);
-  mask-composite: intersect;
+  opacity: 0.78;
+  filter: saturate(0.75) brightness(1.06);
+  -webkit-mask-image: radial-gradient(ellipse 60% 62% at 54% 52%, #000 50%, transparent 96%);
+  mask-image: radial-gradient(ellipse 60% 62% at 54% 52%, #000 50%, transparent 96%);
 }
 
 .ptp-hub-cards {
@@ -503,7 +517,7 @@
 
 /* ═══ SCREEN 2B: 随机飞三态 ═══ */
 .ptp-random-hero {
-  background: linear-gradient(180deg, #c6f1de 0%, #e7f9f0 70%, #f5f7f6 100%);
+  background: linear-gradient(180deg, #d7f5e7 0%, #ebf9f2 72%, #f5f7f6 100%);
   padding-bottom: 8px;
 }
 
@@ -522,11 +536,12 @@
 }
 
 .ptp-random-mascot {
-  width: 122px;
-  height: 104px;
+  width: 126px;
+  height: 108px;
   object-fit: contain;
-  -webkit-mask-image: linear-gradient(to left, #000 72%, transparent 100%);
-  mask-image: linear-gradient(to left, #000 72%, transparent 100%);
+  mix-blend-mode: multiply;
+  -webkit-mask-image: radial-gradient(ellipse 64% 64% at 54% 52%, #000 52%, transparent 96%);
+  mask-image: radial-gradient(ellipse 64% 64% at 54% 52%, #000 52%, transparent 96%);
 }
 
 .ptp-quick-row {
@@ -932,12 +947,16 @@
   border: 1px solid rgba(36, 155, 89, 0.08);
 }
 
+.ptp-flight-card.has-badge {
+  padding-top: 26px;
+}
+
 .ptp-rec-ribbon {
   position: absolute;
   top: 0;
   right: 0;
-  padding: 4px 10px;
-  border-radius: 0 16px 0 12px;
+  padding: 3px 11px;
+  border-radius: 0 16px 0 11px;
   background: linear-gradient(135deg, #f8dfad, #ecc583);
   color: #6b4310;
   font-size: 10px;
@@ -1140,6 +1159,7 @@
   height: 118px;
   object-fit: contain;
   margin: 0 auto;
+  mix-blend-mode: multiply;
 }
 
 .ptp-fee-row {
@@ -1616,6 +1636,7 @@
   height: 126px;
   object-fit: contain;
   margin-bottom: 14px;
+  mix-blend-mode: multiply;
 }
 
 .ptp-status-page h3 {
@@ -2198,7 +2219,7 @@
 }
 
 /* Responsive */
-@media (max-width: 980px) {
+@media (max-width: 1080px) {
   .ptp-stage {
     grid-template-columns: 1fr;
     gap: 28px;

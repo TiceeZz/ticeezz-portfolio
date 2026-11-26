@@ -7,7 +7,7 @@ export const PROTO_ASSETS = {
   splashHero: '/images/projects/pet-travel/proto/splash-hero.webp',
   cardSolo: '/images/projects/pet-travel/proto/card-solo.webp',
   cardCabin: '/images/projects/pet-travel/proto/card-cabin.webp',
-  hubMascot: '/images/projects/pet-travel/proto/hub-mascot-clean.webp',
+  hubMascot: '/images/projects/pet-travel/proto/hub-waving.webp',
   soloBanner: '/images/projects/pet-travel/proto/solo-banner.webp',
   posterHeader: '/images/projects/pet-travel/proto/poster-header.webp',
   crate3d: '/images/projects/pet-travel/proto/crate-3d.webp',

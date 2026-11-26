@@ -56,9 +56,9 @@ function bezierPoint(t, p0, p1, p2, p3) {
 }
 
 const ROUTE_P0 = { x: 266, y: 252 }; // 上海虹桥
-const ROUTE_P1 = { x: 272, y: 176 };
-const ROUTE_P2 = { x: 204, y: 142 };
-const ROUTE_P3 = { x: 176, y: 112 }; // 北京大兴
+const ROUTE_P1 = { x: 272, y: 178 };
+const ROUTE_P2 = { x: 204, y: 146 };
+const ROUTE_P3 = { x: 161, y: 102 }; // 北京大兴
 
 export default function PetTravelPrototype() {
   const [screen, setScreen] = useState('hub');
@@ -257,7 +257,9 @@ export default function PetTravelPrototype() {
                   ? { background: '#1d9a7b' }
                   : screen === 'hub'
                   ? { background: '#b8f0dc' }
-                  : screen === 'random' || screen === 'soloSearch'
+                  : screen === 'random'
+                  ? { background: '#d7f5e7' }
+                  : screen === 'soloSearch'
                   ? { background: '#c6f1de' }
                   : screen === 'success' || screen === 'orders'
                   ? { background: '#ffffff' }
@@ -760,7 +762,7 @@ export default function PetTravelPrototype() {
                 <div className="ptp-scroll">
                   <div className="ptp-flight-list">
                     {filteredFlights.map((fl) => (
-                      <div key={fl.id} className="ptp-flight-card">
+                      <div key={fl.id} className={`ptp-flight-card${fl.badge ? ' has-badge' : ''}`}>
                         {fl.badge && <span className="ptp-rec-ribbon">{fl.badge}</span>}
                         <div className="ptp-flight-airline">
                           <IconAirline code={fl.airlineKey} />
@@ -822,7 +824,7 @@ export default function PetTravelPrototype() {
             {/* ══ SCREEN 4: PLAN DETAIL (方案详情) ══ */}
             {screen === 'detail' && (
               <div key="detail" className="ptp-viewport">
-                <div className="ptp-green-header">
+                <div className="ptp-green-header" style={{ paddingBottom: 22 }}>
                   <div className="ptp-nav">
                     <button type="button" className="ptp-nav-btn" onClick={goBack} aria-label="返回">
                       <IconBack size={18} color="#ffffff" />
@@ -872,7 +874,17 @@ export default function PetTravelPrototype() {
                   </div>
                 </div>
 
-                <div className="ptp-scroll" style={{ paddingTop: 10 }}>
+                <div
+                  className="ptp-scroll"
+                  style={{
+                    paddingTop: 12,
+                    marginTop: -14,
+                    borderRadius: '18px 18px 0 0',
+                    background: '#f5f7f6',
+                    position: 'relative',
+                    zIndex: 5,
+                  }}
+                >
                   <div className="ptp-detail-card">
                     <div className="ptp-flight-times" style={{ marginBottom: 0 }}>
                       <div className="ptp-time-col">
@@ -993,7 +1005,13 @@ export default function PetTravelPrototype() {
                     <button
                       type="button"
                       className="ptp-nav-btn"
-                      style={{ fontSize: 11, opacity: 0.92 }}
+                      style={{
+                        fontSize: 11,
+                        padding: '0 10px',
+                        height: 24,
+                        background: 'rgba(255,255,255,0.2)',
+                        color: '#ffffff',
+                      }}
                       onClick={handleAutoFillForm}
                     >
                       一键填
@@ -1548,7 +1566,7 @@ export default function PetTravelPrototype() {
                         { x: 112, y: 214, name: '郑州' },
                         { x: 204, y: 122, name: '天津' },
                         { x: 274, y: 168, name: '青岛' },
-                        { x: 318, y: 92, name: '大连' },
+                        { x: 292, y: 82, name: '大连' },
                       ].map((c) => (
                         <g key={c.name}>
                           <circle cx={c.x} cy={c.y} r="2.2" fill="#ffffff" stroke="#c85a53" strokeWidth="1.2" />
@@ -1584,7 +1602,7 @@ export default function PetTravelPrototype() {
                       </g>
 
                       {/* Destination pill: 北京大兴 */}
-                      <g transform="translate(140, 96)">
+                      <g transform="translate(124, 90)">
                         <rect x="0" y="0" width="74" height="20" rx="10" fill="#2fb96c" />
                         <text x="37" y="13.5" textAnchor="middle" fill="#fff" fontSize="9.5" fontWeight="700">
                           ● 北京大兴
@@ -1592,20 +1610,22 @@ export default function PetTravelPrototype() {
                       </g>
                     </svg>
 
-                    {/* Exact Figma Two-Line ETA Bubble with Pet Avatar + Flying 云吞机长 */}
-                    <div
-                      className="ptp-map-eta-bubble"
-                      style={{
-                        left: `${(planeCoord.x / 370) * 100}%`,
-                        top: `${Math.max(30, ((planeCoord.y - 26) / 315) * 100)}%`,
-                      }}
-                    >
-                      <img src={PROTO_ASSETS.petAvatar} alt="小航" />
-                      <div>
-                        <strong>{trackStage.etaPill}</strong>
-                        <span>机长：云吞 · 机龄：8年</span>
+                    {/* Exact Figma Two-Line ETA Bubble (hidden when arrived so it never overlaps 已到达 header) */}
+                    {trackStageIdx < 4 && (
+                      <div
+                        className="ptp-map-eta-bubble"
+                        style={{
+                          left: `${Math.min(68, Math.max(38, (planeCoord.x / 370) * 100 + 8))}%`,
+                          top: `${Math.max(40, ((planeCoord.y - 24) / 315) * 100)}%`,
+                        }}
+                      >
+                        <img src={PROTO_ASSETS.petAvatar} alt="小航" />
+                        <div>
+                          <strong>{trackStage.etaPill}</strong>
+                          <span>机长：云吞 · 机龄：8年</span>
+                        </div>
                       </div>
-                    </div>
+                    )}
                     <img
                       src={PROTO_ASSETS.planeCaptain}
                       alt="云吞机长飞行中"
