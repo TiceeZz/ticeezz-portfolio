@@ -2,6 +2,42 @@
    Pet Travel Hybrid 1:1 Figma + Editorial Interactive Studio Stage
    ════════════════════════════════════════════════════════════════ */
 
+/* 1:1 Figma Display Font: Alimama ShuHeiTi Bold (self-hosted, commercial-free) */
+@font-face {
+  font-family: 'Alimama ShuHeiTi';
+  src: url('/fonts/AlimamaShuHeiTi-Bold.woff2') format('woff2');
+  font-weight: 400 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* 1:1 Figma UI Font: PingFang SC (maps both macOS PingFang SC & Windows 苹方-简 exact weights) */
+@font-face {
+  font-family: 'PingFang SC UI';
+  src: local('PingFang SC Regular'), local('PingFangSC-Regular'), local('苹方-简 常规体'), local('苹方-简');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'PingFang SC UI';
+  src: local('PingFang SC Medium'), local('PingFangSC-Medium'), local('苹方-简 中黑体');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'PingFang SC UI';
+  src: local('PingFang SC Semibold'), local('PingFangSC-Semibold'), local('苹方-简 中粗体');
+  font-weight: 600 800;
+  font-style: normal;
+}
+
+.ptp-shuhei {
+  font-family: 'Alimama ShuHeiTi', 'PingFang SC UI', 'PingFang SC', '苹方-简', sans-serif !important;
+  font-weight: 700 !important;
+}
+
 .ptp-studio {
   position: relative;
   width: 100%;
@@ -321,7 +357,7 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Noto Sans SC', sans-serif;
+  font-family: 'PingFang SC UI', 'PingFang SC', '苹方-简', 'Hiragino Sans GB', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
   -webkit-font-smoothing: antialiased;
   user-select: none;
 }
@@ -1591,26 +1627,55 @@
 
 .ptp-arrived-copy strong {
   display: block;
-  font-size: 17.5px;
-  font-weight: 900;
+  font-family: 'Alimama ShuHeiTi', 'PingFang SC UI', 'PingFang SC', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
   color: #0e1d2d;
-  letter-spacing: -0.015em;
+  letter-spacing: 0.01em;
   line-height: 1.28;
   white-space: nowrap;
 }
 
 .ptp-arrived-km {
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
   color: #26342e;
   margin-top: 9px;
 }
 
 .ptp-arrived-km span {
+  font-family: 'Alimama ShuHeiTi', 'PingFang SC UI', sans-serif;
   color: #169852;
-  font-size: 17.5px;
-  font-weight: 900;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
   font-variant-numeric: tabular-nums;
+}
+
+.ptp-track-eta-time {
+  font-family: 'Alimama ShuHeiTi', 'PingFang SC UI', sans-serif;
+  font-size: 27px;
+  font-weight: 700;
+  color: #000000;
+  line-height: 1.16;
+  letter-spacing: 0.01em;
+  font-variant-numeric: tabular-nums;
+  margin-top: 1px;
+}
+
+.ptp-track-log-box {
+  width: 100%;
+  min-height: 44px;
+  background: #eff1f2;
+  border-radius: 9px;
+  padding: 9px 10px !important;
+  font-size: 10.8px;
+  color: #4d5d55;
+  line-height: 1.5;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  text-align: left;
 }
 
 .ptp-arrived-sub {
@@ -1768,52 +1833,138 @@
   font-weight: 600;
 }
 
-/* ═══ 1:1 Poster Ticket Notches, Brush Highlight, Scalloped Avatar & Beijing Skyline ═══ */
+/* ═══ 1:1 Poster Ticket: Seamless Full Background + True Transparent Semicircle Notches + Alimama ShuHeiTi ═══ */
 .ptp-poster-card {
   position: relative;
+  width: 100%;
+  aspect-ratio: 668 / 820;
   border-radius: 18px;
   overflow: hidden;
-  background: linear-gradient(180deg, #3c9dc4 0%, #6ea8be 48%, #8ea4b3 74%, #7e98ac 100%);
-  box-shadow: 0 20px 44px rgba(8, 22, 18, 0.45);
+  background: #3c9dc4;
+  box-shadow: 0 22px 48px rgba(8, 22, 18, 0.48);
+}
+
+.ptp-poster-bg-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.012);
+  display: block;
+  pointer-events: none;
+  z-index: 1;
 }
 
 .ptp-poster-ticket {
-  position: relative;
-  background: radial-gradient(circle at 92% 18%, rgba(254, 240, 199, 0.48) 0%, rgba(212, 244, 224, 0.24) 42%, transparent 66%), #ffffff;
-  color: #16221c;
-  border-radius: 15px;
-  padding: 14px 14px 12px;
-  margin: -18px 12px -14px;
+  position: absolute;
+  left: 5%;
+  right: 5%;
+  top: 40.1%;
+  bottom: 3.8%;
   z-index: 3;
+  background: #ffffff;
+  color: #16221c;
+  border-radius: 16px;
+  padding: 15px 15px 11px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  /* True transparent semicircle cutouts on left & right edges aligned to exact 71% notch axis */
+  -webkit-mask-image:
+    radial-gradient(circle 7.5px at 0% 71%, transparent 7px, #000 7.6px),
+    radial-gradient(circle 7.5px at 100% 71%, transparent 7px, #000 7.6px);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    radial-gradient(circle 7.5px at 0% 71%, transparent 7px, #000 7.6px),
+    radial-gradient(circle 7.5px at 100% 71%, transparent 7px, #000 7.6px);
+  mask-composite: intersect;
 }
 
-.ptp-poster-skyline {
+.ptp-poster-wm {
+  position: absolute;
+  top: -8px;
+  right: -12px;
+  width: 118px;
+  height: 106px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.25;
+}
+
+.ptp-poster-top-area {
   position: relative;
-  z-index: 1;
-  display: block;
-  width: 100%;
-  height: auto;
+  z-index: 2;
+  height: 71%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-bottom: 10px;
 }
 
 .ptp-poster-divider {
-  position: relative;
-  border-top: 1px dashed #e2eae6;
-  margin: 11px -14px 10px;
-}
-
-.ptp-poster-divider::before,
-.ptp-poster-divider::after {
-  content: '';
   position: absolute;
-  top: -6.5px;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: #8ea4b3;
+  left: 11px;
+  right: 11px;
+  top: 71%;
+  border-top: 1px dashed #e2e9e6;
+  pointer-events: none;
+  z-index: 2;
 }
 
-.ptp-poster-divider::before { left: -6px; }
-.ptp-poster-divider::after { right: -6px; }
+.ptp-poster-foot {
+  position: relative;
+  z-index: 2;
+  height: 29%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 4px;
+  font-size: 10.5px;
+  color: #8a9590;
+}
+
+.ptp-poster-headline {
+  font-family: 'Alimama ShuHeiTi', 'PingFang SC UI', 'PingFang SC', sans-serif;
+  font-size: 15.8px;
+  font-weight: 700;
+  color: #15221b;
+  line-height: 1.26;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+.ptp-poster-stats {
+  font-size: 11.2px;
+  color: #1d2b24;
+  font-weight: 600;
+  margin-top: 6px;
+  white-space: nowrap;
+}
+
+.ptp-poster-stat-num {
+  font-family: 'Alimama ShuHeiTi', 'PingFang SC UI', sans-serif;
+  color: #169a54;
+  font-size: 13px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.ptp-poster-time {
+  font-family: 'Alimama ShuHeiTi', 'PingFang SC UI', sans-serif;
+  font-size: 18.5px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: #16221c;
+  line-height: 1.15;
+}
+
+.ptp-poster-time.is-arr {
+  font-family: 'PingFang SC UI', 'PingFang SC', 'Alimama ShuHeiTi', sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
 
 .ptp-track-avatar-ring {
   width: 54px;
@@ -1845,17 +1996,17 @@
   position: absolute;
   left: -3px;
   right: 4px;
-  bottom: -6px;
+  bottom: -4px;
   width: calc(100% - 2px);
-  height: 14px;
+  height: 12px;
   z-index: -1;
   pointer-events: none;
 }
 
 .ptp-poster-avatar-wrap {
   position: relative;
-  width: 56px;
-  height: 56px;
+  width: 54px;
+  height: 54px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1866,8 +2017,8 @@
   position: relative;
   z-index: 2;
   display: block;
-  width: 46px;
-  height: 46px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   border: 1.5px solid #e6cd7a;
   object-fit: cover;
@@ -1875,7 +2026,7 @@
 
 .ptp-poster-arc-wrap {
   position: relative;
-  height: 36px;
+  height: 34px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1892,10 +2043,10 @@
 .ptp-poster-plane-img {
   position: relative;
   z-index: 2;
-  width: 56px;
-  height: 30px;
+  width: 54px;
+  height: 28px;
   object-fit: contain;
-  transform: translateY(-4px);
+  transform: translateY(-3px);
 }
 
 /* ═══ Orders Empty Tabs (1:1 page_016) ═══ */

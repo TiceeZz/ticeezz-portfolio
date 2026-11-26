@@ -1352,7 +1352,7 @@ export default function PetTravelPrototype() {
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 10 }}>
                     <div>
                       <div style={{ fontSize: 11, color: '#45544c', fontWeight: 500 }}>{trackStage.etaPrefix}</div>
-                      <div style={{ fontSize: 28, fontWeight: 900, color: '#000000', lineHeight: 1.12, letterSpacing: '-0.02em', fontVariantNumeric: 'tabular-nums' }}>{trackStage.etaTime}</div>
+                      <div className="ptp-track-eta-time">{trackStage.etaTime}</div>
                       <div style={{ fontSize: 13, fontWeight: 600, color: '#1b2620', marginTop: 3 }}>{trackStage.etaPlace}</div>
                     </div>
                     <button
@@ -1419,7 +1419,7 @@ export default function PetTravelPrototype() {
                     </div>
                     <button
                       type="button"
-                      style={{ width: '100%', background: '#eff1f2', borderRadius: 9, padding: '9px 10px', fontSize: 10.8, color: '#4d5d55', lineHeight: 1.5, display: 'flex', alignItems: 'flex-start', gap: 8, textAlign: 'left' }}
+                      className="ptp-track-log-box"
                       onClick={() => setModal('timeline')}
                     >
                       <span className="ptp-log-time-pill">{trackStage.summaryTime}</span>
@@ -1979,87 +1979,107 @@ export default function PetTravelPrototype() {
               </div>
             )}
 
-            {/* ══ 08: PEAK-END SHARE POSTER (1:1 Figma Ticket Notches, Brush Highlight, Scalloped Avatar & Live Data) ══ */}
+            {/* ══ 08: PEAK-END SHARE POSTER (1:1 Seamless Full Poster BG + True Transparent Ticket Notches + Alimama ShuHeiTi) ══ */}
             {modal === 'poster' && (
               <div className="ptp-mask" onClick={() => setModal(null)}>
-                <div style={{ padding: '0 26px 20px', marginTop: 'auto' }} onClick={(e) => e.stopPropagation()}>
+                <div style={{ padding: '0 24px 18px', marginTop: 'auto' }} onClick={(e) => e.stopPropagation()}>
                   <div className="ptp-poster-card">
-                    <img src={HYBRID_ASSETS.posterHeader} alt="全程实时看得见 安心宠物托运" style={{ display: 'block', width: '100%', height: 'auto' }} />
+                    <img src={HYBRID_ASSETS.posterBgFull} alt="全程实时看得见 安心宠物托运" className="ptp-poster-bg-img" />
                     <div className="ptp-poster-ticket">
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
-                        <div className="ptp-poster-avatar-wrap">
-                          <svg width="56" height="56" viewBox="0 0 64 64" fill="none" style={{ position: 'absolute', inset: 0 }}>
-                            <path d="M32 2C35.2 2 37.2 5.4 40.2 6.2C43.2 7 46.8 5.2 49.4 7.2C52 9.2 51.6 13.2 53.6 15.6C55.6 18 59.6 18.6 60.4 21.6C61.2 24.6 58.6 27.6 58.6 30.8C58.6 34 61.2 37 60.4 40C59.6 43 55.6 43.6 53.6 46C51.6 48.4 52 52.4 49.4 54.4C46.8 56.4 43.2 54.6 40.2 55.4C37.2 56.2 35.2 59.6 32 59.6C28.8 59.6 26.8 56.2 23.8 55.4C20.8 54.6 17.2 56.4 14.6 54.4C12 52.4 12.4 48.4 10.4 46C8.4 43.6 4.4 43 3.6 40C2.8 37 5.4 34 5.4 30.8C5.4 27.6 2.8 24.6 3.6 21.6C4.4 18.6 8.4 18 10.4 15.6C12.4 13.2 12 9.2 14.6 7.2C17.2 5.2 20.8 7 23.8 6.2C26.8 5.4 28.8 2 32 2Z" fill="#aef2c6" />
-                          </svg>
-                          <img src={HYBRID_ASSETS.petAvatar} alt="小航" />
-                        </div>
-                        <div style={{ minWidth: 0 }}>
-                          <div style={{ fontSize: 15.5, fontWeight: 800, color: '#15221b', lineHeight: 1.25, whiteSpace: 'nowrap' }}>
-                            {petName || '小航'}{' '}
-                            <span className="ptp-poster-brush-wrap">
-                              平安落地{toCity.name}！
-                              <svg className="ptp-poster-brush-svg" viewBox="0 0 130 22" preserveAspectRatio="none" fill="none">
-                                <defs>
-                                  <linearGradient id="ptpBrushGrad" x1="0" y1="10" x2="130" y2="10" gradientUnits="userSpaceOnUse">
-                                    <stop offset="0%" stopColor="#9bf5bd" />
-                                    <stop offset="55%" stopColor="#a0f6d8" />
-                                    <stop offset="100%" stopColor="#a2f3f0" />
-                                  </linearGradient>
-                                </defs>
-                                <path
-                                  d="M4 13.5 C26 7.5, 48 5.2, 68 5.8 L44 15.8 C64 11.2, 86 11.0, 108 13.2"
-                                  stroke="url(#ptpBrushGrad)"
-                                  strokeWidth="5.2"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
-                              </svg>
-                            </span>
-                          </div>
-                          <div style={{ fontSize: 11.5, color: '#1d2b24', fontWeight: 700, marginTop: 6, whiteSpace: 'nowrap' }}>
-                            <span style={{ color: '#169a54', fontSize: 13.5, fontWeight: 800 }}>1760</span> 公里&nbsp;
-                            <span style={{ color: '#169a54', fontSize: 13.5, fontWeight: 800 }}>2</span> 小时
-                            <span style={{ color: '#169a54', fontSize: 13.5, fontWeight: 800 }}> 40</span> 分 的奔赴
-                          </div>
-                        </div>
-                      </div>
+                      {/* Soft pastel globe & ribbon watercolor watermark (1:1 page_021 top-right corner) */}
+                      <svg className="ptp-poster-wm" viewBox="0 0 120 110" fill="none" aria-hidden="true">
+                        <defs>
+                          <linearGradient id="ptpWmGlobe" x1="20" y1="10" x2="105" y2="95" gradientUnits="userSpaceOnUse">
+                            <stop offset="0%" stopColor="#d9ecff" />
+                            <stop offset="55%" stopColor="#e8f5ff" />
+                            <stop offset="100%" stopColor="#d2f4e2" />
+                          </linearGradient>
+                          <linearGradient id="ptpWmRibbon" x1="16" y1="78" x2="108" y2="18" gradientUnits="userSpaceOnUse">
+                            <stop offset="0%" stopColor="#fde0b8" />
+                            <stop offset="55%" stopColor="#fff0cc" />
+                            <stop offset="100%" stopColor="#f9d29d" />
+                          </linearGradient>
+                        </defs>
+                        <circle cx="72" cy="54" r="44" fill="url(#ptpWmGlobe)" />
+                        <path d="M52 24C64 20 82 26 90 38C95 46 86 58 76 62C66 66 56 58 50 48C45 40 44 27 52 24Z" fill="#d9f4d8" />
+                        <path d="M68 68C78 65 92 70 96 80C86 92 66 96 54 88C54 78 60 70 68 68Z" fill="#d3f2df" />
+                        <path d="M22 86C42 74 68 46 106 16" stroke="url(#ptpWmRibbon)" strokeWidth="10" strokeLinecap="round" opacity="0.85" />
+                      </svg>
 
-                      <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr auto', alignItems: 'center', gap: 4, padding: '2px 2px 6px' }}>
-                        <div>
-                          <div style={{ fontSize: 19, fontWeight: 800, fontVariantNumeric: 'tabular-nums', color: '#16221c' }}>18:40</div>
-                          <div style={{ fontSize: 10.5, color: '#4f5d56', marginTop: 1 }}>虹桥机场</div>
+                      <div className="ptp-poster-top-area">
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                          <div className="ptp-poster-avatar-wrap">
+                            <svg width="54" height="54" viewBox="0 0 64 64" fill="none" style={{ position: 'absolute', inset: 0 }}>
+                              <path d="M32 2C35.2 2 37.2 5.4 40.2 6.2C43.2 7 46.8 5.2 49.4 7.2C52 9.2 51.6 13.2 53.6 15.6C55.6 18 59.6 18.6 60.4 21.6C61.2 24.6 58.6 27.6 58.6 30.8C58.6 34 61.2 37 60.4 40C59.6 43 55.6 43.6 53.6 46C51.6 48.4 52 52.4 49.4 54.4C46.8 56.4 43.2 54.6 40.2 55.4C37.2 56.2 35.2 59.6 32 59.6C28.8 59.6 26.8 56.2 23.8 55.4C20.8 54.6 17.2 56.4 14.6 54.4C12 52.4 12.4 48.4 10.4 46C8.4 43.6 4.4 43 3.6 40C2.8 37 5.4 34 5.4 30.8C5.4 27.6 2.8 24.6 3.6 21.6C4.4 18.6 8.4 18 10.4 15.6C12.4 13.2 12 9.2 14.6 7.2C17.2 5.2 20.8 7 23.8 6.2C26.8 5.4 28.8 2 32 2Z" fill="#aef2c6" />
+                            </svg>
+                            <img src={HYBRID_ASSETS.petAvatar} alt="小航" />
+                          </div>
+                          <div style={{ minWidth: 0 }}>
+                            <div className="ptp-poster-headline">
+                              {petName || '小航'}{' '}
+                              <span className="ptp-poster-brush-wrap">
+                                平安落地{toCity.name}！
+                                <svg className="ptp-poster-brush-svg" viewBox="0 0 130 22" preserveAspectRatio="none" fill="none">
+                                  <defs>
+                                    <linearGradient id="ptpBrushGrad" x1="0" y1="10" x2="130" y2="10" gradientUnits="userSpaceOnUse">
+                                      <stop offset="0%" stopColor="#9bf5bd" />
+                                      <stop offset="55%" stopColor="#a0f6d8" />
+                                      <stop offset="100%" stopColor="#a2f3f0" />
+                                    </linearGradient>
+                                  </defs>
+                                  <path
+                                    d="M4 13.5 C26 7.5, 48 5.2, 68 5.8 L44 15.8 C64 11.2, 86 11.0, 108 13.2"
+                                    stroke="url(#ptpBrushGrad)"
+                                    strokeWidth="5.2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                  />
+                                </svg>
+                              </span>
+                            </div>
+                            <div className="ptp-poster-stats">
+                              <span className="ptp-poster-stat-num">1760</span> 公里&nbsp;
+                              <span className="ptp-poster-stat-num">2</span> 小时
+                              <span className="ptp-poster-stat-num"> 40</span> 分 的奔赴
+                            </div>
+                          </div>
                         </div>
-                        <div className="ptp-poster-arc-wrap">
-                          <svg className="ptp-poster-arc-svg" viewBox="0 0 132 34" fill="none" aria-hidden="true">
-                            {/* Exact upward parabolic dotted flight arc from 18:40 -> plane -> 20:40 */}
-                            <circle cx="8" cy="21" r="1.7" fill="#bce8cf" />
-                            <circle cx="19" cy="17.2" r="1.7" fill="#bce8cf" />
-                            <circle cx="31" cy="14.4" r="1.7" fill="#bce8cf" />
-                            <circle cx="43" cy="12.6" r="1.7" fill="#bce8cf" />
-                            <circle cx="89" cy="12.6" r="1.7" fill="#bce8cf" />
-                            <circle cx="101" cy="14.4" r="1.7" fill="#bce8cf" />
-                            <circle cx="113" cy="17.2" r="1.7" fill="#bce8cf" />
-                            <circle cx="124" cy="21" r="1.7" fill="#bce8cf" />
-                          </svg>
-                          <img src={HYBRID_ASSETS.posterPlane} alt="" className="ptp-poster-plane-img" />
-                        </div>
-                        <div style={{ textAlign: 'right' }}>
-                          <div style={{ fontSize: 19, fontWeight: 800, fontVariantNumeric: 'tabular-nums', color: '#16221c' }}>20:40</div>
-                          <div style={{ fontSize: 10.5, color: '#4f5d56', marginTop: 1 }}>大兴机场</div>
+
+                        <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr auto', alignItems: 'center', gap: 4, padding: '0 2px' }}>
+                          <div>
+                            <div className="ptp-poster-time">18:40</div>
+                            <div style={{ fontSize: 10.5, color: '#4f5d56', marginTop: 2 }}>虹桥机场</div>
+                          </div>
+                          <div className="ptp-poster-arc-wrap">
+                            <svg className="ptp-poster-arc-svg" viewBox="0 0 132 34" fill="none" aria-hidden="true">
+                              <circle cx="8" cy="21" r="1.7" fill="#bce8cf" />
+                              <circle cx="19" cy="17.2" r="1.7" fill="#bce8cf" />
+                              <circle cx="31" cy="14.4" r="1.7" fill="#bce8cf" />
+                              <circle cx="43" cy="12.6" r="1.7" fill="#bce8cf" />
+                              <circle cx="89" cy="12.6" r="1.7" fill="#bce8cf" />
+                              <circle cx="101" cy="14.4" r="1.7" fill="#bce8cf" />
+                              <circle cx="113" cy="17.2" r="1.7" fill="#bce8cf" />
+                              <circle cx="124" cy="21" r="1.7" fill="#bce8cf" />
+                            </svg>
+                            <img src={HYBRID_ASSETS.posterPlane} alt="" className="ptp-poster-plane-img" />
+                          </div>
+                          <div style={{ textAlign: 'right' }}>
+                            <div className="ptp-poster-time is-arr">20:40</div>
+                            <div style={{ fontSize: 10.5, color: '#4f5d56', marginTop: 2 }}>大兴机场</div>
+                          </div>
                         </div>
                       </div>
 
                       <div className="ptp-poster-divider" />
 
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 10.5, color: '#8a9991' }}>
+                      <div className="ptp-poster-foot">
                         <div>
                           <div style={{ fontWeight: 500 }}>@TiceeZz</div>
                           <div style={{ marginTop: 2 }}>2026/05/20 周三</div>
                         </div>
-                        <img src={HYBRID_ASSETS.posterQr} alt="航旅纵横小程序码" style={{ width: 40, height: 40, mixBlendMode: 'multiply' }} />
+                        <img src={HYBRID_ASSETS.posterQr} alt="航旅纵横小程序码" style={{ width: 42, height: 42, mixBlendMode: 'multiply' }} />
                       </div>
                     </div>
-                    <img src={HYBRID_ASSETS.posterSkyline} alt="" className="ptp-poster-skyline" />
                   </div>
                 </div>
 
