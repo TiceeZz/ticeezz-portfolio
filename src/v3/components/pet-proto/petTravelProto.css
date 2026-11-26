@@ -239,6 +239,26 @@
 }
 
 /* ═══ SCREEN 01: Service Hub ═══ */
+.ptp-hub-top {
+  background: linear-gradient(90deg, rgb(185, 237, 226) 0%, rgb(184, 236, 225) 50%, rgb(176, 231, 217) 100%);
+  flex-shrink: 0;
+}
+
+.ptp-solo-top {
+  background: linear-gradient(90deg, rgb(187, 233, 229) 0%, rgb(189, 236, 231) 50%, rgb(189, 237, 223) 100%);
+  flex-shrink: 0;
+}
+
+.ptp-dots-deco {
+  display: inline-block;
+  width: 28px;
+  height: 11px;
+  vertical-align: middle;
+  margin: 0 8px;
+  background-image: radial-gradient(#c4d1ca 1px, transparent 1px);
+  background-size: 4px 4px;
+}
+
 .ptp-hub-body {
   padding: 0 12px;
   margin-top: -8px;
@@ -836,6 +856,21 @@
   font-variant-numeric: tabular-nums;
 }
 
+/* Scroll-reactive sticky white nav for 04 Detail & 05 Form (1:1 page_011 & page_018) */
+.ptp-chrome-top {
+  position: relative;
+  z-index: 12;
+  flex-shrink: 0;
+  color: #ffffff;
+  transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ptp-chrome-top.is-scrolled {
+  background: #ffffff;
+  color: #16221c;
+  box-shadow: 0 2px 10px rgba(15, 36, 26, 0.06);
+}
+
 /* ═══ SCREEN 04: Plan Detail ═══ */
 .ptp-card {
   margin: 0 12px 11px;
@@ -867,22 +902,24 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 7px 0;
+  padding: 8px 0;
   font-size: 12px;
   color: #46574f;
-  border-bottom: 1px solid #f2f5f3;
 }
 
-.ptp-fee-row:last-child { border-bottom: none; }
-.ptp-fee-row strong { color: #192620; font-variant-numeric: tabular-nums; }
+.ptp-fee-row strong { color: #192620; font-weight: 600; font-variant-numeric: tabular-nums; }
 .ptp-fee-row strong.is-free { color: #26a45e; }
 
 .ptp-alert {
   border-radius: 10px;
-  padding: 10px 12px;
+  padding: 11px 12px;
   font-size: 11px;
-  line-height: 1.55;
-  margin-bottom: 8px;
+  line-height: 1.58;
+  margin-bottom: 9px;
+  display: grid;
+  grid-template-columns: 15px minmax(0, 1fr);
+  gap: 7px;
+  align-items: start;
 }
 
 .ptp-alert.is-red { background: #fff3f2; color: #b53832; }
@@ -1313,6 +1350,68 @@
 .ptp-price-row .ptp-pv.is-disc {
   color: #f08628;
   font-weight: 600;
+}
+
+/* ═══ 1:1 Poster Ticket Notches, Brush Highlight & Scalloped Avatar ═══ */
+.ptp-poster-card {
+  border-radius: 20px;
+  overflow: hidden;
+  background: linear-gradient(180deg, #2e95bd 0%, #3a9cc2 74%, #2c8ab2 100%);
+  box-shadow: 0 18px 40px rgba(10, 26, 20, 0.42);
+  padding-bottom: 11px;
+}
+
+.ptp-poster-ticket {
+  position: relative;
+  background: #ffffff;
+  color: #16221c;
+  border-radius: 16px;
+  padding: 15px 15px 13px;
+  margin: -18px 10px 0;
+  z-index: 2;
+}
+
+.ptp-poster-divider {
+  position: relative;
+  border-top: 1px dashed #e2eae6;
+  margin: 11px -15px 10px;
+}
+
+.ptp-poster-divider::before,
+.ptp-poster-divider::after {
+  content: '';
+  position: absolute;
+  top: -7px;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: #3698bf;
+}
+
+.ptp-poster-divider::before { left: -6.5px; }
+.ptp-poster-divider::after { right: -6.5px; }
+
+.ptp-poster-brush {
+  background: linear-gradient(180deg, transparent 58%, #b9f1d0 58%, #b9f1d0 90%, transparent 90%);
+  padding: 0 2px;
+}
+
+.ptp-poster-avatar-wrap {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  padding: 3px;
+  background: radial-gradient(circle, #b4f0ce 62%, #dcf9e8 100%);
+  box-shadow: 0 0 0 2px #c8f5dc;
+  flex-shrink: 0;
+}
+
+.ptp-poster-avatar-wrap img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 /* ═══ Orders Empty Tabs (1:1 page_016) ═══ */

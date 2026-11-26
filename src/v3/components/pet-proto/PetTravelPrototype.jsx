@@ -34,6 +34,20 @@ const ClockSvg = () => (
   </svg>
 );
 
+const MuWhiteSvg = () => (
+  <svg width="17" height="14" viewBox="0 0 24 20" fill="none" style={{ flexShrink: 0 }}>
+    <path d="M2 10.5C6.5 4.2 14.5 2.5 21 4.2C14.8 5.2 10.2 7.5 8 10.5C11.4 9.3 15.8 9.2 19.6 10.8C13.6 11.2 8.8 12.6 5.6 15.4C3.5 13.9 2.3 12.2 2 10.5Z" fill="#e5262e" />
+    <path d="M6.2 15.2C9.8 12.5 14.6 11.4 20.8 11.6C16.2 14.4 11.4 16.2 6.2 15.2Z" fill="#18499e" />
+  </svg>
+);
+
+const SearchIconSvg = () => (
+  <svg width="14" height="14" viewBox="0 0 18 18" fill="none" style={{ flexShrink: 0 }}>
+    <circle cx="8" cy="8" r="5.5" stroke="#9aa8a0" strokeWidth="1.5" />
+    <path d="M12.2 12.2L15.8 15.8" stroke="#9aa8a0" strokeWidth="1.5" strokeLinecap="round" />
+  </svg>
+);
+
 const CopySvg = () => (
   <svg width="11" height="11" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, verticalAlign: 'middle' }}>
     <rect x="5" y="5" width="8.5" height="9" rx="1.5" stroke="#9aa8a0" strokeWidth="1.4" />
@@ -115,7 +129,7 @@ export default function PetTravelPrototype() {
   const [orderNote, setOrderNote] = useState('');
   const [agreed, setAgreed] = useState(true);
 
-  // Tracking & Modals & Orders
+  // Tracking & Modals & Orders & Scroll Chrome
   const [trackStageIdx, setTrackStageIdx] = useState(2); // 0..4
   const [modal, setModal] = useState(null);
   const [breedTab, setBreedTab] = useState('dog');
@@ -123,6 +137,8 @@ export default function PetTravelPrototype() {
   const [breedAlert, setBreedAlert] = useState(null);
   const [orderTab, setOrderTab] = useState('全部');
   const [onlyValidOrders, setOnlyValidOrders] = useState(true);
+  const [detailScrolled, setDetailScrolled] = useState(false);
+  const [formScrolled, setFormScrolled] = useState(false);
 
   const showToast = useCallback((msg) => {
     setToast(msg);
@@ -140,6 +156,8 @@ export default function PetTravelPrototype() {
       return;
     }
     setModal(null);
+    setDetailScrolled(false);
+    setFormScrolled(false);
     setHistory((prev) => [...prev.slice(-8), screen]);
     setScreen(next);
   }, [screen]);
@@ -243,13 +261,22 @@ export default function PetTravelPrototype() {
               </div>
             )}
 
-            {/* ══ 01: SERVICE HUB (1:1 Figma Header + Real Scroll & Buttons) ══ */}
+            {/* ══ 01: SERVICE HUB (Unified StatusBar + 1:1 Figma Header + Real Scroll & Buttons) ══ */}
             {screen === 'hub' && (
               <div key="hub" className="ptp-view" style={{ background: '#f2f5f4' }}>
                 <div className="ptp-scroll">
-                  <div className="ptp-figma-hdr">
-                    <img src={HYBRID_ASSETS.hubHeader} alt="宠物出行" />
-                    <button type="button" className="ptp-hdr-back" aria-label="返回开屏" onClick={() => navigate('splash')} />
+                  <div className="ptp-hub-top">
+                    <StatusBar light />
+                    <div className="ptp-figma-hdr">
+                      <img src={HYBRID_ASSETS.hubHeader} alt="宠物出行" />
+                      <button
+                        type="button"
+                        className="ptp-hdr-back"
+                        style={{ top: '2%', height: '38%' }}
+                        aria-label="返回开屏"
+                        onClick={() => navigate('splash')}
+                      />
+                    </div>
                   </div>
 
                   <div className="ptp-hub-body">
@@ -297,9 +324,9 @@ export default function PetTravelPrototype() {
 
                     <div className="ptp-rules-card">
                       <div className="ptp-rules-hd">
-                        <span style={{ color: '#c0cec6', letterSpacing: 2, marginRight: 6 }}>::::::</span>
+                        <span className="ptp-dots-deco" aria-hidden="true" />
                         服务说明
-                        <span style={{ color: '#c0cec6', letterSpacing: 2, marginLeft: 6 }}>::::::</span>
+                        <span className="ptp-dots-deco" aria-hidden="true" />
                       </div>
                       <h5>1、办理说明</h5>
                       <p>宠物上机服务由航旅纵横联合执飞航司共同提供，仅支持猫、犬等小型伴侣动物，需提前完成申报，审核通过后方可携宠登机。</p>
@@ -478,13 +505,22 @@ export default function PetTravelPrototype() {
               </div>
             )}
 
-            {/* ══ 02A: SOLO SEARCH (1:1 Figma Airplane Header + Real Search Controls) ══ */}
+            {/* ══ 02A: SOLO SEARCH (Unified StatusBar + 1:1 Figma Airplane Header + Real Search Controls) ══ */}
             {screen === 'soloSearch' && (
               <div key="soloSearch" className="ptp-view" style={{ background: '#f4f6f5' }}>
                 <div className="ptp-scroll">
-                  <div className="ptp-figma-hdr">
-                    <img src={HYBRID_ASSETS.soloHeader} alt="宠物单独飞" />
-                    <button type="button" className="ptp-hdr-back" aria-label="返回" onClick={goBack} />
+                  <div className="ptp-solo-top">
+                    <StatusBar light />
+                    <div className="ptp-figma-hdr">
+                      <img src={HYBRID_ASSETS.soloHeader} alt="宠物单独飞" />
+                      <button
+                        type="button"
+                        className="ptp-hdr-back"
+                        style={{ top: '2%', height: '38%' }}
+                        aria-label="返回"
+                        onClick={goBack}
+                      />
+                    </div>
                   </div>
 
                   <div className="ptp-search-card">
@@ -714,35 +750,43 @@ export default function PetTravelPrototype() {
               </div>
             )}
 
-            {/* ══ 04: PLAN DETAIL (Real Long Scroll + 1:1 Figma 3D Benefits Diagram) ══ */}
+            {/* ══ 04: PLAN DETAIL (1:1 Continuous Emerald Header + Scroll-Reactive Sticky White Nav + Real Long Scroll) ══ */}
             {screen === 'detail' && (
               <div key="detail" className="ptp-view" style={{ background: '#f4f6f5' }}>
-                <div className="ptp-emerald-hdr" style={{ paddingBottom: 22 }}>
-                  <StatusBar light />
+                <div className="ptp-emerald-bg-layer" style={{ height: 268, opacity: detailScrolled ? 0 : 1, transition: 'opacity 0.2s ease' }} />
+                <div className={`ptp-chrome-top${detailScrolled ? ' is-scrolled' : ''}`}>
+                  <StatusBar light={!detailScrolled} />
                   <div className="ptp-nav">
-                    <button type="button" className="ptp-nav-btn" onClick={goBack}><BackSvg color="#fff" /></button>
+                    <button type="button" className="ptp-nav-btn" onClick={goBack}>
+                      <BackSvg color={detailScrolled ? '#16221c' : '#fff'} />
+                    </button>
                     <span className="ptp-nav-title">方案详情</span>
-                    <button type="button" className="ptp-nav-btn" onClick={() => showToast('专属管家全程代办三证与监护')}>帮助</button>
-                  </div>
-                  <div style={{ margin: '4px 14px 0', padding: '12px 14px', borderRadius: 14, background: 'rgba(255,255,255,0.14)', border: '1px solid rgba(255,255,255,0.2)', position: 'relative' }}>
-                    {selectedFlight.hasRecBadge && (
-                      <img src={HYBRID_ASSETS.recBadge} alt="官方推荐" style={{ position: 'absolute', top: 0, right: 0, height: 21, borderRadius: '0 14px 0 8px' }} />
-                    )}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 15, fontWeight: 700, marginBottom: 4 }}>
-                      <img src={selectedFlight.airlineKey === 'mu' ? HYBRID_ASSETS.muLogo : HYBRID_ASSETS.caLogo} alt="" style={{ width: 16, height: 15 }} />
-                      <span>{selectedFlight.airline} {selectedFlight.code}</span>
-                    </div>
-                    <div style={{ fontSize: 11.5, opacity: 0.92, marginBottom: 8 }}>
-                      {dateStr.split(' ')[0]}（周三） | 宠物含箱 ≤ 15kg
-                    </div>
-                    <div style={{ display: 'flex', gap: 6 }}>
-                      <span style={{ fontSize: 10.5, padding: '2px 8px', borderRadius: 5, background: 'rgba(0,0,0,0.16)' }}>{selectedFlight.aircraft}</span>
-                      <span style={{ fontSize: 10.5, padding: '2px 8px', borderRadius: 5, background: 'rgba(0,0,0,0.16)' }}>{selectedFlight.oxygenTag}</span>
-                    </div>
+                    <span className="ptp-nav-btn" />
                   </div>
                 </div>
 
-                <div className="ptp-scroll" style={{ marginTop: -12, borderRadius: '18px 18px 0 0', background: '#f4f6f5', position: 'relative', zIndex: 4, paddingTop: 12 }}>
+                <div
+                  className="ptp-scroll"
+                  style={{ position: 'relative', zIndex: 4, paddingTop: 6 }}
+                  onScroll={(e) => setDetailScrolled(e.currentTarget.scrollTop > 110)}
+                >
+                  <div style={{ margin: '0 12px 12px', padding: '13px 14px', borderRadius: 15, background: 'rgba(255,255,255,0.14)', border: '1px solid rgba(255,255,255,0.22)', color: '#ffffff', position: 'relative', overflow: 'hidden' }}>
+                    {selectedFlight.hasRecBadge && (
+                      <img src={HYBRID_ASSETS.recBadge} alt="官方推荐" style={{ position: 'absolute', top: 0, right: 0, height: 22, borderRadius: '0 15px 0 9px' }} />
+                    )}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 15, fontWeight: 700, marginBottom: 5 }}>
+                      {selectedFlight.airlineKey === 'mu' ? <MuWhiteSvg /> : <img src={HYBRID_ASSETS.caLogo} alt="" style={{ width: 16, height: 15 }} />}
+                      <span>{selectedFlight.airline} {selectedFlight.code}</span>
+                    </div>
+                    <div style={{ fontSize: 11.5, opacity: 0.94, marginBottom: 9 }}>
+                      {dateStr.split(' ')[0]} (周三) &nbsp;|&nbsp; 宠物含箱 ≤ 15kg
+                    </div>
+                    <div style={{ display: 'flex', gap: 7 }}>
+                      <span style={{ fontSize: 10.5, padding: '2.5px 9px', borderRadius: 5, background: 'rgba(0,0,0,0.14)' }}>{selectedFlight.aircraft}</span>
+                      <span style={{ fontSize: 10.5, padding: '2.5px 9px', borderRadius: 5, background: 'rgba(0,0,0,0.14)' }}>{selectedFlight.oxygenTag}</span>
+                    </div>
+                  </div>
+
                   <div className="ptp-card">
                     <div className="ptp-times" style={{ marginBottom: 0 }}>
                       <div className="ptp-tcol">
@@ -752,7 +796,11 @@ export default function PetTravelPrototype() {
                       </div>
                       <div className="ptp-tmid">
                         <div>{selectedFlight.takeoffText}</div>
-                        <div className="ptp-tmid-line" />
+                        <div style={{ position: 'relative', display: 'flex', alignItems: 'center', margin: '4px 0' }}>
+                          <div className="ptp-tmid-line" style={{ flex: 1, margin: 0 }} />
+                          <span style={{ fontSize: 11, color: '#bfc9c3', padding: '0 3px', lineHeight: 1 }}>✈</span>
+                          <div className="ptp-tmid-line" style={{ flex: 1, margin: 0 }} />
+                        </div>
                         <div>{selectedFlight.duration}</div>
                       </div>
                       <div className="ptp-tcol is-r">
@@ -781,7 +829,7 @@ export default function PetTravelPrototype() {
                         <strong className={b.highlight ? 'is-free' : ''}>{b.price}</strong>
                       </div>
                     ))}
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: 10, marginTop: 4, borderTop: '1px solid #eef2f0', fontSize: 13.5, fontWeight: 700 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: 12, marginTop: 6, borderTop: '1px solid #f1f4f2', fontSize: 14, fontWeight: 700 }}>
                       <span>方案预估总价</span>
                       <span style={{ color: '#e45044', fontSize: 18 }}>¥ {selectedFlight.price}</span>
                     </div>
@@ -790,18 +838,18 @@ export default function PetTravelPrototype() {
                   <div className="ptp-card">
                     <h4 className="ptp-sec-h">托运限制及健康要求</h4>
                     <div className="ptp-alert is-red">
-                      <strong style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-                        <span style={{ width: 14, height: 14, borderRadius: '50%', background: '#e34f47', color: '#fff', fontSize: 10, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>!</span>
-                        严格禁飞品种
-                      </strong>
-                      短鼻类猫犬（如法斗、巴哥、加菲猫、波斯猫等）由于高空易窒息，属于民航禁运品种，本方案不支持承运。
+                      <span style={{ width: 15, height: 15, marginTop: 1, borderRadius: '50%', background: '#e34f47', color: '#fff', fontSize: 10, fontWeight: 800, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>!</span>
+                      <div>
+                        <strong>严格禁飞品种</strong>
+                        短鼻类猫犬（如法斗、巴哥、加菲猫、波斯猫等）由于高空易窒息，属于民航禁运品种，本方案不支持承运。
+                      </div>
                     </div>
                     <div className="ptp-alert is-green">
-                      <strong style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-                        <span style={{ width: 14, height: 14, borderRadius: '50%', background: '#2eb66b', color: '#fff', fontSize: 10, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>i</span>
-                        健康及适运状态
-                      </strong>
-                      宠物年龄须在8周至10周岁内，处于非怀孕、非术后康复期。为了起飞安全，交接前4小时请务必让宠物保持断食。
+                      <span style={{ width: 15, height: 15, marginTop: 1, borderRadius: '50%', background: '#2eb66b', color: '#fff', fontSize: 10, fontWeight: 800, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>i</span>
+                      <div>
+                        <strong>健康及适运状态</strong>
+                        宠物年龄须在8周至10周岁内，处于非怀孕、非术后康复期。为了起飞安全，交接前4小时请务必让宠物保持断食。
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -810,9 +858,12 @@ export default function PetTravelPrototype() {
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <div>
                       <div style={{ fontSize: 10.5, color: '#7e8d85' }}>方案预估总价</div>
-                      <div className="ptp-price-num">¥{selectedFlight.price}</div>
+                      <div className="ptp-price-num">
+                        <em style={{ fontStyle: 'normal', fontSize: 13, marginRight: 2 }}>¥</em>
+                        {selectedFlight.price}
+                      </div>
                     </div>
-                    <button type="button" className="ptp-btn-green-full" style={{ width: 176, height: 41 }} onClick={() => navigate('form')}>
+                    <button type="button" className="ptp-btn-green-full" style={{ width: 176, height: 42 }} onClick={() => navigate('form')}>
                       前往填写订单
                     </button>
                   </div>
@@ -821,27 +872,35 @@ export default function PetTravelPrototype() {
               </div>
             )}
 
-            {/* ══ 05: REAL SCROLLABLE & INTERACTIVE FORM (1:1 Continuous Emerald Header + Floating Cards) ══ */}
+            {/* ══ 05: REAL SCROLLABLE & INTERACTIVE FORM (1:1 Continuous Emerald Header + Scroll-Reactive Sticky White Nav) ══ */}
             {screen === 'form' && (
               <div key="form" className="ptp-view" style={{ background: '#f4f6f5' }}>
-                <div className="ptp-emerald-bg-layer" style={{ height: 220 }} />
-                <div style={{ position: 'relative', zIndex: 4, flexShrink: 0, color: '#ffffff' }}>
-                  <StatusBar light />
+                <div className="ptp-emerald-bg-layer" style={{ height: 220, opacity: formScrolled ? 0 : 1, transition: 'opacity 0.2s ease' }} />
+                <div className={`ptp-chrome-top${formScrolled ? ' is-scrolled' : ''}`}>
+                  <StatusBar light={!formScrolled} />
                   <div className="ptp-nav">
-                    <button type="button" className="ptp-nav-btn" onClick={goBack}><BackSvg color="#fff" /></button>
+                    <button type="button" className="ptp-nav-btn" onClick={goBack}>
+                      <BackSvg color={formScrolled ? '#16221c' : '#fff'} />
+                    </button>
                     <span className="ptp-nav-title">填写订单信息</span>
                     <span className="ptp-nav-btn" />
                   </div>
-                  <div className="ptp-steps">
-                    <span className="is-on">✓ 选航班</span>
-                    <i />
-                    <span className="is-on"><span className="ptp-step-num">2</span>填信息</span>
-                    <i />
-                    <span>3 支付</span>
-                  </div>
+                  {!formScrolled && (
+                    <div className="ptp-steps">
+                      <span className="is-on">✓ 选航班</span>
+                      <i />
+                      <span className="is-on"><span className="ptp-step-num">2</span>填信息</span>
+                      <i />
+                      <span>3 支付</span>
+                    </div>
+                  )}
                 </div>
 
-                <div className="ptp-scroll" style={{ position: 'relative', zIndex: 4, paddingTop: 10 }}>
+                <div
+                  className="ptp-scroll"
+                  style={{ position: 'relative', zIndex: 4, paddingTop: 10 }}
+                  onScroll={(e) => setFormScrolled(e.currentTarget.scrollTop > 56)}
+                >
                   <div className="ptp-card">
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
                       <strong style={{ fontSize: 14 }}>宠物档案</strong>
@@ -1357,12 +1416,17 @@ export default function PetTravelPrototype() {
                     <span>选择品种</span>
                     <button type="button" style={{ fontSize: 12.5, color: '#249b59' }} onClick={() => setModal(null)}>确定</button>
                   </div>
-                  <input
-                    value={breedSearch}
-                    onChange={(e) => setBreedSearch(e.target.value)}
-                    placeholder="搜索品种...（试试搜“法斗”触发短鼻禁飞拦截）"
-                    style={{ width: '100%', height: 35, borderRadius: 10, border: 'none', background: '#f2f5f4', padding: '0 12px', fontSize: 12.5, marginBottom: 10, outline: 'none' }}
-                  />
+                  <div style={{ position: 'relative', marginBottom: 10 }}>
+                    <input
+                      value={breedSearch}
+                      onChange={(e) => setBreedSearch(e.target.value)}
+                      placeholder="搜索品种..."
+                      style={{ width: '100%', height: 35, borderRadius: 10, border: 'none', background: '#f2f4f7', padding: '0 34px 0 12px', fontSize: 12.5, outline: 'none' }}
+                    />
+                    <span style={{ position: 'absolute', right: 11, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', display: 'flex' }}>
+                      <SearchIconSvg />
+                    </span>
+                  </div>
                   {!breedSearch && (
                     <div style={{ display: 'flex', gap: 18, borderBottom: '1px solid #eff2f0', marginBottom: 6 }}>
                       {[{ id: 'dog', label: '犬类' }, { id: 'cat', label: '猫类' }, { id: 'other', label: '其他' }].map((t) => (
@@ -1422,31 +1486,36 @@ export default function PetTravelPrototype() {
                     <span>选择宠物年龄</span>
                     <span style={{ width: 28 }} />
                   </div>
-                  <div className="ptp-sheet-body" style={{ maxHeight: 180, marginBottom: 12 }}>
-                    {AGE_OPTIONS.map((o) => (
-                      <button
-                        key={o.label}
-                        type="button"
-                        style={{
-                          width: '100%',
-                          padding: '10px 0',
-                          borderRadius: 10,
-                          background: ageObj.label === o.label ? '#f2f5f4' : 'transparent',
-                          fontSize: ageObj.label === o.label ? 17 : 14,
-                          fontWeight: ageObj.label === o.label ? 700 : 500,
-                          color: !o.eligible ? '#d6453f' : ageObj.label === o.label ? '#16221c' : '#8a9991',
-                        }}
-                        onClick={() => setAgeObj(o)}
-                      >
-                        {o.label}
-                      </button>
-                    ))}
+                  <div className="ptp-sheet-body" style={{ maxHeight: 168, marginBottom: 14 }}>
+                    {AGE_OPTIONS.map((o) => {
+                      const active = ageObj.label === o.label;
+                      return (
+                        <button
+                          key={o.label}
+                          type="button"
+                          style={{
+                            width: '100%',
+                            padding: active ? '11px 0' : '8px 0',
+                            borderRadius: 10,
+                            background: active ? '#f3f5f8' : 'transparent',
+                            fontSize: active ? 17 : 13.5,
+                            fontWeight: active ? 700 : 500,
+                            color: !o.eligible ? '#d6453f' : active ? '#16221c' : '#9aa4ac',
+                          }}
+                          onClick={() => setAgeObj(o)}
+                        >
+                          {o.label}
+                        </button>
+                      );
+                    })}
                   </div>
-                  <div className={`ptp-alert ${ageObj.eligible ? 'is-green' : 'is-red'}`}>
-                    <strong>{ageObj.eligible ? '● 年龄符合客舱同行要求' : '● 超出航空适航年龄限制'}</strong>
+                  <div style={{ borderRadius: 11, padding: '11px 12px', background: ageObj.eligible ? '#f8faf9' : '#fff4f3', border: `1px solid ${ageObj.eligible ? '#e6ece9' : '#f7d5d2'}`, fontSize: 11, lineHeight: 1.58, color: '#7b8781' }}>
+                    <strong style={{ display: 'block', fontSize: 12, marginBottom: 4, color: ageObj.eligible ? '#26a95f' : '#d6453f' }}>
+                      ● {ageObj.eligible ? '年龄符合客舱同行要求' : '超出航空适航年龄限制'}
+                    </strong>
                     {ageObj.note}
                   </div>
-                  <button type="button" className="ptp-btn-green-full" style={{ marginTop: 12 }} onClick={() => setModal(null)}>确认选择</button>
+                  <button type="button" className="ptp-btn-green-full" style={{ marginTop: 14, borderRadius: 12 }} onClick={() => setModal(null)}>确认选择</button>
                 </div>
               </div>
             )}
@@ -1460,7 +1529,7 @@ export default function PetTravelPrototype() {
                     <span>{modal === 'addrSend' ? '选择发件地址' : '选择收货地址'}</span>
                     <span style={{ width: 28 }} />
                   </div>
-                  <div className="ptp-sheet-body" style={{ marginBottom: 10 }}>
+                  <div className="ptp-sheet-body" style={{ marginBottom: 12 }}>
                     {SAVED_ADDRESSES.map((a) => {
                       const active = (modal === 'addrSend' ? senderAddr.id : receiverAddr.id) === a.id;
                       return (
@@ -1470,7 +1539,17 @@ export default function PetTravelPrototype() {
                           className={`ptp-addon${active ? ' is-active' : ''}`}
                           onClick={() => { if (modal === 'addrSend') setSenderAddr(a); else setReceiverAddr(a); setModal(null); }}
                         >
-                          <span className={`ptp-chk${active ? ' is-on' : ''}`} style={{ borderRadius: '50%' }}>{active ? '✓' : ''}</span>
+                          <span
+                            style={{
+                              width: 15,
+                              height: 15,
+                              borderRadius: '50%',
+                              marginTop: 2,
+                              flexShrink: 0,
+                              border: active ? '2px solid #2eb66b' : '1.5px solid #cbd4cf',
+                              background: '#ffffff',
+                            }}
+                          />
                           <div style={{ flex: 1 }}>
                             <div style={{ fontSize: 13, fontWeight: 700 }}>{a.name} <span style={{ fontWeight: 400, color: '#7d8c84', marginLeft: 4 }}>{a.phone}</span></div>
                             <div style={{ fontSize: 11, color: '#6b7b72', marginTop: 4 }}>
@@ -1484,13 +1563,13 @@ export default function PetTravelPrototype() {
                     })}
                     <button
                       type="button"
-                      style={{ width: '100%', height: 38, borderRadius: 10, border: '1px dashed #cfd9d3', background: '#fafcfb', fontSize: 12, color: '#5c6b63', fontWeight: 600, marginTop: 2 }}
+                      style={{ width: '100%', height: 40, borderRadius: 11, border: '1px solid #e5eae7', background: '#ffffff', fontSize: 12, color: '#5c6b63', fontWeight: 600, marginTop: 2 }}
                       onClick={() => showToast('演示模式：已支持快速切换预置地址')}
                     >
                       + 新增收货地址
                     </button>
                   </div>
-                  <button type="button" className="ptp-btn-green-full" onClick={() => setModal(null)}>确认选择</button>
+                  <button type="button" className="ptp-btn-green-full" style={{ borderRadius: 12 }} onClick={() => setModal(null)}>确认选择</button>
                 </div>
               </div>
             )}
@@ -1616,30 +1695,47 @@ export default function PetTravelPrototype() {
 
             {modal === 'timeline' && (
               <div className="ptp-mask" onClick={() => setModal(null)}>
-                <div className="ptp-sheet" onClick={(e) => e.stopPropagation()}>
-                  <div className="ptp-sheet-grab" />
-                  <div className="ptp-sheet-hd">
+                <div className="ptp-sheet" style={{ maxHeight: '82%' }} onClick={(e) => e.stopPropagation()}>
+                  <div className="ptp-sheet-grab" style={{ background: '#dbe2ea', width: 38 }} />
+                  <div className="ptp-sheet-hd" style={{ marginBottom: 12 }}>
                     <span>全流程追踪</span>
-                    <button type="button" style={{ fontSize: 12.5, color: '#84938b' }} onClick={() => setModal(null)}>关闭</button>
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 12px', borderRadius: 12, background: '#f5f7f6', marginBottom: 14 }}>
-                    <img src={HYBRID_ASSETS.petAvatar} alt="小航" style={{ width: 38, height: 38, borderRadius: '50%' }} />
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 11, padding: '11px 13px', borderRadius: 12, background: '#f6f8fa', marginBottom: 16 }}>
+                    <img src={HYBRID_ASSETS.petAvatar} alt="小航" style={{ width: 40, height: 40, borderRadius: '50%', objectFit: 'cover' }} />
                     <div>
-                      <strong style={{ fontSize: 13 }}>{petName || '小航'} · {breed}</strong>
-                      <div style={{ fontSize: 10.5, color: '#8a9991' }}>订单号：PT-20250519001</div>
+                      <strong style={{ fontSize: 13.5, color: '#17231d' }}>{petName || '小航'} · {breed}</strong>
+                      <div style={{ fontSize: 10.5, color: '#8a9991', marginTop: 2 }}>订单号：PT-20250519001</div>
                     </div>
                   </div>
                   <div className="ptp-sheet-body">
-                    {FULL_TIMELINE_LOGS.filter((l) => l.minStage <= trackStageIdx).map((log, i) => (
-                      <div key={log.time} style={{ display: 'grid', gridTemplateColumns: '16px 1fr', gap: 10, paddingBottom: 14 }}>
+                    {FULL_TIMELINE_LOGS.filter((l) => l.minStage <= trackStageIdx).map((log, i, arr) => (
+                      <div key={log.time} style={{ display: 'grid', gridTemplateColumns: '18px 1fr', gap: 11, paddingBottom: i === arr.length - 1 ? 6 : 16 }}>
                         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                          <span style={{ width: 10, height: 10, borderRadius: '50%', marginTop: 4, background: i === 0 ? '#2eb66b' : '#cbd7d0' }} />
-                          <span style={{ flex: 1, width: 1.5, background: '#e5ece8', marginTop: 4 }} />
+                          <span
+                            style={{
+                              width: i === 0 ? 10 : 8,
+                              height: i === 0 ? 10 : 8,
+                              borderRadius: '50%',
+                              marginTop: 4,
+                              background: i === 0 ? '#2eb66b' : '#cfd7df',
+                              boxShadow: i === 0 ? '0 0 0 4px rgba(46, 182, 107, 0.22)' : 'none',
+                            }}
+                          />
+                          {i < arr.length - 1 && (
+                            <span
+                              style={{
+                                flex: 1,
+                                width: 1.5,
+                                marginTop: 5,
+                                background: i === 0 ? 'linear-gradient(180deg, #3ec077 0%, #e5ece8 100%)' : '#edf1f4',
+                              }}
+                            />
+                          )}
                         </div>
                         <div>
-                          <div style={{ fontSize: 11, color: i === 0 ? '#249b59' : '#8a9991', fontWeight: i === 0 ? 600 : 400 }}>{log.time}</div>
-                          <div style={{ fontSize: 13.5, fontWeight: 700, margin: '2px 0' }}>{log.title}</div>
-                          <div style={{ fontSize: 11.5, color: '#5f6f67', lineHeight: 1.55 }}>{log.desc}</div>
+                          <div style={{ fontSize: 11.5, color: i === 0 ? '#249b59' : '#96a1a8', fontWeight: i === 0 ? 600 : 400 }}>{log.time}</div>
+                          <div style={{ fontSize: 13.5, fontWeight: 700, color: '#17231d', margin: '3px 0 4px' }}>{log.title}</div>
+                          <div style={{ fontSize: 11.5, color: '#617068', lineHeight: 1.6 }}>{log.desc}</div>
                         </div>
                       </div>
                     ))}
@@ -1648,44 +1744,61 @@ export default function PetTravelPrototype() {
               </div>
             )}
 
-            {/* ══ 08: PEAK-END SHARE POSTER (1:1 Figma Art + Live Pet Name + Official QR & Share Icons) ══ */}
+            {/* ══ 08: PEAK-END SHARE POSTER (1:1 Figma Ticket Notches, Brush Highlight, Scalloped Avatar & Live Data) ══ */}
             {modal === 'poster' && (
               <div className="ptp-mask" onClick={() => setModal(null)}>
                 <div style={{ padding: '0 22px 14px', marginTop: 'auto' }} onClick={(e) => e.stopPropagation()}>
-                  <div style={{ borderRadius: 20, overflow: 'hidden', background: '#2e95bd', boxShadow: '0 18px 40px rgba(10, 26, 20, 0.42)' }}>
+                  <div className="ptp-poster-card">
                     <img src={HYBRID_ASSETS.posterHeader} alt="全程实时看得见 安心宠物托运" style={{ display: 'block', width: '100%', height: 'auto' }} />
-                    <div style={{ background: '#ffffff', color: '#16221c', borderRadius: 16, padding: 14, margin: '-14px 10px 10px', position: 'relative', zIndex: 2 }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
-                        <img src={HYBRID_ASSETS.petAvatar} alt="小航" style={{ width: 42, height: 42, borderRadius: '50%', border: '2px solid #86e0ad' }} />
+                    <div className="ptp-poster-ticket">
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 11, marginBottom: 14 }}>
+                        <div className="ptp-poster-avatar-wrap">
+                          <img src={HYBRID_ASSETS.petAvatar} alt="小航" />
+                        </div>
                         <div>
-                          <div style={{ fontSize: 15, fontWeight: 800 }}>{petName || '小航'} 平安落地{toCity.name}！</div>
-                          <div style={{ fontSize: 11, color: '#249b59', fontWeight: 600 }}>1760 公里 2 小时 40 分 的奔赴</div>
+                          <div style={{ fontSize: 15.5, fontWeight: 800, color: '#15221b', lineHeight: 1.25 }}>
+                            {petName || '小航'}{' '}
+                            <span className="ptp-poster-brush">平安落地{toCity.name}！</span>
+                          </div>
+                          <div style={{ fontSize: 11.5, color: '#1d2b24', fontWeight: 700, marginTop: 4 }}>
+                            <span style={{ color: '#1da15c', fontSize: 13 }}>1760</span> 公里&nbsp;
+                            <span style={{ color: '#1da15c', fontSize: 13 }}>2</span> 小时
+                            <span style={{ color: '#1da15c', fontSize: 13 }}> 40</span> 分 的奔赴
+                          </div>
                         </div>
                       </div>
-                      <div style={{ display: 'grid', gridTemplateColumns: '1fr auto 1fr', alignItems: 'center', padding: '10px 0', borderTop: '1px dashed #e5ece8', borderBottom: '1px dashed #e5ece8', marginBottom: 10 }}>
+
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr auto 1fr', alignItems: 'center', padding: '4px 2px 6px' }}>
                         <div>
-                          <div style={{ fontSize: 18, fontWeight: 800 }}>18:40</div>
-                          <div style={{ fontSize: 10.5, color: '#7a8a82' }}>虹桥机场</div>
+                          <div style={{ fontSize: 19, fontWeight: 800, fontVariantNumeric: 'tabular-nums', color: '#16221c' }}>18:40</div>
+                          <div style={{ fontSize: 10.5, color: '#7a8a82', marginTop: 1 }}>虹桥机场</div>
                         </div>
-                        <img src={HYBRID_ASSETS.posterPlane} alt="" style={{ width: 54, height: 29, objectFit: 'contain' }} />
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                          <span style={{ color: '#cce6d8', letterSpacing: 2, fontSize: 11 }}>···</span>
+                          <img src={HYBRID_ASSETS.posterPlane} alt="" style={{ width: 52, height: 28, objectFit: 'contain' }} />
+                          <span style={{ color: '#cce6d8', letterSpacing: 2, fontSize: 11 }}>···</span>
+                        </div>
                         <div style={{ textAlign: 'right' }}>
-                          <div style={{ fontSize: 18, fontWeight: 800 }}>20:40</div>
-                          <div style={{ fontSize: 10.5, color: '#7a8a82' }}>大兴机场</div>
+                          <div style={{ fontSize: 19, fontWeight: 800, fontVariantNumeric: 'tabular-nums', color: '#16221c' }}>20:40</div>
+                          <div style={{ fontSize: 10.5, color: '#7a8a82', marginTop: 1 }}>大兴机场</div>
                         </div>
                       </div>
+
+                      <div className="ptp-poster-divider" />
+
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 10.5, color: '#8a9991' }}>
                         <div>
-                          <div>@TiceeZz</div>
-                          <div>2026/05/20 周三</div>
+                          <div style={{ fontWeight: 500 }}>@TiceeZz</div>
+                          <div style={{ marginTop: 2 }}>2026/05/20 周三</div>
                         </div>
-                        <img src={HYBRID_ASSETS.posterQr} alt="航旅纵横小程序码" style={{ width: 38, height: 38 }} />
+                        <img src={HYBRID_ASSETS.posterQr} alt="航旅纵横小程序码" style={{ width: 40, height: 40 }} />
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <div className="ptp-sheet" style={{ paddingTop: 12 }} onClick={(e) => e.stopPropagation()}>
-                  <div style={{ textAlign: 'center', fontSize: 13.5, fontWeight: 700, marginBottom: 10 }}>分享至</div>
+                <div className="ptp-sheet" style={{ paddingTop: 14 }} onClick={(e) => e.stopPropagation()}>
+                  <div style={{ textAlign: 'center', fontSize: 14.5, fontWeight: 700, color: '#162238', marginBottom: 10 }}>分享至</div>
                   <div style={{ position: 'relative' }}>
                     <img src={HYBRID_ASSETS.shareBar} alt="微信 朋友圈 QQ 保存图片" style={{ display: 'block', width: '100%', height: 'auto' }} />
                     <div style={{ position: 'absolute', inset: 0, display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)' }}>
