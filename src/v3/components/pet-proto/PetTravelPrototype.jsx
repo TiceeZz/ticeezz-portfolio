@@ -79,6 +79,55 @@ const RandomPlaneSvg = ({ muted = false }) => (
   </svg>
 );
 
+const PawSearchSvg = () => (
+  <svg width="17" height="17" viewBox="0 0 20 20" fill="none" style={{ flexShrink: 0 }}>
+    <path d="M10.5 15.8H4.8A2.3 2.3 0 0 1 2.5 13.5V4.8A2.3 2.3 0 0 1 4.8 2.5H13.5A2.3 2.3 0 0 1 15.8 4.8V9.2" stroke="#45554d" strokeWidth="1.35" strokeLinecap="round" />
+    <circle cx="6.8" cy="7.2" r="1" fill="#45554d" />
+    <circle cx="9.2" cy="6.4" r="1" fill="#45554d" />
+    <circle cx="11.5" cy="7.3" r="1" fill="#45554d" />
+    <path d="M7.4 10.6C7.4 9.5 8.3 8.8 9.2 8.8C10.1 8.8 11 9.5 11 10.6C11 11.4 10.2 11.9 9.2 11.9C8.2 11.9 7.4 11.4 7.4 10.6Z" fill="#45554d" />
+    <circle cx="13.8" cy="13.6" r="2.7" stroke="#45554d" strokeWidth="1.35" fill="#fff" />
+    <path d="M15.8 15.6L17.8 17.6" stroke="#45554d" strokeWidth="1.45" strokeLinecap="round" />
+  </svg>
+);
+
+const MiniTimelinePlaneSvg = () => (
+  <svg width="15" height="11" viewBox="0 0 24 16" fill="none" style={{ flexShrink: 0 }}>
+    <path d="M2.6 9.8L6.2 10.4L10.6 9.2L7.4 3.4L9.2 3.6L14.4 8.2L19.4 7.0C20.7 6.7 21.8 7.2 22.0 8.1C22.2 9.0 21.3 9.9 20.0 10.2L7.8 13.2C6.4 13.5 5.0 12.9 4.2 11.8L2.6 9.8Z" fill="#b8c3bd" />
+  </svg>
+);
+
+const BulbRaysSvg = () => (
+  <svg width="15" height="15" viewBox="0 0 20 20" fill="none" style={{ flexShrink: 0 }}>
+    <path d="M10 4.5A3.8 3.8 0 0 0 7.4 11.1C8 11.7 8.3 12.3 8.4 13.1H11.6C11.7 12.3 12 11.7 12.6 11.1A3.8 3.8 0 0 0 10 4.5Z" stroke="#24342c" strokeWidth="1.35" strokeLinejoin="round" />
+    <path d="M8.5 15.3H11.5M10 1.8V2.9M10 17.3V17.8M3.3 8.2H4.5M15.5 8.2H16.7M5.2 3.8L6.1 4.6M14.8 3.8L13.9 4.6" stroke="#24342c" strokeWidth="1.3" strokeLinecap="round" />
+  </svg>
+);
+
+const ShieldCheckMiniSvg = () => (
+  <svg width="11" height="11" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0 }}>
+    <path d="M8 1.8L13.2 3.8V7.8C13.2 11.1 10.9 13.4 8 14.5C5.1 13.4 2.8 11.1 2.8 7.8V3.8L8 1.8Z" fill="#704a1e" fillOpacity="0.88" />
+    <path d="M5.8 8.0L7.3 9.5L10.4 6.4" stroke="#f7d59c" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+const SoloNoticeWatermarkSvg = () => (
+  <svg className="ptp-notice-wm" width="76" height="76" viewBox="0 0 88 88" fill="none" aria-hidden="true">
+    <rect x="24" y="12" width="48" height="64" rx="9" fill="#d8dcda" fillOpacity="0.42" />
+    <rect x="37" y="8" width="22" height="9" rx="4.5" fill="#cfd4d1" fillOpacity="0.55" />
+    <path d="M40 34L46.5 40.5L59 27.5" stroke="#eef0ef" strokeWidth="5.5" strokeLinecap="round" strokeLinejoin="round" />
+    <rect x="36" y="48" width="24" height="4" rx="2" fill="#eef0ef" />
+    <rect x="36" y="57" width="18" height="4" rx="2" fill="#eef0ef" />
+    <g fill="#cfd4d1" fillOpacity="0.62">
+      <circle cx="15" cy="48" r="4.2" />
+      <circle cx="24" cy="43" r="4.2" />
+      <circle cx="33" cy="47" r="4.2" />
+      <circle cx="38" cy="56" r="3.8" />
+      <path d="M16.5 60C16.5 54.5 21.5 51.5 26 51.5C30.5 51.5 34.5 55 34.5 60C34.5 64 31.2 66.5 25.5 66.5C19.8 66.5 16.5 64 16.5 60Z" />
+    </g>
+  </svg>
+);
+
 const StatusBar = ({ light = false, bg }) => (
   <div className="ptp-statusbar" style={bg ? { background: bg } : undefined} aria-hidden="true">
     <img src={light ? HYBRID_ASSETS.iosBarLight : HYBRID_ASSETS.iosBarDark} alt="" />
@@ -105,6 +154,7 @@ export default function PetTravelPrototype() {
 
   // Real Interactive Order Form
   const [breed, setBreed] = useState('柯基犬');
+  const [breedTouched, setBreedTouched] = useState(false);
   const [petName, setPetName] = useState('小航');
   const [gender, setGender] = useState('雄性');
   const [neutered, setNeutered] = useState('已绝育');
@@ -130,7 +180,7 @@ export default function PetTravelPrototype() {
   const [breedSearch, setBreedSearch] = useState('');
   const [breedAlert, setBreedAlert] = useState(null);
   const [orderTab, setOrderTab] = useState('全部');
-  const [onlyValidOrders, setOnlyValidOrders] = useState(true);
+  const [onlyValidOrders, setOnlyValidOrders] = useState(false);
   const [detailScrolled, setDetailScrolled] = useState(false);
   const [formScrolled, setFormScrolled] = useState(false);
   const [mapSatellite, setMapSatellite] = useState(false);
@@ -363,11 +413,7 @@ export default function PetTravelPrototype() {
                         showToast(next === 'empty' ? '已切换：无票空态' : next === 'available' ? '已切换：有氧舱名额充足' : '已切换：名额已满兜底态');
                       }}
                     >
-                      <svg width="16" height="16" viewBox="0 0 18 18" fill="none">
-                        <rect x="2.2" y="2.2" width="11.6" height="11.6" rx="2.4" stroke="#45554d" strokeWidth="1.35" />
-                        <circle cx="8" cy="7.5" r="2.2" stroke="#45554d" strokeWidth="1.2" />
-                        <path d="M12.5 12.5L15.6 15.6" stroke="#45554d" strokeWidth="1.5" strokeLinecap="round" />
-                      </svg>
+                      <PawSearchSvg />
                       <span>库存查询</span>
                     </button>
                     <button type="button" onClick={() => navigate('orders')}>
@@ -382,13 +428,13 @@ export default function PetTravelPrototype() {
                   </div>
 
                   {randomState === 'empty' ? (
-                    <div className="ptp-random-card" style={{ textAlign: 'center', padding: '18px 16px' }}>
+                    <div className="ptp-random-empty">
                       <img
                         src={HYBRID_ASSETS.randomEmptyDog}
                         alt="暂无行程"
-                        style={{ width: 118, height: 108, objectFit: 'contain', margin: '0 auto 10px', mixBlendMode: 'multiply' }}
+                        style={{ width: 146, height: 122, objectFit: 'contain', margin: '0 auto 12px', display: 'block', mixBlendMode: 'multiply' }}
                       />
-                      <p style={{ fontSize: 12, color: '#86948c', margin: '0 0 18px', lineHeight: 1.55 }}>
+                      <p style={{ fontSize: 12, color: '#9aa5a0', margin: '0 0 24px', lineHeight: 1.65 }}>
                         宠物随机飞，需要预订相应航班
                         <br />
                         机票后进行预约
@@ -396,6 +442,7 @@ export default function PetTravelPrototype() {
                       <button
                         type="button"
                         className="ptp-btn-green-full"
+                        style={{ height: 45, fontSize: 14.5 }}
                         onClick={() => {
                           setRandomState('available');
                           showToast('已模拟预订并自动关联东方航空 MU5101 行程');
@@ -405,7 +452,7 @@ export default function PetTravelPrototype() {
                       </button>
                       <button
                         type="button"
-                        style={{ marginTop: 12, fontSize: 12.5, fontWeight: 600, color: '#26a35d' }}
+                        style={{ marginTop: 18, fontSize: 12.5, fontWeight: 600, color: '#2eb56b' }}
                         onClick={() => {
                           setRandomState('available');
                           showToast('已手动导入客票 781-2345678901');
@@ -417,14 +464,14 @@ export default function PetTravelPrototype() {
                   ) : (
                     <>
                       <div className="ptp-random-card">
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 12, color: '#5c6b63', marginBottom: 12 }}>
-                          <strong style={{ color: '#1b2922' }}>5月20日 明天</strong>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 12, color: '#6b7972', paddingBottom: 11, borderBottom: '1px solid #eef1f3', marginBottom: 14 }}>
+                          <strong style={{ color: '#1b2922', fontSize: 12.5 }}>5月20日 明天</strong>
                           <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
                             <img src={HYBRID_ASSETS.muLogo} alt="东航" style={{ width: 15, height: 14, mixBlendMode: 'multiply' }} />
                             东方航空 MU5101
                           </span>
                         </div>
-                        <div className="ptp-times" style={{ marginBottom: 12 }}>
+                        <div className="ptp-times" style={{ marginBottom: 14 }}>
                           <div className="ptp-tcol">
                             <strong style={randomState === 'full' ? { color: '#9aa49f' } : undefined}>上海虹桥</strong>
                             <span style={randomState === 'full' ? { color: '#bcc5c0' } : undefined}>虹桥国际机场 T2</span>
@@ -437,18 +484,18 @@ export default function PetTravelPrototype() {
                             <span style={randomState === 'full' ? { color: '#bcc5c0' } : undefined}>大兴国际机场</span>
                           </div>
                         </div>
-                        <div style={{ background: '#f5f7f6', borderRadius: 10, padding: '10px 12px', fontSize: 12, color: '#56655d', lineHeight: 1.7, marginBottom: 14 }}>
+                        <div style={{ background: '#f5f7f8', borderRadius: 10, padding: '10px 12px', fontSize: 11.5, color: '#56655d', lineHeight: 1.72, marginBottom: 16 }}>
                           <div>乘机人信息：张*三</div>
                           <div>电子客票号：781-2345678901</div>
                         </div>
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: 10, borderTop: '1px dashed #e6ece9' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                           {randomState === 'available' ? (
                             <>
-                              <span style={{ fontSize: 12, fontWeight: 600, color: '#29a962' }}>● 有氧舱名额：充足</span>
+                              <span style={{ fontSize: 12, fontWeight: 600, color: '#2eb56b' }}>● 有氧舱名额：充足</span>
                               <button
                                 type="button"
                                 className="ptp-btn-green"
-                                style={{ height: 28, padding: '0 15px', fontSize: 11.5 }}
+                                style={{ height: 31, padding: '0 19px', fontSize: 12 }}
                                 onClick={() => { setSelectedFlightId('MU5101'); navigate('form'); }}
                               >
                                 立即预约
@@ -460,6 +507,7 @@ export default function PetTravelPrototype() {
                               <button
                                 type="button"
                                 className="ptp-btn-soft-green"
+                                style={{ height: 31, padding: '0 19px', fontSize: 12 }}
                                 onClick={() => { showToast('已无缝切换至同日可托运航班方案'); navigate('flights'); }}
                               >
                                 申请托运
@@ -468,10 +516,10 @@ export default function PetTravelPrototype() {
                           )}
                         </div>
                       </div>
-                      <div style={{ textAlign: 'center', marginBottom: 14 }}>
+                      <div style={{ textAlign: 'center', margin: '14px 0 18px' }}>
                         <button
                           type="button"
-                          style={{ fontSize: 12, fontWeight: 600, color: '#26a35d' }}
+                          style={{ fontSize: 12, fontWeight: 600, color: '#2eb56b' }}
                           onClick={() => {
                             const next = randomState === 'available' ? 'full' : 'available';
                             setRandomState(next);
@@ -521,7 +569,6 @@ export default function PetTravelPrototype() {
                     <div className="ptp-city-row">
                       <button type="button" className="ptp-city-btn" onClick={() => setModal('cityFrom')}>
                         {fromCity.name}
-                        <small>{fromCity.cargoA}</small>
                       </button>
                       <button
                         type="button"
@@ -532,7 +579,6 @@ export default function PetTravelPrototype() {
                       </button>
                       <button type="button" className="ptp-city-btn is-right" onClick={() => setModal('cityTo')}>
                         {toCity.name}
-                        <small>{toCity.cargoA}</small>
                       </button>
                     </div>
 
@@ -541,18 +587,19 @@ export default function PetTravelPrototype() {
                       className="ptp-line-row"
                       onClick={() => setDateStr((d) => (d === '5月20日 明天' ? '5月21日 周四' : '5月20日 明天'))}
                     >
-                      <svg width="16" height="16" viewBox="0 0 18 18" fill="none" style={{ flexShrink: 0 }}>
-                        <rect x="2.2" y="3.6" width="13.6" height="12" rx="2.4" stroke="#45b77c" strokeWidth="1.45" />
-                        <path d="M5.8 2V4.8M12.2 2V4.8M2.5 7.4H15.5" stroke="#45b77c" strokeWidth="1.4" strokeLinecap="round" />
-                      </svg>
-                      <span>{dateStr.split(' ')[0]}</span>
+                      <span className="ptp-solo-ico-badge">
+                        <svg width="14" height="14" viewBox="0 0 18 18" fill="none">
+                          <rect x="2.4" y="3.8" width="13.2" height="11.6" rx="2.2" stroke="#3eb77a" strokeWidth="1.5" />
+                          <path d="M5.8 2.2V4.8M12.2 2.2V4.8M2.8 7.5H15.2M6 10.6H12" stroke="#3eb77a" strokeWidth="1.4" strokeLinecap="round" />
+                        </svg>
+                      </span>
+                      <span className="ptp-line-main">{dateStr.split(' ')[0]}</span>
                       <span className="sub">{dateStr.split(' ')[1]}</span>
                     </button>
 
                     <button
                       type="button"
                       className="ptp-line-row"
-                      style={{ borderBottom: 'none', paddingBottom: 6 }}
                       onClick={() => {
                         const idx = WEIGHT_OPTIONS.findIndex((w) => w.id === weightKey);
                         const next = WEIGHT_OPTIONS[(idx + 1) % WEIGHT_OPTIONS.length];
@@ -562,25 +609,31 @@ export default function PetTravelPrototype() {
                         showToast(`已切换宠物预估总重：${next.label}（后续自动推荐对应航空箱）`);
                       }}
                     >
-                      <svg width="16" height="16" viewBox="0 0 18 18" fill="none" style={{ flexShrink: 0 }}>
-                        <path d="M9 2.2L15 5.4V12.6L9 15.8L3 12.6V5.4L9 2.2Z" stroke="#45b77c" strokeWidth="1.45" strokeLinejoin="round" />
-                        <path d="M3 5.4L9 8.6L15 5.4M9 8.6V15.8" stroke="#45b77c" strokeWidth="1.3" />
-                      </svg>
-                      <strong style={{ fontSize: 15.5 }}>
+                      <span className="ptp-solo-ico-badge">
+                        <svg width="14" height="14" viewBox="0 0 18 18" fill="none">
+                          <path d="M9 2.2L14.8 5.4V12.6L9 15.8L3.2 12.6V5.4L9 2.2Z" stroke="#3eb77a" strokeWidth="1.5" strokeLinejoin="round" />
+                          <path d="M3.2 5.4L9 8.6L14.8 5.4M9 8.6V15.8" stroke="#3eb77a" strokeWidth="1.35" />
+                        </svg>
+                      </span>
+                      <strong className="ptp-line-main" style={{ fontSize: 18 }}>
                         {WEIGHT_OPTIONS.find((w) => w.id === weightKey)?.label}
                       </strong>
                       <span className="sub">宠物预估总重量（含航空箱）</span>
                     </button>
 
                     <div className="ptp-promo-strip">
-                      <span style={{ display: 'inline-block', padding: '0 4px', borderRadius: 3, background: '#e04f47', color: '#fff', fontSize: 9.5, marginRight: 5 }}>礼</span>
-                      首单免费赠送宠物航空意外险 去领取!
+                      <svg width="11" height="13" viewBox="0 0 12 14" fill="none" style={{ flexShrink: 0 }}>
+                        <rect x="0.8" y="1" width="10.4" height="12" rx="1.6" fill="#d93b34" />
+                        <path d="M2 5.2C4.2 6.6 7.8 6.6 10 5.2" stroke="#ffd49c" strokeWidth="1.1" strokeLinecap="round" />
+                        <circle cx="6" cy="6.2" r="1.2" fill="#ffd49c" />
+                      </svg>
+                      <span>首单免费赠送宠物航空意外险 去领取!</span>
                     </div>
 
                     <div className="ptp-search-cta-row">
                       <button type="button" className="ptp-btn-gold" onClick={() => navigate('flights')}>
                         <strong>查询方案</strong>
-                        <span>● 40+国内航空公司直销</span>
+                        <span><ShieldCheckMiniSvg /> 40+国内航空公司直销</span>
                       </button>
                       <button
                         type="button"
@@ -597,15 +650,13 @@ export default function PetTravelPrototype() {
                   </div>
 
                   <div className="ptp-notice-box">
-                    <strong style={{ display: 'flex', alignItems: 'center', gap: 5, color: '#24342c', marginBottom: 6 }}>
-                      <svg width="14" height="14" viewBox="0 0 18 18" fill="none">
-                        <path d="M9 2.5A4.2 4.2 0 0 0 6.2 10C6.8 10.6 7.1 11.2 7.2 12H10.8C10.9 11.2 11.2 10.6 11.8 10A4.2 4.2 0 0 0 9 2.5Z" stroke="#24342c" strokeWidth="1.35" />
-                        <path d="M7.4 14.4H10.6" stroke="#24342c" strokeWidth="1.35" strokeLinecap="round" />
-                      </svg>
+                    <SoloNoticeWatermarkSvg />
+                    <strong style={{ position: 'relative', zIndex: 1, display: 'flex', alignItems: 'center', gap: 5, color: '#1b2620', fontSize: 12, marginBottom: 10 }}>
+                      <BulbRaysSvg />
                       货运托运须知：
                     </strong>
-                    <div><span style={{ color: '#2eb56b', marginRight: 5 }}>•</span>单独货运不与主人客票绑定，宠物独立由货运站安排舱机。</div>
-                    <div><span style={{ color: '#2eb56b', marginRight: 5 }}>•</span>宽体客机货舱或全货机均配置独立供氧与恒温控制系统。</div>
+                    <div className="ptp-notice-item"><span style={{ color: '#39b974' }}>•</span><span>单独货运不与主人客票绑定，宠物独立由货运站安排舱机。</span></div>
+                    <div className="ptp-notice-item"><span style={{ color: '#39b974' }}>•</span><span>宽体客机货舱或全货机均配置独立供氧与恒温控制系统。</span></div>
                   </div>
                 </div>
                 <div className="ptp-home-bar" />
@@ -694,7 +745,7 @@ export default function PetTravelPrototype() {
                             <div>{fl.takeoffText}</div>
                             <div style={{ position: 'relative', display: 'flex', alignItems: 'center', margin: '4px 0' }}>
                               <div className="ptp-tmid-line" style={{ flex: 1, margin: 0 }} />
-                              <span style={{ fontSize: 11, color: '#bfc9c3', padding: '0 3px', lineHeight: 1 }}>✈</span>
+                              <span style={{ padding: '0 3px', display: 'inline-flex', alignItems: 'center' }}><MiniTimelinePlaneSvg /></span>
                               <div className="ptp-tmid-line" style={{ flex: 1, margin: 0 }} />
                             </div>
                             <div>{fl.duration}</div>
@@ -787,7 +838,7 @@ export default function PetTravelPrototype() {
                         <div>{selectedFlight.takeoffText}</div>
                         <div style={{ position: 'relative', display: 'flex', alignItems: 'center', margin: '4px 0' }}>
                           <div className="ptp-tmid-line" style={{ flex: 1, margin: 0 }} />
-                          <span style={{ fontSize: 11, color: '#bfc9c3', padding: '0 3px', lineHeight: 1 }}>✈</span>
+                          <span style={{ padding: '0 3px', display: 'inline-flex', alignItems: 'center' }}><MiniTimelinePlaneSvg /></span>
                           <div className="ptp-tmid-line" style={{ flex: 1, margin: 0 }} />
                         </div>
                         <div>{selectedFlight.duration}</div>
@@ -923,19 +974,9 @@ export default function PetTravelPrototype() {
                     </div>
                     <div className="ptp-field">
                       <span className="ptp-field-l">体重<em>*</em></span>
-                      <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
-                        <button
-                          type="button"
-                          style={{ width: 22, height: 22, borderRadius: 6, background: '#eef5f1', color: '#218e52', fontWeight: 700 }}
-                          onClick={() => { setCrateOverride(null); setWeightKg((w) => Math.max(1.5, Number((w - 2).toFixed(1)))); }}
-                        >−</button>
-                        <strong style={{ fontSize: 13, minWidth: 48, textAlign: 'center' }}>{weightKg} kg</strong>
-                        <button
-                          type="button"
-                          style={{ width: 22, height: 22, borderRadius: 6, background: '#eef5f1', color: '#218e52', fontWeight: 700 }}
-                          onClick={() => { setCrateOverride(null); setWeightKg((w) => Math.min(30, Number((w + 2).toFixed(1)))); }}
-                        >+</button>
-                      </div>
+                      <button type="button" className="ptp-field-v" onClick={() => setModal('weight')}>
+                        <span>{weightKg} kg</span><RightSvg />
+                      </button>
                     </div>
                     <div className="ptp-field">
                       <span className={`ptp-field-l${!ageObj.eligible ? ' is-err' : ''}`}>年龄<em>*</em></span>
@@ -1161,14 +1202,14 @@ export default function PetTravelPrototype() {
                   <button
                     type="button"
                     className="ptp-btn-green-full"
-                    style={{ height: 40, background: 'linear-gradient(90deg, #43c192 0%, #24b358 100%)', fontSize: 13.5 }}
+                    style={{ width: '80%', maxWidth: 268, height: 42, background: 'linear-gradient(90deg, #43c192 0%, #24b358 100%)', fontSize: 13.5 }}
                     onClick={() => navigate('tracking')}
                   >
                     查看订单详情
                   </button>
                   <button
                     type="button"
-                    style={{ width: '100%', height: 40, borderRadius: 999, background: '#d0d3d2', color: '#19221e', fontSize: 13.5, fontWeight: 500, marginTop: 12 }}
+                    style={{ width: '80%', maxWidth: 268, height: 42, borderRadius: 999, background: '#d0d3d2', color: '#19221e', fontSize: 13.5, fontWeight: 500, marginTop: 14 }}
                     onClick={() => navigate('hub')}
                   >
                     返回首页
@@ -1187,7 +1228,7 @@ export default function PetTravelPrototype() {
                   <button type="button" style={{ fontSize: 12, color: '#5c6b63' }} onClick={() => showToast('暂无可开票订单')}>我的发票</button>
                 </div>
                 <div className="ptp-ord-tabs">
-                  {['全部', '待支付', '处理中', '已完成', '售后/退改'].map((t) => (
+                  {['全部', '待支付', '处理中', '已完成', '售后/退改', '待评价'].map((t) => (
                     <button
                       key={t}
                       type="button"
@@ -1206,18 +1247,27 @@ export default function PetTravelPrototype() {
                     style={{ marginLeft: 'auto', display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 11, color: '#55635c' }}
                     onClick={() => setOnlyValidOrders((v) => !v)}
                   >
-                    <span className={`ptp-chk${onlyValidOrders ? ' is-on' : ''}`} style={{ width: 14, height: 14, borderRadius: '50%', marginTop: 0, fontSize: 9 }}>
-                      {onlyValidOrders ? '✓' : ''}
+                    <span
+                      style={{
+                        width: 14,
+                        height: 14,
+                        borderRadius: '50%',
+                        background: onlyValidOrders ? '#2eb66b' : '#d8dedb',
+                        color: '#ffffff',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: 9,
+                      }}
+                    >
+                      ✓
                     </span>
                     只看有效订单
                   </button>
                 </div>
-                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '0 32px 68px', textAlign: 'center' }}>
-                  <img src={HYBRID_ASSETS.emptyDog} alt="暂无订单" style={{ width: 114, height: 90, objectFit: 'contain', marginBottom: 10, mixBlendMode: 'multiply' }} />
-                  <h3 style={{ fontSize: 15.5, fontWeight: 700, margin: '0 0 22px', color: '#1b2821' }}>暂无订单</h3>
-                  <button type="button" className="ptp-btn-green-full" style={{ width: 196 }} onClick={() => navigate('soloSearch')}>
-                    去预约宠物出行
-                  </button>
+                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', padding: '110px 32px 48px', textAlign: 'center' }}>
+                  <img src={HYBRID_ASSETS.emptyDog} alt="暂无订单" style={{ width: 118, height: 94, objectFit: 'contain', marginBottom: 14, mixBlendMode: 'multiply' }} />
+                  <h3 style={{ fontSize: 15.5, fontWeight: 700, margin: 0, color: '#2b3530' }}>暂无订单</h3>
                 </div>
                 <div className="ptp-home-bar" />
               </div>
@@ -1231,9 +1281,9 @@ export default function PetTravelPrototype() {
                 <>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 10 }}>
                     <div>
-                      <div style={{ fontSize: 11, color: '#6b7a72' }}>{trackStage.etaPrefix}</div>
-                      <div style={{ fontSize: 27, fontWeight: 800, lineHeight: 1.1, fontVariantNumeric: 'tabular-nums' }}>{trackStage.etaTime}</div>
-                      <div style={{ fontSize: 13, fontWeight: 600, color: '#24342c', marginTop: 2 }}>{trackStage.etaPlace}</div>
+                      <div style={{ fontSize: 11, color: '#45544c', fontWeight: 500 }}>{trackStage.etaPrefix}</div>
+                      <div style={{ fontSize: 28, fontWeight: 900, color: '#000000', lineHeight: 1.12, letterSpacing: '-0.02em', fontVariantNumeric: 'tabular-nums' }}>{trackStage.etaTime}</div>
+                      <div style={{ fontSize: 13, fontWeight: 600, color: '#1b2620', marginTop: 3 }}>{trackStage.etaPlace}</div>
                     </div>
                     <button
                       type="button"
@@ -1245,19 +1295,19 @@ export default function PetTravelPrototype() {
                     </button>
                   </div>
 
-                  <div style={{ fontSize: 10.3, color: '#2b3b33', paddingBottom: 11, borderBottom: '1px solid #f0f4f2', marginBottom: 11, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                    请接机人 <strong>{contactName || '阿童'}</strong> 携带有效身份证件，至 <strong style={{ color: '#229d58' }}>T2 提取处</strong> 办理提宠。
+                  <div style={{ fontSize: 10.5, color: '#24302a', paddingBottom: 12, borderBottom: '1px solid #f0f3f2', marginBottom: 12, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    请接机人 <strong style={{ color: '#000000', fontWeight: 800 }}>{contactName || '阿童'}</strong> 携带有效身份证件，至 <strong style={{ color: '#26a862', fontWeight: 700 }}>T2 提取处</strong> 办理提宠。
                   </div>
 
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                      <img src={HYBRID_ASSETS.petAvatar} alt="小航" style={{ width: 46, height: 46, borderRadius: '50%', objectFit: 'cover', border: '1.5px solid #bfead1' }} />
+                      <img src={HYBRID_ASSETS.petAvatar} alt="小航" style={{ width: 48, height: 48, borderRadius: '50%', objectFit: 'cover', border: '1.5px solid #bfead1' }} />
                       <div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                          <strong style={{ fontSize: 16 }}>{petName || '小航'}</strong>
-                          <span style={{ fontSize: 10, padding: '1px 7px', borderRadius: 999, background: '#e6f8ee', color: '#229a57', fontWeight: 600 }}>● 有氧舱</span>
+                          <strong style={{ fontSize: 17, fontWeight: 800, color: '#121c17' }}>{petName || '小航'}</strong>
+                          <span style={{ fontSize: 10, padding: '1.5px 7px', borderRadius: 999, background: '#e5f8ed', color: '#24a55f', fontWeight: 600 }}>● 有氧舱</span>
                         </div>
-                        <div style={{ fontSize: 10.5, color: '#8a9991', marginTop: 1 }}>{breed}</div>
+                        <div style={{ fontSize: 10.5, color: '#8a9991', marginTop: 2 }}>{breedTouched ? breed : '中华田园犬'}</div>
                         <button
                           type="button"
                           style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 10.5, color: '#9ba8a1', marginTop: 1 }}
@@ -1269,12 +1319,12 @@ export default function PetTravelPrototype() {
                       </div>
                     </div>
                     <button type="button" style={{ textAlign: 'right' }} onClick={() => setModal('price')}>
-                      <div style={{ fontSize: 15.5, fontWeight: 700, color: '#7b8790', fontVariantNumeric: 'tabular-nums' }}>¥ 613</div>
+                      <div style={{ fontSize: 16, fontWeight: 700, color: '#8a949c', fontVariantNumeric: 'tabular-nums' }}>¥ 613</div>
                       <div style={{ fontSize: 10, color: '#8c9891', marginTop: 1 }}>明细 ▼</div>
                     </button>
                   </div>
 
-                  <div style={{ background: '#f7f9f8', borderRadius: 12, padding: '11px 12px' }}>
+                  <div style={{ background: '#f7f8f9', borderRadius: 12, padding: '12px 12px 11px' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <strong style={{ fontSize: 12.5, color: '#18251e' }}>全流程追踪</strong>
                       <button type="button" style={{ fontSize: 10.5, color: '#8c9a92' }} onClick={() => setModal('timeline')}>查看全部 ›</button>
@@ -1297,10 +1347,10 @@ export default function PetTravelPrototype() {
                     </div>
                     <button
                       type="button"
-                      style={{ width: '100%', background: '#eff2f1', borderRadius: 9, padding: '8px 10px', fontSize: 10.8, color: '#4d5d55', lineHeight: 1.5, display: 'flex', alignItems: 'flex-start', gap: 8, textAlign: 'left' }}
+                      style={{ width: '100%', background: '#eff1f2', borderRadius: 9, padding: '9px 10px', fontSize: 10.8, color: '#4d5d55', lineHeight: 1.5, display: 'flex', alignItems: 'flex-start', gap: 8, textAlign: 'left' }}
                       onClick={() => setModal('timeline')}
                     >
-                      <span style={{ color: '#2f3d36', fontWeight: 600, fontSize: 10.8, fontVariantNumeric: 'tabular-nums', flexShrink: 0 }}>{trackStage.summaryTime}</span>
+                      <span className="ptp-log-time-pill">{trackStage.summaryTime}</span>
                       <span>{trackStage.summaryText}</span>
                     </button>
                   </div>
@@ -1536,6 +1586,7 @@ export default function PetTravelPrototype() {
                         onClick={() => {
                           if (b.banned) { setBreedAlert(`${b.name} — ${b.banReason}`); return; }
                           setBreed(b.name);
+                          setBreedTouched(true);
                           setBreedAlert(null);
                           setModal(null);
                         }}
@@ -1552,6 +1603,36 @@ export default function PetTravelPrototype() {
                       </button>
                     ))}
                   </div>
+                </div>
+              </div>
+            )}
+
+            {modal === 'weight' && (
+              <div className="ptp-mask" onClick={() => setModal(null)}>
+                <div className="ptp-sheet" onClick={(e) => e.stopPropagation()}>
+                  <div className="ptp-sheet-grab" />
+                  <div className="ptp-sheet-hd">
+                    <button type="button" style={{ fontSize: 12.5, color: '#84938b' }} onClick={() => setModal(null)}>取消</button>
+                    <span>设置宠物体重</span>
+                    <button type="button" style={{ fontSize: 12.5, color: '#249b59' }} onClick={() => setModal(null)}>确定</button>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 18, padding: '16px 0 20px' }}>
+                    <button
+                      type="button"
+                      style={{ width: 38, height: 38, borderRadius: 10, background: '#eef7f2', color: '#218e52', fontSize: 20, fontWeight: 700 }}
+                      onClick={() => { setCrateOverride(null); setWeightKg((w) => Math.max(1.5, Number((w - 1).toFixed(1)))); }}
+                    >−</button>
+                    <div style={{ textAlign: 'center', minWidth: 96 }}>
+                      <strong style={{ fontSize: 24, fontVariantNumeric: 'tabular-nums', color: '#16221c' }}>{weightKg} kg</strong>
+                      <div style={{ fontSize: 11, color: '#249b59', marginTop: 2 }}>自动匹配 {recommendedCrate}号箱</div>
+                    </div>
+                    <button
+                      type="button"
+                      style={{ width: 38, height: 38, borderRadius: 10, background: '#eef7f2', color: '#218e52', fontSize: 20, fontWeight: 700 }}
+                      onClick={() => { setCrateOverride(null); setWeightKg((w) => Math.min(30, Number((w + 1).toFixed(1)))); }}
+                    >+</button>
+                  </div>
+                  <button type="button" className="ptp-btn-green-full" style={{ borderRadius: 12 }} onClick={() => setModal(null)}>确认体重</button>
                 </div>
               </div>
             )}
