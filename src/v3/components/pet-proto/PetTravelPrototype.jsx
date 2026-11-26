@@ -1847,7 +1847,7 @@ export default function PetTravelPrototype() {
                 <div className="ptp-sheet" style={{ paddingTop: 14 }} onClick={(e) => e.stopPropagation()}>
                   <div style={{ textAlign: 'center', fontSize: 14.5, fontWeight: 700, color: '#162238', marginBottom: 10 }}>分享至</div>
                   <div style={{ position: 'relative' }}>
-                    <img src={HYBRID_ASSETS.shareBar} alt="微信 朋友圈 QQ 保存图片" style={{ display: 'block', width: '100%', height: 'auto' }} />
+                    <img src={HYBRID_ASSETS.shareBar} alt="微信 朋友圈 QQ 保存图片" style={{ display: 'block', width: '100%', height: 'auto', mixBlendMode: 'multiply' }} />
                     <div style={{ position: 'absolute', inset: 0, display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)' }}>
                       {['微信', '朋友圈', 'QQ', '保存图片'].map((ch) => (
                         <button
