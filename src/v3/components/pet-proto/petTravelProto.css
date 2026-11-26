@@ -11,10 +11,16 @@
   font-display: swap;
 }
 
-/* 1:1 Figma Numeric Fonts: Distinct DIN Medium, DIN Bold, and DIN Condensed (applied selectively per Figma spec) */
+/* 1:1 Figma Numeric Fonts: DIN Alternate (Medium / Bold) & DIN Condensed (with open-source D-DIN WOFF2 fallback) */
 @font-face {
   font-family: 'DIN Med UI';
-  src: local('DINPro-Medium'), local('DIN-Medium'), local('DINPro-Regular'), url('/fonts/D-DIN.woff2') format('woff2');
+  src:
+    local('DIN-MediumAlternate'),
+    local('DIN-RegularAlternate'),
+    local('DIN Alternate'),
+    local('DINPro-Medium'),
+    local('DIN-Medium'),
+    url('/fonts/D-DIN.woff2') format('woff2');
   font-weight: 400 600;
   font-style: normal;
   font-display: swap;
@@ -22,7 +28,13 @@
 
 @font-face {
   font-family: 'DIN Bold UI';
-  src: local('DINPro-Bold'), local('DIN Alternate Bold'), local('DIN Alternate'), local('DIN-Bold'), url('/fonts/D-DIN-Bold.woff2') format('woff2');
+  src:
+    local('DIN-BoldAlternate'),
+    local('DIN Alternate Bold'),
+    local('DIN Alternate'),
+    local('DINPro-Bold'),
+    local('DIN-Bold'),
+    url('/fonts/D-DIN-Bold.woff2') format('woff2');
   font-weight: 600 900;
   font-style: normal;
   font-display: swap;
@@ -30,7 +42,11 @@
 
 @font-face {
   font-family: 'DIN Condensed UI';
-  src: local('DINCond-Bold'), local('DIN Condensed Bold'), url('/fonts/D-DINCondensed-Bold.woff2') format('woff2');
+  src:
+    local('DINCond-BoldAlternate'),
+    local('DINCond-Bold'),
+    local('DIN Condensed Bold'),
+    url('/fonts/D-DINCondensed-Bold.woff2') format('woff2');
   font-weight: 600 900;
   font-style: normal;
   font-display: swap;
