@@ -24,6 +24,7 @@ export const HYBRID_ASSETS = {
   petAvatar: UI('pet-avatar'),
   mapFly: UI('map-fly'),
   mapArrived: UI('map-arrived'),
+  mapCoastBg: UI('map-coast-bg'),
   arrivedDog: UI('arrived-dog'),
   posterHeader: UI('poster-header'),
   posterPlane: UI('poster-plane'),

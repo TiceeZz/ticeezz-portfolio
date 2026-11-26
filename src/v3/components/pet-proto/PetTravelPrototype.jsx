@@ -34,21 +34,44 @@ const ClockSvg = () => (
   </svg>
 );
 
+const CopySvg = () => (
+  <svg width="11" height="11" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, verticalAlign: 'middle' }}>
+    <rect x="5" y="5" width="8.5" height="9" rx="1.5" stroke="#9aa8a0" strokeWidth="1.4" />
+    <path d="M10.5 5V3.5A1.5 1.5 0 0 0 9 2H3.5A1.5 1.5 0 0 0 2 3.5V9.5A1.5 1.5 0 0 0 3.5 11H5" stroke="#9aa8a0" strokeWidth="1.4" />
+  </svg>
+);
+
+const CameraSvg = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0 }}>
+    <rect x="3" y="6.5" width="18" height="13" rx="3" stroke="currentColor" strokeWidth="1.8" />
+    <path d="M8.5 6.5L9.8 4.4C10.1 4 10.5 3.8 11 3.8H13C13.5 3.8 13.9 4 14.2 4.4L15.5 6.5" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
+    <circle cx="12" cy="13" r="3" stroke="currentColor" strokeWidth="1.8" />
+  </svg>
+);
+
 const StatusBar = ({ light = false, bg }) => (
   <div className={`ptp-statusbar${light ? ' is-light' : ''}`} style={bg ? { background: bg } : undefined}>
     <span>9:41</span>
     <div className="ptp-island" />
     <span className="ptp-status-icons" aria-hidden="true">
-      <svg width="15" height="10" viewBox="0 0 15 10" fill="currentColor">
-        <rect x="0" y="6" width="2.4" height="4" rx="0.8" />
-        <rect x="4" y="4" width="2.4" height="6" rx="0.8" />
-        <rect x="8" y="2" width="2.4" height="8" rx="0.8" />
-        <rect x="12" y="0" width="2.4" height="10" rx="0.8" />
+      {/* 4-bar iOS Cellular Signal */}
+      <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor">
+        <rect x="0" y="7" width="2.8" height="4" rx="0.9" />
+        <rect x="4.5" y="4.8" width="2.8" height="6.2" rx="0.9" />
+        <rect x="9" y="2.5" width="2.8" height="8.5" rx="0.9" />
+        <rect x="13.5" y="0.2" width="2.8" height="10.8" rx="0.9" />
       </svg>
-      <svg width="21" height="10" viewBox="0 0 21 10" fill="none">
-        <rect x="0.7" y="0.7" width="17.2" height="8.6" rx="2.2" stroke="currentColor" strokeWidth="1.2" />
-        <rect x="2.3" y="2.3" width="13.8" height="5.4" rx="1" fill="currentColor" />
-        <path d="M19.4 3.4V6.6" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+      {/* 3-arc iOS Wi-Fi */}
+      <svg width="16" height="11" viewBox="0 0 16 11" fill="none">
+        <path d="M1.2 3.6C4.9 0.3 11.1 0.3 14.8 3.6" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+        <path d="M3.6 6.2C6.1 4 9.9 4 12.4 6.2" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+        <circle cx="8" cy="9.4" r="1.4" fill="currentColor" />
+      </svg>
+      {/* iOS Rounded Battery */}
+      <svg width="25" height="12" viewBox="0 0 25 12" fill="none">
+        <rect x="0.8" y="0.8" width="20.6" height="10.4" rx="3" stroke="currentColor" strokeOpacity="0.48" strokeWidth="1.2" />
+        <rect x="2.5" y="2.5" width="17.2" height="7" rx="1.6" fill="currentColor" />
+        <path d="M23.1 4.1V7.9" stroke="currentColor" strokeOpacity="0.55" strokeWidth="1.7" strokeLinecap="round" />
       </svg>
     </span>
   </div>
@@ -92,12 +115,14 @@ export default function PetTravelPrototype() {
   const [orderNote, setOrderNote] = useState('');
   const [agreed, setAgreed] = useState(true);
 
-  // Tracking & Modals
+  // Tracking & Modals & Orders
   const [trackStageIdx, setTrackStageIdx] = useState(2); // 0..4
   const [modal, setModal] = useState(null);
   const [breedTab, setBreedTab] = useState('dog');
   const [breedSearch, setBreedSearch] = useState('');
   const [breedAlert, setBreedAlert] = useState(null);
+  const [orderTab, setOrderTab] = useState('全部');
+  const [onlyValidOrders, setOnlyValidOrders] = useState(true);
 
   const showToast = useCallback((msg) => {
     setToast(msg);
@@ -463,13 +488,21 @@ export default function PetTravelPrototype() {
                       className="ptp-line-row"
                       onClick={() => setDateStr((d) => (d === '5月20日 明天' ? '5月21日 周四' : '5月20日 明天'))}
                     >
+                      <svg width="16" height="16" viewBox="0 0 18 18" fill="none" style={{ flexShrink: 0 }}>
+                        <rect x="2.2" y="3.6" width="13.6" height="12" rx="2.4" stroke="#45b77c" strokeWidth="1.4" />
+                        <path d="M5.8 2V4.8M12.2 2V4.8M2.5 7.4H15.5" stroke="#45b77c" strokeWidth="1.4" strokeLinecap="round" />
+                      </svg>
                       <span>{dateStr.split(' ')[0]}</span>
                       <span className="sub">{dateStr.split(' ')[1]}</span>
                       <span className="sub" style={{ marginLeft: 'auto' }}>切换 ›</span>
                     </button>
 
                     <div style={{ padding: '12px 0 4px' }}>
-                      <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
+                        <svg width="16" height="16" viewBox="0 0 18 18" fill="none" style={{ flexShrink: 0 }}>
+                          <path d="M9 2.2L15 5.4V12.6L9 15.8L3 12.6V5.4L9 2.2Z" stroke="#45b77c" strokeWidth="1.4" strokeLinejoin="round" />
+                          <path d="M3 5.4L9 8.6L15 5.4M9 8.6V15.8" stroke="#45b77c" strokeWidth="1.3" />
+                        </svg>
                         <strong style={{ fontSize: 16 }}>
                           {WEIGHT_OPTIONS.find((w) => w.id === weightKey)?.label}
                         </strong>
@@ -489,7 +522,10 @@ export default function PetTravelPrototype() {
                       </div>
                     </div>
 
-                    <div className="ptp-promo-strip">首单免费赠送宠物航空意外险 去领取!</div>
+                    <div className="ptp-promo-strip">
+                      <span style={{ display: 'inline-block', padding: '0 4px', borderRadius: 3, background: '#e04f47', color: '#fff', fontSize: 9.5, marginRight: 5 }}>礼</span>
+                      首单免费赠送宠物航空意外险 去领取!
+                    </div>
 
                     <div className="ptp-search-cta-row">
                       <button type="button" className="ptp-btn-gold" onClick={() => navigate('flights')}>
@@ -688,11 +724,17 @@ export default function PetTravelPrototype() {
                   <div className="ptp-card">
                     <h4 className="ptp-sec-h">托运限制及健康要求</h4>
                     <div className="ptp-alert is-red">
-                      <strong>严格禁飞品种</strong>
+                      <strong style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                        <span style={{ width: 14, height: 14, borderRadius: '50%', background: '#e34f47', color: '#fff', fontSize: 10, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>!</span>
+                        严格禁飞品种
+                      </strong>
                       短鼻类猫犬（如法斗、巴哥、加菲猫、波斯猫等）由于高空易窒息，属于民航禁运品种，本方案不支持承运。
                     </div>
                     <div className="ptp-alert is-green">
-                      <strong>健康及适运状态</strong>
+                      <strong style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                        <span style={{ width: 14, height: 14, borderRadius: '50%', background: '#2eb66b', color: '#fff', fontSize: 10, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>i</span>
+                        健康及适运状态
+                      </strong>
                       宠物年龄须在8周至10周岁内，处于非怀孕、非术后康复期。为了起飞安全，交接前4小时请务必让宠物保持断食。
                     </div>
                   </div>
@@ -876,7 +918,8 @@ export default function PetTravelPrototype() {
                         </span>
                       </button>
 
-                      <button type="button" className="ptp-upload-slot is-ok" onClick={() => setModal('ocr')}>
+                      <button type="button" className="ptp-upload-slot is-ok" style={{ position: 'relative' }} onClick={() => setModal('ocr')}>
+                        <span style={{ position: 'absolute', top: 5, right: 6, width: 13, height: 13, borderRadius: '50%', background: '#78857e', color: '#fff', fontSize: 9, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>×</span>
                         <span style={{ fontSize: 10.5, color: '#7d8c84' }}>[检疫证原件]</span>
                         <span style={{ fontSize: 9.5, padding: '1px 6px', borderRadius: 4, background: '#2eb66b', color: '#fff', fontWeight: 700 }}>OCR已提</span>
                         <strong>动物检疫合格证</strong>
@@ -910,7 +953,7 @@ export default function PetTravelPrototype() {
                         <div style={{ fontSize: 13, fontWeight: 700 }}>全额保价服务</div>
                         <div style={{ fontSize: 10.5, color: '#7e8d85', marginTop: 2 }}>声明宠物实际估值，享独立保额超额全额赔付</div>
                       </div>
-                      <strong style={{ fontSize: 12, color: '#7e8d85' }}>¥40</strong>
+                      <strong style={{ fontSize: 12, color: addonValuation ? '#249b59' : '#7e8d85' }}>{addonValuation ? '¥40' : '按比例'}</strong>
                     </button>
                   </div>
 
@@ -998,12 +1041,38 @@ export default function PetTravelPrototype() {
                 <div className="ptp-nav">
                   <button type="button" className="ptp-nav-btn" onClick={goBack}><BackSvg /></button>
                   <span className="ptp-nav-title">我的订单</span>
-                  <span style={{ fontSize: 12, color: '#5c6b63' }}>我的发票</span>
+                  <button type="button" style={{ fontSize: 12, color: '#5c6b63' }} onClick={() => showToast('暂无可开票订单')}>我的发票</button>
                 </div>
-                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '0 32px 60px', textAlign: 'center' }}>
-                  <img src={HYBRID_ASSETS.emptyDog} alt="暂无订单" style={{ width: 118, height: 92, objectFit: 'contain', marginBottom: 12, mixBlendMode: 'multiply' }} />
-                  <h3 style={{ fontSize: 16, fontWeight: 700, margin: '0 0 22px' }}>暂无订单</h3>
-                  <button type="button" className="ptp-btn-green-full" style={{ width: 200 }} onClick={() => navigate('soloSearch')}>
+                <div className="ptp-ord-tabs">
+                  {['全部', '待支付', '处理中', '已完成', '售后/退改'].map((t) => (
+                    <button
+                      key={t}
+                      type="button"
+                      className={`ptp-ord-tab${orderTab === t ? ' is-active' : ''}`}
+                      onClick={() => setOrderTab(t)}
+                    >
+                      {t}
+                    </button>
+                  ))}
+                </div>
+                <div className="ptp-ord-filters">
+                  <button type="button" className="ptp-ord-pill" onClick={() => showToast('当前筛选：全部订单')}>全部订单 ▾</button>
+                  <button type="button" className="ptp-ord-pill" onClick={() => showToast('按最近下单日期排序')}>下单日期 ▾</button>
+                  <button
+                    type="button"
+                    style={{ marginLeft: 'auto', display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 11, color: '#55635c' }}
+                    onClick={() => setOnlyValidOrders((v) => !v)}
+                  >
+                    <span className={`ptp-chk${onlyValidOrders ? ' is-on' : ''}`} style={{ width: 14, height: 14, borderRadius: '50%', marginTop: 0, fontSize: 9 }}>
+                      {onlyValidOrders ? '✓' : ''}
+                    </span>
+                    只看有效订单
+                  </button>
+                </div>
+                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '0 32px 68px', textAlign: 'center' }}>
+                  <img src={HYBRID_ASSETS.emptyDog} alt="暂无订单" style={{ width: 114, height: 90, objectFit: 'contain', marginBottom: 10, mixBlendMode: 'multiply' }} />
+                  <h3 style={{ fontSize: 15.5, fontWeight: 700, margin: '0 0 22px', color: '#1b2821' }}>暂无订单</h3>
+                  <button type="button" className="ptp-btn-green-full" style={{ width: 196 }} onClick={() => navigate('soloSearch')}>
                     去预约宠物出行
                   </button>
                 </div>
@@ -1012,23 +1081,11 @@ export default function PetTravelPrototype() {
             )}
 
             {/* ══ 07: LIVE TRACKING ON 1:1 AMAP ══ */}
-            {screen === 'tracking' && (
-              <div key="tracking" className="ptp-view" style={{ background: '#d8edf7' }}>
-                <div className={`ptp-map-top${trackStageIdx === 4 ? ' is-arrived' : ''}`}>
-                  <img
-                    src={trackStageIdx === 4 ? HYBRID_ASSETS.mapArrived : HYBRID_ASSETS.mapFly}
-                    alt="航旅纵横高德实景航线图"
-                    className="ptp-map-bg"
-                  />
-                  <button
-                    type="button"
-                    aria-label="返回"
-                    onClick={() => navigate('hub')}
-                    style={{ position: 'absolute', left: 10, top: 44, width: 38, height: 34, zIndex: 10 }}
-                  />
-                </div>
-
-                <div className="ptp-track-sheet">
+            {screen === 'tracking' && (() => {
+              const isArrived = trackStageIdx === 4;
+              const stagePct = `${(trackStageIdx / 4) * 100}%`;
+              const trackingCardBody = (
+                <>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 10 }}>
                     <div>
                       <div style={{ fontSize: 11, color: '#6b7a72' }}>{trackStage.etaPrefix}</div>
@@ -1051,17 +1108,25 @@ export default function PetTravelPrototype() {
 
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                      <img src={HYBRID_ASSETS.petAvatar} alt="小航" style={{ width: 44, height: 44, borderRadius: '50%', objectFit: 'cover' }} />
+                      <img src={HYBRID_ASSETS.petAvatar} alt="小航" style={{ width: 46, height: 46, borderRadius: '50%', objectFit: 'cover', border: '1.5px solid #bfead1' }} />
                       <div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                           <strong style={{ fontSize: 16 }}>{petName || '小航'}</strong>
                           <span style={{ fontSize: 10, padding: '1px 7px', borderRadius: 999, background: '#e6f8ee', color: '#229a57', fontWeight: 600 }}>● 有氧舱</span>
                         </div>
-                        <div style={{ fontSize: 10.5, color: '#8a9991', marginTop: 2 }}>{breed} · PT-20250519001</div>
+                        <div style={{ fontSize: 10.5, color: '#8a9991', marginTop: 1 }}>{breed}</div>
+                        <button
+                          type="button"
+                          style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 10.5, color: '#9ba8a1', marginTop: 1 }}
+                          onClick={() => showToast('已复制订单号：PT-20250519001')}
+                        >
+                          <span>订单号：PT-20250519001</span>
+                          <CopySvg />
+                        </button>
                       </div>
                     </div>
                     <button type="button" style={{ textAlign: 'right' }} onClick={() => setModal('price')}>
-                      <div style={{ fontSize: 15, fontWeight: 700, color: '#586760' }}>¥ {totalPrice}</div>
+                      <div style={{ fontSize: 16, fontWeight: 700, color: '#7b8790', fontVariantNumeric: 'tabular-nums' }}>¥ 613</div>
                       <div style={{ fontSize: 10.5, color: '#8a9991' }}>明细 ▾</div>
                     </button>
                   </div>
@@ -1072,6 +1137,9 @@ export default function PetTravelPrototype() {
                       <button type="button" style={{ fontSize: 11, color: '#7d8c84' }} onClick={() => setModal('timeline')}>查看全部 ›</button>
                     </div>
                     <div className="ptp-stage-rail">
+                      <div className="ptp-stage-track">
+                        <div className="ptp-stage-track-fill" style={{ width: stagePct }} />
+                      </div>
                       {TRACKING_STAGES.map((st, idx) => (
                         <button
                           key={st.key}
@@ -1084,39 +1152,79 @@ export default function PetTravelPrototype() {
                         </button>
                       ))}
                     </div>
-                    <div style={{ background: '#eff2f1', borderRadius: 9, padding: '8px 10px', fontSize: 11, color: '#4d5d55', lineHeight: 1.5 }}>
-                      <strong style={{ marginRight: 6 }}>{trackStage.summaryTime}</strong>
-                      {trackStage.summaryText}
+                    <div style={{ background: '#eff2f1', borderRadius: 9, padding: '8px 10px', fontSize: 11, color: '#4d5d55', lineHeight: 1.5, display: 'flex', alignItems: 'flex-start', gap: 7 }}>
+                      <span style={{ background: '#e3e8e6', color: '#2b3b33', fontWeight: 700, fontSize: 10.5, padding: '1px 6px', borderRadius: 5, flexShrink: 0 }}>{trackStage.summaryTime}</span>
+                      <span>{trackStage.summaryText}</span>
                     </div>
                   </div>
+                </>
+              );
 
-                  {trackStageIdx === 4 ? (
-                    <div style={{ marginTop: 12, display: 'flex', flexDirection: 'column', gap: 8 }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                        <img src={HYBRID_ASSETS.arrivedDog} alt="小航平安落地" style={{ width: 82, height: 96, objectFit: 'contain', mixBlendMode: 'multiply' }} />
-                        <div>
-                          <strong style={{ display: 'block', fontSize: 15 }}>{petName || '小航'} 已平安落地北京！</strong>
-                          <div style={{ fontSize: 12, color: '#394941', marginTop: 4 }}>总计飞行 <strong style={{ color: '#249b59' }}>1760</strong> 公里</div>
-                          <div style={{ fontSize: 11, color: '#8a9991', marginTop: 2 }}>快给朋友们报个平安吧</div>
-                        </div>
-                      </div>
-                      <button type="button" className="ptp-btn-green-full" onClick={() => setModal('poster')}>
-                        生成专属接机海报
-                      </button>
-                    </div>
-                  ) : (
+              return (
+                <div key="tracking" className="ptp-view" style={{ background: '#d8edf7' }}>
+                  <div className={`ptp-map-top${isArrived ? ' is-arrived' : ''}`}>
+                    <img
+                      src={isArrived ? HYBRID_ASSETS.mapArrived : HYBRID_ASSETS.mapFly}
+                      alt="航旅纵横高德实景航线图"
+                      className="ptp-map-bg"
+                    />
                     <button
                       type="button"
-                      style={{ width: '100%', textAlign: 'center', marginTop: 10, fontSize: 12, fontWeight: 600, color: '#249b59' }}
-                      onClick={() => { setTrackStageIdx(4); showToast('航班已抵达北京大兴，可生成接机海报'); }}
+                      aria-label="返回"
+                      onClick={() => navigate('hub')}
+                      style={{ position: 'absolute', left: 10, top: 44, width: 38, height: 34, zIndex: 10 }}
+                    />
+                  </div>
+
+                  {isArrived ? (
+                    <div
+                      className="ptp-arrived-canvas"
+                      style={{ backgroundImage: `linear-gradient(180deg, rgba(236,245,249,0.22), rgba(244,249,252,0.12)), url(${HYBRID_ASSETS.mapCoastBg})` }}
                     >
-                      点击「可提取」切换至落地态，生成专属接机海报 ›
-                    </button>
+                      <div className="ptp-arrived-card">{trackingCardBody}</div>
+
+                      <div className="ptp-arrived-celeb">
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
+                          <img
+                            src={HYBRID_ASSETS.arrivedDog}
+                            alt="小航平安落地"
+                            style={{ width: 88, height: 100, objectFit: 'contain', mixBlendMode: 'multiply', flexShrink: 0 }}
+                          />
+                          <div>
+                            <strong style={{ display: 'block', fontSize: 15.5, color: '#14221b' }}>{petName || '小航'} 已平安落地北京！</strong>
+                            <div style={{ fontSize: 12.5, color: '#394941', marginTop: 4 }}>
+                              总计飞行 <strong style={{ color: '#1fa05b', fontSize: 15 }}>1760</strong> 公里
+                            </div>
+                            <div style={{ fontSize: 11, color: '#8a9991', marginTop: 2 }}>快给朋友们报个平安吧</div>
+                          </div>
+                        </div>
+                        <button
+                          type="button"
+                          className="ptp-btn-green-full"
+                          style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}
+                          onClick={() => setModal('poster')}
+                        >
+                          <span>生成专属接机海报</span>
+                          <CameraSvg />
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="ptp-track-sheet">
+                      {trackingCardBody}
+                      <button
+                        type="button"
+                        style={{ width: '100%', textAlign: 'center', marginTop: 10, fontSize: 12, fontWeight: 600, color: '#249b59' }}
+                        onClick={() => { setTrackStageIdx(4); showToast('航班已抵达北京大兴，可生成接机海报'); }}
+                      >
+                        点击「可提取」切换至落地态，生成专属接机海报 ›
+                      </button>
+                    </div>
                   )}
+                  <div className="ptp-home-bar" />
                 </div>
-                <div className="ptp-home-bar" />
-              </div>
-            )}
+              );
+            })()}
 
             {/* ════════════ REAL INTERACTIVE HALF-SHEET MODALS ════════════ */}
 
@@ -1282,9 +1390,17 @@ export default function PetTravelPrototype() {
                               {a.detail}
                             </div>
                           </div>
+                          <span style={{ fontSize: 11, color: '#9aa8a0', alignSelf: 'center', flexShrink: 0 }}>编辑</span>
                         </button>
                       );
                     })}
+                    <button
+                      type="button"
+                      style={{ width: '100%', height: 38, borderRadius: 10, border: '1px dashed #cfd9d3', background: '#fafcfb', fontSize: 12, color: '#5c6b63', fontWeight: 600, marginTop: 2 }}
+                      onClick={() => showToast('演示模式：已支持快速切换预置地址')}
+                    >
+                      + 新增收货地址
+                    </button>
                   </div>
                   <button type="button" className="ptp-btn-green-full" onClick={() => setModal(null)}>确认选择</button>
                 </div>
@@ -1335,18 +1451,77 @@ export default function PetTravelPrototype() {
 
             {modal === 'price' && (
               <div className="ptp-mask" onClick={() => setModal(null)}>
-                <div className="ptp-sheet" onClick={(e) => e.stopPropagation()}>
-                  <div className="ptp-sheet-grab" />
-                  <div className="ptp-sheet-hd" style={{ justifyContent: 'center' }}>价格明细</div>
-                  {selectedFlight.breakdown.map((b) => (
-                    <div key={b.label} className="ptp-fee-row">
-                      <span>{b.label}</span>
-                      <strong className={b.highlight ? 'is-free' : ''}>{b.price}</strong>
-                    </div>
-                  ))}
-                  {addonInsurance && <div className="ptp-fee-row"><span>宠运无忧综合险</span><strong>¥ 19</strong></div>}
-                  {addonValuation && <div className="ptp-fee-row"><span>全额保价服务</span><strong>¥ 40</strong></div>}
-                  <div className="ptp-fee-row"><span>航旅会员折扣</span><strong style={{ color: '#e88b2e' }}>- ¥ 20</strong></div>
+                <div className="ptp-price-sheet" onClick={(e) => e.stopPropagation()}>
+                  <div className="ptp-sheet-grab" style={{ background: '#dbe2ea', width: 38 }} />
+                  <div className="ptp-price-title">价格明细</div>
+                  {screen === 'tracking' ? (
+                    <>
+                      <div className="ptp-price-row">
+                        <span>运输费 · MU5103</span>
+                        <span className="ptp-dots" />
+                        <span className="ptp-pv">¥ 580</span>
+                      </div>
+                      <div className="ptp-price-row is-sub">
+                        <span>货舱位 + 燃油</span>
+                        <span style={{ flex: 1 }} />
+                        <span className="ptp-pv">¥ 520</span>
+                      </div>
+                      <div className="ptp-price-row is-sub">
+                        <span>机场操作费</span>
+                        <span style={{ flex: 1 }} />
+                        <span className="ptp-pv">¥ 60</span>
+                      </div>
+                      <div className="ptp-price-row" style={{ marginTop: 6 }}>
+                        <span>增值服务（3 项）</span>
+                        <span className="ptp-dots" />
+                        <span className="ptp-pv">¥ 88</span>
+                      </div>
+                      <div className="ptp-price-row">
+                        <span>保险 · 含 ¥20,000 基础</span>
+                        <span className="ptp-dots" />
+                        <span className="ptp-pv">¥ 20</span>
+                      </div>
+                      <div className="ptp-price-row">
+                        <span>航旅会员折扣</span>
+                        <span className="ptp-dots" />
+                        <span className="ptp-pv is-disc">- ¥ 20</span>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="ptp-price-row">
+                        <span>运输费 · {selectedFlight.code}</span>
+                        <span className="ptp-dots" />
+                        <span className="ptp-pv">¥ {selectedFlight.price}</span>
+                      </div>
+                      {selectedFlight.breakdown.slice(0, 3).map((b) => (
+                        <div key={b.label} className="ptp-price-row is-sub">
+                          <span>{b.label}</span>
+                          <span style={{ flex: 1 }} />
+                          <span className="ptp-pv">{b.price}</span>
+                        </div>
+                      ))}
+                      {addonInsurance && (
+                        <div className="ptp-price-row" style={{ marginTop: 6 }}>
+                          <span>宠运无忧综合险</span>
+                          <span className="ptp-dots" />
+                          <span className="ptp-pv">¥ 19</span>
+                        </div>
+                      )}
+                      {addonValuation && (
+                        <div className="ptp-price-row">
+                          <span>全额保价服务</span>
+                          <span className="ptp-dots" />
+                          <span className="ptp-pv">¥ 40</span>
+                        </div>
+                      )}
+                      <div className="ptp-price-row">
+                        <span>航旅会员折扣</span>
+                        <span className="ptp-dots" />
+                        <span className="ptp-pv is-disc">- ¥ 20</span>
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
             )}
