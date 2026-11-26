@@ -254,9 +254,9 @@ export default function PetTravelPrototype() {
 
   const journeyPhases = useMemo(() => [
     { key: 'p1', label: '01 · 入口分流', ids: ['splash', 'hub'] },
-    { key: 'p2', label: '02 · 双轨查订', ids: ['random', 'soloSearch', 'flights', 'detail'] },
-    { key: 'p3', label: '03 · 防错下单', ids: ['form', 'success'] },
-    { key: 'p4', label: '04 · 履约峰终', ids: ['tracking', 'poster'] },
+    { key: 'p2', label: '02 · 查订决策', ids: ['random', 'soloSearch', 'flights', 'detail'] },
+    { key: 'p3', label: '03 · 填单防错', ids: ['form', 'success'] },
+    { key: 'p4', label: '04 · 履约追踪', ids: ['tracking', 'poster'] },
   ], []);
 
   const stepScene = useCallback((delta) => {
@@ -323,8 +323,8 @@ export default function PetTravelPrototype() {
       <div className="ptp-studio-bar">
         <div className="ptp-studio-brand">
           <span className="ptp-live-dot" aria-hidden="true" />
-          <span className="ptp-studio-label">LIVE INTERACTIVE PROTOTYPE</span>
-          <span className="ptp-studio-pill">1:1 FIGMA RETINA</span>
+          <span className="ptp-studio-label">INTERACTIVE PROTOTYPE</span>
+          <span className="ptp-studio-pill">UMETRIP · PET TRAVEL</span>
         </div>
 
         <div className="ptp-studio-progress" aria-label={`当前第 ${activeSceneIdx + 1} 屏，共 ${SCENES.length} 屏`}>
@@ -1175,27 +1175,27 @@ export default function PetTravelPrototype() {
                   </div>
 
                   <div className="ptp-card">
-                    <strong style={{ display: 'block', fontSize: 14, marginBottom: 10 }}>增值服务 <span style={{ fontSize: 11.5, fontWeight: 400, color: '#7d8c84' }}>(可选)</span></strong>
+                    <strong style={{ display: 'block', fontSize: 14, fontWeight: 600, marginBottom: 10 }}>增值服务 <span style={{ fontSize: 11.5, fontWeight: 400, color: '#7d8c84' }}>(可选)</span></strong>
                     <button type="button" className={`ptp-addon${addonInsurance ? ' is-active' : ''}`} onClick={() => setAddonInsurance((v) => !v)}>
                       <span className={`ptp-chk${addonInsurance ? ' is-on' : ''}`}>{addonInsurance ? '✓' : ''}</span>
                       <div style={{ flex: 1 }}>
-                        <div style={{ fontSize: 13, fontWeight: 700 }}>宠运无忧综合险</div>
-                        <div style={{ fontSize: 10.5, color: '#7e8d85', marginTop: 2 }}>全程意外伤害与应急丢失保障，最高赔付 1 万元</div>
+                        <div style={{ fontSize: 13, fontWeight: 500, color: '#16221c' }}>宠运无忧综合险</div>
+                        <div style={{ fontSize: 10.5, fontWeight: 400, color: '#7e8d85', marginTop: 2 }}>全程意外伤害与应急丢失保障，最高赔付 1 万元</div>
                       </div>
-                      <strong style={{ fontSize: 12.5, color: '#249b59' }}>¥19</strong>
+                      <strong style={{ fontSize: 12.5, fontWeight: 500, color: '#2eb66b' }}>¥19</strong>
                     </button>
                     <button type="button" className={`ptp-addon${addonValuation ? ' is-active' : ''}`} onClick={() => setAddonValuation((v) => !v)}>
                       <span className={`ptp-chk${addonValuation ? ' is-on' : ''}`}>{addonValuation ? '✓' : ''}</span>
                       <div style={{ flex: 1 }}>
-                        <div style={{ fontSize: 13, fontWeight: 700 }}>全额保价服务</div>
-                        <div style={{ fontSize: 10.5, color: '#7e8d85', marginTop: 2 }}>声明宠物实际估值，享独立保额超额全额赔付</div>
+                        <div style={{ fontSize: 13, fontWeight: addonValuation ? 500 : 400, color: addonValuation ? '#16221c' : '#56645d' }}>全额保价服务</div>
+                        <div style={{ fontSize: 10.5, fontWeight: 400, color: '#8a9891', marginTop: 2 }}>声明宠物实际估值，享独立保额超额全额赔付</div>
                       </div>
-                      <strong style={{ fontSize: 12, color: addonValuation ? '#249b59' : '#7e8d85' }}>{addonValuation ? '¥40' : '按比例'}</strong>
+                      <strong style={{ fontSize: 11.5, fontWeight: 400, color: addonValuation ? '#2eb66b' : '#8a9891' }}>{addonValuation ? '¥40' : '按比例'}</strong>
                     </button>
                   </div>
 
                   <div className="ptp-card">
-                    <strong style={{ display: 'block', fontSize: 14, marginBottom: 8 }}>订单备注 <span style={{ fontSize: 11.5, fontWeight: 400, color: '#7d8c84' }}>(选填)</span></strong>
+                    <strong style={{ display: 'block', fontSize: 14, fontWeight: 600, marginBottom: 8 }}>订单备注 <span style={{ fontSize: 11.5, fontWeight: 400, color: '#7d8c84' }}>(选填)</span></strong>
                     <textarea
                       value={orderNote}
                       onChange={(e) => setOrderNote(e.target.value)}
@@ -1206,40 +1206,52 @@ export default function PetTravelPrototype() {
                   </div>
                 </div>
 
-                <div className="ptp-sticky-bar" style={{ paddingTop: 0 }}>
+                <div className="ptp-sticky-bar ptp-form-sticky-bar">
                   {formMissing.length > 0 && (
                     <button
                       type="button"
-                      style={{
-                        width: 'calc(100% + 28px)',
-                        marginLeft: -14,
-                        marginBottom: 8,
-                        padding: '7px 12px',
-                        background: '#fdf2f1',
-                        color: '#e16a64',
-                        fontSize: 11,
-                        fontWeight: 500,
-                        textAlign: 'center',
-                      }}
+                      className="ptp-form-warn-bar"
                       onClick={() => showToast(`待完善：${formMissing.join('、')}（可点右侧「一键补全必填项」）`)}
                     >
-                      △ 还有 {formMissing.length} 项未正确填写，请完善后提交
+                      <svg width="11" height="11" viewBox="0 0 14 14" fill="none" aria-hidden="true" style={{ flexShrink: 0 }}>
+                        <path d="M7 1.8L12.6 11.8H1.4L7 1.8Z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" />
+                        <path d="M7 5.3V8.2M7 10.1V10.4" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" />
+                      </svg>
+                      <span>还有 {formMissing.length} 项未正确填写，请完善后提交</span>
                     </button>
                   )}
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 6, fontSize: 10.5, color: '#5b6a62', marginBottom: 9, paddingTop: formMissing.length > 0 ? 0 : 10 }}>
-                    <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>我已阅读并同意以下条款：<em style={{ fontStyle: 'normal', color: '#249b59' }}>《承运方活体免责声明》、《活体运输协议》</em></span>
-                    <button type="button" className={`ptp-chk${agreed ? ' is-on' : ''}`} style={{ borderRadius: '50%', marginTop: 0 }} onClick={() => setAgreed((v) => !v)}>
-                      {agreed ? '✓' : ''}
+                  <div className="ptp-form-agree-row">
+                    <span className="ptp-form-agree-text">
+                      我已阅读并同意以下条款：<em style={{ fontStyle: 'normal', color: '#45b776' }}>《承运方活体免责声明》、《活体运输协议》</em>
+                    </span>
+                    <button
+                      type="button"
+                      className={`ptp-agree-chk${agreed && formMissing.length === 0 ? ' is-ready' : agreed ? ' is-on' : ''}`}
+                      onClick={() => setAgreed((v) => !v)}
+                      aria-label="同意协议条款"
+                    >
+                      {agreed ? (
+                        <svg width="8.5" height="7" viewBox="0 0 10 8" fill="none" aria-hidden="true">
+                          <path d="M1.2 4.1L3.7 6.6L8.8 1.4" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      ) : null}
                     </button>
                   </div>
                   <div className="ptp-submit-pill">
                     <div className="ptp-submit-l">
-                      <div>
-                        <strong>¥{totalPrice}</strong>
-                        <span style={{ fontSize: 11, opacity: 0.78, marginLeft: 6 }}>| 订单金额</span>
+                      <div className="ptp-submit-price-grp">
+                        <span className="ptp-submit-price">
+                          <small>¥</small>
+                          <strong>{totalPrice}</strong>
+                        </span>
+                        <i className="ptp-submit-sep" aria-hidden="true" />
+                        <span className="ptp-submit-lbl">订单金额</span>
                       </div>
-                      <button type="button" style={{ fontSize: 11.5, color: 'rgba(255,255,255,0.85)' }} onClick={() => setModal('price')}>
-                        明细 ∧
+                      <button type="button" className="ptp-submit-detail-btn" onClick={() => setModal('price')}>
+                        <span>明细</span>
+                        <svg width="9" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
+                          <path d="M1.2 4.8L5 1.2L8.8 4.8" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
                       </button>
                     </div>
                     <button
@@ -2106,7 +2118,7 @@ export default function PetTravelPrototype() {
 
           <div className="ptp-phone-caption">
             <span className="ptp-caption-pulse" aria-hidden="true" />
-            <span>真机交互画布 · 支持点击、滑动、弹窗与实时联动 · 键盘 ← / → 切屏</span>
+            <span>可直接在机内点击与滑动 · 支持键盘 ← / → 切换页面</span>
           </div>
         </div>
 
@@ -2123,7 +2135,7 @@ export default function PetTravelPrototype() {
             <p className="ptp-dir-insight">{activeScene.insight}</p>
 
             <div className="ptp-dir-mission">
-              <span className="ptp-dir-mission-badge">TRY IT</span>
+              <span className="ptp-dir-mission-badge">体验提示</span>
               <span>{activeScene.tip}</span>
             </div>
 
@@ -2244,8 +2256,8 @@ export default function PetTravelPrototype() {
           {/* 3. 4-Phase Editorial UX Journey Storyboard */}
           <div className="ptp-dir-card ptp-journey-card">
             <div className="ptp-storyboard-head">
-              <span>UX JOURNEY MAP · 10 SCREENS</span>
-              <span>点击任意节点直达对应状态</span>
+              <span>流程索引 · 10 SCREENS</span>
+              <span>点击切换对应页面</span>
             </div>
             <div className="ptp-phase-list">
               {journeyPhases.map((phase) => (

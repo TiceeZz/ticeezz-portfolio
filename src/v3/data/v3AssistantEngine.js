@@ -62,7 +62,7 @@ const REFERRAL_PITCH =
 export function getWelcomePayload(pathname) {
   if (pathname.startsWith('/v3/work/pettravel')) {
     return {
-      text: '你好，我是 **Prism**，TiceeZz 的作品集导览助手。\n\n你正在看 **「航旅纵横 · 宠物出行」** 全链路 UX 重构案例——页面上方已内置 **10 屏高保真可交互演示原型**（支持体验随机飞三态、短鼻犬防错拦截、体重联动荐箱与实时追踪地图）。想了解背后的设计取舍或他的经历都可以直接问我。',
+      text: '你好，我是 **Prism**。\n\n你正在看 **「航旅纵横 · 宠物出行」** 的流程重构案例——页面上方可以直接操作完整交互原型（包括随机飞三态、短鼻犬禁飞校验、体重匹配箱型和实时追踪）。想了解其中的设计判断或他的经历，直接问我就好。',
       suggestions: [
         '拆解「航旅纵横」的设计判断',
         '30 秒速览：核心优势与经历',
