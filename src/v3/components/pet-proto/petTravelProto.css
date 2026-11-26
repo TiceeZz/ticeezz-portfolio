@@ -994,26 +994,26 @@
 
 .ptp-fchip {
   flex-shrink: 0;
-  height: 25px;
-  padding: 0 4px !important;
-  border-radius: 6px !important;
+  height: 26px;
+  padding: 0 5px !important;
+  border-radius: 7px !important;
   background: transparent !important;
-  color: #46544d !important;
-  font-size: 9.5px;
-  font-weight: 500;
+  color: #5b6862 !important;
+  font-size: 10px;
+  font-weight: 400;
   position: relative;
   overflow: hidden;
   display: inline-flex;
   align-items: center;
-  gap: 1px;
+  gap: 2px;
 }
 
 .ptp-fchip.is-active {
-  background: #effaf4 !important;
-  color: #16281e !important;
-  font-weight: 700;
-  padding: 0 7px !important;
-  box-shadow: inset 0 0 0 1px #6fd19c;
+  background: #f2f8fa !important;
+  color: #16221c !important;
+  font-weight: 500;
+  padding: 0 11px !important;
+  box-shadow: inset 0 0 0 1px #b8d3c9;
 }
 
 .ptp-fchip.is-active::after {
@@ -1023,7 +1023,7 @@
   bottom: 0;
   width: 11px;
   height: 11px;
-  background: linear-gradient(135deg, transparent 50%, #34ba71 50%);
+  background: linear-gradient(135deg, transparent 50%, #48c083 50%);
   color: #ffffff;
   font-size: 6.5px;
   line-height: 15px;
@@ -1032,13 +1032,14 @@
 }
 
 .ptp-btn-buy {
-  width: 82px;
-  height: 31px;
-  border-radius: 8px !important;
-  background: linear-gradient(135deg, #43c279, #31b268) !important;
+  width: 90px;
+  height: 33px;
+  border-radius: 999px !important;
+  background: linear-gradient(90deg, #52c693 0%, #3ab75e 100%) !important;
   color: #ffffff !important;
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
   flex-shrink: 0;
 }
 
@@ -1058,36 +1059,37 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 13px;
-  font-weight: 500;
+  font-size: 13.5px;
+  font-weight: 400;
 }
 
 .ptp-nav-title {
-  font-size: 15.5px;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 500;
 }
 
 .ptp-meta-pill {
   margin: 2px 12px 0;
-  padding: 5px 12px;
+  padding: 5.5px 12px;
   border-radius: 10px;
   background: rgba(255, 255, 255, 0.13);
   border: 1px solid rgba(255, 255, 255, 0.22);
   font-size: 11px;
+  font-weight: 400;
   text-align: center;
-  color: rgba(255, 255, 255, 0.96);
+  color: rgba(255, 255, 255, 0.92);
 }
 
 .ptp-flight-card {
   position: relative;
   background: #ffffff;
   border-radius: 15px;
-  padding: 14px;
+  padding: 15px 15px 14px;
   box-shadow: 0 3px 12px rgba(15, 42, 28, 0.05);
 }
 
 .ptp-flight-card.has-rec {
-  padding-top: 26px;
+  padding-top: 25px;
 }
 
 .ptp-rec-img {
@@ -1103,77 +1105,80 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 13px;
-  font-weight: 700;
-  color: #15221b;
-  margin-bottom: 10px;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: #16221c;
+  margin-bottom: 12px;
 }
 
 .ptp-air-row img {
-  width: 16px;
+  width: 17px;
   height: 15px;
   object-fit: contain;
 }
 
 .ptp-air-tag {
-  font-size: 10px;
-  font-weight: 500;
-  padding: 2px 6px;
+  font-size: 10.5px;
+  font-weight: 400;
+  padding: 2px 7px;
   border-radius: 4px;
-  background: #eef1f0;
-  color: #6b7a72;
+  background: #e9ecee;
+  color: #7c8782;
 }
 
 .ptp-times {
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 10px;
+  gap: 10px;
+  margin-bottom: 12px;
 }
 
-.ptp-tcol small { display: block; font-size: 10px; color: #7e8d85; }
-.ptp-tcol strong { display: block; font-family: 'DIN Bold UI', 'PingFang SC UI', sans-serif; font-size: 19px; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.2; letter-spacing: 0.01em; }
-.ptp-tcol span { display: block; font-size: 10px; color: #7e8a84; margin-top: 1px; }
+.ptp-tcol small { display: block; font-size: 11px; font-weight: 400; color: #67736d; }
+.ptp-tcol strong { display: block; font-family: 'DIN Med UI', 'PingFang SC UI', sans-serif; font-size: 21px; font-weight: 500; font-variant-numeric: tabular-nums; line-height: 1.24; letter-spacing: 0.01em; color: #16221c; }
+.ptp-tcol span { display: block; font-size: 11.5px; font-weight: 400; color: #7a8580; margin-top: 2px; }
 .ptp-tcol.is-r { text-align: right; }
 
 .ptp-tmid {
   text-align: center;
-  font-size: 10px;
-  color: #93a199;
-  min-width: 104px;
+  font-size: 10.5px;
+  font-weight: 400;
+  color: #9ba5a0;
+  min-width: 108px;
 }
 
 .ptp-tmid-line {
-  border-top: 1px dashed #c8d5ce;
+  border-top: 1px dashed #cdd6d1;
   margin: 4px 0;
 }
 
 .ptp-perks {
-  background: #f4f7f5;
-  border-radius: 8px;
-  padding: 5px 10px;
+  background: #f6f8f7;
+  border-radius: 10px;
+  padding: 8px 12px;
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  font-size: 10px;
-  color: #54645c;
-  margin-bottom: 10px;
+  gap: 12px;
+  font-size: 11px;
+  font-weight: 400;
+  color: #54625b;
+  margin-bottom: 12px;
 }
 
 .ptp-perks span::before {
   content: '● ';
-  color: #36bc73;
-  font-size: 8px;
+  color: #4cc280;
+  font-size: 8.5px;
 }
 
 .ptp-price-num {
   font-family: 'DIN Med UI', 'PingFang SC UI', sans-serif;
-  font-size: 22.5px;
+  font-size: 23px;
   font-weight: 500;
-  color: #e45044;
+  color: #e4554b;
   font-variant-numeric: tabular-nums;
-  letter-spacing: -0.01em;
+  line-height: 1.1;
+  letter-spacing: 0;
 }
 
 /* Scroll-reactive sticky white nav for 04 Detail & 05 Form (1:1 page_011 & page_018) */

@@ -788,7 +788,7 @@ export default function PetTravelPrototype() {
                   <button
                     type="button"
                     className="ptp-fchip"
-                    style={{ fontWeight: 700, color: '#1b2821' }}
+                    style={{ fontWeight: 500, color: '#1b2821' }}
                     onClick={() => { setFlightFilter('all'); showToast('已重置全部筛选条件'); }}
                   >
                     筛选
@@ -829,16 +829,16 @@ export default function PetTravelPrototype() {
                         <div className="ptp-perks">
                           {fl.perks.map((p) => <span key={p}>{p}</span>)}
                         </div>
-                        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', paddingTop: 10, borderTop: '1px solid #eef1f0' }}>
+                        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', paddingTop: 10, borderTop: '1px solid #ecefed' }}>
                           <div>
-                            <div style={{ fontSize: 10.5, color: '#86948c' }}>{fl.priceLabel}</div>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 2 }}>
+                            <div style={{ fontSize: 11, fontWeight: 400, color: '#7f8b85' }}>{fl.priceLabel}</div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 3 }}>
                               <span className="ptp-price-num">
-                                <em style={{ fontStyle: 'normal', fontSize: 13, marginRight: 2 }}>¥</em>
+                                <em style={{ fontFamily: "'PingFang SC UI', 'PingFang SC', sans-serif", fontStyle: 'normal', fontSize: 13.5, fontWeight: 400, marginRight: 2 }}>¥</em>
                                 {fl.price}
                               </span>
                               {fl.scarcity && (
-                                <span style={{ fontSize: 10, padding: '2px 8px', borderRadius: 5, background: '#fff3e6', color: '#d88240', fontWeight: 600 }}>
+                                <span style={{ fontSize: 10.5, padding: '2.5px 11px', borderRadius: 6, background: '#fff4e8', color: '#df8743', fontWeight: 400 }}>
                                   {fl.scarcity}
                                 </span>
                               )}
