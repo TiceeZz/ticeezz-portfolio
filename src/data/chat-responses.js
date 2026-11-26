@@ -17,7 +17,7 @@ export default function generateResponse(query) {
   /* ════ 联系 ════ */
   if (match(q, '联系', '电话', '邮箱', '微信', '地址', '坐标', '在哪', '找到'))
     return {
-      text: '📬 邮箱: <b>1027208320@qq.com</b><br>📞 电话: <b>+86 199 7467 7449</b> / <b>180 8063 1096</b><br>📍 坐标: <b>上海 长宁区</b>',
+      text: '📬 邮箱: <b>1027208320@qq.com</b><br>📞 电话: <b>+86 199 7467 7449</b> / <b>180 8063 1096</b><br>📍 坐标: <b>上海</b>',
       suggestions: ['他的教育背景？', '他的技能怎么样？'],
     };
 
@@ -224,7 +224,7 @@ export default function generateResponse(query) {
   /* ════ 个人简介 ════ */
   if (match(q, '经历', '时间线', 'timeline', '履历', '背景', '简介', '介绍', '你是谁', '叫什么', '名字', '童宗震', '年龄', '出生', '生日'))
     return {
-      text: '👋 我是 <b>TiceeZz（童宗震）</b><br><br>🎂 1999.02.20 · 上海长宁<br>🎓 东华大学 艺术设计硕士 · 川农 产品设计学士（RANK 1/121）<br>💼 用户体验 / 产品 / 服务 / AI 驱动设计<br>🏆 华灿奖 · 中华设计奖 · 米兰设计周 · NCDA 等多项获奖<br>🤖 擅长 AI 工作流（ComfyUI / SD / MJ / LLM）<br>📐 精通 3D 建模渲染（3Ds Max / Rhino）与 Figma 全链路 UI/UX',
+      text: '👋 我是 <b>TiceeZz（童宗震）</b><br><br>🎂 1999.02.20 · 上海<br>🎓 东华大学 艺术设计硕士 · 川农 产品设计学士（RANK 1/121）<br>💼 用户体验 / 产品 / 服务 / AI 驱动设计<br>🏆 华灿奖 · 中华设计奖 · 米兰设计周 · NCDA 等多项获奖<br>🤖 擅长 AI 工作流（ComfyUI / SD / MJ / LLM）<br>📐 精通 3D 建模渲染（3Ds Max / Rhino）与 Figma 全链路 UI/UX',
       suggestions: ['他的技能矩阵？', '看看他的作品集？', '如何联系他？'],
     };
 

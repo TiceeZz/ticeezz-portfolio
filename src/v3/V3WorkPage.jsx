@@ -4,6 +4,7 @@ import useDocumentTitle from '../hooks/useDocumentTitle';
 import useV3Theme from './useV3Theme';
 import V3Lightbox from './components/V3Lightbox';
 import V3PrismAssistant from './components/V3PrismAssistant';
+import PetTravelPrototype from './components/pet-proto/PetTravelPrototype';
 import { getV3CaseStudy } from './data/v3CaseStudies';
 import './v3.css';
 
@@ -60,6 +61,7 @@ export default function V3WorkPage() {
   const currentSection = study?.sections?.[tab];
   const images = currentSection?.images || [];
   const isVideo = currentSection?.type === 'video';
+  const isPrototype = currentSection?.type === 'prototype';
 
   if (!study) {
     return (
@@ -169,7 +171,10 @@ export default function V3WorkPage() {
           <div className="v3-container v3-work__controls">
             <div className="v3-filter-tabs" role="tablist">
               {study.sections.map((sec, idx) => {
-                const count = sec.type === 'video' ? sec.videos?.length || 0 : sec.images?.length || 0;
+                const badge =
+                  sec.type === 'prototype'
+                    ? sec.badge || 'LIVE'
+                    : String(sec.type === 'video' ? sec.videos?.length || 0 : sec.images?.length || 0).padStart(2, '0');
                 return (
                   <button
                     key={sec.label}
@@ -179,13 +184,13 @@ export default function V3WorkPage() {
                     onClick={() => handleTabChange(idx)}
                   >
                     <span>{sec.label}</span>
-                    <sup>{String(count).padStart(2, '0')}</sup>
+                    <sup>{badge}</sup>
                   </button>
                 );
               })}
             </div>
 
-            {!isVideo && images.length > 1 && (
+            {!isVideo && !isPrototype && images.length > 1 && (
               <div className="v3-work__view-toggle" role="group" aria-label="视图模式">
                 <button
                   className={viewMode === 'stream' ? 'is-active' : ''}
@@ -204,9 +209,11 @@ export default function V3WorkPage() {
           </div>
         </div>
 
-        {/* Visual Presentation Area (Uncropped Natural Proportions) */}
+        {/* Visual Presentation Area (Uncropped Natural Proportions / Live Prototype) */}
         <div className="v3-container v3-work__content">
-          {isVideo ? (
+          {isPrototype ? (
+            <PetTravelPrototype />
+          ) : isVideo ? (
             <div className="v3-work__videos">
               {currentSection.videos.map((v, i) => (
                 <div key={i} className="v3-work__video-block">
