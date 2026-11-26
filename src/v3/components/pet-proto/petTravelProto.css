@@ -11,6 +11,50 @@
   font-display: swap;
 }
 
+/* 1:1 Figma Numeric Font: DIN (maps local DINPro / DIN Alternate + open-source D-DIN WOFF2 fallback for digits) */
+@font-face {
+  font-family: 'DIN UI';
+  src: local('DINPro-Regular'), local('DIN-Regular'), url('/fonts/D-DIN.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0030-0039, U+003A, U+002E, U+002F, U+0025;
+}
+
+@font-face {
+  font-family: 'DIN UI';
+  src: local('DINPro-Medium'), local('DIN-Medium'), url('/fonts/D-DIN.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0030-0039, U+003A, U+002E, U+002F, U+0025;
+}
+
+@font-face {
+  font-family: 'DIN UI';
+  src: local('DINPro-Bold'), local('DIN Alternate Bold'), local('DIN Alternate'), local('DIN-Bold'), url('/fonts/D-DIN-Bold.woff2') format('woff2');
+  font-weight: 600 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0030-0039, U+003A, U+002E, U+002F, U+0025;
+}
+
+@font-face {
+  font-family: 'DIN Condensed UI';
+  src: local('DINCond-Regular'), url('/fonts/D-DINCondensed.woff2') format('woff2');
+  font-weight: 400 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'DIN Condensed UI';
+  src: local('DINCond-Bold'), local('DIN Condensed Bold'), url('/fonts/D-DINCondensed-Bold.woff2') format('woff2');
+  font-weight: 600 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* 1:1 Figma UI Font: PingFang SC (maps both macOS PingFang SC & Windows 苹方-简 exact weights) */
 @font-face {
   font-family: 'PingFang SC UI';
@@ -357,7 +401,7 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  font-family: 'PingFang SC UI', 'PingFang SC', '苹方-简', 'Hiragino Sans GB', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'DIN UI', 'PingFang SC UI', 'PingFang SC', '苹方-简', 'Hiragino Sans GB', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
   -webkit-font-smoothing: antialiased;
   user-select: none;
 }
@@ -1644,11 +1688,11 @@
 }
 
 .ptp-arrived-km span {
-  font-family: 'Alimama ShuHeiTi', 'PingFang SC UI', sans-serif;
+  font-family: 'DIN Condensed UI', 'DIN UI', 'Alimama ShuHeiTi', sans-serif;
   color: #169852;
-  font-size: 17px;
+  font-size: 20px;
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: 0.01em;
   font-variant-numeric: tabular-nums;
 }
 
@@ -1961,9 +2005,10 @@
 }
 
 .ptp-poster-time.is-arr {
-  font-family: 'PingFang SC UI', 'PingFang SC', 'Alimama ShuHeiTi', sans-serif;
-  font-weight: 600;
-  letter-spacing: -0.01em;
+  font-family: 'DIN UI', 'PingFang SC UI', sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: 0;
 }
 
 .ptp-track-avatar-ring {
