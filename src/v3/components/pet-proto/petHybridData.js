@@ -2,8 +2,8 @@
  * 航旅纵横 · 宠物出行 — 1:1 Figma 原稿视觉资产 + 全真实交互数据
  */
 
-const UI = (name) => `/images/projects/pet-travel/ui/${name}.webp?v=20261127b`;
-const UI_PNG = (name) => `/images/projects/pet-travel/ui/${name}.png?v=20261127b`;
+const UI = (name) => `/images/projects/pet-travel/ui/${name}.webp?v=20261127c`;
+const UI_PNG = (name) => `/images/projects/pet-travel/ui/${name}.png?v=20261127c`;
 
 export const HYBRID_ASSETS = {
   iosBarDark: UI_PNG('ios-bar-dark'),
@@ -13,17 +13,17 @@ export const HYBRID_ASSETS = {
   cardSolo: UI('card-solo'),
   cardCabin: UI('card-cabin'),
   soloHeader: UI('solo-header'),
-  aiOrb: UI('ai-orb'),
-  swapCircle: UI('swap-circle'),
+  aiOrb: UI_PNG('ai-orb'),
+  swapCircle: UI_PNG('swap-circle'),
   randomHeader: UI('random-header'),
   randomEmptyDog: UI('random-empty-dog'),
-  muLogo: UI('mu-logo'),
-  caLogo: UI('ca-logo'),
-  recBadge: UI('rec-badge'),
+  muLogo: UI_PNG('mu-logo'),
+  caLogo: UI_PNG('ca-logo'),
+  recBadge: UI_PNG('rec-badge'),
   detailBenefits: UI('detail-benefits'),
   successDog: UI('success-dog'),
   emptyDog: UI('empty-dog'),
-  umetripCs: UI('umetrip-cs'),
+  umetripCs: UI_PNG('umetrip-cs'),
   petAvatar: UI('pet-avatar'),
   mapFly: UI('map-fly'),
   mapFlyFull: UI('map-fly-full'),
@@ -32,7 +32,7 @@ export const HYBRID_ASSETS = {
   arrivedDog: UI_PNG('arrived-dog'),
   posterHeader: UI('poster-header'),
   posterSkyline: UI('poster-skyline'),
-  posterPlane: UI('poster-plane'),
+  posterPlane: UI_PNG('poster-plane'),
   posterQr: UI('poster-qr'),
   shareBar: UI('share-bar'),
   planeCaptain: UI('plane-captain'),

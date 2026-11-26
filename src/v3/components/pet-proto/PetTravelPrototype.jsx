@@ -467,7 +467,7 @@ export default function PetTravelPrototype() {
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 12, color: '#6b7972', paddingBottom: 11, borderBottom: '1px solid #eef1f3', marginBottom: 14 }}>
                           <strong style={{ color: '#1b2922', fontSize: 12.5 }}>5月20日 明天</strong>
                           <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
-                            <img src={HYBRID_ASSETS.muLogo} alt="东航" style={{ width: 15, height: 14, mixBlendMode: 'multiply' }} />
+                            <img src={HYBRID_ASSETS.muLogo} alt="东航" style={{ width: 15, height: 14, objectFit: 'contain' }} />
                             东方航空 MU5101
                           </span>
                         </div>
@@ -731,7 +731,7 @@ export default function PetTravelPrototype() {
                       <div key={fl.id} className={`ptp-flight-card${fl.hasRecBadge ? ' has-rec' : ''}`}>
                         {fl.hasRecBadge && <img src={HYBRID_ASSETS.recBadge} alt="官方推荐全包无忧" className="ptp-rec-img" />}
                         <div className="ptp-air-row">
-                          <img src={fl.airlineKey === 'mu' ? HYBRID_ASSETS.muLogo : HYBRID_ASSETS.caLogo} alt={fl.airline} style={{ mixBlendMode: 'multiply' }} />
+                          <img src={fl.airlineKey === 'mu' ? HYBRID_ASSETS.muLogo : HYBRID_ASSETS.caLogo} alt={fl.airline} />
                           <span>{fl.airline} {fl.code}</span>
                           <span className="ptp-air-tag">{fl.aircraft}</span>
                         </div>
@@ -1290,7 +1290,7 @@ export default function PetTravelPrototype() {
                       style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 11.5, fontWeight: 600, color: '#1e2c25', marginTop: 2 }}
                       onClick={() => showToast('已接通航旅纵横宠物专属客服')}
                     >
-                      <img src={HYBRID_ASSETS.umetripCs} alt="客服" style={{ width: 16, height: 16, mixBlendMode: 'multiply' }} />
+                      <img src={HYBRID_ASSETS.umetripCs} alt="客服" style={{ width: 15, height: 16, objectFit: 'contain' }} />
                       联系客服
                     </button>
                   </div>
