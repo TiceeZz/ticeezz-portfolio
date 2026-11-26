@@ -430,11 +430,11 @@ export default function PetTravelPrototype() {
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: 10, borderTop: '1px dashed #e6ece9' }}>
                           {randomState === 'available' ? (
                             <>
-                              <span style={{ fontSize: 13, fontWeight: 600, color: '#29a962' }}>● 有氧舱名额：充足</span>
+                              <span style={{ fontSize: 12, fontWeight: 600, color: '#29a962' }}>● 有氧舱名额：充足</span>
                               <button
                                 type="button"
                                 className="ptp-btn-green"
-                                style={{ height: 32, padding: '0 18px' }}
+                                style={{ height: 28, padding: '0 15px', fontSize: 11.5 }}
                                 onClick={() => { setSelectedFlightId('MU5101'); navigate('form'); }}
                               >
                                 立即预约
@@ -442,7 +442,7 @@ export default function PetTravelPrototype() {
                             </>
                           ) : (
                             <>
-                              <span style={{ fontSize: 13, fontWeight: 600, color: '#d45c56' }}>● 本航班宠物名额已满</span>
+                              <span style={{ fontSize: 12, fontWeight: 600, color: '#d45c56' }}>● 本航班宠物名额已满</span>
                               <button
                                 type="button"
                                 className="ptp-btn-soft-green"
@@ -527,15 +527,12 @@ export default function PetTravelPrototype() {
                       className="ptp-line-row"
                       onClick={() => setDateStr((d) => (d === '5月20日 明天' ? '5月21日 周四' : '5月20日 明天'))}
                     >
-                      <span style={{ width: 26, height: 26, borderRadius: 7, background: '#edf9f2', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                        <svg width="15" height="15" viewBox="0 0 18 18" fill="none">
-                          <rect x="2.2" y="3.6" width="13.6" height="12" rx="2.4" stroke="#45b77c" strokeWidth="1.45" />
-                          <path d="M5.8 2V4.8M12.2 2V4.8M2.5 7.4H15.5" stroke="#45b77c" strokeWidth="1.4" strokeLinecap="round" />
-                        </svg>
-                      </span>
+                      <svg width="16" height="16" viewBox="0 0 18 18" fill="none" style={{ flexShrink: 0 }}>
+                        <rect x="2.2" y="3.6" width="13.6" height="12" rx="2.4" stroke="#45b77c" strokeWidth="1.45" />
+                        <path d="M5.8 2V4.8M12.2 2V4.8M2.5 7.4H15.5" stroke="#45b77c" strokeWidth="1.4" strokeLinecap="round" />
+                      </svg>
                       <span>{dateStr.split(' ')[0]}</span>
                       <span className="sub">{dateStr.split(' ')[1]}</span>
-                      <span className="sub" style={{ marginLeft: 'auto' }}>切换 ›</span>
                     </button>
 
                     <button
@@ -551,13 +548,11 @@ export default function PetTravelPrototype() {
                         showToast(`已切换宠物预估总重：${next.label}（后续自动推荐对应航空箱）`);
                       }}
                     >
-                      <span style={{ width: 26, height: 26, borderRadius: 7, background: '#edf9f2', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                        <svg width="15" height="15" viewBox="0 0 18 18" fill="none">
-                          <path d="M9 2.2L15 5.4V12.6L9 15.8L3 12.6V5.4L9 2.2Z" stroke="#45b77c" strokeWidth="1.45" strokeLinejoin="round" />
-                          <path d="M3 5.4L9 8.6L15 5.4M9 8.6V15.8" stroke="#45b77c" strokeWidth="1.3" />
-                        </svg>
-                      </span>
-                      <strong style={{ fontSize: 16 }}>
+                      <svg width="16" height="16" viewBox="0 0 18 18" fill="none" style={{ flexShrink: 0 }}>
+                        <path d="M9 2.2L15 5.4V12.6L9 15.8L3 12.6V5.4L9 2.2Z" stroke="#45b77c" strokeWidth="1.45" strokeLinejoin="round" />
+                        <path d="M3 5.4L9 8.6L15 5.4M9 8.6V15.8" stroke="#45b77c" strokeWidth="1.3" />
+                      </svg>
+                      <strong style={{ fontSize: 15.5 }}>
                         {WEIGHT_OPTIONS.find((w) => w.id === weightKey)?.label}
                       </strong>
                       <span className="sub">宠物预估总重量（含航空箱）</span>
@@ -571,7 +566,7 @@ export default function PetTravelPrototype() {
                     <div className="ptp-search-cta-row">
                       <button type="button" className="ptp-btn-gold" onClick={() => navigate('flights')}>
                         <strong>查询方案</strong>
-                        <span>✓ 40+国内航空公司直销</span>
+                        <span>● 40+国内航空公司直销</span>
                       </button>
                       <button
                         type="button"
@@ -837,13 +832,13 @@ export default function PetTravelPrototype() {
                 <div className="ptp-sticky-bar">
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <div>
-                      <div style={{ fontSize: 10.5, color: '#7e8d85' }}>方案预估总价</div>
-                      <div className="ptp-price-num">
-                        <em style={{ fontStyle: 'normal', fontSize: 13, marginRight: 2 }}>¥</em>
+                      <div style={{ fontSize: 10, color: '#83918a' }}>方案预估总价</div>
+                      <div className="ptp-price-num" style={{ fontSize: 20 }}>
+                        <em style={{ fontStyle: 'normal', fontSize: 12, marginRight: 2 }}>¥</em>
                         {selectedFlight.price}
                       </div>
                     </div>
-                    <button type="button" className="ptp-btn-green-full" style={{ width: 176, height: 42 }} onClick={() => navigate('form')}>
+                    <button type="button" className="ptp-btn-green-full" style={{ width: 160, height: 38, fontSize: 13.5 }} onClick={() => navigate('form')}>
                       前往填写订单
                     </button>
                   </div>
@@ -1144,22 +1139,22 @@ export default function PetTravelPrototype() {
               <div key="success" className="ptp-view" style={{ background: '#ffffff' }}>
                 <StatusBar bg="#ffffff" />
                 <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '0 24px 68px', textAlign: 'center' }}>
-                  <img src={HYBRID_ASSETS.successDog} alt="提交成功" style={{ width: 132, height: 130, objectFit: 'contain', marginBottom: 14, mixBlendMode: 'multiply' }} />
-                  <h3 style={{ fontSize: 20, fontWeight: 500, color: '#19221e', margin: '0 0 8px' }}>订单提交成功</h3>
-                  <p style={{ fontSize: 11.5, color: '#8a958f', lineHeight: 1.65, margin: '0 0 42px' }}>
+                  <img src={HYBRID_ASSETS.successDog} alt="提交成功" style={{ width: 128, height: 126, objectFit: 'contain', marginBottom: 14, mixBlendMode: 'multiply' }} />
+                  <h3 style={{ fontSize: 18, fontWeight: 600, color: '#19221e', margin: '0 0 8px' }}>订单提交成功</h3>
+                  <p style={{ fontSize: 11.5, color: '#8a958f', lineHeight: 1.65, margin: '0 0 38px' }}>
                     您的宠物托运申请已进入系统<br />预计 15 分钟内为您锁定舱位
                   </p>
                   <button
                     type="button"
                     className="ptp-btn-green-full"
-                    style={{ height: 44, background: 'linear-gradient(90deg, #43c192 0%, #24b358 100%)', fontSize: 14 }}
+                    style={{ height: 40, background: 'linear-gradient(90deg, #43c192 0%, #24b358 100%)', fontSize: 13.5 }}
                     onClick={() => navigate('tracking')}
                   >
                     查看订单详情
                   </button>
                   <button
                     type="button"
-                    style={{ width: '100%', height: 44, borderRadius: 999, background: '#d2d4d4', color: '#19221e', fontSize: 14, fontWeight: 500, marginTop: 14 }}
+                    style={{ width: '100%', height: 40, borderRadius: 999, background: '#d0d3d2', color: '#19221e', fontSize: 13.5, fontWeight: 500, marginTop: 12 }}
                     onClick={() => navigate('hub')}
                   >
                     返回首页
@@ -1228,10 +1223,10 @@ export default function PetTravelPrototype() {
                     </div>
                     <button
                       type="button"
-                      style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 12, fontWeight: 600, color: '#203028' }}
+                      style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 11.5, fontWeight: 600, color: '#1e2c25', marginTop: 2 }}
                       onClick={() => showToast('已接通航旅纵横宠物专属客服')}
                     >
-                      <img src={HYBRID_ASSETS.umetripCs} alt="客服" style={{ width: 18, height: 18, mixBlendMode: 'multiply' }} />
+                      <img src={HYBRID_ASSETS.umetripCs} alt="客服" style={{ width: 16, height: 16, mixBlendMode: 'multiply' }} />
                       联系客服
                     </button>
                   </div>
@@ -1260,15 +1255,15 @@ export default function PetTravelPrototype() {
                       </div>
                     </div>
                     <button type="button" style={{ textAlign: 'right' }} onClick={() => setModal('price')}>
-                      <div style={{ fontSize: 16, fontWeight: 700, color: '#7b8790', fontVariantNumeric: 'tabular-nums' }}>¥ 613</div>
-                      <div style={{ fontSize: 10.5, color: '#8a9991' }}>明细 ▾</div>
+                      <div style={{ fontSize: 15.5, fontWeight: 700, color: '#7b8790', fontVariantNumeric: 'tabular-nums' }}>¥ 613</div>
+                      <div style={{ fontSize: 10, color: '#8c9891', marginTop: 1 }}>明细 ▼</div>
                     </button>
                   </div>
 
                   <div style={{ background: '#f7f9f8', borderRadius: 12, padding: '11px 12px' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <strong style={{ fontSize: 12.5 }}>全流程追踪</strong>
-                      <button type="button" style={{ fontSize: 11, color: '#7d8c84' }} onClick={() => setModal('timeline')}>查看全部 ›</button>
+                      <strong style={{ fontSize: 12.5, color: '#18251e' }}>全流程追踪</strong>
+                      <button type="button" style={{ fontSize: 10.5, color: '#8c9a92' }} onClick={() => setModal('timeline')}>查看全部 ›</button>
                     </div>
                     <div className="ptp-stage-rail">
                       <div className="ptp-stage-track">
@@ -1288,10 +1283,10 @@ export default function PetTravelPrototype() {
                     </div>
                     <button
                       type="button"
-                      style={{ width: '100%', background: '#eff2f1', borderRadius: 9, padding: '8px 10px', fontSize: 11, color: '#4d5d55', lineHeight: 1.5, display: 'flex', alignItems: 'flex-start', gap: 7, textAlign: 'left' }}
+                      style={{ width: '100%', background: '#eff2f1', borderRadius: 9, padding: '8px 10px', fontSize: 10.8, color: '#4d5d55', lineHeight: 1.5, display: 'flex', alignItems: 'flex-start', gap: 8, textAlign: 'left' }}
                       onClick={() => setModal('timeline')}
                     >
-                      <span style={{ background: '#e3e8e6', color: '#2b3b33', fontWeight: 700, fontSize: 10.5, padding: '1px 6px', borderRadius: 5, flexShrink: 0 }}>{trackStage.summaryTime}</span>
+                      <span style={{ color: '#2f3d36', fontWeight: 600, fontSize: 10.8, fontVariantNumeric: 'tabular-nums', flexShrink: 0 }}>{trackStage.summaryTime}</span>
                       <span>{trackStage.summaryText}</span>
                     </button>
                   </div>
