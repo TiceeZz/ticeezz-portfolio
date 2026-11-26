@@ -49,7 +49,7 @@ const CopySvg = () => (
 );
 
 const CameraSvg = () => (
-  <svg width="20" height="18" viewBox="0 0 24 22" fill="none" style={{ flexShrink: 0 }}>
+  <svg width="22" height="20" viewBox="0 0 24 22" fill="none" style={{ flexShrink: 0 }}>
     <rect x="2.2" y="5.5" width="19.6" height="13.5" rx="3.5" stroke="currentColor" strokeWidth="1.8" />
     <path d="M8 5.5L9.4 3.4C9.7 3 10.1 2.8 10.6 2.8H13.4C13.9 2.8 14.3 3 14.6 3.4L16 5.5" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
     <circle cx="9.6" cy="11.2" r="1.15" fill="currentColor" />
@@ -239,8 +239,46 @@ export default function PetTravelPrototype() {
   const totalPrice = selectedFlight.price + (addonInsurance ? 19 : 0) + (addonValuation ? 40 : 0);
 
   const activeSceneId = modal === 'poster' ? 'poster' : screen === 'orders' ? 'success' : screen;
-  const activeScene = useMemo(() => SCENES.find((s) => s.id === activeSceneId) || SCENES[0], [activeSceneId]);
+  const activeSceneIdx = useMemo(() => Math.max(0, SCENES.findIndex((s) => s.id === activeSceneId)), [activeSceneId]);
+  const activeScene = SCENES[activeSceneIdx] || SCENES[0];
   const trackStage = TRACKING_STAGES[trackStageIdx];
+
+  const sceneMood = useMemo(() => {
+    if (activeSceneId === 'splash') return 'sky';
+    if (activeSceneId === 'poster') return 'poster';
+    if (activeSceneId === 'tracking') return 'map';
+    if (activeSceneId === 'flights' || activeSceneId === 'detail' || activeSceneId === 'form') return 'emerald';
+    if (activeSceneId === 'success') return 'clean';
+    return 'mint';
+  }, [activeSceneId]);
+
+  const journeyPhases = useMemo(() => [
+    { key: 'p1', label: '01 · 入口分流', ids: ['splash', 'hub'] },
+    { key: 'p2', label: '02 · 双轨查订', ids: ['random', 'soloSearch', 'flights', 'detail'] },
+    { key: 'p3', label: '03 · 防错下单', ids: ['form', 'success'] },
+    { key: 'p4', label: '04 · 履约峰终', ids: ['tracking', 'poster'] },
+  ], []);
+
+  const stepScene = useCallback((delta) => {
+    const nextIdx = (activeSceneIdx + delta + SCENES.length) % SCENES.length;
+    navigate(SCENES[nextIdx].id);
+  }, [activeSceneIdx, navigate]);
+
+  useEffect(() => {
+    const onKeyDown = (e) => {
+      const tag = e.target?.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || e.metaKey || e.ctrlKey || e.altKey) return;
+      if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        stepScene(1);
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        stepScene(-1);
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [stepScene]);
 
   const visibleBreeds = useMemo(() => {
     const q = breedSearch.trim();
@@ -278,11 +316,50 @@ export default function PetTravelPrototype() {
   };
 
   return (
-    <div className="ptp-stage">
-      {/* ════════════ LEFT: 1:1 HYBRID REAL-INTERACTION IPHONE ════════════ */}
-      <div className="ptp-phone-col">
-        <div className="ptp-chassis" role="region" aria-label="航旅纵横宠物出行 1:1 可交互原型">
-          <div className="ptp-screen">
+    <div className="ptp-studio" role="region" data-scene-mood={sceneMood} aria-label="航旅纵横宠物出行 1:1 交互原型演示台">
+      <div className="ptp-studio-ambient" aria-hidden="true" />
+
+      {/* ── Top Studio Control Bar ── */}
+      <div className="ptp-studio-bar">
+        <div className="ptp-studio-brand">
+          <span className="ptp-live-dot" aria-hidden="true" />
+          <span className="ptp-studio-label">LIVE INTERACTIVE PROTOTYPE</span>
+          <span className="ptp-studio-pill">1:1 FIGMA RETINA</span>
+        </div>
+
+        <div className="ptp-studio-progress" aria-label={`当前第 ${activeSceneIdx + 1} 屏，共 ${SCENES.length} 屏`}>
+          <span className="ptp-studio-count">
+            <strong>{String(activeSceneIdx + 1).padStart(2, '0')}</strong> / {String(SCENES.length).padStart(2, '0')}
+          </span>
+          <div className="ptp-studio-rail">
+            <div className="ptp-studio-rail-fill" style={{ width: `${((activeSceneIdx + 1) / SCENES.length) * 100}%` }} />
+          </div>
+        </div>
+
+        <div className="ptp-studio-nav">
+          <button type="button" className="ptp-studio-icon-btn" onClick={() => stepScene(-1)} title="上一屏 (←)" aria-label="上一屏">
+            ←
+          </button>
+          <button type="button" className="ptp-studio-icon-btn" onClick={() => stepScene(1)} title="下一屏 (→)" aria-label="下一屏">
+            →
+          </button>
+          <button type="button" className="ptp-studio-reset-btn" onClick={handleReset}>
+            重置演示
+          </button>
+        </div>
+      </div>
+
+      <div className="ptp-stage">
+        {/* ════════════ LEFT: 1:1 HYBRID REAL-INTERACTION IPHONE ════════════ */}
+        <div className="ptp-phone-col">
+          <div className="ptp-phone-aura" aria-hidden="true" />
+          <div className="ptp-chassis" role="region" aria-label="航旅纵横宠物出行 1:1 可交互原型">
+            {/* Realistic machined titanium side hardware keys */}
+            <span className="ptp-hw-btn ptp-hw-action" aria-hidden="true" />
+            <span className="ptp-hw-btn ptp-hw-vol-up" aria-hidden="true" />
+            <span className="ptp-hw-btn ptp-hw-vol-dn" aria-hidden="true" />
+            <span className="ptp-hw-btn ptp-hw-power" aria-hidden="true" />
+            <div className="ptp-screen">
             {toast && <div className="ptp-toast">{toast}</div>}
 
             {/* ══ 00: 1:1 UNTOUCHED FIGMA SPLASH ══ */}
@@ -1080,7 +1157,7 @@ export default function PetTravelPrototype() {
                           <span style={{ fontSize: 10.5, color: '#8a959e' }}>[检疫证原件]</span>
                         </div>
                         <div style={{ width: '100%', padding: '5px 5px 7px', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 3 }}>
-                          <span style={{ fontSize: 9, padding: '1px 6px', borderRadius: 4, background: '#3ec172', color: '#fff', fontWeight: 700 }}>OCR已提</span>
+                          <span style={{ fontSize: 9, padding: '1px 7px', borderRadius: 999, background: '#3ec172', color: '#fff', fontWeight: 700 }}>OCR已提</span>
                           <strong style={{ fontSize: 10.5 }}>动物检疫合格证</strong>
                         </div>
                       </button>
@@ -1288,8 +1365,8 @@ export default function PetTravelPrototype() {
                     </button>
                   </div>
 
-                  <div style={{ fontSize: 10.5, color: '#24302a', paddingBottom: 12, borderBottom: '1px solid #f0f3f2', marginBottom: 12, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                    请接机人 <strong style={{ color: '#000000', fontWeight: 800 }}>{contactName || '阿童'}</strong> 携带有效身份证件，至 <strong style={{ color: '#26a862', fontWeight: 700 }}>T2 提取处</strong> 办理提宠。
+                  <div style={{ fontSize: 10.8, color: '#24302a', paddingBottom: 12, borderBottom: '1px solid #f0f3f2', marginBottom: 12, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    请接机人 <strong style={{ color: '#000000', fontWeight: 800, fontSize: 11.8 }}>{contactName || '阿童'}</strong> 携带有效身份证件，至 <strong style={{ color: '#26a862', fontWeight: 700, fontSize: 11.8 }}>T2 提取处</strong> 办理提宠。
                   </div>
 
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
@@ -2004,103 +2081,181 @@ export default function PetTravelPrototype() {
                 </div>
               </div>
             )}
+            </div>
+          </div>
+
+          <div className="ptp-phone-caption">
+            <span className="ptp-caption-pulse" aria-hidden="true" />
+            <span>真机交互画布 · 支持点击、滑动、弹窗与实时联动 · 键盘 ← / → 切屏</span>
           </div>
         </div>
+
+        {/* ════════════ RIGHT: EDITORIAL UX STORYBOARD & INTERACTION STUDIO ════════════ */}
+        <aside className="ptp-director">
+          {/* 1. Active Screen Editorial Brief */}
+          <div className="ptp-dir-card ptp-dir-hero">
+            <span className="ptp-dir-watermark" aria-hidden="true">{activeScene.step}</span>
+            <div className="ptp-dir-kicker">
+              <span className="ptp-dir-step">SCREEN {activeScene.step}</span>
+              <span className="ptp-dir-tag">{activeScene.tag}</span>
+            </div>
+            <h2 className="ptp-dir-title">{activeScene.title}</h2>
+            <p className="ptp-dir-insight">{activeScene.insight}</p>
+
+            <div className="ptp-dir-mission">
+              <span className="ptp-dir-mission-badge">TRY IT</span>
+              <span>{activeScene.tip}</span>
+            </div>
+
+            <div className="ptp-dir-actions">
+              {screen === 'random' && (
+                <>
+                  <button type="button" className={`ptp-dir-btn${randomState === 'empty' ? ' is-primary' : ''}`} onClick={() => setRandomState('empty')}>态 1：无票空态</button>
+                  <button type="button" className={`ptp-dir-btn${randomState === 'available' ? ' is-primary' : ''}`} onClick={() => setRandomState('available')}>态 2：名额充足</button>
+                  <button type="button" className={`ptp-dir-btn${randomState === 'full' ? ' is-primary' : ''}`} onClick={() => setRandomState('full')}>态 3：名额已满兜底</button>
+                </>
+              )}
+
+              {screen === 'soloSearch' && (
+                <>
+                  <button type="button" className="ptp-dir-btn" onClick={() => { setFromIdx(toIdx); setToIdx(fromIdx); showToast('已互换出发与到达城市'); }}>互换起降城市</button>
+                  <button
+                    type="button"
+                    className="ptp-dir-btn"
+                    onClick={() => {
+                      const idx = WEIGHT_OPTIONS.findIndex((w) => w.id === weightKey);
+                      const next = WEIGHT_OPTIONS[(idx + 1) % WEIGHT_OPTIONS.length];
+                      setWeightKey(next.id);
+                      setWeightKg(next.sampleWeight);
+                      setCrateOverride(null);
+                      showToast(`已切换体重档位：${next.label}`);
+                    }}
+                  >
+                    切换体重档位
+                  </button>
+                  <button type="button" className="ptp-dir-btn is-primary" onClick={() => navigate('flights')}>查询航线方案 →</button>
+                </>
+              )}
+
+              {screen === 'flights' && (
+                <>
+                  <button type="button" className={`ptp-dir-btn${flightFilter === 'all' ? ' is-primary' : ''}`} onClick={() => setFlightFilter('all')}>全部航班</button>
+                  <button type="button" className={`ptp-dir-btn${flightFilter === 'wide' ? ' is-primary' : ''}`} onClick={() => setFlightFilter('wide')}>仅看宽体机</button>
+                  <button type="button" className={`ptp-dir-btn${flightFilter === 'ca' ? ' is-primary' : ''}`} onClick={() => setFlightFilter('ca')}>筛选中国国航</button>
+                </>
+              )}
+
+              {screen === 'form' && (
+                <>
+                  <button type="button" className="ptp-dir-btn is-primary" onClick={handleAutoFill}>一键补全解锁提交</button>
+                  <button
+                    type="button"
+                    className="ptp-dir-btn"
+                    onClick={() => {
+                      setBreedSearch('法斗');
+                      setBreedAlert('法国斗牛犬 — 短鼻类犬高空易窒息，民航规定严格禁运');
+                      setModal('breed');
+                    }}
+                  >
+                    触发法斗禁飞拦截
+                  </button>
+                  <button
+                    type="button"
+                    className="ptp-dir-btn"
+                    onClick={() => { setWeightKg(18.5); setCrateOverride(null); showToast('体重已调至 18.5kg，航空箱自动切换推荐 3号箱'); }}
+                  >
+                    调重 18.5kg 换 3号箱
+                  </button>
+                </>
+              )}
+
+              {screen === 'success' && (
+                <>
+                  <button type="button" className="ptp-dir-btn is-primary" onClick={() => navigate('tracking')}>查看实时飞行追踪 →</button>
+                  <button type="button" className="ptp-dir-btn" onClick={() => navigate('orders')}>预览空订单态</button>
+                </>
+              )}
+
+              {screen === 'orders' && (
+                <>
+                  <button type="button" className="ptp-dir-btn is-primary" onClick={() => navigate('success')}>返回提交成功态</button>
+                  <button type="button" className="ptp-dir-btn" onClick={() => navigate('hub')}>返回服务大厅</button>
+                </>
+              )}
+
+              {screen === 'tracking' && (
+                <>
+                  <button type="button" className={`ptp-dir-btn${trackStageIdx === 2 && !modal ? ' is-primary' : ''}`} onClick={() => { setModal(null); setTrackStageIdx(2); }}>高空飞行中</button>
+                  <button type="button" className={`ptp-dir-btn${trackStageIdx === 4 && modal !== 'poster' ? ' is-primary' : ''}`} onClick={() => { setModal(null); setTrackStageIdx(4); }}>平安落地</button>
+                  <button type="button" className={`ptp-dir-btn${modal === 'price' ? ' is-primary' : ''}`} onClick={() => setModal('price')}>价格明细</button>
+                  <button type="button" className={`ptp-dir-btn${modal === 'timeline' ? ' is-primary' : ''}`} onClick={() => setModal('timeline')}>全流程抽屉</button>
+                  <button type="button" className={`ptp-dir-btn${modal === 'poster' ? ' is-primary' : ''}`} onClick={() => { setTrackStageIdx(4); setModal('poster'); }}>接机海报</button>
+                </>
+              )}
+
+              {(screen === 'splash' || screen === 'hub' || screen === 'detail') && (
+                <button type="button" className="ptp-dir-btn is-primary" onClick={() => stepScene(1)}>
+                  进入下一屏演示 →
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* 2. Live Prototype State Telemetry */}
+          <div className="ptp-telemetry" aria-label="原型实时状态联动面板">
+            <div className="ptp-tele-cell">
+              <span>ROUTE</span>
+              <strong>{fromCity.name} → {toCity.name}</strong>
+            </div>
+            <div className="ptp-tele-cell">
+              <span>PET PROFILE</span>
+              <strong>{petName || '小航'} · {breedTouched ? breed : '中华田园犬'}</strong>
+            </div>
+            <div className="ptp-tele-cell">
+              <span>SMART CRATE</span>
+              <strong>{weightKg}kg → {activeCrate}号箱</strong>
+            </div>
+            <div className="ptp-tele-cell">
+              <span>ESTIMATE</span>
+              <strong>¥{totalPrice}</strong>
+            </div>
+          </div>
+
+          {/* 3. 4-Phase Editorial UX Journey Storyboard */}
+          <div className="ptp-dir-card ptp-journey-card">
+            <div className="ptp-storyboard-head">
+              <span>UX JOURNEY MAP · 10 SCREENS</span>
+              <span>点击任意节点直达对应状态</span>
+            </div>
+            <div className="ptp-phase-list">
+              {journeyPhases.map((phase) => (
+                <div key={phase.key} className="ptp-phase-group">
+                  <div className="ptp-phase-title">{phase.label}</div>
+                  <div className="ptp-phase-grid">
+                    {phase.ids.map((id) => {
+                      const s = SCENES.find((item) => item.id === id);
+                      if (!s) return null;
+                      const isActive = activeSceneId === s.id;
+                      return (
+                        <button
+                          key={s.id}
+                          type="button"
+                          className={`ptp-scene-btn${isActive ? ' is-active' : ''}`}
+                          onClick={() => navigate(s.id)}
+                        >
+                          <em>{s.step}</em>
+                          <strong>{s.short}</strong>
+                          {isActive && <span className="ptp-scene-dot" aria-hidden="true" />}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </aside>
       </div>
-
-      {/* ════════════ RIGHT: UX STORYBOARD & DIRECTOR PANEL ════════════ */}
-      <aside className="ptp-director">
-        <div className="ptp-dir-card">
-          <div className="ptp-dir-kicker">
-            <span className="ptp-dir-step">SCREEN {activeScene.step}</span>
-            <span className="ptp-dir-tag">{activeScene.tag}</span>
-          </div>
-          <h2 className="ptp-dir-title">{activeScene.title}</h2>
-          <p className="ptp-dir-insight">{activeScene.insight}</p>
-          <div className="ptp-dir-tip">{activeScene.tip}</div>
-
-          <div className="ptp-dir-actions">
-            {screen === 'random' && (
-              <>
-                <button type="button" className={`ptp-dir-btn${randomState === 'empty' ? ' is-primary' : ''}`} onClick={() => setRandomState('empty')}>态 1：无票空态</button>
-                <button type="button" className={`ptp-dir-btn${randomState === 'available' ? ' is-primary' : ''}`} onClick={() => setRandomState('available')}>态 2：名额充足</button>
-                <button type="button" className={`ptp-dir-btn${randomState === 'full' ? ' is-primary' : ''}`} onClick={() => setRandomState('full')}>态 3：名额已满兜底</button>
-              </>
-            )}
-
-            {screen === 'form' && (
-              <>
-                <button type="button" className="ptp-dir-btn is-primary" onClick={handleAutoFill}>一键补全演示数据</button>
-                <button
-                  type="button"
-                  className="ptp-dir-btn"
-                  onClick={() => {
-                    setBreedSearch('法斗');
-                    setBreedAlert('法国斗牛犬 — 短鼻类犬高空易窒息，民航规定严格禁运');
-                    setModal('breed');
-                  }}
-                >
-                  演示短鼻犬风控拦截
-                </button>
-                <button
-                  type="button"
-                  className="ptp-dir-btn"
-                  onClick={() => { setWeightKg(18.5); setCrateOverride(null); showToast('体重已调至 18.5kg，航空箱自动切换推荐 3号箱'); }}
-                >
-                  调重至 18.5kg 看荐箱联动
-                </button>
-              </>
-            )}
-
-            {screen === 'tracking' && (
-              <>
-                <button type="button" className={`ptp-dir-btn${trackStageIdx === 2 ? ' is-primary' : ''}`} onClick={() => { setModal(null); setTrackStageIdx(2); }}>高空飞行中</button>
-                <button type="button" className={`ptp-dir-btn${trackStageIdx === 4 && modal !== 'poster' ? ' is-primary' : ''}`} onClick={() => { setModal(null); setTrackStageIdx(4); }}>平安落地</button>
-                <button type="button" className="ptp-dir-btn" onClick={() => { setTrackStageIdx(4); setModal('poster'); }}>弹出接机海报</button>
-              </>
-            )}
-
-            {screen !== 'random' && screen !== 'form' && screen !== 'tracking' && (
-              <button
-                type="button"
-                className="ptp-dir-btn is-primary"
-                onClick={() => {
-                  const idx = SCENES.findIndex((s) => s.id === activeSceneId);
-                  navigate(SCENES[(idx + 1) % SCENES.length].id);
-                }}
-              >
-                下一步演示 →
-              </button>
-            )}
-
-            <button type="button" className="ptp-dir-btn" onClick={handleReset}>重置演示</button>
-          </div>
-        </div>
-
-        <div className="ptp-dir-card">
-          <div className="ptp-storyboard-head">
-            <span>QUICK JUMP · 10 CORE SCREENS</span>
-            <span>点击直达任意体验节点</span>
-          </div>
-          <div className="ptp-scene-grid">
-            {SCENES.map((s) => (
-              <button
-                key={s.id}
-                type="button"
-                className={`ptp-scene-btn${activeSceneId === s.id ? ' is-active' : ''}`}
-                onClick={() => navigate(s.id)}
-              >
-                <em>{s.step}</em>
-                <strong>{s.short}</strong>
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <p className="ptp-dir-footnote">
-          1:1 保留 Figma 原稿 2x Retina 头部视觉、官方「航旅纵横」Logo、3D 云吞机长权益图与高德实景航线，同时由真实前端代码驱动长页自由滑动、宽体机筛选、短鼻犬禁飞拦截、体重联动荐箱、实时表单校验与 5 节点追踪抽屉。
-        </p>
-      </aside>
     </div>
   );
 }
