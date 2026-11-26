@@ -1465,25 +1465,25 @@
 /* ═══ 1:1 Figma 价格明细 Receipt Modal ═══ */
 .ptp-price-sheet {
   background: #ffffff;
-  border-radius: 22px 22px 0 0;
-  padding: 12px 22px 30px;
+  border-radius: 20px 20px 0 0;
+  padding: 16px 22px 26px;
   animation: ptpSheetUp 0.22s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .ptp-price-title {
   text-align: center;
-  font-size: 15.5px;
+  font-size: 14.5px;
   font-weight: 700;
   color: #17233a;
-  margin: 4px 0 18px;
+  margin: 0 0 14px;
 }
 
 .ptp-price-row {
   display: flex;
   align-items: baseline;
   gap: 8px;
-  padding: 6.5px 0;
-  font-size: 13.5px;
+  padding: 5.5px 0;
+  font-size: 13px;
   color: #2b333a;
 }
 
@@ -1556,7 +1556,7 @@
   width: 13px;
   height: 13px;
   border-radius: 50%;
-  background: #4194b4;
+  background: #2f96be;
 }
 
 .ptp-poster-divider::before { left: -6.5px; }
