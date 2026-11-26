@@ -11,6 +11,17 @@
   padding: 12px 0 44px;
 }
 
+.ptp-live-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #22c55e;
+  margin-right: 6px;
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.22);
+  vertical-align: middle;
+}
+
 .ptp-stage * {
   box-sizing: border-box;
 }

@@ -62,6 +62,7 @@ export default function V3WorkPage() {
   const images = currentSection?.images || [];
   const isVideo = currentSection?.type === 'video';
   const isPrototype = currentSection?.type === 'prototype';
+  const hasLivePrototypeFirst = study?.sections?.[0]?.type === 'prototype';
 
   if (!study) {
     return (
@@ -156,14 +157,16 @@ export default function V3WorkPage() {
             </div>
           )}
 
-          {/* Full-Width Cover Plate */}
-          <div className={`v3-work__cover${study.isDevicePlate ? ' is-device' : ''}`}>
-            <img
-              src={study.cover}
-              alt={study.title}
-              className={study.isDevicePlate ? 'is-device' : ''}
-            />
-          </div>
+          {/* Full-Width Cover Plate — skipped when a live interactive prototype leads Tab 0 */}
+          {!hasLivePrototypeFirst && (
+            <div className={`v3-work__cover${study.isDevicePlate ? ' is-device' : ''}`}>
+              <img
+                src={study.cover}
+                alt={study.title}
+                className={study.isDevicePlate ? 'is-device' : ''}
+              />
+            </div>
+          )}
         </div>
 
         {/* Sticky Section Controls: Tabs + Stream/Grid View Switch */}
@@ -183,6 +186,7 @@ export default function V3WorkPage() {
                     className={`v3-filter-tab${tab === idx ? ' is-active' : ''}`}
                     onClick={() => handleTabChange(idx)}
                   >
+                    {sec.type === 'prototype' && <span className="ptp-live-dot" aria-hidden="true" />}
                     <span>{sec.label}</span>
                     <sup>{badge}</sup>
                   </button>
