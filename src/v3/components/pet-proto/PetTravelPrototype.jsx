@@ -56,10 +56,26 @@ const CopySvg = () => (
 );
 
 const CameraSvg = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0 }}>
-    <rect x="3" y="6.5" width="18" height="13" rx="3" stroke="currentColor" strokeWidth="1.8" />
-    <path d="M8.5 6.5L9.8 4.4C10.1 4 10.5 3.8 11 3.8H13C13.5 3.8 13.9 4 14.2 4.4L15.5 6.5" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
-    <circle cx="12" cy="13" r="3" stroke="currentColor" strokeWidth="1.8" />
+  <svg width="20" height="18" viewBox="0 0 24 22" fill="none" style={{ flexShrink: 0 }}>
+    <rect x="2.2" y="5.5" width="19.6" height="13.5" rx="3.5" stroke="currentColor" strokeWidth="1.8" />
+    <path d="M8 5.5L9.4 3.4C9.7 3 10.1 2.8 10.6 2.8H13.4C13.9 2.8 14.3 3 14.6 3.4L16 5.5" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
+    <circle cx="9.6" cy="11.2" r="1.15" fill="currentColor" />
+    <circle cx="14.4" cy="11.2" r="1.15" fill="currentColor" />
+    <path d="M9.6 14.1C10.5 15.1 13.5 15.1 14.4 14.1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+  </svg>
+);
+
+const RandomPlaneSvg = ({ muted = false }) => (
+  <svg width="28" height="20" viewBox="0 0 36 24" fill="none" style={{ flexShrink: 0 }}>
+    {/* 1:1 Figma takeoff plane silhouette: tilted fuselage + swept-back wing + diagonal tail cutout */}
+    <path
+      d="M5.4 12.1L9.2 14.9L6.4 16.1L3.3 13.4C2.9 13 3.1 12.2 3.7 12C4.3 11.8 4.9 11.8 5.4 12.1Z"
+      fill={muted ? '#c5ceca' : '#3db885'}
+    />
+    <path
+      d="M7.6 17.4L11.2 16.0L16.3 14.1L10.3 6.2C9.8 5.5 10.3 4.5 11.2 4.6L13.1 4.9C13.6 5 14.1 5.3 14.5 5.7L22.3 12.0L29.1 9.6C31.1 8.9 33.1 9.5 33.6 11.0C34.1 12.5 32.8 14.1 30.8 14.8L13.2 20.6C11.1 21.3 8.9 20.4 7.8 18.6L7.4 17.9C7.3 17.7 7.4 17.5 7.6 17.4Z"
+      fill={muted ? '#c5ceca' : '#3db885'}
+    />
   </svg>
 );
 
@@ -332,7 +348,7 @@ export default function PetTravelPrototype() {
                     <button
                       type="button"
                       className="ptp-hdr-back"
-                      style={{ top: '26%', height: '24%' }}
+                      style={{ top: '24%', height: '18%' }}
                       aria-label="返回"
                       onClick={goBack}
                     />
@@ -410,17 +426,15 @@ export default function PetTravelPrototype() {
                         </div>
                         <div className="ptp-times" style={{ marginBottom: 12 }}>
                           <div className="ptp-tcol">
-                            <strong>上海虹桥</strong>
-                            <span>虹桥国际机场 T2</span>
+                            <strong style={randomState === 'full' ? { color: '#9aa49f' } : undefined}>上海虹桥</strong>
+                            <span style={randomState === 'full' ? { color: '#bcc5c0' } : undefined}>虹桥国际机场 T2</span>
                           </div>
                           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            <svg width="24" height="16" viewBox="0 0 28 18" fill="none">
-                              <path d="M2 12.2L8.2 10.6L14.5 3.6L17.4 4.1L14.4 9.5L22.6 8.2C24.2 8 25.6 8.6 25.8 9.6C26 10.6 24.9 11.4 23.2 11.8L5.4 14.8L2 12.2Z" fill="#34bb70" />
-                            </svg>
+                            <RandomPlaneSvg muted={randomState === 'full'} />
                           </div>
                           <div className="ptp-tcol is-r">
-                            <strong>北京大兴</strong>
-                            <span>大兴国际机场</span>
+                            <strong style={randomState === 'full' ? { color: '#9aa49f' } : undefined}>北京大兴</strong>
+                            <span style={randomState === 'full' ? { color: '#bcc5c0' } : undefined}>大兴国际机场</span>
                           </div>
                         </div>
                         <div style={{ background: '#f5f7f6', borderRadius: 10, padding: '10px 12px', fontSize: 12, color: '#56655d', lineHeight: 1.7, marginBottom: 14 }}>
@@ -1340,24 +1354,22 @@ export default function PetTravelPrototype() {
                         <div className="ptp-arrived-card">{trackingCardBody}</div>
 
                         <div className="ptp-arrived-celeb">
-                          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
-                            <img
-                              src={HYBRID_ASSETS.arrivedDog}
-                              alt="小航平安落地"
-                              style={{ width: 108, height: 122, objectFit: 'contain', marginTop: -34, flexShrink: 0, filter: 'drop-shadow(0 8px 12px rgba(24,52,38,0.12))' }}
-                            />
-                            <div>
-                              <strong style={{ display: 'block', fontSize: 16, color: '#14221b' }}>{petName || '小航'} 已平安落地{toCity.name}！</strong>
-                              <div style={{ fontSize: 13, color: '#394941', marginTop: 5 }}>
-                                总计飞行 <strong style={{ color: '#1fa05b', fontSize: 16 }}>1760</strong> 公里
-                              </div>
-                              <div style={{ fontSize: 11.5, color: '#8a9991', marginTop: 3 }}>快给朋友们报个平安吧</div>
+                          <img
+                            src={HYBRID_ASSETS.arrivedDog}
+                            alt="小航平安落地"
+                            className="ptp-arrived-dog-pop"
+                          />
+                          <div className="ptp-arrived-dog-shadow" aria-hidden="true" />
+                          <div className="ptp-arrived-copy">
+                            <strong>{petName || '小航'} 已平安落地{toCity.name}！</strong>
+                            <div className="ptp-arrived-km">
+                              总计飞行 <span>1760</span> 公里
                             </div>
+                            <div className="ptp-arrived-sub">快给朋友们报个平安吧</div>
                           </div>
                           <button
                             type="button"
-                            className="ptp-btn-green-full"
-                            style={{ height: 45, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8, fontSize: 15 }}
+                            className="ptp-btn-green-full ptp-arrived-cta"
                             onClick={() => setModal('poster')}
                           >
                             <span>生成专属接机海报</span>
@@ -1367,73 +1379,73 @@ export default function PetTravelPrototype() {
                       </div>
                     </div>
                   ) : (
-                    <>
-                      <div className="ptp-map-top">
-                        <img
-                          src={HYBRID_ASSETS.mapFly}
-                          alt="航旅纵横高德实景航线图"
-                          className={`ptp-map-bg${mapSatellite ? ' is-sat' : ''}`}
-                        />
-                        {/* Unified plain map status title (NO box/border — 1:1 with Figma 运输中 / 已到达) */}
-                        <div className="ptp-map-stage-title">{isArrived ? '已到达' : mapStatusText}</div>
-                        {/* Interactive Back Button */}
-                        <button
-                          type="button"
-                          aria-label="返回"
-                          onClick={goBack}
-                          style={{ position: 'absolute', left: 10, top: 44, width: 34, height: 34, zIndex: 12 }}
-                        />
-                        {/* Interactive Map Layer (平面) */}
-                        <button
-                          type="button"
-                          aria-label="切换地图图层"
-                          onClick={() => {
-                            setMapSatellite((v) => !v);
-                            showToast(!mapSatellite ? '已切换卫星地形视图' : '已切回标准平面地图');
-                          }}
-                          style={{ position: 'absolute', right: 8, top: 48, width: 34, height: 42, zIndex: 12 }}
-                        />
-                        {/* Interactive Weather Toggle (天气) & Airport Pills + GPS */}
-                        <button
-                          type="button"
-                          aria-label="航路天气"
-                          onClick={() => setShowWeatherCard((v) => !v)}
-                          style={{ position: 'absolute', right: 8, top: 92, width: 34, height: 38, zIndex: 12 }}
-                        />
-                        <button
-                          type="button"
-                          aria-label="目的机场信息"
-                          onClick={() => showToast('北京大兴国际机场 · T2 活体宠物专用提取处（恒温 22℃）')}
-                          style={{ position: 'absolute', left: '33%', top: 48, width: 88, height: 26, zIndex: 12 }}
-                        />
-                        <button
-                          type="button"
-                          aria-label="出发机场信息"
-                          onClick={() => showToast('上海虹桥货运站 · 活体专用通道已完成交接')}
-                          style={{ position: 'absolute', left: '62%', bottom: 26, width: 84, height: 28, zIndex: 12 }}
-                        />
-                        <button
-                          type="button"
-                          aria-label="重新定位"
-                          onClick={() => showToast(`已定位至「${petName || '小航'}」当前航迹：高度 10,600m`)}
-                          style={{ position: 'absolute', right: 8, bottom: 24, width: 32, height: 32, zIndex: 12 }}
-                        />
-                        {showWeatherCard && (
-                          <div className="ptp-map-weather-card" onClick={() => setShowWeatherCard(false)}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 700, marginBottom: 3 }}>
-                              <span>航路实时天气 · 适宜飞行</span>
-                              <span style={{ color: '#249b59' }}>关闭 ×</span>
-                            </div>
-                            <div>出发：上海虹桥 晴 21℃ · 东南风 2 级</div>
-                            <div>抵达：北京大兴 多云 19℃ · 有氧舱恒温 22℃</div>
+                    <div className="ptp-fly-view">
+                      <img
+                        src={HYBRID_ASSETS.mapFlyFull}
+                        alt="航旅纵横高德实景航线图"
+                        className={`ptp-arrived-full-bg${mapSatellite ? ' is-sat' : ''}`}
+                      />
+                      {/* Unified plain map status title (NO box/border — 1:1 with Figma 运输中 / 已到达) */}
+                      <div className="ptp-map-stage-title">{mapStatusText}</div>
+                      {/* Interactive Back Button */}
+                      <button
+                        type="button"
+                        aria-label="返回"
+                        onClick={goBack}
+                        style={{ position: 'absolute', left: 10, top: 44, width: 34, height: 34, zIndex: 12 }}
+                      />
+                      {/* Interactive Map Layer (平面) */}
+                      <button
+                        type="button"
+                        aria-label="切换地图图层"
+                        onClick={() => {
+                          setMapSatellite((v) => !v);
+                          showToast(!mapSatellite ? '已切换卫星地形视图' : '已切回标准平面地图');
+                        }}
+                        style={{ position: 'absolute', right: 8, top: 48, width: 34, height: 42, zIndex: 12 }}
+                      />
+                      {/* Interactive Weather Toggle (天气) & Airport Pills + GPS */}
+                      <button
+                        type="button"
+                        aria-label="航路天气"
+                        onClick={() => setShowWeatherCard((v) => !v)}
+                        style={{ position: 'absolute', right: 8, top: 92, width: 34, height: 38, zIndex: 12 }}
+                      />
+                      <button
+                        type="button"
+                        aria-label="目的机场信息"
+                        onClick={() => showToast('北京大兴国际机场 · T2 活体宠物专用提取处（恒温 22℃）')}
+                        style={{ position: 'absolute', left: '33%', top: 48, width: 88, height: 26, zIndex: 12 }}
+                      />
+                      <button
+                        type="button"
+                        aria-label="出发机场信息"
+                        onClick={() => showToast('上海虹桥货运站 · 活体专用通道已完成交接')}
+                        style={{ position: 'absolute', left: '62%', top: 304, width: 84, height: 28, zIndex: 12 }}
+                      />
+                      <button
+                        type="button"
+                        aria-label="重新定位"
+                        onClick={() => showToast(`已定位至「${petName || '小航'}」当前航迹：高度 10,600m`)}
+                        style={{ position: 'absolute', right: 8, top: 304, width: 32, height: 32, zIndex: 12 }}
+                      />
+                      {showWeatherCard && (
+                        <div className="ptp-map-weather-card" onClick={() => setShowWeatherCard(false)}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 700, marginBottom: 3 }}>
+                            <span>航路实时天气 · 适宜飞行</span>
+                            <span style={{ color: '#249b59' }}>关闭 ×</span>
                           </div>
-                        )}
-                      </div>
+                          <div>出发：上海虹桥 晴 21℃ · 东南风 2 级</div>
+                          <div>抵达：北京大兴 多云 19℃ · 有氧舱恒温 22℃</div>
+                        </div>
+                      )}
 
-                      <div className="ptp-track-sheet">
-                        {trackingCardBody}
+                      <div className="ptp-fly-overlay">
+                        <div className="ptp-track-sheet">
+                          {trackingCardBody}
+                        </div>
                       </div>
-                    </>
+                    </div>
                   )}
                   <div className="ptp-home-bar" />
                 </div>
