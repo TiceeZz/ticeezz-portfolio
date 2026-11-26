@@ -11,15 +11,18 @@
   font-display: swap;
 }
 
-/* 1:1 Figma Numeric Fonts: DIN Alternate (Medium / Bold) & DIN Condensed (with open-source D-DIN WOFF2 fallback) */
+/* 1:1 Figma Numeric Fonts — strictly separated per 4K glyph verification:
+   - DIN Med / Bold / Black (standard DIN / DINPro): majority of flight times, prices, tracking ETA
+   - DIN Alt Bold (DIN Alternate Bold): poster headline stats (1760 / 2 / 40) & 18:40
+   - DIN Condensed Bold: arrived celebration mileage (1760)
+*/
 @font-face {
   font-family: 'DIN Med UI';
   src:
-    local('DIN-MediumAlternate'),
-    local('DIN-RegularAlternate'),
-    local('DIN Alternate'),
-    local('DINPro-Medium'),
     local('DIN-Medium'),
+    local('DINPro-Medium'),
+    local('DIN-Regular'),
+    local('DINPro-Regular'),
     url('/fonts/D-DIN.woff2') format('woff2');
   font-weight: 400 600;
   font-style: normal;
@@ -29,11 +32,32 @@
 @font-face {
   font-family: 'DIN Bold UI';
   src:
+    local('DIN-Bold'),
+    local('DINPro-Bold'),
+    url('/fonts/D-DIN-Bold.woff2') format('woff2');
+  font-weight: 600 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'DIN Black UI';
+  src:
+    local('DIN-Black'),
+    local('DINPro-Black'),
+    local('DIN-Bold'),
+    url('/fonts/D-DIN-Bold.woff2') format('woff2');
+  font-weight: 700 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'DIN Alt Bold UI';
+  src:
     local('DIN-BoldAlternate'),
     local('DIN Alternate Bold'),
     local('DIN Alternate'),
-    local('DINPro-Bold'),
-    local('DIN-Bold'),
     url('/fonts/D-DIN-Bold.woff2') format('woff2');
   font-weight: 600 900;
   font-style: normal;
@@ -1846,12 +1870,12 @@
 }
 
 .ptp-track-eta-time {
-  font-family: 'Alimama ShuHeiTi', 'PingFang SC UI', sans-serif;
-  font-size: 27px;
-  font-weight: 700;
+  font-family: 'DIN Black UI', 'Alimama ShuHeiTi', 'PingFang SC UI', sans-serif;
+  font-size: 28px;
+  font-weight: 900;
   color: #000000;
-  line-height: 1.16;
-  letter-spacing: 0.01em;
+  line-height: 1.14;
+  letter-spacing: 0;
   font-variant-numeric: tabular-nums;
   margin-top: 1px;
 }
@@ -2137,15 +2161,15 @@
 }
 
 .ptp-poster-stat-num {
-  font-family: 'Alimama ShuHeiTi', 'PingFang SC UI', sans-serif;
+  font-family: 'DIN Alt Bold UI', 'PingFang SC UI', sans-serif;
   color: #169a54;
-  font-size: 13px;
+  font-size: 13.5px;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
 }
 
 .ptp-poster-time {
-  font-family: 'DIN Bold UI', 'PingFang SC UI', sans-serif;
+  font-family: 'DIN Alt Bold UI', 'PingFang SC UI', sans-serif;
   font-size: 19.5px;
   font-weight: 700;
   font-variant-numeric: tabular-nums;

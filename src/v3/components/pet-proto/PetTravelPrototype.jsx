@@ -812,7 +812,7 @@ export default function PetTravelPrototype() {
                             <span>{fromCity[fl.fromStationKey]}</span>
                           </div>
                           <div className="ptp-tmid">
-                            <div>{fl.takeoffText}</div>
+                            <div><span className="ptp-din-med">{fl.takeoffText.split(' ')[0]}</span> {fl.takeoffText.split(' ').slice(1).join(' ')}</div>
                             <div style={{ position: 'relative', display: 'flex', alignItems: 'center', margin: '4px 0' }}>
                               <div className="ptp-tmid-line" style={{ flex: 1, margin: 0 }} />
                               <span style={{ padding: '0 3px', display: 'inline-flex', alignItems: 'center' }}><MiniTimelinePlaneSvg /></span>
@@ -905,7 +905,7 @@ export default function PetTravelPrototype() {
                         <span>{fromCity[selectedFlight.fromStationKey]}</span>
                       </div>
                       <div className="ptp-tmid">
-                        <div>{selectedFlight.takeoffText}</div>
+                        <div><span className="ptp-din-med">{selectedFlight.takeoffText.split(' ')[0]}</span> {selectedFlight.takeoffText.split(' ').slice(1).join(' ')}</div>
                         <div style={{ position: 'relative', display: 'flex', alignItems: 'center', margin: '4px 0' }}>
                           <div className="ptp-tmid-line" style={{ flex: 1, margin: 0 }} />
                           <span style={{ padding: '0 3px', display: 'inline-flex', alignItems: 'center' }}><MiniTimelinePlaneSvg /></span>
