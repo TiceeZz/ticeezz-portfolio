@@ -1298,47 +1298,107 @@ export default function PetTravelPrototype() {
                 </>
               );
 
-              const mapStatusOverride =
+              const mapStatusText =
                 trackStageIdx === 0
                   ? '揽收中'
                   : trackStageIdx === 1
                     ? '安检中'
-                    : trackStageIdx === 3
-                      ? '即将降落'
-                      : null;
+                    : trackStageIdx === 2
+                      ? '运输中'
+                      : '即将降落';
+
+              const showArrivedLayout = isArrived;
 
               return (
                 <div key="tracking" className="ptp-view" style={{ background: '#d8edf7' }}>
-                  <div className={`ptp-map-top${isArrived ? ' is-arrived' : ''}`}>
-                    <img
-                      src={isArrived ? HYBRID_ASSETS.mapArrived : HYBRID_ASSETS.mapFly}
-                      alt="航旅纵横高德实景航线图"
-                      className={`ptp-map-bg${mapSatellite ? ' is-sat' : ''}`}
-                    />
-                    {/* Interactive Back Button */}
-                    <button
-                      type="button"
-                      aria-label="返回"
-                      onClick={goBack}
-                      style={{ position: 'absolute', left: 10, top: 44, width: 34, height: 34, zIndex: 12 }}
-                    />
-                    {/* Dynamic Map Status Badge when scrubbed to Stage 0 / 1 / 3 */}
-                    {mapStatusOverride && (
-                      <div className="ptp-map-stage-pill">{mapStatusOverride}</div>
-                    )}
-                    {/* Interactive Map Layer (平面) */}
-                    <button
-                      type="button"
-                      aria-label="切换地图图层"
-                      onClick={() => {
-                        setMapSatellite((v) => !v);
-                        showToast(!mapSatellite ? '已切换卫星地形视图' : '已切回标准平面地图');
-                      }}
-                      style={{ position: 'absolute', right: 8, top: 48, width: 34, height: 42, zIndex: 12 }}
-                    />
-                    {/* Interactive Weather Toggle (天气) & Airport Pills + GPS on Flying Map */}
-                    {!isArrived && (
-                      <>
+                  {showArrivedLayout ? (
+                    <div className="ptp-arrived-view">
+                      <img
+                        src={HYBRID_ASSETS.mapArrivedFull}
+                        alt="航旅纵横已到达高德实景地图"
+                        className={`ptp-arrived-full-bg${mapSatellite ? ' is-sat' : ''}`}
+                      />
+                      {/* Interactive Back & Layer Buttons on Full Arrived Map */}
+                      <button
+                        type="button"
+                        aria-label="返回"
+                        onClick={goBack}
+                        style={{ position: 'absolute', left: 10, top: 44, width: 34, height: 34, zIndex: 12 }}
+                      />
+                      <button
+                        type="button"
+                        aria-label="切换地图图层"
+                        onClick={() => {
+                          setMapSatellite((v) => !v);
+                          showToast(!mapSatellite ? '已切换卫星地形视图' : '已切回标准平面地图');
+                        }}
+                        style={{ position: 'absolute', right: 8, top: 48, width: 34, height: 42, zIndex: 12 }}
+                      />
+                      <button
+                        type="button"
+                        aria-label="目的机场信息"
+                        onClick={() => showToast('北京大兴国际机场 · T2 活体宠物专用提取处（恒温 22℃）')}
+                        style={{ position: 'absolute', left: '33%', top: 48, width: 88, height: 26, zIndex: 12 }}
+                      />
+
+                      <div className="ptp-arrived-overlay">
+                        <div className="ptp-arrived-card">{trackingCardBody}</div>
+
+                        <div className="ptp-arrived-celeb">
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
+                            <img
+                              src={HYBRID_ASSETS.arrivedDog}
+                              alt="小航平安落地"
+                              style={{ width: 108, height: 122, objectFit: 'contain', marginTop: -34, flexShrink: 0, filter: 'drop-shadow(0 8px 12px rgba(24,52,38,0.12))' }}
+                            />
+                            <div>
+                              <strong style={{ display: 'block', fontSize: 16, color: '#14221b' }}>{petName || '小航'} 已平安落地{toCity.name}！</strong>
+                              <div style={{ fontSize: 13, color: '#394941', marginTop: 5 }}>
+                                总计飞行 <strong style={{ color: '#1fa05b', fontSize: 16 }}>1760</strong> 公里
+                              </div>
+                              <div style={{ fontSize: 11.5, color: '#8a9991', marginTop: 3 }}>快给朋友们报个平安吧</div>
+                            </div>
+                          </div>
+                          <button
+                            type="button"
+                            className="ptp-btn-green-full"
+                            style={{ height: 45, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8, fontSize: 15 }}
+                            onClick={() => setModal('poster')}
+                          >
+                            <span>生成专属接机海报</span>
+                            <CameraSvg />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="ptp-map-top">
+                        <img
+                          src={HYBRID_ASSETS.mapFly}
+                          alt="航旅纵横高德实景航线图"
+                          className={`ptp-map-bg${mapSatellite ? ' is-sat' : ''}`}
+                        />
+                        {/* Unified plain map status title (NO box/border — 1:1 with Figma 运输中 / 已到达) */}
+                        <div className="ptp-map-stage-title">{isArrived ? '已到达' : mapStatusText}</div>
+                        {/* Interactive Back Button */}
+                        <button
+                          type="button"
+                          aria-label="返回"
+                          onClick={goBack}
+                          style={{ position: 'absolute', left: 10, top: 44, width: 34, height: 34, zIndex: 12 }}
+                        />
+                        {/* Interactive Map Layer (平面) */}
+                        <button
+                          type="button"
+                          aria-label="切换地图图层"
+                          onClick={() => {
+                            setMapSatellite((v) => !v);
+                            showToast(!mapSatellite ? '已切换卫星地形视图' : '已切回标准平面地图');
+                          }}
+                          style={{ position: 'absolute', right: 8, top: 48, width: 34, height: 42, zIndex: 12 }}
+                        />
+                        {/* Interactive Weather Toggle (天气) & Airport Pills + GPS */}
                         <button
                           type="button"
                           aria-label="航路天气"
@@ -1373,47 +1433,12 @@ export default function PetTravelPrototype() {
                             <div>抵达：北京大兴 多云 19℃ · 有氧舱恒温 22℃</div>
                           </div>
                         )}
-                      </>
-                    )}
-                  </div>
-
-                  {isArrived ? (
-                    <div
-                      className="ptp-arrived-canvas"
-                      style={{ backgroundImage: `linear-gradient(180deg, rgba(236,245,249,0.22), rgba(244,249,252,0.12)), url(${HYBRID_ASSETS.mapCoastBg})` }}
-                    >
-                      <div className="ptp-arrived-card">{trackingCardBody}</div>
-
-                      <div className="ptp-arrived-celeb">
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14 }}>
-                          <img
-                            src={HYBRID_ASSETS.arrivedDog}
-                            alt="小航平安落地"
-                            style={{ width: 104, height: 116, objectFit: 'contain', mixBlendMode: 'multiply', flexShrink: 0 }}
-                          />
-                          <div>
-                            <strong style={{ display: 'block', fontSize: 16, color: '#14221b' }}>{petName || '小航'} 已平安落地北京！</strong>
-                            <div style={{ fontSize: 13, color: '#394941', marginTop: 5 }}>
-                              总计飞行 <strong style={{ color: '#1fa05b', fontSize: 16 }}>1760</strong> 公里
-                            </div>
-                            <div style={{ fontSize: 11.5, color: '#8a9991', marginTop: 3 }}>快给朋友们报个平安吧</div>
-                          </div>
-                        </div>
-                        <button
-                          type="button"
-                          className="ptp-btn-green-full"
-                          style={{ height: 45, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8, fontSize: 15 }}
-                          onClick={() => setModal('poster')}
-                        >
-                          <span>生成专属接机海报</span>
-                          <CameraSvg />
-                        </button>
                       </div>
-                    </div>
-                  ) : (
-                    <div className="ptp-track-sheet">
-                      {trackingCardBody}
-                    </div>
+
+                      <div className="ptp-track-sheet">
+                        {trackingCardBody}
+                      </div>
+                    </>
                   )}
                   <div className="ptp-home-bar" />
                 </div>
@@ -1800,12 +1825,20 @@ export default function PetTravelPrototype() {
                     <div className="ptp-poster-ticket">
                       <div style={{ display: 'flex', alignItems: 'center', gap: 11, marginBottom: 14 }}>
                         <div className="ptp-poster-avatar-wrap">
+                          <svg width="50" height="50" viewBox="0 0 64 64" fill="none" style={{ position: 'absolute', inset: 0 }}>
+                            <path d="M32 2C35.2 2 37.2 5.4 40.2 6.2C43.2 7 46.8 5.2 49.4 7.2C52 9.2 51.6 13.2 53.6 15.6C55.6 18 59.6 18.6 60.4 21.6C61.2 24.6 58.6 27.6 58.6 30.8C58.6 34 61.2 37 60.4 40C59.6 43 55.6 43.6 53.6 46C51.6 48.4 52 52.4 49.4 54.4C46.8 56.4 43.2 54.6 40.2 55.4C37.2 56.2 35.2 59.6 32 59.6C28.8 59.6 26.8 56.2 23.8 55.4C20.8 54.6 17.2 56.4 14.6 54.4C12 52.4 12.4 48.4 10.4 46C8.4 43.6 4.4 43 3.6 40C2.8 37 5.4 34 5.4 30.8C5.4 27.6 2.8 24.6 3.6 21.6C4.4 18.6 8.4 18 10.4 15.6C12.4 13.2 12 9.2 14.6 7.2C17.2 5.2 20.8 7 23.8 6.2C26.8 5.4 28.8 2 32 2Z" fill="#bcf0d2" />
+                          </svg>
                           <img src={HYBRID_ASSETS.petAvatar} alt="小航" />
                         </div>
                         <div>
                           <div style={{ fontSize: 15.5, fontWeight: 800, color: '#15221b', lineHeight: 1.25 }}>
                             {petName || '小航'}{' '}
-                            <span className="ptp-poster-brush">平安落地{toCity.name}！</span>
+                            <span className="ptp-poster-brush-wrap">
+                              平安落地{toCity.name}！
+                              <svg className="ptp-poster-brush-svg" viewBox="0 0 120 12" preserveAspectRatio="none" fill="none">
+                                <path d="M2 9.5C28 4.5 68 3.5 117 6.5" stroke="#aef0ca" strokeWidth="5.5" strokeLinecap="round" />
+                              </svg>
+                            </span>
                           </div>
                           <div style={{ fontSize: 11.5, color: '#1d2b24', fontWeight: 700, marginTop: 4 }}>
                             <span style={{ color: '#1da15c', fontSize: 13 }}>1760</span> 公里&nbsp;
@@ -1841,6 +1874,7 @@ export default function PetTravelPrototype() {
                         <img src={HYBRID_ASSETS.posterQr} alt="航旅纵横小程序码" style={{ width: 40, height: 40 }} />
                       </div>
                     </div>
+                    <img src={HYBRID_ASSETS.posterSkyline} alt="" className="ptp-poster-skyline" />
                   </div>
                 </div>
 

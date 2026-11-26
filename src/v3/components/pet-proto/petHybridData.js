@@ -2,8 +2,8 @@
  * 航旅纵横 · 宠物出行 — 1:1 Figma 原稿视觉资产 + 全真实交互数据
  */
 
-const UI = (name) => `/images/projects/pet-travel/ui/${name}.webp?v=20261126d`;
-const UI_PNG = (name) => `/images/projects/pet-travel/ui/${name}.png?v=20261126d`;
+const UI = (name) => `/images/projects/pet-travel/ui/${name}.webp?v=20261126g`;
+const UI_PNG = (name) => `/images/projects/pet-travel/ui/${name}.png?v=20261126g`;
 
 export const HYBRID_ASSETS = {
   iosBarDark: UI_PNG('ios-bar-dark'),
@@ -27,9 +27,10 @@ export const HYBRID_ASSETS = {
   petAvatar: UI('pet-avatar'),
   mapFly: UI('map-fly'),
   mapArrived: UI('map-arrived'),
-  mapCoastBg: UI('map-coast-bg'),
-  arrivedDog: UI('arrived-dog'),
+  mapArrivedFull: UI('map-arrived-full'),
+  arrivedDog: UI_PNG('arrived-dog'),
   posterHeader: UI('poster-header'),
+  posterSkyline: UI('poster-skyline'),
   posterPlane: UI('poster-plane'),
   posterQr: UI('poster-qr'),
   shareBar: UI('share-bar'),
