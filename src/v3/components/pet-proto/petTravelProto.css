@@ -1562,6 +1562,26 @@
 .ptp-poster-divider::before { left: -6px; }
 .ptp-poster-divider::after { right: -6px; }
 
+.ptp-track-avatar-ring {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  padding: 2.2px;
+  background: linear-gradient(180deg, #9af3b7 0%, #70cc9e 58%, #6394a6 100%);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ptp-track-avatar-ring img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
 .ptp-poster-brush-wrap {
   position: relative;
   display: inline-block;
@@ -1570,19 +1590,19 @@
 
 .ptp-poster-brush-svg {
   position: absolute;
-  left: -2px;
-  right: -2px;
-  bottom: -2px;
-  width: calc(100% + 4px);
-  height: 9px;
+  left: -3px;
+  right: 4px;
+  bottom: -6px;
+  width: calc(100% - 2px);
+  height: 14px;
   z-index: -1;
   pointer-events: none;
 }
 
 .ptp-poster-avatar-wrap {
   position: relative;
-  width: 50px;
-  height: 50px;
+  width: 56px;
+  height: 56px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1593,10 +1613,36 @@
   position: relative;
   z-index: 2;
   display: block;
-  width: 40px;
-  height: 40px;
+  width: 46px;
+  height: 46px;
   border-radius: 50%;
+  border: 1.5px solid #e6cd7a;
   object-fit: cover;
+}
+
+.ptp-poster-arc-wrap {
+  position: relative;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ptp-poster-arc-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.ptp-poster-plane-img {
+  position: relative;
+  z-index: 2;
+  width: 56px;
+  height: 30px;
+  object-fit: contain;
+  transform: translateY(-4px);
 }
 
 /* ═══ Orders Empty Tabs (1:1 page_016) ═══ */
