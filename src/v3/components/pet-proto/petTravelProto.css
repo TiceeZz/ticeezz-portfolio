@@ -1518,19 +1518,19 @@
 /* ═══ 1:1 Poster Ticket Notches, Brush Highlight, Scalloped Avatar & Beijing Skyline ═══ */
 .ptp-poster-card {
   position: relative;
-  border-radius: 20px;
+  border-radius: 18px;
   overflow: hidden;
-  background: #2f96be;
+  background: linear-gradient(180deg, #3c9dc4 0%, #6ea8be 48%, #8ea4b3 74%, #7e98ac 100%);
   box-shadow: 0 20px 44px rgba(8, 22, 18, 0.45);
 }
 
 .ptp-poster-ticket {
   position: relative;
-  background: #ffffff;
+  background: radial-gradient(circle at 92% 18%, rgba(254, 240, 199, 0.48) 0%, rgba(212, 244, 224, 0.24) 42%, transparent 66%), #ffffff;
   color: #16221c;
-  border-radius: 16px;
-  padding: 15px 15px 13px;
-  margin: -18px 10px -16px;
+  border-radius: 15px;
+  padding: 14px 14px 12px;
+  margin: -18px 12px -14px;
   z-index: 3;
 }
 
@@ -1545,22 +1545,22 @@
 .ptp-poster-divider {
   position: relative;
   border-top: 1px dashed #e2eae6;
-  margin: 12px -15px 11px;
+  margin: 11px -14px 10px;
 }
 
 .ptp-poster-divider::before,
 .ptp-poster-divider::after {
   content: '';
   position: absolute;
-  top: -7px;
-  width: 13px;
-  height: 13px;
+  top: -6.5px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-  background: #2f96be;
+  background: #8ea4b3;
 }
 
-.ptp-poster-divider::before { left: -6.5px; }
-.ptp-poster-divider::after { right: -6.5px; }
+.ptp-poster-divider::before { left: -6px; }
+.ptp-poster-divider::after { right: -6px; }
 
 .ptp-poster-brush-wrap {
   position: relative;

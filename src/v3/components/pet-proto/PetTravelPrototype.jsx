@@ -63,11 +63,11 @@ const RandomPlaneSvg = ({ muted = false }) => (
     {/* 1:1 Figma takeoff plane silhouette: tilted fuselage + swept-back wing + diagonal tail cutout */}
     <path
       d="M5.4 12.1L9.2 14.9L6.4 16.1L3.3 13.4C2.9 13 3.1 12.2 3.7 12C4.3 11.8 4.9 11.8 5.4 12.1Z"
-      fill={muted ? '#c5ceca' : '#3db885'}
+      fill={muted ? '#a6dec1' : '#3db885'}
     />
     <path
       d="M7.6 17.4L11.2 16.0L16.3 14.1L10.3 6.2C9.8 5.5 10.3 4.5 11.2 4.6L13.1 4.9C13.6 5 14.1 5.3 14.5 5.7L22.3 12.0L29.1 9.6C31.1 8.9 33.1 9.5 33.6 11.0C34.1 12.5 32.8 14.1 30.8 14.8L13.2 20.6C11.1 21.3 8.9 20.4 7.8 18.6L7.4 17.9C7.3 17.7 7.4 17.5 7.6 17.4Z"
-      fill={muted ? '#c5ceca' : '#3db885'}
+      fill={muted ? '#a6dec1' : '#3db885'}
     />
   </svg>
 );
@@ -466,15 +466,15 @@ export default function PetTravelPrototype() {
                         </div>
                         <div className="ptp-times" style={{ marginBottom: 14 }}>
                           <div className="ptp-tcol">
-                            <strong style={randomState === 'full' ? { color: '#9aa49f' } : undefined}>上海虹桥</strong>
-                            <span style={randomState === 'full' ? { color: '#bcc5c0' } : undefined}>虹桥国际机场 T2</span>
+                            <strong style={randomState === 'full' ? { color: '#78837e' } : undefined}>上海虹桥</strong>
+                            <span style={randomState === 'full' ? { color: '#aeb8b3' } : undefined}>虹桥国际机场 T2</span>
                           </div>
                           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                             <RandomPlaneSvg muted={randomState === 'full'} />
                           </div>
                           <div className="ptp-tcol is-r">
-                            <strong style={randomState === 'full' ? { color: '#9aa49f' } : undefined}>北京大兴</strong>
-                            <span style={randomState === 'full' ? { color: '#bcc5c0' } : undefined}>大兴国际机场</span>
+                            <strong style={randomState === 'full' ? { color: '#78837e' } : undefined}>北京大兴</strong>
+                            <span style={randomState === 'full' ? { color: '#aeb8b3' } : undefined}>大兴国际机场</span>
                           </div>
                         </div>
                         <div style={{ background: '#f5f7f8', borderRadius: 10, padding: '10px 12px', fontSize: 11.5, color: '#56655d', lineHeight: 1.72, marginBottom: 16 }}>
@@ -1903,7 +1903,7 @@ export default function PetTravelPrototype() {
             {/* ══ 08: PEAK-END SHARE POSTER (1:1 Figma Ticket Notches, Brush Highlight, Scalloped Avatar & Live Data) ══ */}
             {modal === 'poster' && (
               <div className="ptp-mask" onClick={() => setModal(null)}>
-                <div style={{ padding: '0 16px 16px', marginTop: 'auto' }} onClick={(e) => e.stopPropagation()}>
+                <div style={{ padding: '0 26px 20px', marginTop: 'auto' }} onClick={(e) => e.stopPropagation()}>
                   <div className="ptp-poster-card">
                     <img src={HYBRID_ASSETS.posterHeader} alt="全程实时看得见 安心宠物托运" style={{ display: 'block', width: '100%', height: 'auto' }} />
                     <div className="ptp-poster-ticket">
@@ -1955,7 +1955,7 @@ export default function PetTravelPrototype() {
                           <div style={{ fontWeight: 500 }}>@TiceeZz</div>
                           <div style={{ marginTop: 2 }}>2026/05/20 周三</div>
                         </div>
-                        <img src={HYBRID_ASSETS.posterQr} alt="航旅纵横小程序码" style={{ width: 40, height: 40 }} />
+                        <img src={HYBRID_ASSETS.posterQr} alt="航旅纵横小程序码" style={{ width: 40, height: 40, mixBlendMode: 'multiply' }} />
                       </div>
                     </div>
                     <img src={HYBRID_ASSETS.posterSkyline} alt="" className="ptp-poster-skyline" />
