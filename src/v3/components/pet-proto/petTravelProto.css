@@ -11,38 +11,19 @@
   font-display: swap;
 }
 
-/* 1:1 Figma Numeric Font: DIN (maps local DINPro / DIN Alternate + open-source D-DIN WOFF2 fallback for digits) */
+/* 1:1 Figma Numeric Fonts: Distinct DIN Medium, DIN Bold, and DIN Condensed (applied selectively per Figma spec) */
 @font-face {
-  font-family: 'DIN UI';
-  src: local('DINPro-Regular'), local('DIN-Regular'), url('/fonts/D-DIN.woff2') format('woff2');
-  font-weight: 400;
+  font-family: 'DIN Med UI';
+  src: local('DINPro-Medium'), local('DIN-Medium'), local('DINPro-Regular'), url('/fonts/D-DIN.woff2') format('woff2');
+  font-weight: 400 600;
   font-style: normal;
   font-display: swap;
-  unicode-range: U+0030-0039, U+003A, U+002E, U+002F, U+0025;
 }
 
 @font-face {
-  font-family: 'DIN UI';
-  src: local('DINPro-Medium'), local('DIN-Medium'), url('/fonts/D-DIN.woff2') format('woff2');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-  unicode-range: U+0030-0039, U+003A, U+002E, U+002F, U+0025;
-}
-
-@font-face {
-  font-family: 'DIN UI';
+  font-family: 'DIN Bold UI';
   src: local('DINPro-Bold'), local('DIN Alternate Bold'), local('DIN Alternate'), local('DIN-Bold'), url('/fonts/D-DIN-Bold.woff2') format('woff2');
   font-weight: 600 900;
-  font-style: normal;
-  font-display: swap;
-  unicode-range: U+0030-0039, U+003A, U+002E, U+002F, U+0025;
-}
-
-@font-face {
-  font-family: 'DIN Condensed UI';
-  src: local('DINCond-Regular'), url('/fonts/D-DINCondensed.woff2') format('woff2');
-  font-weight: 400 500;
   font-style: normal;
   font-display: swap;
 }
@@ -80,6 +61,24 @@
 .ptp-shuhei {
   font-family: 'Alimama ShuHeiTi', 'PingFang SC UI', 'PingFang SC', '苹方-简', sans-serif !important;
   font-weight: 700 !important;
+}
+
+.ptp-din-med {
+  font-family: 'DIN Med UI', 'PingFang SC UI', 'PingFang SC', sans-serif;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.ptp-din-bold {
+  font-family: 'DIN Bold UI', 'PingFang SC UI', 'PingFang SC', sans-serif;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.ptp-din-cond {
+  font-family: 'DIN Condensed UI', 'DIN Bold UI', sans-serif;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
 }
 
 .ptp-studio {
@@ -401,7 +400,7 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  font-family: 'DIN UI', 'PingFang SC UI', 'PingFang SC', '苹方-简', 'Hiragino Sans GB', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'PingFang SC UI', 'PingFang SC', '苹方-简', 'Hiragino Sans GB', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
   -webkit-font-smoothing: antialiased;
   user-select: none;
 }
@@ -1118,7 +1117,7 @@
 }
 
 .ptp-tcol small { display: block; font-size: 10px; color: #7e8d85; }
-.ptp-tcol strong { display: block; font-size: 18.5px; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.2; }
+.ptp-tcol strong { display: block; font-family: 'DIN Bold UI', 'PingFang SC UI', sans-serif; font-size: 19px; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.2; letter-spacing: 0.01em; }
 .ptp-tcol span { display: block; font-size: 10px; color: #7e8a84; margin-top: 1px; }
 .ptp-tcol.is-r { text-align: right; }
 
@@ -1153,10 +1152,12 @@
 }
 
 .ptp-price-num {
-  font-size: 22px;
-  font-weight: 700;
+  font-family: 'DIN Med UI', 'PingFang SC UI', sans-serif;
+  font-size: 22.5px;
+  font-weight: 500;
   color: #e45044;
   font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
 }
 
 /* Scroll-reactive sticky white nav for 04 Detail & 05 Form (1:1 page_011 & page_018) */
@@ -1354,34 +1355,34 @@
 
 .ptp-crate-opt {
   position: relative;
-  border-radius: 10px !important;
-  padding: 9px 6px !important;
-  border: 1.2px solid #e1e8e4 !important;
-  background: #fafcfb !important;
+  border-radius: 12px !important;
+  padding: 10px 6px !important;
+  border: 1px solid #dce2e6 !important;
+  background: #ffffff !important;
   text-align: center;
 }
 
 .ptp-crate-opt.is-active {
-  border-color: #30b86d !important;
-  background: #eefaf3 !important;
+  border: 1.6px solid #48c27e !important;
+  background: #ffffff !important;
 }
 
-.ptp-crate-opt strong { display: block; font-size: 13px; color: #5b6862; font-weight: 700; }
-.ptp-crate-opt.is-active strong { color: #24ad62; }
-.ptp-crate-opt span.ptp-crate-cap { display: block; font-size: 10px; color: #84938b; margin-top: 2px; }
-.ptp-crate-opt.is-active span.ptp-crate-cap { color: #24ad62; }
+.ptp-crate-opt strong { display: block; font-size: 13.5px; color: #8c969d; font-weight: 600; }
+.ptp-crate-opt.is-active strong { color: #36b56f; }
+.ptp-crate-opt span.ptp-crate-cap { display: block; font-size: 10.5px; color: #9aa4ab; margin-top: 2px; font-weight: 400; }
+.ptp-crate-opt.is-active span.ptp-crate-cap { color: #40b876; font-weight: 500; }
 
 .ptp-crate-opt .ptp-crate-rec {
   position: absolute;
   top: -8px;
   right: -1px;
-  background: #2b74e8;
+  background: #2562d6;
   color: #ffffff !important;
   font-size: 9px;
-  font-weight: 700;
-  padding: 1px 6px;
-  border-radius: 5px 5px 5px 2px;
-  line-height: 1.35;
+  font-weight: 600;
+  padding: 1.5px 6px;
+  border-radius: 6px;
+  line-height: 1.3;
   margin-top: 0;
 }
 
@@ -1513,16 +1514,16 @@
 
 .ptp-submit-pill {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 104px;
-  height: 42px;
+  grid-template-columns: minmax(0, 1fr) 108px;
+  height: 46px;
   border-radius: 999px;
   overflow: hidden;
 }
 
 .ptp-submit-l {
-  background: #3e4040;
+  background: #404242;
   color: #ffffff;
-  padding: 0 12px 0 14px;
+  padding: 0 12px 0 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1539,45 +1540,47 @@
 .ptp-submit-price {
   display: inline-flex;
   align-items: baseline;
-  color: #f0832a;
+  color: #ef821e;
   line-height: 1;
   font-variant-numeric: tabular-nums;
 }
 
 .ptp-submit-price small {
-  font-size: 13.5px;
+  font-family: 'PingFang SC UI', 'PingFang SC', sans-serif;
+  font-size: 15px;
   font-weight: 500;
-  margin-right: 1px;
+  margin-right: 0.5px;
 }
 
 .ptp-submit-price strong {
-  font-size: 18.5px;
-  font-weight: 600;
-  letter-spacing: -0.01em;
+  font-family: 'DIN Med UI', 'PingFang SC UI', sans-serif;
+  font-size: 21.5px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
 }
 
 .ptp-submit-sep {
   display: inline-block;
   width: 1px;
-  height: 11px;
-  background: rgba(255, 255, 255, 0.28);
+  height: 13px;
+  background: rgba(255, 255, 255, 0.42);
   flex-shrink: 0;
 }
 
 .ptp-submit-lbl {
-  font-size: 11.5px;
+  font-size: 12.5px;
   font-weight: 400;
-  color: rgba(255, 255, 255, 0.78);
+  color: rgba(255, 255, 255, 0.88);
   white-space: nowrap;
 }
 
 .ptp-screen .ptp-submit-detail-btn {
   display: inline-flex;
   align-items: center;
-  gap: 3px;
-  font-size: 11.5px;
+  gap: 4px;
+  font-size: 12.5px;
   font-weight: 400;
-  color: rgba(255, 255, 255, 0.88);
+  color: rgba(255, 255, 255, 0.94);
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -1585,7 +1588,7 @@
 .ptp-submit-btn {
   background: linear-gradient(90deg, #54c798 0%, #38b65c 100%) !important;
   color: #ffffff !important;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 500;
   letter-spacing: 0.02em;
 }
@@ -2121,16 +2124,17 @@
 }
 
 .ptp-poster-time {
-  font-family: 'Alimama ShuHeiTi', 'PingFang SC UI', sans-serif;
-  font-size: 18.5px;
+  font-family: 'DIN Bold UI', 'PingFang SC UI', sans-serif;
+  font-size: 19.5px;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
   color: #16221c;
   line-height: 1.15;
+  letter-spacing: 0.01em;
 }
 
 .ptp-poster-time.is-arr {
-  font-family: 'DIN UI', 'PingFang SC UI', sans-serif;
+  font-family: 'DIN Med UI', 'PingFang SC UI', sans-serif;
   font-size: 20px;
   font-weight: 500;
   letter-spacing: 0;

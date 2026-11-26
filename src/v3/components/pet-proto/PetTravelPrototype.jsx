@@ -1118,8 +1118,8 @@ export default function PetTravelPrototype() {
                         </button>
                       ))}
                     </div>
-                    <div style={{ background: '#eaf8f0', color: '#20884f', fontSize: 10.5, padding: '6px 9px', borderRadius: 7 }}>
-                      ✓ 已根据宠物活体净重 {weightKg}kg 自动匹配合规 {recommendedCrate}号航空箱规格
+                    <div style={{ background: '#eaf8f0', color: '#279e5e', fontSize: 10.5, padding: '6px 9px', borderRadius: 8, textAlign: 'center' }}>
+                      ✓ 已根据宠物活体净重{weightKg}kg 自动匹配合规 {recommendedCrate}号航空箱规格
                     </div>
                   </div>
 
@@ -1249,8 +1249,8 @@ export default function PetTravelPrototype() {
                       </div>
                       <button type="button" className="ptp-submit-detail-btn" onClick={() => setModal('price')}>
                         <span>明细</span>
-                        <svg width="9" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
-                          <path d="M1.2 4.8L5 1.2L8.8 4.8" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
+                        <svg width="11" height="6.5" viewBox="0 0 12 7" fill="none" aria-hidden="true">
+                          <path d="M1.2 5.8L6 1.2L10.8 5.8" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
                       </button>
                     </div>
@@ -1403,7 +1403,10 @@ export default function PetTravelPrototype() {
                       </div>
                     </div>
                     <button type="button" style={{ textAlign: 'right' }} onClick={() => setModal('price')}>
-                      <div style={{ fontSize: 16, fontWeight: 700, color: '#8a949c', fontVariantNumeric: 'tabular-nums' }}>¥ 613</div>
+                      <div style={{ fontSize: 17, color: '#8a949c', fontVariantNumeric: 'tabular-nums' }}>
+                        <span style={{ fontSize: 12.5, fontWeight: 500, marginRight: 2 }}>¥</span>
+                        <span className="ptp-din-bold">613</span>
+                      </div>
                       <div style={{ fontSize: 10, color: '#8c9891', marginTop: 1 }}>明细 ▼</div>
                     </button>
                   </div>
