@@ -2862,28 +2862,44 @@
   }
 
   .ptp-studio-icon-btn {
-    width: 30px;
-    height: 30px;
-    font-size: 13px;
+    width: 36px;
+    height: 36px;
+    font-size: 14px;
   }
 
   .ptp-studio-reset-btn {
-    height: 30px;
-    padding: 0 11px;
-    font-size: 11.5px;
+    height: 36px;
+    padding: 0 12px;
+    font-size: 12px;
+  }
+
+  .ptp-studio-fs-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+    padding: 0 13px;
+    border-radius: 999px;
+    border: 1px solid var(--blue);
+    background: var(--blue);
+    color: var(--on-blue, #ffffff);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
   }
 
   .ptp-phone-aura {
     width: 100%;
-    max-width: 320px;
-    height: 360px;
+    max-width: 300px;
+    height: 280px;
     filter: blur(44px);
   }
 
   .ptp-chassis {
-    width: min(372px, 100%);
-    padding: 6px;
-    border-radius: 40px;
+    width: auto;
+    padding: 5px;
+    border-radius: 34px;
   }
 
   .ptp-hw-btn {
@@ -2891,9 +2907,14 @@
   }
 
   .ptp-phone-caption {
-    margin-top: 12px;
-    padding: 6px 12px;
-    font-size: 11px;
+    margin-top: 10px;
+    padding: 7px 14px;
+    font-size: 11.5px;
+  }
+
+  .ptp-mobile-chip {
+    min-height: 36px;
+    padding: 0 12px;
   }
 
   .ptp-director {
@@ -2935,9 +2956,9 @@
   }
 
   .ptp-dir-btn {
-    height: 32px;
-    padding: 0 12px;
-    font-size: 11.5px;
+    height: 38px;
+    padding: 0 14px;
+    font-size: 12px;
   }
 
   .ptp-tele-cell {
@@ -2967,5 +2988,142 @@
 
   .ptp-scene-btn strong {
     font-size: 12px;
+  }
+}
+
+/* ── Prevent nested scroll leak inside prototype on touch devices ── */
+.ptp-scroll {
+  overscroll-behavior-y: contain;
+  touch-action: pan-y;
+}
+
+/* ── Mobile & Desktop Fullscreen Native App Mode ── */
+.ptp-studio-fs-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  padding: 0 13px;
+  border-radius: 999px;
+  border: 1px solid var(--blue);
+  background: var(--blue);
+  color: var(--on-blue, #ffffff);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 0.2s ease, transform 0.15s ease;
+}
+
+.ptp-studio-fs-btn:hover {
+  opacity: 0.92;
+}
+
+.ptp-studio-exit-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 36px;
+  padding: 0 13px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.ptp-studio.is-fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  width: 100%;
+  height: 100dvh;
+  margin: 0;
+  padding: 8px 12px 10px;
+  border-radius: 0;
+  border: none;
+  background: #0b1018;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.ptp-studio.is-fullscreen .ptp-studio-bar {
+  color: #f4f7ff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  padding-bottom: 8px;
+  margin-bottom: 6px;
+  flex-shrink: 0;
+}
+
+.ptp-studio.is-fullscreen .ptp-studio-mobile-step,
+.ptp-studio.is-fullscreen .ptp-studio-mobile-step strong,
+.ptp-studio.is-fullscreen .ptp-studio-count,
+.ptp-studio.is-fullscreen .ptp-studio-count strong {
+  color: #f4f7ff;
+}
+
+.ptp-studio.is-fullscreen .ptp-studio-icon-btn,
+.ptp-studio.is-fullscreen .ptp-studio-reset-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+.ptp-studio.is-fullscreen .ptp-mobile-strip,
+.ptp-studio.is-fullscreen .ptp-director,
+.ptp-studio.is-fullscreen .ptp-phone-caption,
+.ptp-studio.is-fullscreen .ptp-phone-aura,
+.ptp-studio.is-fullscreen .ptp-hw-btn {
+  display: none;
+}
+
+.ptp-studio.is-fullscreen .ptp-stage {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+
+.ptp-studio.is-fullscreen .ptp-phone-col {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ptp-studio.is-fullscreen .ptp-chassis {
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  width: auto;
+}
+
+.ptp-studio.is-fullscreen .ptp-screen-viewport {
+  border-radius: 18px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+}
+
+@media (max-width: 640px) {
+  .ptp-studio-fs-btn {
+    height: 36px;
+  }
+  .ptp-studio.is-fullscreen {
+    padding: 6px 0 0;
+  }
+  .ptp-studio.is-fullscreen .ptp-studio-bar {
+    padding: 0 12px 6px;
+    margin-bottom: 0;
+  }
+  .ptp-studio.is-fullscreen .ptp-screen-viewport,
+  .ptp-studio.is-fullscreen .ptp-screen {
+    border-radius: 0;
   }
 }

@@ -439,30 +439,57 @@ export default function PetTravelPrototype() {
     { key: 'p4', label: '04 · 履约追踪', ids: ['tracking', 'poster'] },
   ], []);
 
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
   const stepScene = useCallback((delta) => {
     const nextIdx = (activeSceneIdx + delta + SCENES.length) % SCENES.length;
     navigate(SCENES[nextIdx].id, delta < 0 ? 'pop' : 'push');
   }, [activeSceneIdx, navigate]);
 
   useEffect(() => {
+    if (!isFullscreen) return undefined;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [isFullscreen]);
+
+  useEffect(() => {
     const el = chassisRef.current;
     if (!el) return undefined;
     const updateScale = () => {
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      if (isFullscreen) {
+        const fsAvailW = Math.max(240, vw - (vw <= 640 ? 0 : 48));
+        const fsAvailH = Math.max(420, vh - (vw <= 640 ? 52 : 84));
+        const next = Math.min(fsAvailW / 360, fsAvailH / 781.5, vw <= 640 ? 1.25 : 1.05);
+        setPhoneScale(Number(next.toFixed(4)));
+        return;
+      }
       const style = window.getComputedStyle(el);
       const padX = (parseFloat(style.paddingLeft) || 0) + (parseFloat(style.paddingRight) || 0);
       const availW = Math.max(240, el.clientWidth - padX);
-      const next = availW >= 360 ? 1 : Number((availW / 360).toFixed(4));
-      setPhoneScale(next);
+      let next = availW >= 360 ? 1 : availW / 360;
+      if (vw <= 640) {
+        const maxInlineH = Math.max(460, Math.min(620, vh - 210));
+        next = Math.min(next, maxInlineH / 781.5);
+      }
+      setPhoneScale(Number(next.toFixed(4)));
     };
     updateScale();
+    window.addEventListener('resize', updateScale);
     if (typeof ResizeObserver === 'undefined') {
-      window.addEventListener('resize', updateScale);
       return () => window.removeEventListener('resize', updateScale);
     }
     const ro = new ResizeObserver(updateScale);
     ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener('resize', updateScale);
+    };
+  }, [isFullscreen]);
 
   useEffect(() => {
     const strip = mobileStripRef.current;
@@ -476,10 +503,17 @@ export default function PetTravelPrototype() {
 
   useEffect(() => {
     const onKeyDown = (e) => {
-      if (e.key === 'Escape' && modal) {
-        e.preventDefault();
-        setModal(null);
-        return;
+      if (e.key === 'Escape') {
+        if (modal) {
+          e.preventDefault();
+          setModal(null);
+          return;
+        }
+        if (isFullscreen) {
+          e.preventDefault();
+          setIsFullscreen(false);
+          return;
+        }
       }
       const tag = e.target?.tagName;
       if (tag === 'INPUT' || tag === 'TEXTAREA' || e.metaKey || e.ctrlKey || e.altKey) return;
@@ -493,7 +527,7 @@ export default function PetTravelPrototype() {
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [stepScene, modal]);
+  }, [stepScene, modal, isFullscreen]);
 
   const visibleBreeds = useMemo(() => {
     const q = breedSearch.trim();
@@ -561,13 +595,23 @@ export default function PetTravelPrototype() {
   };
 
   return (
-    <div className="ptp-studio" role="region" data-scene-mood={sceneMood} aria-label="航旅纵横宠物出行 1:1 交互原型演示台">
+    <div className={`ptp-studio${isFullscreen ? ' is-fullscreen' : ''}`} role="region" data-scene-mood={sceneMood} aria-label="航旅纵横宠物出行 1:1 交互原型演示台">
       <div className="ptp-studio-ambient" aria-hidden="true" />
 
       {/* ── Top Studio Control Bar ── */}
       <div className="ptp-studio-bar">
         <div className="ptp-studio-brand">
-          <span className="ptp-live-dot" aria-hidden="true" />
+          {isFullscreen ? (
+            <button
+              type="button"
+              className="ptp-studio-exit-btn"
+              onClick={() => setIsFullscreen(false)}
+            >
+              ✕ 退出全屏
+            </button>
+          ) : (
+            <span className="ptp-live-dot" aria-hidden="true" />
+          )}
           <span className="ptp-studio-label">INTERACTIVE PROTOTYPE</span>
           <span className="ptp-studio-pill">UMETRIP · PET TRAVEL</span>
           <span className="ptp-studio-mobile-step">
@@ -595,6 +639,15 @@ export default function PetTravelPrototype() {
             <span className="ptp-desktop-only">重置演示</span>
             <span className="ptp-mobile-only">重置</span>
           </button>
+          {!isFullscreen && (
+            <button
+              type="button"
+              className="ptp-studio-fs-btn"
+              onClick={() => setIsFullscreen(true)}
+            >
+              全屏体验
+            </button>
+          )}
         </div>
       </div>
 
