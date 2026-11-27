@@ -11,9 +11,11 @@ export const V3_CASE_STUDIES = [
     enTitle: 'Pet Travel UX',
     subtitle: '宠物航空托运流程重构与体验设计',
     cover: '/images/projects/pet-travel/iphone-mockup.webp',
+    previewVideo: '/videos/pet-travel/pet-travel-preview.mp4?v=20261127',
+    previewPoster: '/images/projects/pet-travel/showcase-poster.webp?v=20261127',
     isDevicePlate: true,
     role: 'UX 设计 · 信息架构 · 表单体验 · 交互原型',
-    desc: '针对宠物航空托运里最让人心里没底的三个环节——买票前不知道有没有有氧舱位、托运规则太长总怕填错、交接之后完全看不到状态——把舱位查询前置、把规则拆进表单校验，并补上实时飞行轨迹与落地接机卡片。下方可以直接上手操作完整流程。',
+    desc: '针对宠物航空托运里最让人心里没底的三个环节——买票前不知道有没有有氧舱位、托运规则太长总怕填错、交接之后完全看不到状态——把舱位查询前置、把规则拆进表单校验，并补上实时飞行轨迹与落地接机卡片。可先观看 48 秒完整演示影片，或切换到「交互原型」亲自上手操作完整流程。',
     keywords: ['体验设计 UX', '交互原型', '表单防错', '服务流程'],
     highlights: [
       { value: '舱位前置', label: '预订前直接看到有氧舱余量，满员时无缝转托运' },
@@ -22,10 +24,10 @@ export const V3_CASE_STUDIES = [
     ],
     defaultView: 'stream',
     sections: [
-      { label: '交互原型', type: 'prototype', badge: 'LIVE' },
       {
         label: '演示影片',
         type: 'video',
+        badge: '48S',
         videos: [
           {
             title: '宠物出行 · 交互演示',
@@ -34,6 +36,7 @@ export const V3_CASE_STUDIES = [
           },
         ],
       },
+      { label: '交互原型', type: 'prototype', badge: 'LIVE' },
       { label: '完整提案', images: seq('/images/projects/pet-travel', 1, 22) },
     ],
   },

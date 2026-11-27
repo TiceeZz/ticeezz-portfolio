@@ -62,7 +62,9 @@ export default function V3WorkPage() {
   const images = currentSection?.images || [];
   const isVideo = currentSection?.type === 'video';
   const isPrototype = currentSection?.type === 'prototype';
-  const hasLivePrototypeFirst = study?.sections?.[0]?.type === 'prototype';
+  const hasRichMediaFirst =
+    study?.sections?.[0]?.type === 'prototype' || study?.sections?.[0]?.type === 'video';
+  const protoSectionIdx = study?.sections?.findIndex((s) => s.type === 'prototype') ?? -1;
 
   if (!study) {
     return (
@@ -157,8 +159,8 @@ export default function V3WorkPage() {
             </div>
           )}
 
-          {/* Full-Width Cover Plate — skipped when a live interactive prototype leads Tab 0 */}
-          {!hasLivePrototypeFirst && (
+          {/* Full-Width Cover Plate — skipped when a video or live prototype leads Tab 0 */}
+          {!hasRichMediaFirst && (
             <div className={`v3-work__cover${study.isDevicePlate ? ' is-device' : ''}`}>
               <img
                 src={study.cover}
@@ -175,9 +177,10 @@ export default function V3WorkPage() {
             <div className="v3-filter-tabs" role="tablist">
               {study.sections.map((sec, idx) => {
                 const badge =
-                  sec.type === 'prototype'
-                    ? sec.badge || 'LIVE'
-                    : String(sec.type === 'video' ? sec.videos?.length || 0 : sec.images?.length || 0).padStart(2, '0');
+                  sec.badge ||
+                  (sec.type === 'prototype'
+                    ? 'LIVE'
+                    : String(sec.type === 'video' ? sec.videos?.length || 0 : sec.images?.length || 0).padStart(2, '0'));
                 return (
                   <button
                     key={sec.label}
@@ -250,6 +253,22 @@ export default function V3WorkPage() {
                   ) : null}
                 </div>
               ))}
+              {protoSectionIdx >= 0 && (
+                <div className="v3-work__proto-bridge">
+                  <div className="v3-work__proto-bridge-text">
+                    <span>INTERACTIVE PROTOTYPE · LIVE</span>
+                    <p>看完演示影片，想亲自上手操作 10 屏完整交互流程？</p>
+                  </div>
+                  <button
+                    type="button"
+                    className="v3-work__proto-bridge-btn"
+                    onClick={() => handleTabChange(protoSectionIdx)}
+                  >
+                    <span className="ptp-live-dot" aria-hidden="true" />
+                    <span>切换到「交互原型」→</span>
+                  </button>
+                </div>
+              )}
             </div>
           ) : (
             <div className={`v3-work__gallery is-${viewMode}`}>

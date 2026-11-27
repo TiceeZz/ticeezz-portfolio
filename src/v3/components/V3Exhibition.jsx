@@ -185,13 +185,27 @@ export default function V3Exhibition() {
                 to={proj.href}
                 className={`v3-work-plate${idx === activeIndex ? ' is-focused' : ''}`}
               >
-                <div className={`v3-work-plate__media${proj.isDevicePlate ? ' is-device' : ''}`}>
-                  <img
-                    src={proj.displayImg}
-                    alt={proj.title}
-                    className={`v3-work-plate__img${proj.isDevicePlate ? ' is-device' : ''}`}
-                    loading={idx < 3 ? 'eager' : 'lazy'}
-                  />
+                <div className={`v3-work-plate__media${proj.isDevicePlate && !proj.previewVideo ? ' is-device' : ''}`}>
+                  {proj.previewVideo ? (
+                    <video
+                      src={proj.previewVideo}
+                      poster={proj.previewPoster || proj.displayImg}
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      preload="metadata"
+                      aria-label={proj.title}
+                      className="v3-work-plate__img"
+                    />
+                  ) : (
+                    <img
+                      src={proj.displayImg}
+                      alt={proj.title}
+                      className={`v3-work-plate__img${proj.isDevicePlate ? ' is-device' : ''}`}
+                      loading={idx < 3 ? 'eager' : 'lazy'}
+                    />
+                  )}
                 </div>
 
                 <div className="v3-work-plate__meta">

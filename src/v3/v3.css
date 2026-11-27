@@ -2840,6 +2840,57 @@ body.is-v3-active[data-v3-theme='dark'] {
   display: block;
 }
 
+.v3-work__proto-bridge {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px 24px;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  flex-wrap: wrap;
+}
+
+.v3-work__proto-bridge-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.v3-work__proto-bridge-text span {
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--blue-text);
+}
+
+.v3-work__proto-bridge-text p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+
+.v3-work__proto-bridge-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.v3-work__proto-bridge-btn:hover {
+  transform: translateY(-1px);
+  opacity: 0.9;
+}
+
 .v3-work__pager {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
