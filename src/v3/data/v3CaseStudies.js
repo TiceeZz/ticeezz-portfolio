@@ -41,8 +41,36 @@ export const V3_CASE_STUDIES = [
     ],
   },
   {
-    slug: 'eclipse',
+    slug: 'veriframe',
     num: '02',
+    year: '2026',
+    stage: 'To B AI SaaS · 可运行 MVP',
+    title: 'Veriframe · 澄矩',
+    heroEn: 'Veriframe',
+    heroCn: '澄矩',
+    enTitle: 'Brand-Safe AI Visual Workbench',
+    subtitle: '大健康品牌视觉生产与合规审核工作台',
+    cover: '/images/projects/veriframe/cover.webp',
+    heroPlate: '/images/projects/veriframe/hero-plate.webp',
+    heroMark: '/images/projects/veriframe/vf-mark.svg',
+    hasBrandPlate: false,
+    role: '产品定义 · 桌面工作台交互与视觉 · 前端实现',
+    desc: '在前公司用 ComfyUI 落地 200 多张大健康商用素材后，我发现真正的效率瓶颈不在出图本身，而在出图后的商业化交付：包装与标签字易被 AI 篡改、一处敏感词就可能触发《广告法》与社媒限流、设计运营法务在群里反复确认哪一版能发。Veriframe 将主图拆解为独立矢量文案、双区像素硬锁产品与 AI 场景三层；支持违规词就地替换与 SGS 功效检测报告证据链绑定；法务签署严格绑定内容指纹，改动即自动失效，签发后生成《广告素材合规放行单》并一次导出三端比例（单套商用素材全流程由以往 1–2 个工作日缩短至 15 分钟内闭环）。点击下方四步卡片即可直接联动体验完整闭环，或切至「设计推导」查看 13 页完整拆解。',
+    keywords: ['To B AI SaaS', '桌面工作台', '广告法与证据链', '可运行 MVP'],
+    highlights: [
+      { value: '0.00% 标签形变', label: '双区像素硬锁原图丝印，瓶身外缘保留环境光影过渡' },
+      { value: '证据链 × 反拆词', label: '穿透变体拦截医疗极限词，周期卖点挂接 SGS 报告放行' },
+      { value: '指纹锁死三端交付', label: '法务审批绑定内容指纹，改动即吊销；签发后 <1 分钟直出三比例' },
+    ],
+    defaultView: 'stream',
+    sections: [
+      { label: '实时工作台', type: 'prototype', badge: 'LIVE' },
+      { label: '设计推导', images: seq('/images/projects/veriframe', 1, 13) },
+    ],
+  },
+  {
+    slug: 'eclipse',
+    num: '03',
     year: '2023',
     stage: '硕士实践 · 汉斯格雅合作',
     title: 'Eclipse · 月食',
@@ -70,7 +98,7 @@ export const V3_CASE_STUDIES = [
   },
   {
     slug: 'graduation',
-    num: '03',
+    num: '04',
     year: '2025',
     stage: '硕士毕业设计',
     title: '尊严的具现',
@@ -102,7 +130,7 @@ export const V3_CASE_STUDIES = [
   },
   {
     slug: 'vcrutch',
-    num: '04',
+    num: '05',
     year: '2023',
     stage: '硕士实践 · 服务系统',
     title: '医度 · Easygoing',
@@ -120,7 +148,7 @@ export const V3_CASE_STUDIES = [
   },
   {
     slug: 'fengjing',
-    num: '05',
+    num: '06',
     year: '2023',
     stage: '硕士实践 · 品牌设计',
     title: '枫泾小院',
@@ -137,7 +165,7 @@ export const V3_CASE_STUDIES = [
   },
   {
     slug: 'seed',
-    num: '06',
+    num: '07',
     year: '2024',
     stage: '中英合作项目',
     title: 'AHRC SEED 工作坊',
@@ -161,7 +189,7 @@ export const V3_CASE_STUDIES = [
   },
   {
     slug: 'yimoji',
-    num: '07',
+    num: '08',
     year: '2021',
     stage: '本科实践 · 省级大创',
     title: '彝 MOJI',
@@ -178,7 +206,7 @@ export const V3_CASE_STUDIES = [
   },
   {
     slug: 'giant',
-    num: '08',
+    num: '09',
     year: '2021',
     stage: '本科实践 · 空间设计',
     title: '喰 · 巨人餐厅',
@@ -195,7 +223,7 @@ export const V3_CASE_STUDIES = [
   },
   {
     slug: 'bamboo',
-    num: '09',
+    num: '10',
     year: '2020',
     stage: '本科实践 · 家具设计',
     title: '雨筇竹之思',
@@ -212,7 +240,7 @@ export const V3_CASE_STUDIES = [
   },
   {
     slug: 'sensible',
-    num: '10',
+    num: '11',
     year: '2020',
     stage: '本科实践 · 产品设计',
     title: '知趣 · SENSIBLE',
@@ -229,7 +257,7 @@ export const V3_CASE_STUDIES = [
   },
   {
     slug: 'nile',
-    num: '11',
+    num: '12',
     year: '2021',
     stage: '本科实践 · 家具设计',
     title: '从长江到尼罗河',

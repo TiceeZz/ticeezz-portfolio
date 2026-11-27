@@ -8,7 +8,7 @@ export const V3_PROJECTS = V3_CASE_STUDIES.map((c) => ({
   enTitle: c.enTitle,
   subtitle: c.subtitle,
   year: c.year,
-  stageGroup: Number(c.num) <= 6 ? 'postgrad' : 'undergrad',
+  stageGroup: Number(c.num) <= 7 ? 'postgrad' : 'undergrad',
   href: `/v3/work/${c.slug}`,
   displayImg: c.cover,
   previewVideo: c.previewVideo || null,
@@ -16,7 +16,7 @@ export const V3_PROJECTS = V3_CASE_STUDIES.map((c) => ({
   isDevicePlate: Boolean(c.isDevicePlate),
 }));
 
-// Pure cinematic plates for Hero (flagship 2026 Umetrip project first, matching 01–04 order)
+// Pure cinematic plates for Hero (01 Mobile To C + 02 Desktop To B AI SaaS twin flagships)
 export const HERO_PLATES = [
   {
     num: '01',
@@ -28,24 +28,24 @@ export const HERO_PLATES = [
   },
   {
     num: '02',
+    title: 'Veriframe · 澄矩',
+    sub: '大健康品牌视觉生产与合规审核 · 2026',
+    img: '/images/projects/veriframe/hero-showcase.webp',
+    href: '/v3/work/veriframe',
+  },
+  {
+    num: '03',
     title: 'Eclipse · 汉斯格雅',
     sub: '适老化智能卫浴系统 · 2023',
     img: '/images/projects/eclipse/cover.webp',
     href: '/v3/work/eclipse',
   },
   {
-    num: '03',
+    num: '04',
     title: '尊严的具现',
     sub: '初老人群智慧养老硕士毕设 · 2025',
     img: '/images/projects/graduation/cover.webp',
     href: '/v3/work/graduation',
-  },
-  {
-    num: '04',
-    title: '医度 · Easygoing',
-    sub: '社区无障碍出行就医服务设计 · 2023',
-    img: '/images/projects/vcrutch/cover.webp',
-    href: '/v3/work/vcrutch',
   },
 ];
 
@@ -111,6 +111,13 @@ export const CURATED_FILMSTRIP = [
 ];
 
 export const COMPACT_TIMELINE = [
+  {
+    year: '2026',
+    title: 'Veriframe 澄矩 · 大健康品牌视觉生产与合规审核工作台（0→1 MVP）',
+    desc: '基于前公司用 ComfyUI 做商用素材的经验，独立定义并实现的桌面端 AI 工作台：把主图拆成文案、产品、场景三层，只让 AI 生成背景；违规用语在画面上标出并替换；法务审核绑定具体版本，通过后一次导出三个尺寸。',
+    keywords: ['To B AI SaaS', '桌面工作台', '广告法合规', '设计到代码'],
+    caseHref: '/v3/work/veriframe',
+  },
   {
     year: '2026',
     title: '航旅纵横 · 宠物出行全流程 UX 体验优化',

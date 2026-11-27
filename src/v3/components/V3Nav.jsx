@@ -103,13 +103,23 @@ export default function V3Nav({ theme, onThemeChange }) {
     };
   }, [verOpen]);
 
+  const scrollToTop = useCallback(() => {
+    setMenuOpen(false);
+    setVerOpen(false);
+    document.documentElement.scrollLeft = 0;
+    document.body.scrollLeft = 0;
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+  }, []);
+
   const jumpTo = useCallback((id) => {
     setMenuOpen(false);
     setVerOpen(false);
+    document.documentElement.scrollLeft = 0;
+    document.body.scrollLeft = 0;
     const el = document.getElementById(id);
     if (!el) return;
     const top = el.getBoundingClientRect().top + window.scrollY - 64;
-    window.scrollTo({ top, behavior: 'smooth' });
+    window.scrollTo({ top, left: 0, behavior: 'smooth' });
   }, []);
 
   return (
@@ -120,8 +130,8 @@ export default function V3Nav({ theme, onThemeChange }) {
         <div className="v3-header__inner">
           <button
             className="v3-brand"
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            aria-label="Back to top"
+            onClick={scrollToTop}
+            aria-label="回到页面顶部"
           >
             <span className="v3-brand__mark" />
             <span className="v3-brand__name">TICEEZZ</span>
@@ -217,9 +227,10 @@ export default function V3Nav({ theme, onThemeChange }) {
             </div>
 
             <button
+              type="button"
               className={`v3-burger${menuOpen ? ' is-open' : ''}`}
               onClick={() => setMenuOpen((v) => !v)}
-              aria-label="Toggle navigation menu"
+              aria-label={menuOpen ? '关闭导航菜单' : '打开导航菜单'}
               aria-expanded={menuOpen}
             >
               <span />

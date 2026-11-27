@@ -90,7 +90,8 @@ export default function V3Hero({ theme }) {
             <div className="v3-hero__side v3-intro-rise v3-intro-rise--d2">
               <span className="v3-hero__role">UX · PRODUCT · AI DESIGN</span>
               <p className="v3-hero__lead">
-                关注产品体验与服务流程，结合 AI 工具把想法更快变成可触摸的方案。
+                关注产品体验与服务流程，
+                <span style={{ display: 'inline-block' }}>结合 AI 工具把想法更快变成可触摸的方案。</span>
               </p>
               <div className="v3-hero__actions">
                 <V3Magnetic>
@@ -99,9 +100,15 @@ export default function V3Hero({ theme }) {
                     <span className="v3-action-arrow">→</span>
                   </button>
                 </V3Magnetic>
-                <button className="v3-action-link" onClick={() => scrollTo('v3-keynote')}>
-                  最新案例 · 航旅纵横
-                </button>
+                <div className="v3-hero__quick-cases" aria-label="双代表作直达">
+                  <Link to="/v3/work/pettravel" className="v3-action-link">
+                    01 航旅纵横
+                  </Link>
+                  <span className="v3-hero__case-sep" aria-hidden="true">/</span>
+                  <Link to="/v3/work/veriframe" className="v3-action-link">
+                    02 Veriframe · 澄矩
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
@@ -135,7 +142,7 @@ export default function V3Hero({ theme }) {
                 <strong>{current.title}</strong>
                 <span>{current.sub}</span>
               </div>
-              <span className="v3-plate__open">查看完整案例 ↗</span>
+              <span className="v3-plate__open">查看完整案例 →</span>
             </div>
           </Link>
 

@@ -5,6 +5,8 @@ import useV3Theme from './useV3Theme';
 import V3Lightbox from './components/V3Lightbox';
 import V3PrismAssistant from './components/V3PrismAssistant';
 import PetTravelPrototype from './components/pet-proto/PetTravelPrototype';
+import VeriframeShowcaseEmbed from './components/VeriframeShowcaseEmbed';
+import VeriframeBrandPlate from './components/VeriframeBrandPlate';
 import { getV3CaseStudy } from './data/v3CaseStudies';
 import './v3.css';
 
@@ -119,7 +121,7 @@ export default function V3WorkPage() {
   }
 
   return (
-    <div className="v3-root" data-v3-theme={theme}>
+    <div className="v3-root" data-v3-theme={theme} data-case={study.slug}>
       {/* Sticky V3 Case Study Header */}
       <header className="v3-header is-scrolled">
         <div ref={progressRef} className="v3-header__progress" />
@@ -162,21 +164,54 @@ export default function V3WorkPage() {
       </header>
 
       <main className="v3-work">
-        {/* Editorial Hero Header */}
-        <div ref={heroRef} className="v3-container v3-work__hero">
-          <div className="v3-work__meta-bar">
-            <span className="v3-kicker">{study.num} / {study.stage}</span>
-            <span className="v3-mono-tag">{study.year}</span>
+        {/* Optional full-bleed hero plate (used by Veriframe) */}
+        {study.heroPlate && (
+          <div className="v3-work__heroplate">
+            <img src={study.heroPlate} alt={study.title} />
+            <div className="v3-container v3-work__heroplate-inner">
+              <div className="v3-work__heroplate-text">
+                {study.heroMark && (
+                  <img className="v3-work__heroplate-mark" src={study.heroMark} alt="" aria-hidden="true" />
+                )}
+                <span className="v3-work__heroplate-kicker">
+                  {study.num} · {study.stage}
+                </span>
+                {study.heroEn ? (
+                  <h1 className="is-split" aria-label={study.title}>
+                    <span className="v3-work__heroplate-en">{study.heroEn}</span>
+                    <span className="v3-work__heroplate-sep" aria-hidden="true"> · </span>
+                    <span className="v3-work__heroplate-cn">{study.heroCn}</span>
+                  </h1>
+                ) : (
+                  <h1>{study.title}</h1>
+                )}
+                <p>{study.subtitle}</p>
+              </div>
+            </div>
           </div>
+        )}
+
+        {/* Editorial Hero Header */}
+        <div ref={heroRef} className={`v3-container v3-work__hero${study.heroPlate ? ' has-plate' : ''}`}>
+          {!study.heroPlate && (
+            <div className="v3-work__meta-bar">
+              <span className="v3-kicker">{study.num} / {study.stage}</span>
+              <span className="v3-mono-tag">{study.year}</span>
+            </div>
+          )}
 
           <div className="v3-work__head-grid">
-            <div>
-              <h1 className="v3-work__title">{study.title}</h1>
-              <div className="v3-work__en">{study.enTitle}</div>
-            </div>
+            {study.heroPlate ? (
+              <p className="v3-work__lede">{study.desc}</p>
+            ) : (
+              <div>
+                <h1 className="v3-work__title">{study.title}</h1>
+                <div className="v3-work__en">{study.enTitle}</div>
+              </div>
+            )}
 
             <div className="v3-work__summary-col">
-              <p className="v3-work__desc">{study.desc}</p>
+              {!study.heroPlate && <p className="v3-work__desc">{study.desc}</p>}
               <div className="v3-work__role">
                 <span>ROLE</span>
                 <strong>{study.role}</strong>
@@ -196,6 +231,15 @@ export default function V3WorkPage() {
                   <strong>{h.value}</strong>
                   <span>{h.label}</span>
                 </div>
+              ))}
+            </div>
+          )}
+
+          {/* Optional intro plates shown before the tabs */}
+          {study.introPlates && (
+            <div className="v3-work__intro-plates">
+              {study.introPlates.map((src) => (
+                <img key={src} src={src} alt={`${study.title} 设计说明`} loading="lazy" />
               ))}
             </div>
           )}
@@ -260,7 +304,11 @@ export default function V3WorkPage() {
         {/* Visual Presentation Area (Uncropped Natural Proportions / Live Prototype) */}
         <div className="v3-container v3-work__content">
           {isPrototype ? (
-            <PetTravelPrototype />
+            study.slug === 'veriframe' ? (
+              <VeriframeShowcaseEmbed />
+            ) : (
+              <PetTravelPrototype />
+            )
           ) : isVideo ? (
             <div className="v3-work__videos">
               {currentSection.videos.map((v, i) => (
@@ -328,6 +376,13 @@ export default function V3WorkPage() {
             </div>
           )}
         </div>
+
+        {/* Native responsive brand/logo derivation plate — presented after core product experience */}
+        {study.hasBrandPlate && (
+          <div className="v3-container v3-work__brand-outro">
+            <VeriframeBrandPlate />
+          </div>
+        )}
 
         {/* Seamless Prev / Next Case Navigation inside /v3 */}
         <div className="v3-container v3-work__pager">

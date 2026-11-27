@@ -237,9 +237,14 @@ export default function V3PrismAssistant({ theme = 'light', onThemeChange }) {
   }, [location.pathname]);
 
   const activeMood = isStreaming ? 'thinking' : mood === 'happy' ? 'happy' : hoverFab ? 'hover' : 'idle';
+  const isSubpage = location.pathname !== '/' && location.pathname !== '/v3';
 
   return (
-    <div className="v3-ai-root" data-open={open ? 'true' : 'false'}>
+    <div
+      className="v3-ai-root"
+      data-open={open ? 'true' : 'false'}
+      data-subpage={isSubpage ? 'true' : 'false'}
+    >
       {/* Floating Optical Prism Trigger */}
       <button
         ref={fabRef}

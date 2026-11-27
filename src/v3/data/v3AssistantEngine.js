@@ -6,8 +6,8 @@
 
 export const QUICK_PROMPTS_HOME = [
   '30 秒速览：核心优势与经历',
-  '拆解「航旅纵横」的设计判断',
-  '他的 AI 工作流具体怎么落地？',
+  '拆解「Veriframe 澄矩」To B 工作台',
+  '拆解「航旅纵横」C 端体验重构',
   '生成 3 句话推荐语发给老板',
 ];
 
@@ -18,48 +18,64 @@ const CASE_CARDS = {
     meta: '全流程 UX 重构 · 2026',
     href: '/v3/work/pettravel',
   },
-  eclipse: {
+  veriframe: {
     num: '02',
+    title: 'Veriframe · 澄矩',
+    meta: 'To B 大健康品牌视觉与合规工作台 · 2026',
+    href: '/v3/work/veriframe',
+  },
+  eclipse: {
+    num: '03',
     title: 'Eclipse · 汉斯格雅',
     meta: '智能硬件面板 + App 交互',
     href: '/v3/work/eclipse',
   },
   graduation: {
-    num: '03',
+    num: '04',
     title: '尊严的具现',
     meta: '智慧养老服务系统 · 硕士毕设',
     href: '/v3/work/graduation',
   },
   vcrutch: {
-    num: '04',
+    num: '05',
     title: '医度 · Easygoing',
     meta: '无障碍就医 PSS 服务系统',
     href: '/v3/work/vcrutch',
   },
-  seed: {
+  fengjing: {
     num: '06',
+    title: '枫泾小院',
+    meta: '品牌视觉与文创包装',
+    href: '/v3/work/fengjing',
+  },
+  seed: {
+    num: '07',
     title: 'AHRC SEED 工作坊',
     meta: '中英合作 · 双语报告与共创',
     href: '/v3/work/seed',
   },
   yimoji: {
-    num: '07',
+    num: '08',
     title: '彝 MOJI · 非遗文创',
     meta: '省级大创 · 论文与外观专利',
     href: '/v3/work/yimoji',
   },
-  fengjing: {
-    num: '05',
-    title: '枫泾小院',
-    meta: '品牌视觉与文创包装',
-    href: '/v3/work/fengjing',
-  },
 };
 
 const REFERRAL_PITCH =
-  '推荐一位很稀缺的 AI 复合型产品/UX 设计师童宗震（东华大学艺术设计硕士，现居上海随时到岗）：既有扎实的交互与视觉科班功底（做过航旅纵横全链路 UX 重构与 10 屏可交互原型、新瞳眼科小程序改版、德国汉斯格雅软硬件协同项目），又能直接结合 Figma 与 Antigravity / Claude Code / Codex / Cursor / MCP 把设计方案推进到可交互原型甚至上线产品（这个双主题作品集网站和内置航旅纵横交互原型均由他独立设计并工程化落地）。作品集链接：https://ticeezz-portfolio.pages.dev';
+  '推荐一位兼具 C 端体验功底与 B 端 AI 产品落地能力的设计师童宗震（东华大学艺术设计硕士，现居上海随时到岗）：既做过航旅纵横全链路 UX 重构与 10 屏交互原型、新瞳眼科小程序改版与德国汉斯格雅软硬件协同，又基于 200+ 张商业出图经验独立定义并实现了大健康品牌 AI 视觉生产与合规工作台「Veriframe · 澄矩」（这个双主题作品集网站与两个完整可操作原型均由他独立设计并工程化落地）。作品集链接：https://ticeezz-portfolio.pages.dev';
 
 export function getWelcomePayload(pathname) {
+  if (pathname.startsWith('/v3/work/veriframe')) {
+    return {
+      text: '你好，我是 **Prism**。\n\n你正在看 02 号案例 **Veriframe 澄矩**：给大健康品牌用的 AI 视觉生产与合规审核工作台，来自前公司用 ComfyUI 做商用素材的经验。上方可以直接操作：点画面上的红色下划线替换违规用语，修复方案 C 的背景，提交后切到法务点通过，再导出 PNG。',
+      suggestions: [
+        '拆解「Veriframe 澄矩」解决了什么问题',
+        '30 秒速览：核心优势与经历',
+        '他的 AI 工作流具体怎么落地？',
+      ],
+    };
+  }
   if (pathname.startsWith('/v3/work/pettravel')) {
     return {
       text: '你好，我是 **Prism**。\n\n你正在看 **「航旅纵横 · 宠物出行」** 的流程重构案例——页面上方可以直接操作完整交互原型（包括随机飞三态、短鼻犬禁飞校验、体重匹配箱型和实时追踪）。想了解其中的设计判断或他的经历，直接问我就好。',
@@ -165,6 +181,33 @@ export function generateV3Response(rawQuery, { theme = 'light' } = {}) {
     };
   }
 
+  /* ════ 3.5 Veriframe 澄矩 To B AI SaaS 案例拆解 ════ */
+  if (
+    hasAny(q, [
+      'veriframe',
+      '澄矩',
+      '大健康',
+      '三层解耦',
+      '三层',
+      '广告法',
+      '合规',
+      'to b',
+      'tob',
+      'saas',
+      '工作台',
+    ])
+  ) {
+    return {
+      text:
+        '**Veriframe · 澄矩（02 号案例）** 是童宗震基于前公司大健康品牌用 ComfyUI 做 200 多张商用素材的经验，独立定义并实现的桌面端 AI 工作台（可运行 MVP）。\n\n' +
+        '• **解决的问题**：AI 出图本身不难，难的是包装和中文被改坏、文案触犯《广告法》、多个角色反复确认版本。它要让强监管行业的品牌敢用、敢发、交付快。\n' +
+        '• **怎么做的**：一张主图拆成三层，文案单独排版，产品标签区域保持原图像素（浏览器内计算 SHA-256 校验），AI 只生成背景；有问题的方案只重新生成背景，并能拖动中线对比前后。\n' +
+        '• **审核闭环**：违规用语能识别变体写法，并按类目检查必填声明，在画面上直接替换；法务审核绑定具体版本，改任何内容都会失效；未审核导出带样稿水印，通过后一次导出三个尺寸。',
+      sources: [CASE_CARDS.veriframe, CASE_CARDS.pettravel],
+      suggestions: ['30 秒速览：核心优势与经历', '他的 AI 工作流具体怎么落地？', '生成 3 句话推荐语发给老板'],
+    };
+  }
+
   /* ════ 3. 30 秒速览 / 核心优势 / 为什么值得约面 ════ */
   if (
     hasAny(q, [
@@ -188,15 +231,15 @@ export function generateV3Response(rawQuery, { theme = 'light' } = {}) {
       text:
         '**童宗震（TiceeZz）· 30 秒速览**\n\n' +
         '• **教育底子**：东华大学（211）艺术设计硕士（2022–2025），四川农业大学（211）产品设计本科专业第 1/121。\n' +
-        '• **商业与项目**：在新瞳眼科负责会员私域视觉、核心小程序改版与组件规范，并搭起本地 ComfyUI 工作流产出 **200+ 可用素材**；做过**航旅纵横**全链路 UX 重构、**德国汉斯格雅**智能硬件+App 交互、中英 **AHRC SEED** 跨国项目与出版著作（独立撰写第 4、9 章）。\n' +
-        '• **稀缺差异化**：不止停留在静态稿——习惯把 Figma 与 **Antigravity、Claude Code、Codex、Cursor、MCP** 结合，能把复杂交互直接做到可交互原型甚至上线产品（你正在看的 v1→v3 网站就是他独立设计并上线的）。\n' +
+        '• **商业与双代表作**：在新瞳眼科负责会员私域视觉、核心小程序改版与组件规范，并搭起本地 ComfyUI 工作流产出 **200+ 可用素材**；C 端完成**航旅纵横 · 宠物出行**全链路 UX 重构（含 10 屏交互原型），B 端独立定义并实现大健康 AI 视觉生产与合规工作台 **Veriframe · 澄矩**，另做过**德国汉斯格雅**软硬件交互与出版著作（独立撰写第 4、9 章）。\n' +
+        '• **稀缺差异化**：不止停留在静态稿——习惯把 Figma 与 **Antigravity、Claude Code、Codex、Cursor、MCP** 结合，能把复杂交互直接做到可运行原型甚至上线产品。\n' +
         '• **当前状态**：现居上海，随时到岗，主看 **UX/产品设计** 及 **0–1 体验型 AI 产品/Builder** 机会。',
-      sources: [CASE_CARDS.pettravel, CASE_CARDS.eclipse],
+      sources: [CASE_CARDS.veriframe, CASE_CARDS.pettravel, CASE_CARDS.eclipse],
       actions: [
         { type: 'scroll', value: 'v3-index', label: '跳到完整履历区 ↓' },
         { type: 'copy', value: '1027208320@qq.com', label: '复制邮箱' },
       ],
-      suggestions: ['拆解「航旅纵横」的设计判断', '他的 AI 工作流具体怎么落地？', '新瞳眼科和近期空窗怎么回事？'],
+      suggestions: ['拆解「Veriframe 澄矩」To B 工作台', '拆解「航旅纵横」C 端体验重构', '新瞳眼科和近期空窗怎么回事？'],
     };
   }
 
@@ -247,9 +290,10 @@ export function generateV3Response(rawQuery, { theme = 'light' } = {}) {
         '• **日常工具栈**：Figma + Antigravity / Claude Code / Codex / Cursor / MCP，以及本地 ComfyUI / Stable Diffusion、Midjourney、Runway。\n' +
         '• **落地实绩**：\n' +
         '  1. **商业出图管线**：在新瞳眼科本地搭建 ComfyUI / SD 工作流，累计产出 **200+ 张商业概念与延展素材**；\n' +
-        '  2. **独立网站工程化**：你正在浏览的网站从 v1（暗黑 3D + 初代助手）→ v2（TiceeZz OS 桌面交互）→ v3（浅/深双主题画廊 + 本助手），均由他**自己定视觉规范、交互细节和验收标准**，拆解任务驱动 AI Coding 完成并部署上线，把高保真原型周期从按周缩到按天。\n' +
-        '• **产品反思**：v1/v2 时他一度偏重动效和炫技，v3 主动收敛成了高阅读效率的画廊结构——他很清楚技术表现永远要服务于用户的核心任务。',
-      sources: [CASE_CARDS.graduation, CASE_CARDS.pettravel],
+        '  2. **0→1 AI 工作台落地（Veriframe · 澄矩）**：把商业出图后最耗时的包装防变形、广告法变体用语拦截与法务版本签署沉淀为可运行的桌面端 MVP；\n' +
+        '  3. **独立网站与双原型工程化**：本站 v1→v3 以及内置的两套完整交互原型，均由他自己定设计系统、交互细节和验收标准并驱动实现上线。\n' +
+        '• **产品反思**：v1/v2 时一度偏重动效和炫技，v3 主动收敛成了高阅读效率的画廊结构——技术表现永远服务于核心任务。',
+      sources: [CASE_CARDS.veriframe, CASE_CARDS.pettravel, CASE_CARDS.graduation],
       actions: [
         { type: 'theme', value: theme === 'light' ? 'dark' : 'light', label: `体验${theme === 'light' ? '深色' : '浅色'}主题切换` },
       ],
@@ -278,8 +322,8 @@ export function generateV3Response(rawQuery, { theme = 'light' } = {}) {
         '**关于「设计 vs AI 产品」的定位**\n\n' +
         '他的核心底色是**产品与用户体验设计科班**，但工作方式天然偏 **Product Designer / AI Builder**：\n' +
         '• 在 **UX / AI 产品设计岗**，他有扎实的审美、交互架构、软硬件协同功底，同时能自己用 AI 做出可交互原型，极大降低和研发的沟通损耗；\n' +
-        '• 在 **0–1 早期 AI 团队 / AI Builder 岗**，他习惯从用户场景拆解问题、自己动手做 Demo 快速验证，不靠空谈文档推动方案。',
-      sources: [CASE_CARDS.pettravel, CASE_CARDS.eclipse],
+        '• 在 **0–1 早期 AI 团队 / AI Builder 岗**，他习惯从真实业务痛点拆解问题并亲手做出可运行 MVP（如 **Veriframe · 澄矩**），不靠空谈文档推动方案。',
+      sources: [CASE_CARDS.veriframe, CASE_CARDS.pettravel, CASE_CARDS.eclipse],
       suggestions: ['30 秒速览：核心优势与经历', '如何联系童宗震？'],
     };
   }
@@ -328,12 +372,12 @@ export function generateV3Response(rawQuery, { theme = 'light' } = {}) {
     return {
       text:
         '建议按时间紧迫度优先看这 **3 个代表作**：\n\n' +
-        '1. **航旅纵横 · 宠物出行** — 看他的复杂业务拆解、表单防错与 C 端 UX 逻辑；\n' +
-        '2. **Eclipse · 汉斯格雅** — 看他的软硬件交互、产品思维与 3D 表达；\n' +
-        '3. **尊严的具现（硕士毕设）** — 看他的完整服务系统设计与 AIGC 辅助探索。',
-      sources: [CASE_CARDS.pettravel, CASE_CARDS.eclipse, CASE_CARDS.graduation],
+        '1. **航旅纵横 · 宠物出行（01）** — 看复杂业务拆解、表单防错与 C 端全流程 UX；\n' +
+        '2. **Veriframe · 澄矩（02）** — 看 0→1 To B AI 工作台定义、广告法合规闭环与桌面端实现；\n' +
+        '3. **Eclipse · 汉斯格雅（03）** — 看软硬件协同交互、产品思维与 3D 表达。',
+      sources: [CASE_CARDS.pettravel, CASE_CARDS.veriframe, CASE_CARDS.eclipse],
       actions: [{ type: 'scroll', value: 'v3-lineup', label: '跳到全部作品展厅 ↓' }],
-      suggestions: ['拆解「航旅纵横」的设计判断', '设计之外他有什么爱好？'],
+      suggestions: ['拆解「Veriframe 澄矩」To B 工作台', '拆解「航旅纵横」C 端体验重构'],
     };
   }
 
@@ -354,7 +398,7 @@ export function generateV3Response(rawQuery, { theme = 'light' } = {}) {
   }
 
   /* ════ 13. 联系方式 / 约面试 / 地点 ════ */
-  if (hasAny(q, ['联系', '邮箱', '电话', '手机', '微信', '坐标', '上海', '长宁', '到岗', '面试', '约面', '薪资', '期望'])) {
+  if (hasAny(q, ['联系', '邮箱', '电话', '手机', '微信', '坐标', '上海', '到岗', '面试', '约面', '薪资', '期望'])) {
     return {
       text:
         '**联系方式与求职状态**\n\n' +
