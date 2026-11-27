@@ -411,14 +411,42 @@ export default function PetTravelPrototype() {
     setHistory([]);
     setModal(null);
     setRandomState('available');
+    setTripType('oneway');
     setFromIdx(0);
     setToIdx(1);
+    setDateStr('5月20日 明天');
     setWeightKey('w15');
+    setFlightFilter('all');
+    setSelectedFlightId('MU5101');
+    setBreed('柯基犬');
+    setBreedTouched(false);
+    setPetName('小航');
+    setGender('雄性');
+    setNeutered('已绝育');
     setWeightKg(9.2);
+    setAgeObj(AGE_OPTIONS[2]);
+    setSenderAddr(SAVED_ADDRESSES[0]);
+    setReceiverAddr(SAVED_ADDRESSES[1]);
     setPickupSlot('');
-    setPhotoUploaded(false);
+    setContactName('阿童');
+    setContactPhone('19974677449');
     setCrateOverride(null);
+    setPhotoUploaded(false);
+    setVaccineUploaded(false);
+    setAddonInsurance(true);
+    setAddonValuation(false);
+    setOrderNote('');
+    setAgreed(true);
     setTrackStageIdx(2);
+    setBreedTab('dog');
+    setBreedSearch('');
+    setBreedAlert(null);
+    setOrderTab('全部');
+    setOnlyValidOrders(false);
+    setDetailScrolled(false);
+    setFormScrolled(false);
+    setMapSatellite(false);
+    setShowWeatherCard(false);
     showToast('已重置交互原型');
   };
 
@@ -2013,8 +2041,11 @@ export default function PetTravelPrototype() {
                     <button type="button" style={{ fontSize: 12.5, color: '#249b59' }} onClick={() => setModal(null)}>完成</button>
                   </div>
                   <div className="ptp-alert is-green" style={{ marginBottom: 10 }}>
-                    <strong>✓ OCR 识别置信度 99.4% · 有效期核验通过</strong>
-                    自动提取检疫证编号并与航司货运预审同步，免去手动输入 18 位长编码。
+                    <AlertCircleSvg bg="#2eb66b" type="info" />
+                    <div>
+                      <strong>OCR 识别置信度 99.4% · 有效期核验通过</strong>
+                      自动提取检疫证编号并与航司货运预审同步，免去手动输入 18 位长编码。
+                    </div>
                   </div>
                   <div className="ptp-fee-row"><span>检疫证编号</span><strong>NO.31010420260519088</strong></div>
                   <div className="ptp-fee-row"><span>动物品种</span><strong>犬类（{breed}）</strong></div>
@@ -2068,7 +2099,7 @@ export default function PetTravelPrototype() {
                         <span className="ptp-dots" />
                         <span className="ptp-pv">¥ {selectedFlight.price}</span>
                       </div>
-                      {selectedFlight.breakdown.slice(0, 3).map((b) => (
+                      {selectedFlight.breakdown.map((b) => (
                         <div key={b.label} className="ptp-price-row is-sub">
                           <span>{b.label}</span>
                           <span style={{ flex: 1 }} />
@@ -2089,10 +2120,10 @@ export default function PetTravelPrototype() {
                           <span className="ptp-pv">¥ 40</span>
                         </div>
                       )}
-                      <div className="ptp-price-row">
-                        <span>航旅会员折扣</span>
-                        <span className="ptp-dots" />
-                        <span className="ptp-pv is-disc">- ¥ 20</span>
+                      <div className="ptp-price-row" style={{ marginTop: 8, paddingTop: 10, borderTop: '1px solid #eef1f3', fontWeight: 600 }}>
+                        <span>订单预估合计</span>
+                        <span style={{ flex: 1 }} />
+                        <span className="ptp-pv ptp-din-med" style={{ color: '#e4554b', fontSize: 15 }}>¥ {totalPrice}</span>
                       </div>
                     </>
                   )}
@@ -2220,7 +2251,7 @@ export default function PetTravelPrototype() {
                         <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr auto', alignItems: 'center', gap: 4, padding: '0 2px' }}>
                           <div>
                             <div className="ptp-poster-time">18:40</div>
-                            <div style={{ fontSize: 10.5, color: '#4f5d56', marginTop: 2 }}>虹桥机场</div>
+                            <div style={{ fontSize: 10.5, color: '#4f5d56', marginTop: 2 }}>{fromCity.code === 'SHA' ? '虹桥机场' : fromCity.cargoA.replace('货运站', '')}</div>
                           </div>
                           <div className="ptp-poster-arc-wrap">
                             <svg className="ptp-poster-arc-svg" viewBox="0 0 132 34" fill="none" aria-hidden="true">
@@ -2237,7 +2268,7 @@ export default function PetTravelPrototype() {
                           </div>
                           <div style={{ textAlign: 'right' }}>
                             <div className="ptp-poster-time">20:40</div>
-                            <div style={{ fontSize: 10.5, color: '#4f5d56', marginTop: 2 }}>大兴机场</div>
+                            <div style={{ fontSize: 10.5, color: '#4f5d56', marginTop: 2 }}>{toCity.code === 'BJS' ? '大兴机场' : toCity.cargoA.replace('货运站', '')}</div>
                           </div>
                         </div>
                       </div>
