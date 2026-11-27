@@ -241,14 +241,74 @@ export const BREED_GROUPS = {
   ],
 };
 
+export const PET_AGE_YEARS = Array.from({ length: 16 }, (_, i) => i);
+export const PET_AGE_MONTHS = Array.from({ length: 12 }, (_, i) => i);
+
+export function evaluatePetAge(rawYears, rawMonths) {
+  const years = Math.max(0, Math.min(15, Math.floor(Number(rawYears) || 0)));
+  let months = Math.max(0, Math.min(11, Math.floor(Number(rawMonths) || 0)));
+  if (years === 0 && months === 0) months = 1;
+  const totalMonths = years * 12 + months;
+  const label = years === 0 ? `${months}个月` : months === 0 ? `${years}岁` : `${years}岁 ${months}个月`;
+
+  if (totalMonths < 2) {
+    return {
+      years,
+      months,
+      totalMonths,
+      label,
+      eligible: false,
+      status: 'blocked',
+      title: '未满适航月龄（须满 8 周）',
+      note: '依据航司活体运输政策，犬猫年龄须满 8 周（约 2 个月）且完成基础免疫后方可申请航空托运。',
+    };
+  }
+  if (totalMonths < 6) {
+    return {
+      years,
+      months,
+      totalMonths,
+      label,
+      eligible: true,
+      status: 'caution',
+      title: '符合适航月龄 · 幼宠疫苗提醒',
+      note: '已满 8 周龄可申请办理；请确认已完成狂犬疫苗接种满 21 天并随行携带有效免疫证明。',
+    };
+  }
+  if (totalMonths <= 120) {
+    return {
+      years,
+      months,
+      totalMonths,
+      label,
+      eligible: true,
+      status: 'ok',
+      title: '年龄符合航空适航要求',
+      note: '依据航司政策，犬猫年龄须在 8 周至 10 周岁之间。当前年龄处于适航区间，可直接办理。',
+    };
+  }
+  return {
+    years,
+    months,
+    totalMonths,
+    label,
+    eligible: false,
+    status: 'blocked',
+    title: '超出航空适航年龄限制（> 10周岁）',
+    note: '超过 10 周岁的高龄犬猫高空应激与心肺风险较高，系统已自动熔断拦截，暂不支持航空托运。',
+  };
+}
+
+export const DEFAULT_PET_AGE = evaluatePetAge(2, 6);
+
 export const AGE_OPTIONS = [
-  { label: '1个月', eligible: false, note: '注意：依据航司政策，犬猫年龄须满 8 周，未满月龄幼宠无法办理托运。' },
-  { label: '1岁', eligible: true, note: '注意：依据航司政策，犬猫年龄须满 8 周，且不超过 10 岁。当前年龄符合同行要求。' },
-  { label: '2岁 6个月', eligible: true, note: '注意：依据航司政策，犬猫年龄须满 8 周，且不超过 10 岁。当前年龄符合同行要求。' },
-  { label: '3岁', eligible: true, note: '注意：依据航司政策，犬猫年龄须满 8 周，且不超过 10 岁。当前年龄符合同行要求。' },
-  { label: '4岁', eligible: true, note: '注意：依据航司政策，犬猫年龄须满 8 周，且不超过 10 岁。当前年龄符合同行要求。' },
-  { label: '6岁', eligible: true, note: '注意：依据航司政策，犬猫年龄须满 8 周，且不超过 10 岁。当前年龄符合同行要求。' },
-  { label: '12岁', eligible: false, note: '注意：超龄宠物高空应激风险较高，系统熔断无法办理航空伴飞。' },
+  evaluatePetAge(0, 1),
+  evaluatePetAge(0, 4),
+  evaluatePetAge(1, 0),
+  DEFAULT_PET_AGE,
+  evaluatePetAge(4, 0),
+  evaluatePetAge(8, 0),
+  evaluatePetAge(11, 0),
 ];
 
 export const SAVED_ADDRESSES = [

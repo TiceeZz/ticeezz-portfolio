@@ -436,6 +436,7 @@
   height: calc(781.5px * var(--ptp-scale, 1));
   border-radius: calc(42px * var(--ptp-scale, 1));
   overflow: hidden;
+  overflow: clip;
   margin: 0 auto;
 }
 
@@ -449,6 +450,7 @@
   background: #f4f6f5;
   color: #16221c;
   overflow: hidden;
+  overflow: clip;
   display: flex;
   flex-direction: column;
   font-family: 'PingFang SC UI', 'PingFang SC', '苹方-简', 'Hiragino Sans GB', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -552,6 +554,8 @@
   width: 100%;
   flex-shrink: 0;
   line-height: 0;
+  overflow: hidden;
+  z-index: 6;
 }
 
 .ptp-figma-hdr img {
@@ -559,6 +563,54 @@
   width: 100%;
   height: auto;
   pointer-events: none;
+}
+
+.ptp-figma-hdr.is-hub {
+  height: 136px;
+}
+
+.ptp-figma-hdr.is-hub::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 12px;
+  background: linear-gradient(180deg, rgba(242, 245, 244, 0) 0%, #f2f5f4 100%);
+  pointer-events: none;
+  z-index: 3;
+}
+
+.ptp-figma-hdr.is-solo {
+  height: 146px;
+}
+
+.ptp-figma-hdr.is-solo::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 10px;
+  background: linear-gradient(180deg, rgba(244, 246, 245, 0) 0%, #f4f6f5 100%);
+  pointer-events: none;
+  z-index: 3;
+}
+
+.ptp-figma-hdr.is-random {
+  height: 194px;
+}
+
+.ptp-figma-hdr.is-random::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 14px;
+  background: linear-gradient(180deg, rgba(244, 246, 245, 0) 0%, #f4f6f5 100%);
+  pointer-events: none;
+  z-index: 3;
 }
 
 .ptp-hdr-back {
@@ -607,8 +659,7 @@
 }
 
 .ptp-hub-body {
-  padding: 0 12px;
-  margin-top: -8px;
+  padding: 6px 12px 0;
   position: relative;
   z-index: 3;
   display: flex;
@@ -739,7 +790,7 @@
 
 /* ═══ SCREEN 02A: Solo Search (1:1 page_010) ═══ */
 .ptp-search-card {
-  margin: -17px 12px 14px;
+  margin: 4px 12px 14px;
   position: relative;
   z-index: 3;
   background: #ffffff;
@@ -928,7 +979,7 @@
 }
 
 .ptp-quick-bar {
-  margin: 0 12px 11px;
+  margin: 4px 12px 11px;
   position: relative;
   z-index: 3;
   background: #ffffff;
@@ -1414,6 +1465,18 @@
   border: 1px solid #f8d4d1;
   color: #df4a44;
   font-size: 10.5px;
+  line-height: 1.5;
+}
+
+.ptp-warn-strip {
+  margin: 4px 0 8px;
+  padding: 6px 9px;
+  border-radius: 7px;
+  background: #fff9ec;
+  border: 1px solid #f5dfa8;
+  color: #a8640b;
+  font-size: 10.5px;
+  line-height: 1.5;
 }
 
 .ptp-crate-grid {
@@ -2959,8 +3022,138 @@
   }
 }
 
+/* ── Dual-Column Pet Age Picker ── */
+.ptp-age-pill {
+  padding: 2px 9px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  background: #eaf8f0;
+  color: #1f9254;
+}
+
+.ptp-age-pill.is-caution {
+  background: #fff7e6;
+  color: #b56c0d;
+}
+
+.ptp-age-pill.is-blocked {
+  background: #ffefee;
+  color: #d6453f;
+}
+
+.ptp-age-picker {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr;
+  align-items: stretch;
+  gap: 0;
+  margin-bottom: 12px;
+  border-radius: 14px;
+  background: #f7f9f8;
+  border: 1px solid #e9efec;
+  overflow: hidden;
+}
+
+.ptp-age-divider {
+  background: #e6ece9;
+  margin: 28px 0 12px;
+}
+
+.ptp-age-col-wrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.ptp-age-col-hd {
+  text-align: center;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: #829088;
+  padding: 7px 0 5px;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid #edf2ef;
+  background: #f3f6f4;
+  flex-shrink: 0;
+}
+
+.ptp-age-col {
+  position: relative;
+  height: 162px;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
+  touch-action: pan-y;
+  padding: 12px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.ptp-age-col::-webkit-scrollbar {
+  display: none;
+}
+
+.ptp-age-item {
+  width: 100%;
+  height: 36px;
+  flex-shrink: 0;
+  border-radius: 9px !important;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: #7d8b84 !important;
+  font-variant-numeric: tabular-nums;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.14s ease, color 0.14s ease, font-size 0.14s ease;
+}
+
+.ptp-age-item.is-active {
+  background: #ffffff !important;
+  color: #16221c !important;
+  font-size: 15.5px;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(15, 42, 28, 0.08), inset 0 0 0 1.2px #36bc73;
+}
+
+.ptp-age-item.is-active.is-caution {
+  color: #b56c0d !important;
+  box-shadow: 0 2px 8px rgba(181, 108, 13, 0.1), inset 0 0 0 1.2px #eab354;
+}
+
+.ptp-age-item.is-active.is-blocked {
+  color: #d6453f !important;
+  box-shadow: 0 2px 8px rgba(214, 69, 63, 0.1), inset 0 0 0 1.2px #e8706a;
+}
+
+.ptp-age-fade-top,
+.ptp-age-fade-bot {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 18px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.ptp-age-fade-top {
+  top: 28px;
+  background: linear-gradient(180deg, #f7f9f8 0%, rgba(247, 249, 248, 0) 100%);
+}
+
+.ptp-age-fade-bot {
+  bottom: 0;
+  background: linear-gradient(0deg, #f7f9f8 0%, rgba(247, 249, 248, 0) 100%);
+}
+
 /* ── Prevent nested scroll leak inside prototype on touch devices ── */
-.ptp-scroll {
+.ptp-scroll,
+.ptp-sheet-body {
   overscroll-behavior-y: contain;
   touch-action: pan-y;
 }

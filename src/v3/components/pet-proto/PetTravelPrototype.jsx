@@ -6,7 +6,10 @@ import {
   WEIGHT_OPTIONS,
   FLIGHTS,
   BREED_GROUPS,
-  AGE_OPTIONS,
+  PET_AGE_YEARS,
+  PET_AGE_MONTHS,
+  evaluatePetAge,
+  DEFAULT_PET_AGE,
   SAVED_ADDRESSES,
   PICKUP_SLOTS,
   TRACKING_STAGES,
@@ -211,6 +214,8 @@ export default function PetTravelPrototype() {
   const chassisRef = useRef(null);
   const mobileStripRef = useRef(null);
   const formScrollRef = useRef(null);
+  const ageYearColRef = useRef(null);
+  const ageMonthColRef = useRef(null);
   const [phoneScale, setPhoneScale] = useState(1);
   const [swapCount, setSwapCount] = useState(0);
   const [pulseField, setPulseField] = useState(null);
@@ -237,7 +242,7 @@ export default function PetTravelPrototype() {
   const [gender, setGender] = useState('雄性');
   const [neutered, setNeutered] = useState('已绝育');
   const [weightKg, setWeightKg] = useState(9.2);
-  const [ageObj, setAgeObj] = useState(AGE_OPTIONS[2]); // 2岁 6个月
+  const [ageObj, setAgeObj] = useState(DEFAULT_PET_AGE); // 2岁 6个月
   const [senderAddr, setSenderAddr] = useState(SAVED_ADDRESSES[0]);
   const [receiverAddr, setReceiverAddr] = useState(SAVED_ADDRESSES[1]);
   const [pickupSlot, setPickupSlot] = useState('');
@@ -255,7 +260,7 @@ export default function PetTravelPrototype() {
   const [trackStageIdx, setTrackStageIdx] = useState(2); // 0..4
   const [modal, setModal] = useState(null);
   const [draftWeightKg, setDraftWeightKg] = useState(9.2);
-  const [draftAgeObj, setDraftAgeObj] = useState(AGE_OPTIONS[2]);
+  const [draftAgeObj, setDraftAgeObj] = useState(DEFAULT_PET_AGE);
   const [breedTab, setBreedTab] = useState('dog');
   const [breedSearch, setBreedSearch] = useState('');
   const [breedAlert, setBreedAlert] = useState(null);
@@ -281,6 +286,17 @@ export default function PetTravelPrototype() {
     setSheetDragY(0);
     setIsSheetDragging(false);
     sheetDragStart.current = { y: 0, active: false };
+    if (modal === 'age') {
+      requestAnimationFrame(() => {
+        [ageYearColRef.current, ageMonthColRef.current].forEach((col) => {
+          if (!col) return;
+          const activeBtn = col.querySelector('.is-active');
+          if (activeBtn) {
+            col.scrollTop = Math.max(0, activeBtn.offsetTop - (col.clientHeight - activeBtn.clientHeight) / 2);
+          }
+        });
+      });
+    }
   }, [modal]);
 
   const navigate = useCallback((next, dirOverride) => {
@@ -515,7 +531,7 @@ export default function PetTravelPrototype() {
   const handleAutoFill = () => {
     setPetName('小航');
     setBreed('柯基犬');
-    setAgeObj(AGE_OPTIONS[2]);
+    setAgeObj(DEFAULT_PET_AGE);
     setPickupSlot(dynamicPickupSlots[1]);
     setPhotoUploaded(true);
     setVaccineUploaded(true);
@@ -543,7 +559,7 @@ export default function PetTravelPrototype() {
     setGender('雄性');
     setNeutered('已绝育');
     setWeightKg(9.2);
-    setAgeObj(AGE_OPTIONS[2]);
+    setAgeObj(DEFAULT_PET_AGE);
     setSenderAddr(SAVED_ADDRESSES[0]);
     setReceiverAddr(SAVED_ADDRESSES[1]);
     setPickupSlot('');
@@ -656,21 +672,21 @@ export default function PetTravelPrototype() {
               </div>
             )}
 
-            {/* ══ 01: SERVICE HUB (Uncut 1:1 Figma Header + Real Scroll & Buttons) ══ */}
+            {/* ══ 01: SERVICE HUB (Docked Figma Header + Smooth Inner Scroll) ══ */}
             {screen === 'hub' && (
               <div key="hub" className="ptp-view" style={{ background: '#f2f5f4' }}>
-                <div className="ptp-scroll">
-                  <div className="ptp-figma-hdr">
-                    <img src={HYBRID_ASSETS.hubHeader} alt="宠物出行" />
-                    <button
-                      type="button"
-                      className="ptp-hdr-back"
-                      style={{ top: '34%', height: '30%' }}
-                      aria-label="返回开屏"
-                      onClick={() => navigate('splash')}
-                    />
-                  </div>
+                <div className="ptp-figma-hdr is-hub">
+                  <img src={HYBRID_ASSETS.hubHeader} alt="宠物出行" />
+                  <button
+                    type="button"
+                    className="ptp-hdr-back"
+                    style={{ top: '36%', height: '32%' }}
+                    aria-label="返回开屏"
+                    onClick={() => navigate('splash')}
+                  />
+                </div>
 
+                <div className="ptp-scroll">
                   <div className="ptp-hub-body">
                     <div className="ptp-svc-card">
                       <img src={HYBRID_ASSETS.cardSolo} alt="宠物单独飞" />
@@ -738,21 +754,21 @@ export default function PetTravelPrototype() {
               </div>
             )}
 
-            {/* ══ 02B: RANDOM FLIGHT (Uncut 1:1 Figma Header + Real 3-State Machine) ══ */}
+            {/* ══ 02B: RANDOM FLIGHT (Docked Figma Header + Real 3-State Machine) ══ */}
             {screen === 'random' && (
               <div key="random" className="ptp-view" style={{ background: '#f4f6f5' }}>
-                <div className="ptp-scroll">
-                  <div className="ptp-figma-hdr">
-                    <img src={HYBRID_ASSETS.randomHeader} alt="宠物随机飞" />
-                    <button
-                      type="button"
-                      className="ptp-hdr-back"
-                      style={{ top: '24%', height: '18%' }}
-                      aria-label="返回"
-                      onClick={goBack}
-                    />
-                  </div>
+                <div className="ptp-figma-hdr is-random">
+                  <img src={HYBRID_ASSETS.randomHeader} alt="宠物随机飞" />
+                  <button
+                    type="button"
+                    className="ptp-hdr-back"
+                    style={{ top: '25%', height: '19%' }}
+                    aria-label="返回"
+                    onClick={goBack}
+                  />
+                </div>
 
+                <div className="ptp-scroll">
                   <div className="ptp-quick-bar">
                     <button
                       type="button"
@@ -894,21 +910,21 @@ export default function PetTravelPrototype() {
               </div>
             )}
 
-            {/* ══ 02A: SOLO SEARCH (Uncut 1:1 Figma Airplane Header + Real Search Controls) ══ */}
+            {/* ══ 02A: SOLO SEARCH (Docked Figma Airplane Header + Real Search Controls) ══ */}
             {screen === 'soloSearch' && (
               <div key="soloSearch" className="ptp-view" style={{ background: '#f4f6f5' }}>
-                <div className="ptp-scroll">
-                  <div className="ptp-figma-hdr">
-                    <img src={HYBRID_ASSETS.soloHeader} alt="宠物单独飞" />
-                    <button
-                      type="button"
-                      className="ptp-hdr-back"
-                      style={{ top: '34%', height: '28%' }}
-                      aria-label="返回"
-                      onClick={goBack}
-                    />
-                  </div>
+                <div className="ptp-figma-hdr is-solo">
+                  <img src={HYBRID_ASSETS.soloHeader} alt="宠物单独飞" />
+                  <button
+                    type="button"
+                    className="ptp-hdr-back"
+                    style={{ top: '38%', height: '31%' }}
+                    aria-label="返回"
+                    onClick={goBack}
+                  />
+                </div>
 
+                <div className="ptp-scroll">
                   <div className="ptp-search-card">
                     <div className="ptp-trip-tabs">
                       <button type="button" className={tripType === 'oneway' ? 'is-active' : ''} onClick={() => setTripType('oneway')}>单程</button>
@@ -1292,23 +1308,21 @@ export default function PetTravelPrototype() {
                     <span className="ptp-nav-title">填写订单信息</span>
                     <span className="ptp-nav-btn" />
                   </div>
-                  {!formScrolled && (
-                    <div className="ptp-steps">
-                      <span className="is-on"><CheckMiniSvg color="#ffffff" size={11} strokeWidth={2.1} /> 选航班</span>
-                      <i />
-                      <span className="is-on"><span className="ptp-step-num">2</span>填信息</span>
-                      <i />
-                      <span>3 支付</span>
-                    </div>
-                  )}
                 </div>
 
                 <div
                   ref={formScrollRef}
                   className="ptp-scroll"
-                  style={{ position: 'relative', zIndex: 4, paddingTop: 10 }}
+                  style={{ position: 'relative', zIndex: 4, paddingTop: 4 }}
                   onScroll={(e) => setFormScrolled(e.currentTarget.scrollTop > 56)}
                 >
+                  <div className="ptp-steps" style={{ marginBottom: 10 }}>
+                    <span className="is-on"><CheckMiniSvg color="#ffffff" size={11} strokeWidth={2.1} /> 选航班</span>
+                    <i />
+                    <span className="is-on"><span className="ptp-step-num">2</span>填信息</span>
+                    <i />
+                    <span>3 支付</span>
+                  </div>
                   <div className="ptp-card">
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
                       <strong style={{ fontSize: 14 }}>宠物档案</strong>
@@ -1353,6 +1367,7 @@ export default function PetTravelPrototype() {
                       </button>
                     </div>
                     {!ageObj.eligible && <div className="ptp-err-strip">{ageObj.note}</div>}
+                    {ageObj.eligible && ageObj.status === 'caution' && <div className="ptp-warn-strip">{ageObj.note}</div>}
                   </div>
 
                   <div className="ptp-card">
@@ -2070,52 +2085,93 @@ export default function PetTravelPrototype() {
               );
             })()}
 
-            {modal === 'age' && (
-              <div className="ptp-mask" onClick={() => setModal(null)}>
-                <div className="ptp-sheet" style={sheetSwipeStyle} {...sheetSwipeHandlers} onClick={(e) => e.stopPropagation()}>
-                  <div className="ptp-sheet-grab" onClick={() => setModal(null)} />
-                  <div className="ptp-sheet-hd">
-                    <button type="button" style={{ fontSize: 12.5, color: '#84938b' }} onClick={() => setModal(null)}>取消</button>
-                    <span>选择宠物年龄</span>
-                    <span style={{ width: 28 }} />
-                  </div>
-                  <div style={{ position: 'relative', marginBottom: 14 }}>
-                    <div className="ptp-sheet-body" style={{ maxHeight: 174, padding: '8px 0' }}>
-                      {AGE_OPTIONS.map((o) => {
-                        const active = draftAgeObj.label === o.label;
-                        return (
-                          <button
-                            key={o.label}
-                            type="button"
-                            style={{
-                              width: '100%',
-                              padding: active ? '11px 0' : '8px 0',
-                              borderRadius: 10,
-                              background: active ? '#f3f5f8' : 'transparent',
-                              fontSize: active ? 18 : 14,
-                              fontWeight: active ? 700 : 500,
-                              color: active && !o.eligible ? '#d6453f' : active ? '#16221c' : '#a4aeb5',
-                            }}
-                            onClick={() => setDraftAgeObj(o)}
-                          >
-                            {o.label}
-                          </button>
-                        );
-                      })}
+            {modal === 'age' && (() => {
+              const selectableMonths = draftAgeObj.years === 0 ? PET_AGE_MONTHS.slice(1) : PET_AGE_MONTHS;
+              const statusTone = draftAgeObj.status === 'blocked' ? 'is-blocked' : draftAgeObj.status === 'caution' ? 'is-caution' : '';
+              const selectAge = (nextY, nextM, colRef, btnEl) => {
+                setDraftAgeObj(evaluatePetAge(nextY, nextM));
+                const col = colRef?.current;
+                if (col && btnEl) {
+                  const top = Math.max(0, btnEl.offsetTop - (col.clientHeight - btnEl.clientHeight) / 2);
+                  col.scrollTo({ top, behavior: 'smooth' });
+                }
+              };
+              const cardBg = draftAgeObj.status === 'blocked' ? '#fff4f3' : draftAgeObj.status === 'caution' ? '#fff9ec' : '#f8faf9';
+              const cardBorder = draftAgeObj.status === 'blocked' ? '#f7d5d2' : draftAgeObj.status === 'caution' ? '#f5dfa8' : '#e6ece9';
+              const titleColor = draftAgeObj.status === 'blocked' ? '#d6453f' : draftAgeObj.status === 'caution' ? '#b56c0d' : '#26a95f';
+              return (
+                <div className="ptp-mask" onClick={() => setModal(null)}>
+                  <div className="ptp-sheet" style={sheetSwipeStyle} {...sheetSwipeHandlers} onClick={(e) => e.stopPropagation()}>
+                    <div className="ptp-sheet-grab" onClick={() => setModal(null)} />
+                    <div className="ptp-sheet-hd">
+                      <button type="button" style={{ fontSize: 12.5, color: '#84938b' }} onClick={() => setModal(null)}>取消</button>
+                      <span>选择宠物年龄</span>
+                      <span className={`ptp-age-pill${statusTone ? ` ${statusTone}` : ''}`}>{draftAgeObj.label}</span>
                     </div>
-                    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 22, background: 'linear-gradient(180deg, #ffffff 0%, rgba(255,255,255,0) 100%)', pointerEvents: 'none' }} />
-                    <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 22, background: 'linear-gradient(0deg, #ffffff 0%, rgba(255,255,255,0) 100%)', pointerEvents: 'none' }} />
+
+                    <div className="ptp-age-picker" onTouchStart={(e) => e.stopPropagation()}>
+                      <div className="ptp-age-col-wrap">
+                        <div className="ptp-age-col-hd">周岁（0–15岁）</div>
+                        <div ref={ageYearColRef} className="ptp-age-col" role="listbox" aria-label="选择周岁">
+                          {PET_AGE_YEARS.map((y) => {
+                            const active = draftAgeObj.years === y;
+                            return (
+                              <button
+                                key={y}
+                                type="button"
+                                role="option"
+                                aria-selected={active}
+                                className={`ptp-age-item${active ? ` is-active${statusTone ? ` ${statusTone}` : ''}` : ''}`}
+                                onClick={(e) => selectAge(y, y === 0 && draftAgeObj.months === 0 ? 1 : draftAgeObj.months, ageYearColRef, e.currentTarget)}
+                              >
+                                {y}岁
+                              </button>
+                            );
+                          })}
+                        </div>
+                        <div className="ptp-age-fade-top" />
+                        <div className="ptp-age-fade-bot" />
+                      </div>
+
+                      <div className="ptp-age-divider" aria-hidden="true" />
+
+                      <div className="ptp-age-col-wrap">
+                        <div className="ptp-age-col-hd">月龄（{draftAgeObj.years === 0 ? '1–11个月' : '0–11个月'}）</div>
+                        <div ref={ageMonthColRef} className="ptp-age-col" role="listbox" aria-label="选择月龄">
+                          {selectableMonths.map((m) => {
+                            const active = draftAgeObj.months === m;
+                            return (
+                              <button
+                                key={m}
+                                type="button"
+                                role="option"
+                                aria-selected={active}
+                                className={`ptp-age-item${active ? ` is-active${statusTone ? ` ${statusTone}` : ''}` : ''}`}
+                                onClick={(e) => selectAge(draftAgeObj.years, m, ageMonthColRef, e.currentTarget)}
+                              >
+                                {m}个月
+                              </button>
+                            );
+                          })}
+                        </div>
+                        <div className="ptp-age-fade-top" />
+                        <div className="ptp-age-fade-bot" />
+                      </div>
+                    </div>
+
+                    <div style={{ borderRadius: 11, padding: '10px 12px', background: cardBg, border: `1px solid ${cardBorder}`, fontSize: 11, lineHeight: 1.56, color: '#6b7871' }}>
+                      <strong style={{ display: 'block', fontSize: 12, marginBottom: 3, color: titleColor }}>
+                        ● {draftAgeObj.title}
+                      </strong>
+                      {draftAgeObj.note}
+                    </div>
+                    <button type="button" className="ptp-btn-green-full" style={{ marginTop: 12, borderRadius: 12 }} onClick={() => { setAgeObj(draftAgeObj); setModal(null); }}>
+                      确认选择（{draftAgeObj.label}）
+                    </button>
                   </div>
-                  <div style={{ borderRadius: 11, padding: '11px 12px', background: draftAgeObj.eligible ? '#f8faf9' : '#fff4f3', border: `1px solid ${draftAgeObj.eligible ? '#e6ece9' : '#f7d5d2'}`, fontSize: 11, lineHeight: 1.58, color: '#7b8781' }}>
-                    <strong style={{ display: 'block', fontSize: 12, marginBottom: 4, color: draftAgeObj.eligible ? '#26a95f' : '#d6453f' }}>
-                      ● {draftAgeObj.eligible ? '年龄符合客舱同行要求' : '超出航空适航年龄限制'}
-                    </strong>
-                    {draftAgeObj.note}
-                  </div>
-                  <button type="button" className="ptp-btn-green-full" style={{ marginTop: 14, borderRadius: 12 }} onClick={() => { setAgeObj(draftAgeObj); setModal(null); }}>确认选择</button>
                 </div>
-              </div>
-            )}
+              );
+            })()}
 
             {(modal === 'addrSend' || modal === 'addrRecv') && (
               <div className="ptp-mask" onClick={() => setModal(null)}>
