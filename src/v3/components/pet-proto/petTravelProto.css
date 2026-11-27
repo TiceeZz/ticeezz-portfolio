@@ -430,10 +430,21 @@
     inset 0 1px 1px rgba(255, 255, 255, 0.2);
 }
 
+.ptp-screen-viewport {
+  position: relative;
+  width: calc(360px * var(--ptp-scale, 1));
+  height: calc(781.5px * var(--ptp-scale, 1));
+  border-radius: calc(42px * var(--ptp-scale, 1));
+  overflow: hidden;
+  margin: 0 auto;
+}
+
 .ptp-screen {
   position: relative;
-  width: 100%;
-  aspect-ratio: 1 / 2.171;
+  width: 360px;
+  height: 781.5px;
+  transform: scale(var(--ptp-scale, 1));
+  transform-origin: top left;
   border-radius: 42px;
   background: #f4f6f5;
   color: #16221c;
@@ -2669,18 +2680,231 @@
   flex-shrink: 0;
 }
 
+.ptp-studio-mobile-step,
+.ptp-mobile-only,
+.ptp-mobile-strip {
+  display: none;
+}
+
+.ptp-mobile-strip {
+  position: relative;
+  z-index: 4;
+  gap: 7px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  padding: 2px 2px 14px;
+  margin-bottom: 4px;
+}
+
+.ptp-mobile-strip::-webkit-scrollbar {
+  display: none;
+}
+
+.ptp-mobile-chip {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 31px;
+  padding: 0 11px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink-2);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.16s ease;
+}
+
+.ptp-mobile-chip em {
+  font-style: normal;
+  font-family: var(--f-mono, 'JetBrains Mono', monospace);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--blue-text);
+}
+
+.ptp-mobile-chip.is-active {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: var(--on-blue, #ffffff);
+  box-shadow: 0 6px 14px -6px rgba(0, 56, 255, 0.45);
+}
+
+.ptp-mobile-chip.is-active em {
+  color: rgba(255, 255, 255, 0.84);
+}
+
 @media (max-width: 1120px) {
-  .ptp-stage { grid-template-columns: 1fr; gap: 28px; }
+  .ptp-stage { grid-template-columns: 1fr; gap: 22px; }
   .ptp-phone-col { position: static; }
   .ptp-chassis { width: min(382px, 100%); }
   .ptp-telemetry { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ptp-mobile-strip { display: flex; }
 }
 
-@media (max-width: 560px) {
-  .ptp-studio { padding: 16px 14px 24px; border-radius: 22px; }
-  .ptp-studio-progress { display: none; }
-  .ptp-phase-grid { grid-template-columns: 1fr; }
-  .ptp-chassis { padding: 8px; border-radius: 40px; }
-  .ptp-hw-btn { display: none; }
-  .ptp-screen { border-radius: 33px; }
+@media (max-width: 640px) {
+  .ptp-studio {
+    margin-left: -12px;
+    margin-right: -12px;
+    width: calc(100% + 24px);
+    padding: 13px 10px 20px;
+    border-radius: 22px;
+  }
+
+  .ptp-studio-bar {
+    flex-wrap: nowrap;
+    gap: 8px;
+    padding-bottom: 11px;
+    margin-bottom: 10px;
+  }
+
+  .ptp-studio-brand {
+    flex: 1;
+    min-width: 0;
+    flex-wrap: nowrap;
+    gap: 7px;
+  }
+
+  .ptp-studio-label,
+  .ptp-studio-pill,
+  .ptp-studio-progress,
+  .ptp-desktop-only {
+    display: none;
+  }
+
+  .ptp-studio-mobile-step {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink-2);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .ptp-studio-mobile-step strong {
+    font-family: var(--f-mono, 'JetBrains Mono', monospace);
+    color: var(--ink);
+    font-weight: 700;
+  }
+
+  .ptp-mobile-only {
+    display: inline;
+  }
+
+  .ptp-studio-nav {
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .ptp-studio-icon-btn {
+    width: 30px;
+    height: 30px;
+    font-size: 13px;
+  }
+
+  .ptp-studio-reset-btn {
+    height: 30px;
+    padding: 0 11px;
+    font-size: 11.5px;
+  }
+
+  .ptp-phone-aura {
+    width: 100%;
+    max-width: 320px;
+    height: 360px;
+    filter: blur(44px);
+  }
+
+  .ptp-chassis {
+    width: min(372px, 100%);
+    padding: 6px;
+    border-radius: 40px;
+  }
+
+  .ptp-hw-btn {
+    display: none;
+  }
+
+  .ptp-phone-caption {
+    margin-top: 12px;
+    padding: 6px 12px;
+    font-size: 11px;
+  }
+
+  .ptp-director {
+    gap: 12px;
+  }
+
+  .ptp-dir-card,
+  .ptp-dir-hero {
+    padding: 16px 15px;
+    border-radius: 16px;
+  }
+
+  .ptp-dir-watermark {
+    font-size: 52px;
+    top: 8px;
+    right: 12px;
+  }
+
+  .ptp-dir-title {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+
+  .ptp-dir-insight {
+    font-size: 13px;
+    line-height: 1.7;
+    margin-bottom: 12px;
+  }
+
+  .ptp-dir-mission {
+    padding: 9px 11px;
+    font-size: 12px;
+    gap: 8px;
+  }
+
+  .ptp-dir-actions {
+    gap: 6px;
+    margin-top: 12px;
+  }
+
+  .ptp-dir-btn {
+    height: 32px;
+    padding: 0 12px;
+    font-size: 11.5px;
+  }
+
+  .ptp-tele-cell {
+    padding: 9px 10px;
+    border-radius: 12px;
+  }
+
+  .ptp-tele-cell strong {
+    font-size: 12px;
+  }
+
+  .ptp-phase-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .ptp-scene-btn {
+    padding: 9px 10px;
+    gap: 6px;
+    border-radius: 10px;
+  }
+
+  .ptp-scene-btn em {
+    font-size: 10px;
+    min-width: 20px;
+  }
+
+  .ptp-scene-btn strong {
+    font-size: 12px;
+  }
 }

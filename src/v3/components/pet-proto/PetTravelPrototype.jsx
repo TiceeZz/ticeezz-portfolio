@@ -132,6 +132,9 @@ export default function PetTravelPrototype() {
   const [history, setHistory] = useState([]);
   const [toast, setToast] = useState(null);
   const toastTimer = useRef(null);
+  const chassisRef = useRef(null);
+  const mobileStripRef = useRef(null);
+  const [phoneScale, setPhoneScale] = useState(1);
 
   // Random Flight 3-state machine
   const [randomState, setRandomState] = useState('available'); // 'empty' | 'available' | 'full'
@@ -265,6 +268,36 @@ export default function PetTravelPrototype() {
   }, [activeSceneIdx, navigate]);
 
   useEffect(() => {
+    const el = chassisRef.current;
+    if (!el) return undefined;
+    const updateScale = () => {
+      const style = window.getComputedStyle(el);
+      const padX = (parseFloat(style.paddingLeft) || 0) + (parseFloat(style.paddingRight) || 0);
+      const availW = Math.max(240, el.clientWidth - padX);
+      const next = availW >= 360 ? 1 : Number((availW / 360).toFixed(4));
+      setPhoneScale(next);
+    };
+    updateScale();
+    if (typeof ResizeObserver === 'undefined') {
+      window.addEventListener('resize', updateScale);
+      return () => window.removeEventListener('resize', updateScale);
+    }
+    const ro = new ResizeObserver(updateScale);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const strip = mobileStripRef.current;
+    if (!strip) return;
+    const activeEl = strip.querySelector('.is-active');
+    if (activeEl && strip.scrollWidth > strip.clientWidth) {
+      const targetLeft = activeEl.offsetLeft - (strip.clientWidth - activeEl.clientWidth) / 2;
+      strip.scrollTo({ left: Math.max(0, targetLeft), behavior: 'smooth' });
+    }
+  }, [activeSceneId]);
+
+  useEffect(() => {
     const onKeyDown = (e) => {
       const tag = e.target?.tagName;
       if (tag === 'INPUT' || tag === 'TEXTAREA' || e.metaKey || e.ctrlKey || e.altKey) return;
@@ -325,6 +358,9 @@ export default function PetTravelPrototype() {
           <span className="ptp-live-dot" aria-hidden="true" />
           <span className="ptp-studio-label">INTERACTIVE PROTOTYPE</span>
           <span className="ptp-studio-pill">UMETRIP · PET TRAVEL</span>
+          <span className="ptp-studio-mobile-step">
+            <strong>{String(activeSceneIdx + 1).padStart(2, '0')}</strong> / {String(SCENES.length).padStart(2, '0')} · {activeScene.short}
+          </span>
         </div>
 
         <div className="ptp-studio-progress" aria-label={`当前第 ${activeSceneIdx + 1} 屏，共 ${SCENES.length} 屏`}>
@@ -344,21 +380,43 @@ export default function PetTravelPrototype() {
             →
           </button>
           <button type="button" className="ptp-studio-reset-btn" onClick={handleReset}>
-            重置演示
+            <span className="ptp-desktop-only">重置演示</span>
+            <span className="ptp-mobile-only">重置</span>
           </button>
         </div>
+      </div>
+
+      {/* ── Mobile & Tablet Quick Horizontal Scene Switcher ── */}
+      <div ref={mobileStripRef} className="ptp-mobile-strip" role="tablist" aria-label="快捷切换原型页面">
+        {SCENES.map((s) => {
+          const isActive = activeSceneId === s.id;
+          return (
+            <button
+              key={s.id}
+              type="button"
+              role="tab"
+              aria-selected={isActive}
+              className={`ptp-mobile-chip${isActive ? ' is-active' : ''}`}
+              onClick={() => navigate(s.id)}
+            >
+              <em>{s.step}</em>
+              <span>{s.short}</span>
+            </button>
+          );
+        })}
       </div>
 
       <div className="ptp-stage">
         {/* ════════════ LEFT: 1:1 HYBRID REAL-INTERACTION IPHONE ════════════ */}
         <div className="ptp-phone-col">
           <div className="ptp-phone-aura" aria-hidden="true" />
-          <div className="ptp-chassis" role="region" aria-label="航旅纵横宠物出行 1:1 可交互原型">
+          <div ref={chassisRef} className="ptp-chassis" role="region" aria-label="航旅纵横宠物出行可交互原型">
             {/* Realistic machined titanium side hardware keys */}
             <span className="ptp-hw-btn ptp-hw-action" aria-hidden="true" />
             <span className="ptp-hw-btn ptp-hw-vol-up" aria-hidden="true" />
             <span className="ptp-hw-btn ptp-hw-vol-dn" aria-hidden="true" />
             <span className="ptp-hw-btn ptp-hw-power" aria-hidden="true" />
+            <div className="ptp-screen-viewport" style={{ '--ptp-scale': phoneScale }}>
             <div className="ptp-screen">
             {toast && <div className="ptp-toast">{toast}</div>}
 
@@ -2117,11 +2175,15 @@ export default function PetTravelPrototype() {
               </div>
             )}
             </div>
+            </div>
           </div>
 
           <div className="ptp-phone-caption">
             <span className="ptp-caption-pulse" aria-hidden="true" />
-            <span>可直接在机内点击与滑动 · 支持键盘 ← / → 切换页面</span>
+            <span>
+              可直接在机内点击与滑动
+              <span className="ptp-desktop-only"> · 支持键盘 ← / → 切换页面</span>
+            </span>
           </div>
         </div>
 
