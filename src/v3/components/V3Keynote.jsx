@@ -34,10 +34,10 @@ export default function V3Keynote() {
       <div ref={revealRef} className="v3-container v3-reveal">
         <div className="v3-keynote__grid">
           <div className="v3-keynote__head">
-            <span className="v3-kicker">01 / FEATURED PROPOSAL · 2026</span>
+            <span className="v3-kicker">01 / FEATURED CASE · 2026</span>
             <h2 className="v3-keynote__title">
               航旅纵横 · 宠物出行
-              <span className="v3-title-sub-en">Pet Travel UX Proposal</span>
+              <span className="v3-title-sub-en">Pet Travel UX · Film & Live Prototype</span>
             </h2>
           </div>
 
@@ -66,7 +66,7 @@ export default function V3Keynote() {
             <div className="v3-keynote__cta">
               <V3Magnetic>
                 <Link to="/v3/work/pettravel" className="v3-action-primary">
-                  <span>阅读 22 页完整提案</span>
+                  <span>观看影片与体验交互原型</span>
                   <span className="v3-action-arrow">↗</span>
                 </Link>
               </V3Magnetic>

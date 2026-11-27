@@ -100,7 +100,7 @@ export default function V3Hero({ theme }) {
                   </button>
                 </V3Magnetic>
                 <button className="v3-action-link" onClick={() => scrollTo('v3-keynote')}>
-                  最新提案 · 航旅纵横
+                  最新案例 · 航旅纵横
                 </button>
               </div>
             </div>
