@@ -225,7 +225,18 @@ export default function V3WorkPage() {
                     <span>VIDEO {String(i + 1).padStart(2, '0')}</span>
                     <h3>{v.title}</h3>
                   </div>
-                  {v.embedUrl ? (
+                  {v.src ? (
+                    <div className="v3-work__iframe-wrap">
+                      <video
+                        src={v.src}
+                        poster={v.poster}
+                        controls
+                        playsInline
+                        preload="metadata"
+                        aria-label={v.title}
+                      />
+                    </div>
+                  ) : v.embedUrl ? (
                     <div className="v3-work__iframe-wrap">
                       <iframe
                         src={v.embedUrl}

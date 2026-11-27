@@ -23,6 +23,17 @@ export const V3_CASE_STUDIES = [
     defaultView: 'stream',
     sections: [
       { label: '交互原型', type: 'prototype', badge: 'LIVE' },
+      {
+        label: '演示影片',
+        type: 'video',
+        videos: [
+          {
+            title: '宠物出行 · 交互演示',
+            src: '/videos/pet-travel/pet-travel-showcase.mp4?v=20261127',
+            poster: '/images/projects/pet-travel/showcase-poster.webp?v=20261127',
+          },
+        ],
+      },
       { label: '完整提案', images: seq('/images/projects/pet-travel', 1, 22) },
     ],
   },
