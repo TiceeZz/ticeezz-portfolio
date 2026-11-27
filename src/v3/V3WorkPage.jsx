@@ -8,6 +8,47 @@ import PetTravelPrototype from './components/pet-proto/PetTravelPrototype';
 import { getV3CaseStudy } from './data/v3CaseStudies';
 import './v3.css';
 
+function V3WorkVideoPlayer({ src, poster, title }) {
+  const videoRef = useRef(null);
+  const [started, setStarted] = useState(false);
+
+  const handleStart = () => {
+    const el = videoRef.current;
+    if (!el) return;
+    setStarted(true);
+    el.play().catch(() => {});
+  };
+
+  return (
+    <div className="v3-work__iframe-wrap">
+      <video
+        ref={videoRef}
+        src={src}
+        poster={poster}
+        controls={started}
+        playsInline
+        preload="metadata"
+        aria-label={title}
+        onPlay={() => setStarted(true)}
+      />
+      {!started && (
+        <button
+          type="button"
+          className="v3-video-play-overlay"
+          onClick={handleStart}
+          aria-label={`播放 ${title}`}
+        >
+          <span className="v3-video-play-btn">
+            <span className="v3-video-play-tri" aria-hidden="true" />
+            <span className="v3-video-play-label">播放演示影片</span>
+            <span className="v3-video-play-dur">0:48</span>
+          </span>
+        </button>
+      )}
+    </div>
+  );
+}
+
 export default function V3WorkPage() {
   const { slug } = useParams();
   const [theme, setTheme] = useV3Theme();
@@ -229,16 +270,7 @@ export default function V3WorkPage() {
                     <h3>{v.title}</h3>
                   </div>
                   {v.src ? (
-                    <div className="v3-work__iframe-wrap">
-                      <video
-                        src={v.src}
-                        poster={v.poster}
-                        controls
-                        playsInline
-                        preload="metadata"
-                        aria-label={v.title}
-                      />
-                    </div>
+                    <V3WorkVideoPlayer src={v.src} poster={v.poster} title={v.title} />
                   ) : v.embedUrl ? (
                     <div className="v3-work__iframe-wrap">
                       <iframe
@@ -254,20 +286,24 @@ export default function V3WorkPage() {
                 </div>
               ))}
               {protoSectionIdx >= 0 && (
-                <div className="v3-work__proto-bridge">
+                <button
+                  type="button"
+                  className="v3-work__proto-bridge"
+                  onClick={() => handleTabChange(protoSectionIdx)}
+                >
                   <div className="v3-work__proto-bridge-text">
-                    <span>INTERACTIVE PROTOTYPE · LIVE</span>
-                    <p>看完演示影片，想亲自上手操作 10 屏完整交互流程？</p>
+                    <span>
+                      <i className="ptp-live-dot" aria-hidden="true" />
+                      INTERACTIVE PROTOTYPE · LIVE
+                    </span>
+                    <strong>亲自上手体验 10 屏完整交互原型</strong>
+                    <p>支持真实点击操作：航线筛选、短鼻犬禁飞校验、体重联动箱型与实时飞行追踪</p>
                   </div>
-                  <button
-                    type="button"
-                    className="v3-work__proto-bridge-btn"
-                    onClick={() => handleTabChange(protoSectionIdx)}
-                  >
-                    <span className="ptp-live-dot" aria-hidden="true" />
-                    <span>切换到「交互原型」→</span>
-                  </button>
-                </div>
+                  <span className="v3-work__proto-bridge-btn">
+                    <span>立即体验交互原型</span>
+                    <span aria-hidden="true">→</span>
+                  </span>
+                </button>
               )}
             </div>
           ) : (

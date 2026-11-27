@@ -22,10 +22,8 @@ export const HERO_PLATES = [
     num: '01',
     title: '航旅纵横 · 宠物出行',
     sub: '宠物航空托运全流程体验优化 · 2026',
-    img: '/images/projects/pet-travel/showcase-poster.webp?v=20261127',
-    previewVideo: '/videos/pet-travel/pet-travel-preview.mp4?v=20261127',
-    poster: '/images/projects/pet-travel/showcase-poster.webp?v=20261127',
-    isDevicePlate: false,
+    img: '/images/projects/pet-travel/iphone-mockup.webp',
+    isDevicePlate: true,
     href: '/v3/work/pettravel',
   },
   {

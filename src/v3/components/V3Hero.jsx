@@ -119,30 +119,15 @@ export default function V3Hero({ theme }) {
             <span className="v3-plate-corner is-tr" aria-hidden="true" />
             <span className="v3-plate-corner is-bl" aria-hidden="true" />
             <span className="v3-plate-corner is-br" aria-hidden="true" />
-            {HERO_PLATES.map((plate, idx) =>
-              plate.previewVideo ? (
-                <video
-                  key={plate.num}
-                  src={plate.previewVideo}
-                  poster={plate.poster || plate.img}
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  preload="metadata"
-                  aria-label={plate.title}
-                  className={`v3-plate__img${idx === active ? ' is-active' : ''}`}
-                />
-              ) : (
-                <img
-                  key={plate.num}
-                  src={plate.img}
-                  alt={plate.title}
-                  className={`v3-plate__img${plate.isDevicePlate ? ' is-device' : ''}${idx === active ? ' is-active' : ''}`}
-                  loading={idx === 0 ? 'eager' : 'lazy'}
-                />
-              )
-            )}
+            {HERO_PLATES.map((plate, idx) => (
+              <img
+                key={plate.num}
+                src={plate.img}
+                alt={plate.title}
+                className={`v3-plate__img${plate.isDevicePlate ? ' is-device' : ''}${idx === active ? ' is-active' : ''}`}
+                loading={idx === 0 ? 'eager' : 'lazy'}
+              />
+            ))}
             <div className="v3-plate__scrim" />
             <div className="v3-plate__caption">
               <span className="v3-plate__num">{current.num}</span>
