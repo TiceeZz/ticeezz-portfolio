@@ -296,11 +296,11 @@ export default function V3WorkPage() {
                       <i className="ptp-live-dot" aria-hidden="true" />
                       INTERACTIVE PROTOTYPE · LIVE
                     </span>
-                    <strong>亲自上手体验 10 屏完整交互原型</strong>
-                    <p>支持真实点击操作：航线筛选、短鼻犬禁飞校验、体重联动箱型与实时飞行追踪</p>
+                    <strong>亲自上手体验完整交互原型</strong>
+                    <p>从业务分流、航班舱位决策、多维规则校验到全程航迹追踪与接机海报，完整跑通 10 屏端到端真实交互流程</p>
                   </div>
                   <span className="v3-work__proto-bridge-btn">
-                    <span>立即体验交互原型</span>
+                    <span>进入交互原型</span>
                     <span aria-hidden="true">→</span>
                   </span>
                 </button>
