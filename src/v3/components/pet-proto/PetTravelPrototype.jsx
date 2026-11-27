@@ -601,22 +601,22 @@ export default function PetTravelPrototype() {
                         </div>
                         <div className="ptp-times" style={{ marginBottom: 14 }}>
                           <div className="ptp-tcol">
-                            <strong style={randomState === 'full' ? { color: '#78837e' } : undefined}>上海虹桥</strong>
-                            <span style={randomState === 'full' ? { color: '#aeb8b3' } : undefined}>虹桥国际机场 T2</span>
+                            <strong style={{ fontFamily: "'PingFang SC UI', 'PingFang SC', sans-serif", fontSize: 18.5, fontWeight: 600, color: randomState === 'full' ? '#78837e' : '#16221c' }}>上海虹桥</strong>
+                            <span style={{ fontSize: 11, color: randomState === 'full' ? '#aeb8b3' : '#7a8580' }}>虹桥国际机场 T2</span>
                           </div>
                           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                             <RandomPlaneSvg muted={randomState === 'full'} />
                           </div>
                           <div className="ptp-tcol is-r">
-                            <strong style={randomState === 'full' ? { color: '#78837e' } : undefined}>北京大兴</strong>
-                            <span style={randomState === 'full' ? { color: '#aeb8b3' } : undefined}>大兴国际机场</span>
+                            <strong style={{ fontFamily: "'PingFang SC UI', 'PingFang SC', sans-serif", fontSize: 18.5, fontWeight: 600, color: randomState === 'full' ? '#78837e' : '#16221c' }}>北京大兴</strong>
+                            <span style={{ fontSize: 11, color: randomState === 'full' ? '#aeb8b3' : '#7a8580' }}>大兴国际机场</span>
                           </div>
                         </div>
-                        <div style={{ background: '#f5f7f8', borderRadius: 10, padding: '10px 12px', fontSize: 11.5, color: '#56655d', lineHeight: 1.72, marginBottom: 16 }}>
+                        <div style={{ background: '#f5f7f8', borderRadius: 10, padding: '10px 12px', fontSize: 11.5, color: '#56655d', lineHeight: 1.72, marginBottom: 14 }}>
                           <div>乘机人信息：张*三</div>
                           <div>电子客票号：781-2345678901</div>
                         </div>
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: 12, borderTop: '1px solid #f0f3f2' }}>
                           {randomState === 'available' ? (
                             <>
                               <span style={{ fontSize: 12, fontWeight: 600, color: '#2eb56b' }}>● 有氧舱名额：充足</span>
@@ -994,12 +994,15 @@ export default function PetTravelPrototype() {
                     {selectedFlight.breakdown.map((b) => (
                       <div key={b.label} className="ptp-fee-row">
                         <span>{b.label}</span>
-                        <strong className={b.highlight ? 'is-free' : ''}>{b.price}</strong>
+                        <strong className={b.highlight ? 'is-free' : 'ptp-din-med'}>{b.price}</strong>
                       </div>
                     ))}
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: 12, marginTop: 6, borderTop: '1px solid #f1f4f2', fontSize: 14, fontWeight: 700 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: 12, marginTop: 6, borderTop: '1px solid #f1f4f2', fontSize: 14, fontWeight: 600 }}>
                       <span>方案预估总价</span>
-                      <span style={{ color: '#e45044', fontSize: 18 }}>¥ {selectedFlight.price}</span>
+                      <span className="ptp-din-med" style={{ color: '#e45044', fontSize: 18 }}>
+                        <em style={{ fontFamily: "'PingFang SC UI', 'PingFang SC', sans-serif", fontStyle: 'normal', fontSize: 13.5, fontWeight: 500, marginRight: 2 }}>¥</em>
+                        {selectedFlight.price}
+                      </span>
                     </div>
                   </div>
 
@@ -1025,13 +1028,13 @@ export default function PetTravelPrototype() {
                 <div className="ptp-sticky-bar">
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <div>
-                      <div style={{ fontSize: 10, color: '#83918a' }}>方案预估总价</div>
-                      <div className="ptp-price-num" style={{ fontSize: 20 }}>
-                        <em style={{ fontStyle: 'normal', fontSize: 12, marginRight: 2 }}>¥</em>
+                      <div style={{ fontSize: 10.5, color: '#83918a' }}>方案预估总价</div>
+                      <div className="ptp-din-bold" style={{ fontSize: 22.5, color: '#e4554b', lineHeight: 1.15, marginTop: 1 }}>
+                        <em style={{ fontFamily: "'PingFang SC UI', 'PingFang SC', sans-serif", fontStyle: 'normal', fontSize: 13, fontWeight: 500, marginRight: 2 }}>¥</em>
                         {selectedFlight.price}
                       </div>
                     </div>
-                    <button type="button" className="ptp-btn-green-full" style={{ width: 146, height: 40, fontSize: 13.5 }} onClick={() => navigate('form')}>
+                    <button type="button" className="ptp-btn-green-full" style={{ width: 150, height: 42, fontSize: 14, fontWeight: 500, background: 'linear-gradient(90deg, #52c693 0%, #3ab75e 100%)' }} onClick={() => navigate('form')}>
                       前往填写订单
                     </button>
                   </div>
@@ -1928,6 +1931,7 @@ export default function PetTravelPrototype() {
             {modal === 'price' && (
               <div className="ptp-mask" onClick={() => setModal(null)}>
                 <div className="ptp-price-sheet" onClick={(e) => e.stopPropagation()}>
+                  <div className="ptp-sheet-grab" style={{ background: '#dce4ec', width: 36, marginBottom: 10 }} />
                   <div className="ptp-price-title">价格明细</div>
                   {screen === 'tracking' ? (
                     <>
@@ -2009,7 +2013,7 @@ export default function PetTravelPrototype() {
                     <span>全流程追踪</span>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 11, padding: '12px 14px', borderRadius: 12, background: '#f6f8fa', marginBottom: 18 }}>
-                    <img src={HYBRID_ASSETS.petAvatar} alt="小航" style={{ width: 42, height: 42, borderRadius: '50%', objectFit: 'cover' }} />
+                    <img src={HYBRID_ASSETS.petAvatar} alt="小航" style={{ width: 42, height: 42, borderRadius: '50%', objectFit: 'cover', border: '1.5px solid #d5e5dc' }} />
                     <div>
                       <strong style={{ fontSize: 14, color: '#17231d' }}>{petName || '小航'} · {breedTouched ? breed : '中华田园犬'}</strong>
                       <div style={{ fontSize: 10.5, color: '#8a9991', marginTop: 2 }}>订单号：PT-20250519001</div>
@@ -2137,7 +2141,7 @@ export default function PetTravelPrototype() {
                             <img src={HYBRID_ASSETS.posterPlane} alt="" className="ptp-poster-plane-img" />
                           </div>
                           <div style={{ textAlign: 'right' }}>
-                            <div className="ptp-poster-time is-arr">20:40</div>
+                            <div className="ptp-poster-time">20:40</div>
                             <div style={{ fontSize: 10.5, color: '#4f5d56', marginTop: 2 }}>大兴机场</div>
                           </div>
                         </div>
