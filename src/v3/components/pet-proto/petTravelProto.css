@@ -515,11 +515,20 @@
   flex-direction: column;
   position: relative;
   overflow: hidden;
-  animation: ptpPushIn 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+  animation: ptpPushIn 0.26s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ptp-screen[data-nav-dir='pop'] .ptp-view {
+  animation: ptpPopIn 0.26s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @keyframes ptpPushIn {
-  from { opacity: 0.55; transform: translateX(10px); }
+  from { opacity: 0.45; transform: translateX(18px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes ptpPopIn {
+  from { opacity: 0.45; transform: translateX(-18px); }
   to { opacity: 1; transform: translateX(0); }
 }
 
@@ -778,8 +787,17 @@
   color: #16221c;
 }
 
+.ptp-city-btn {
+  animation: ptpCityPop 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 .ptp-city-btn.is-right {
   text-align: right;
+}
+
+@keyframes ptpCityPop {
+  from { opacity: 0.35; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .ptp-swap-img {
@@ -787,6 +805,7 @@
   height: 30px;
   display: block;
   margin: 0 auto;
+  transition: transform 0.36s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .ptp-solo-ico-badge {
@@ -1814,6 +1833,7 @@
   box-shadow: none;
   border: none;
   overflow: visible;
+  animation: ptpCelebUp 0.36s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .ptp-arrived-dog-pop {
@@ -1825,6 +1845,18 @@
   display: block;
   pointer-events: none;
   z-index: 8;
+  animation: ptpDogPop 0.44s cubic-bezier(0.22, 1.24, 0.36, 1);
+}
+
+@keyframes ptpCelebUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes ptpDogPop {
+  0% { opacity: 0; transform: translateY(20px) scale(0.92); }
+  70% { opacity: 1; transform: translateY(-2px) scale(1.015); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .ptp-arrived-dog-shadow {
@@ -1985,10 +2017,13 @@
 
 /* ═══ 1:1 Figma 价格明细 Receipt Modal ═══ */
 .ptp-price-sheet {
+  position: relative;
+  z-index: 2;
   background: #ffffff;
   border-radius: 20px 20px 0 0;
   padding: 16px 22px 26px;
-  animation: ptpSheetUp 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+  animation: ptpSheetUp 0.26s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
 }
 
 .ptp-price-title {
@@ -2044,6 +2079,12 @@
   border-radius: 18px;
   overflow: hidden;
   background: #3c9dc4;
+  animation: ptpPosterIn 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes ptpPosterIn {
+  from { opacity: 0; transform: translateY(18px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .ptp-poster-bg-img {
@@ -2309,6 +2350,12 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  animation: ptpMaskFade 0.2s ease-out;
+}
+
+@keyframes ptpMaskFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .ptp-sheet {
@@ -2320,11 +2367,12 @@
   display: flex;
   flex-direction: column;
   padding: 12px 16px 24px;
-  animation: ptpSheetUp 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+  animation: ptpSheetUp 0.26s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
 }
 
 @keyframes ptpSheetUp {
-  from { transform: translateY(24px); opacity: 0.7; }
+  from { transform: translateY(36px); opacity: 0.4; }
   to { transform: translateY(0); opacity: 1; }
 }
 
@@ -2334,6 +2382,25 @@
   border-radius: 999px;
   background: #dce3df;
   margin: 0 auto 10px;
+  cursor: grab;
+  transition: background 0.18s ease, width 0.18s ease;
+}
+
+.ptp-sheet-grab:hover {
+  background: #bfc9c3;
+  width: 44px;
+}
+
+.ptp-pulse-err {
+  border-radius: 10px;
+  animation: ptpFieldPulse 1.05s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes ptpFieldPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(228, 80, 68, 0); background: transparent; }
+  25% { box-shadow: 0 0 0 4px rgba(228, 80, 68, 0.22); background: rgba(255, 241, 240, 0.85); }
+  55% { box-shadow: 0 0 0 1px rgba(228, 80, 68, 0.12); background: rgba(255, 241, 240, 0.3); }
+  78% { box-shadow: 0 0 0 3px rgba(228, 80, 68, 0.18); background: rgba(255, 241, 240, 0.65); }
 }
 
 .ptp-sheet-hd {
@@ -2372,6 +2439,29 @@
   text-align: center;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.24);
   pointer-events: none;
+  animation: ptpToastIn 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes ptpToastIn {
+  from { opacity: 0; transform: translate(-50%, -8px) scale(0.96); }
+  to { opacity: 1; transform: translate(-50%, 0) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ptp-view,
+  .ptp-screen[data-nav-dir='pop'] .ptp-view,
+  .ptp-mask,
+  .ptp-sheet,
+  .ptp-price-sheet,
+  .ptp-poster-card,
+  .ptp-arrived-celeb,
+  .ptp-arrived-dog-pop,
+  .ptp-city-btn,
+  .ptp-toast,
+  .ptp-pulse-err {
+    animation: none !important;
+    transition: none !important;
+  }
 }
 
 /* ═══ Right: Editorial UX Storyboard & Interaction Studio ═══ */

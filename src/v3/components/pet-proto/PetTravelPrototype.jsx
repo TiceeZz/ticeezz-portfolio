@@ -203,12 +203,20 @@ const StatusBar = ({ light = false, bg }) => (
 
 export default function PetTravelPrototype() {
   const [screen, setScreen] = useState('splash');
+  const [navDir, setNavDir] = useState('push');
   const [history, setHistory] = useState([]);
   const [toast, setToast] = useState(null);
   const toastTimer = useRef(null);
+  const pulseTimer = useRef(null);
   const chassisRef = useRef(null);
   const mobileStripRef = useRef(null);
+  const formScrollRef = useRef(null);
   const [phoneScale, setPhoneScale] = useState(1);
+  const [swapCount, setSwapCount] = useState(0);
+  const [pulseField, setPulseField] = useState(null);
+  const [sheetDragY, setSheetDragY] = useState(0);
+  const [isSheetDragging, setIsSheetDragging] = useState(false);
+  const sheetDragStart = useRef({ y: 0, active: false });
 
   // Random Flight 3-state machine
   const [randomState, setRandomState] = useState('available'); // 'empty' | 'available' | 'full'
@@ -264,15 +272,29 @@ export default function PetTravelPrototype() {
     toastTimer.current = setTimeout(() => setToast(null), 2400);
   }, []);
 
-  useEffect(() => () => { if (toastTimer.current) clearTimeout(toastTimer.current); }, []);
+  useEffect(() => () => {
+    if (toastTimer.current) clearTimeout(toastTimer.current);
+    if (pulseTimer.current) clearTimeout(pulseTimer.current);
+  }, []);
 
-  const navigate = useCallback((next) => {
+  useEffect(() => {
+    setSheetDragY(0);
+    setIsSheetDragging(false);
+    sheetDragStart.current = { y: 0, active: false };
+  }, [modal]);
+
+  const navigate = useCallback((next, dirOverride) => {
     if (next === 'poster') {
+      setNavDir('push');
       setTrackStageIdx(4);
       setScreen('tracking');
       setModal('poster');
       return;
     }
+    const curIdx = SCENES.findIndex((s) => s.id === screen);
+    const nxtIdx = SCENES.findIndex((s) => s.id === next);
+    const inferredDir = dirOverride || (curIdx >= 0 && nxtIdx >= 0 && nxtIdx < curIdx ? 'pop' : 'push');
+    setNavDir(inferredDir);
     setModal(null);
     setDetailScrolled(false);
     setFormScrolled(false);
@@ -281,6 +303,7 @@ export default function PetTravelPrototype() {
   }, [screen]);
 
   const goBack = useCallback(() => {
+    setNavDir('pop');
     setModal(null);
     setHistory((prev) => {
       if (!prev.length) { setScreen('hub'); return []; }
@@ -318,14 +341,80 @@ export default function PetTravelPrototype() {
 
   const formMissing = useMemo(() => {
     const m = [];
-    if (!petName.trim()) m.push('宠物昵称');
-    if (!ageObj.eligible) m.push('适航年龄');
-    if (!pickupSlot) m.push('上门揽收时间');
-    if (!contactName.trim() || contactPhone.trim().length < 7) m.push('提宠联系人');
-    if (!photoUploaded) m.push('宠物与箱合照');
-    if (!agreed) m.push('活体免责声明');
+    if (!petName.trim()) m.push({ key: 'petName', label: '宠物昵称' });
+    if (!ageObj.eligible) m.push({ key: 'age', label: '适航年龄' });
+    if (!pickupSlot) m.push({ key: 'pickupSlot', label: '上门揽收时间' });
+    if (!contactName.trim() || contactPhone.trim().length < 7) m.push({ key: 'contact', label: '提宠联系人' });
+    if (!photoUploaded) m.push({ key: 'photo', label: '宠物与箱合照' });
+    if (!agreed) m.push({ key: 'agreed', label: '活体免责声明' });
     return m;
   }, [petName, ageObj, pickupSlot, contactName, contactPhone, photoUploaded, agreed]);
+
+  const focusMissingField = useCallback((item, customToast) => {
+    if (!item) return;
+    const scroller = formScrollRef.current;
+    if (scroller) {
+      const target = scroller.querySelector(`[data-form-field="${item.key}"]`);
+      if (target) {
+        const sRect = scroller.getBoundingClientRect();
+        const tRect = target.getBoundingClientRect();
+        const targetTop = Math.max(0, scroller.scrollTop + (tRect.top - sRect.top) - sRect.height * 0.36);
+        scroller.scrollTo({ top: targetTop, behavior: 'smooth' });
+      }
+    }
+    setPulseField(item.key);
+    if (pulseTimer.current) clearTimeout(pulseTimer.current);
+    pulseTimer.current = setTimeout(() => setPulseField(null), 1150);
+    showToast(customToast || `请先完善：${item.label}`);
+  }, [showToast]);
+
+  const onSheetTouchStart = useCallback((e) => {
+    if (!e.touches?.length) return;
+    const sheetBody = e.currentTarget.querySelector('.ptp-sheet-body');
+    const insideBody = sheetBody && sheetBody.contains(e.target);
+    if (insideBody && sheetBody.scrollTop > 2) {
+      sheetDragStart.current = { y: 0, active: false };
+      return;
+    }
+    sheetDragStart.current = { y: e.touches[0].clientY, active: true };
+    setIsSheetDragging(true);
+  }, []);
+
+  const onSheetTouchMove = useCallback((e) => {
+    if (!sheetDragStart.current.active || !e.touches?.length) return;
+    const dy = e.touches[0].clientY - sheetDragStart.current.y;
+    if (dy > 0) {
+      const damped = dy <= 120 ? dy : 120 + (dy - 120) * 0.45;
+      setSheetDragY(Math.min(260, damped));
+    } else {
+      setSheetDragY(0);
+    }
+  }, []);
+
+  const onSheetTouchEnd = useCallback(() => {
+    if (!sheetDragStart.current.active) return;
+    sheetDragStart.current.active = false;
+    setIsSheetDragging(false);
+    setSheetDragY((curr) => {
+      if (curr > 72) {
+        setModal(null);
+      }
+      return 0;
+    });
+  }, []);
+
+  const sheetSwipeHandlers = {
+    onTouchStart: onSheetTouchStart,
+    onTouchMove: onSheetTouchMove,
+    onTouchEnd: onSheetTouchEnd,
+    onTouchCancel: onSheetTouchEnd,
+  };
+
+  const sheetSwipeStyle = sheetDragY > 0
+    ? { transform: `translateY(${sheetDragY}px)`, transition: isSheetDragging ? 'none' : 'transform 0.24s cubic-bezier(0.22, 1, 0.36, 1)' }
+    : isSheetDragging
+      ? { transition: 'none' }
+      : undefined;
 
   const totalPrice = selectedFlight.price + (addonInsurance ? 19 : 0) + (addonValuation ? 40 : 0);
 
@@ -352,7 +441,7 @@ export default function PetTravelPrototype() {
 
   const stepScene = useCallback((delta) => {
     const nextIdx = (activeSceneIdx + delta + SCENES.length) % SCENES.length;
-    navigate(SCENES[nextIdx].id);
+    navigate(SCENES[nextIdx].id, delta < 0 ? 'pop' : 'push');
   }, [activeSceneIdx, navigate]);
 
   useEffect(() => {
@@ -387,6 +476,11 @@ export default function PetTravelPrototype() {
 
   useEffect(() => {
     const onKeyDown = (e) => {
+      if (e.key === 'Escape' && modal) {
+        e.preventDefault();
+        setModal(null);
+        return;
+      }
       const tag = e.target?.tagName;
       if (tag === 'INPUT' || tag === 'TEXTAREA' || e.metaKey || e.ctrlKey || e.altKey) return;
       if (e.key === 'ArrowRight') {
@@ -399,7 +493,7 @@ export default function PetTravelPrototype() {
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [stepScene]);
+  }, [stepScene, modal]);
 
   const visibleBreeds = useMemo(() => {
     const q = breedSearch.trim();
@@ -535,7 +629,7 @@ export default function PetTravelPrototype() {
             <span className="ptp-hw-btn ptp-hw-vol-dn" aria-hidden="true" />
             <span className="ptp-hw-btn ptp-hw-power" aria-hidden="true" />
             <div className="ptp-screen-viewport" style={{ '--ptp-scale': phoneScale }}>
-            <div className="ptp-screen">
+            <div className="ptp-screen" data-nav-dir={navDir}>
             {toast && <div className="ptp-toast">{toast}</div>}
 
             {/* ══ 00: 1:1 UNTOUCHED FIGMA SPLASH ══ */}
@@ -813,17 +907,22 @@ export default function PetTravelPrototype() {
                     </div>
 
                     <div className="ptp-city-row">
-                      <button type="button" className="ptp-city-btn" onClick={() => setModal('cityFrom')}>
+                      <button key={`from-${fromCity.code}`} type="button" className="ptp-city-btn" onClick={() => setModal('cityFrom')}>
                         {fromCity.name}
                       </button>
                       <button
                         type="button"
                         aria-label="互换城市"
-                        onClick={() => { setFromIdx(toIdx); setToIdx(fromIdx); }}
+                        onClick={() => { setFromIdx(toIdx); setToIdx(fromIdx); setSwapCount((c) => c + 1); }}
                       >
-                        <img src={HYBRID_ASSETS.swapCircle} alt="互换" className="ptp-swap-img" />
+                        <img
+                          src={HYBRID_ASSETS.swapCircle}
+                          alt="互换"
+                          className="ptp-swap-img"
+                          style={{ transform: `rotate(${swapCount * 180}deg)` }}
+                        />
                       </button>
-                      <button type="button" className="ptp-city-btn is-right" onClick={() => setModal('cityTo')}>
+                      <button key={`to-${toCity.code}`} type="button" className="ptp-city-btn is-right" onClick={() => setModal('cityTo')}>
                         {toCity.name}
                       </button>
                     </div>
@@ -1196,6 +1295,7 @@ export default function PetTravelPrototype() {
                 </div>
 
                 <div
+                  ref={formScrollRef}
                   className="ptp-scroll"
                   style={{ position: 'relative', zIndex: 4, paddingTop: 10 }}
                   onScroll={(e) => setFormScrolled(e.currentTarget.scrollTop > 56)}
@@ -1211,7 +1311,7 @@ export default function PetTravelPrototype() {
                         <span>{breed}</span><RightSvg />
                       </button>
                     </div>
-                    <div className="ptp-field">
+                    <div data-form-field="petName" className={`ptp-field${pulseField === 'petName' ? ' ptp-pulse-err' : ''}`}>
                       <span className="ptp-field-l">昵称<em>*</em></span>
                       <input className="ptp-inline-inp" maxLength={8} value={petName} onChange={(e) => setPetName(e.target.value)} placeholder="宠物姓名" />
                     </div>
@@ -1237,7 +1337,7 @@ export default function PetTravelPrototype() {
                         <span>{weightKg} kg</span><RightSvg />
                       </button>
                     </div>
-                    <div className="ptp-field">
+                    <div data-form-field="age" className={`ptp-field${pulseField === 'age' ? ' ptp-pulse-err' : ''}`}>
                       <span className={`ptp-field-l${!ageObj.eligible ? ' is-err' : ''}`}>年龄<em>*</em></span>
                       <button type="button" className={`ptp-field-v${!ageObj.eligible ? ' is-err' : ''}`} onClick={() => { setDraftAgeObj(ageObj); setModal('age'); }}>
                         <span>{ageObj.label}</span><RightSvg color={!ageObj.eligible ? '#e45044' : '#9aa8a0'} />
@@ -1255,7 +1355,7 @@ export default function PetTravelPrototype() {
                         <RightSvg />
                       </button>
                     </div>
-                    <div className="ptp-field">
+                    <div data-form-field="pickupSlot" className={`ptp-field${pulseField === 'pickupSlot' ? ' ptp-pulse-err' : ''}`}>
                       <span className={`ptp-field-l${!pickupSlot ? ' is-err' : ''}`}>上门时间<em>*</em></span>
                       <button type="button" className={`ptp-field-v${!pickupSlot ? ' is-err' : ''}`} onClick={() => setModal('slot')}>
                         <span>{pickupSlot || '请选择日期与时段'}</span>
@@ -1279,7 +1379,7 @@ export default function PetTravelPrototype() {
                         <RightSvg />
                       </button>
                     </div>
-                    <div className="ptp-field">
+                    <div data-form-field="contact" className={`ptp-field${pulseField === 'contact' ? ' ptp-pulse-err' : ''}`}>
                       <span className="ptp-field-l">联系人姓名<em>*</em></span>
                       <input className="ptp-inline-inp" maxLength={12} value={contactName} onChange={(e) => setContactName(e.target.value)} placeholder="提宠人姓名" />
                     </div>
@@ -1326,7 +1426,8 @@ export default function PetTravelPrototype() {
                     <div className="ptp-upload-grid">
                       <button
                         type="button"
-                        className={`ptp-upload-slot${photoUploaded ? ' is-ok' : ' is-miss'}`}
+                        data-form-field="photo"
+                        className={`ptp-upload-slot${photoUploaded ? ' is-ok' : ' is-miss'}${pulseField === 'photo' ? ' ptp-pulse-err' : ''}`}
                         onClick={() => { setPhotoUploaded((v) => !v); showToast(photoUploaded ? '已移除合照' : '已上传宠物与航空箱合照'); }}
                       >
                         {photoUploaded ? <CheckMiniSvg color="#249b59" size={16} strokeWidth={2.1} /> : <PlusMiniSvg color="#e45044" size={16} />}
@@ -1408,16 +1509,21 @@ export default function PetTravelPrototype() {
                     <button
                       type="button"
                       className="ptp-form-warn-bar"
-                      onClick={() => showToast(`待完善：${formMissing.join('、')}（可点右侧「一键补全必填项」）`)}
+                      onClick={() =>
+                        focusMissingField(
+                          formMissing[0],
+                          `已定位至「${formMissing[0].label}」（共缺 ${formMissing.map((m) => m.label).join('、')}）`
+                        )
+                      }
                     >
                       <svg width="11" height="11" viewBox="0 0 14 14" fill="none" aria-hidden="true" style={{ flexShrink: 0 }}>
                         <path d="M7 1.8L12.6 11.8H1.4L7 1.8Z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" />
                         <path d="M7 5.3V8.2M7 10.1V10.4" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" />
                       </svg>
-                      <span>还有 {formMissing.length} 项未正确填写，请完善后提交</span>
+                      <span>还有 {formMissing.length} 项未正确填写，点击定位完善</span>
                     </button>
                   )}
-                  <div className="ptp-form-agree-row">
+                  <div data-form-field="agreed" className={`ptp-form-agree-row${pulseField === 'agreed' ? ' ptp-pulse-err' : ''}`}>
                     <span className="ptp-form-agree-text">
                       我已阅读并同意以下条款：<em style={{ fontStyle: 'normal', color: '#45b776' }}>《承运方活体免责声明》、《活体运输协议》</em>
                     </span>
@@ -1455,7 +1561,7 @@ export default function PetTravelPrototype() {
                       type="button"
                       className={`ptp-submit-btn${formMissing.length > 0 ? ' is-off' : ''}`}
                       onClick={() => {
-                        if (formMissing.length > 0) { showToast(`请先完善：${formMissing[0]}`); return; }
+                        if (formMissing.length > 0) { focusMissingField(formMissing[0]); return; }
                         setTrackStageIdx(2);
                         navigate('success');
                       }}
@@ -1799,8 +1905,8 @@ export default function PetTravelPrototype() {
 
             {(modal === 'cityFrom' || modal === 'cityTo') && (
               <div className="ptp-mask" onClick={() => setModal(null)}>
-                <div className="ptp-sheet" onClick={(e) => e.stopPropagation()}>
-                  <div className="ptp-sheet-grab" />
+                <div className="ptp-sheet" style={sheetSwipeStyle} {...sheetSwipeHandlers} onClick={(e) => e.stopPropagation()}>
+                  <div className="ptp-sheet-grab" onClick={() => setModal(null)} />
                   <div className="ptp-sheet-hd">
                     <span>选择{modal === 'cityFrom' ? '出发' : '到达'}城市</span>
                     <button type="button" style={{ fontSize: 12.5, color: '#7d8c84' }} onClick={() => setModal(null)}>关闭</button>
@@ -1831,8 +1937,8 @@ export default function PetTravelPrototype() {
 
             {modal === 'breed' && (
               <div className="ptp-mask" onClick={() => setModal(null)}>
-                <div className="ptp-sheet" onClick={(e) => e.stopPropagation()}>
-                  <div className="ptp-sheet-grab" />
+                <div className="ptp-sheet" style={sheetSwipeStyle} {...sheetSwipeHandlers} onClick={(e) => e.stopPropagation()}>
+                  <div className="ptp-sheet-grab" onClick={() => setModal(null)} />
                   <div className="ptp-sheet-hd">
                     <button type="button" style={{ fontSize: 12.5, color: '#84938b' }} onClick={() => setModal(null)}>取消</button>
                     <span>选择品种</span>
@@ -1926,8 +2032,8 @@ export default function PetTravelPrototype() {
               };
               return (
                 <div className="ptp-mask" onClick={() => setModal(null)}>
-                  <div className="ptp-sheet" onClick={(e) => e.stopPropagation()}>
-                    <div className="ptp-sheet-grab" />
+                  <div className="ptp-sheet" style={sheetSwipeStyle} {...sheetSwipeHandlers} onClick={(e) => e.stopPropagation()}>
+                    <div className="ptp-sheet-grab" onClick={() => setModal(null)} />
                     <div className="ptp-sheet-hd">
                       <button type="button" style={{ fontSize: 12.5, color: '#84938b' }} onClick={() => setModal(null)}>取消</button>
                       <span>设置宠物体重</span>
@@ -1957,8 +2063,8 @@ export default function PetTravelPrototype() {
 
             {modal === 'age' && (
               <div className="ptp-mask" onClick={() => setModal(null)}>
-                <div className="ptp-sheet" onClick={(e) => e.stopPropagation()}>
-                  <div className="ptp-sheet-grab" />
+                <div className="ptp-sheet" style={sheetSwipeStyle} {...sheetSwipeHandlers} onClick={(e) => e.stopPropagation()}>
+                  <div className="ptp-sheet-grab" onClick={() => setModal(null)} />
                   <div className="ptp-sheet-hd">
                     <button type="button" style={{ fontSize: 12.5, color: '#84938b' }} onClick={() => setModal(null)}>取消</button>
                     <span>选择宠物年龄</span>
@@ -2004,8 +2110,8 @@ export default function PetTravelPrototype() {
 
             {(modal === 'addrSend' || modal === 'addrRecv') && (
               <div className="ptp-mask" onClick={() => setModal(null)}>
-                <div className="ptp-sheet" onClick={(e) => e.stopPropagation()}>
-                  <div className="ptp-sheet-grab" />
+                <div className="ptp-sheet" style={sheetSwipeStyle} {...sheetSwipeHandlers} onClick={(e) => e.stopPropagation()}>
+                  <div className="ptp-sheet-grab" onClick={() => setModal(null)} />
                   <div className="ptp-sheet-hd">
                     <button type="button" style={{ fontSize: 12.5, color: '#84938b' }} onClick={() => setModal(null)}>取消</button>
                     <span>{modal === 'addrSend' ? '选择发件地址' : '选择收货地址'}</span>
@@ -2058,8 +2164,8 @@ export default function PetTravelPrototype() {
 
             {modal === 'slot' && (
               <div className="ptp-mask" onClick={() => setModal(null)}>
-                <div className="ptp-sheet" onClick={(e) => e.stopPropagation()}>
-                  <div className="ptp-sheet-grab" />
+                <div className="ptp-sheet" style={sheetSwipeStyle} {...sheetSwipeHandlers} onClick={(e) => e.stopPropagation()}>
+                  <div className="ptp-sheet-grab" onClick={() => setModal(null)} />
                   <div className="ptp-sheet-hd">
                     <span>选择上门揽收时段</span>
                     <button type="button" style={{ fontSize: 12.5, color: '#84938b' }} onClick={() => setModal(null)}>关闭</button>
@@ -2083,8 +2189,8 @@ export default function PetTravelPrototype() {
 
             {modal === 'ocr' && (
               <div className="ptp-mask" onClick={() => setModal(null)}>
-                <div className="ptp-sheet" onClick={(e) => e.stopPropagation()}>
-                  <div className="ptp-sheet-grab" />
+                <div className="ptp-sheet" style={sheetSwipeStyle} {...sheetSwipeHandlers} onClick={(e) => e.stopPropagation()}>
+                  <div className="ptp-sheet-grab" onClick={() => setModal(null)} />
                   <div className="ptp-sheet-hd">
                     <span>动物检疫合格证 · OCR 自动提取</span>
                     <button type="button" style={{ fontSize: 12.5, color: '#249b59' }} onClick={() => setModal(null)}>完成</button>
@@ -2105,8 +2211,8 @@ export default function PetTravelPrototype() {
 
             {modal === 'price' && (
               <div className="ptp-mask" onClick={() => setModal(null)}>
-                <div className="ptp-price-sheet" onClick={(e) => e.stopPropagation()}>
-                  <div className="ptp-sheet-grab" style={{ background: '#dce4ec', width: 36, marginBottom: 10 }} />
+                <div className="ptp-price-sheet" style={sheetSwipeStyle} {...sheetSwipeHandlers} onClick={(e) => e.stopPropagation()}>
+                  <div className="ptp-sheet-grab" style={{ background: '#dce4ec', width: 36, marginBottom: 10 }} onClick={() => setModal(null)} />
                   <div className="ptp-price-title">价格明细</div>
                   {screen === 'tracking' ? (
                     <>
@@ -2182,8 +2288,8 @@ export default function PetTravelPrototype() {
 
             {modal === 'timeline' && (
               <div className="ptp-mask" onClick={() => setModal(null)}>
-                <div className="ptp-sheet" style={{ minHeight: '76%', maxHeight: '84%', padding: '12px 20px 26px' }} onClick={(e) => e.stopPropagation()}>
-                  <div className="ptp-sheet-grab" style={{ background: '#dbe2ea', width: 38 }} />
+                <div className="ptp-sheet" style={{ minHeight: '76%', maxHeight: '84%', padding: '12px 20px 26px', ...sheetSwipeStyle }} {...sheetSwipeHandlers} onClick={(e) => e.stopPropagation()}>
+                  <div className="ptp-sheet-grab" style={{ background: '#dbe2ea', width: 38 }} onClick={() => setModal(null)} />
                   <div className="ptp-sheet-hd" style={{ marginBottom: 14 }}>
                     <span>全流程追踪</span>
                   </div>
@@ -2335,7 +2441,7 @@ export default function PetTravelPrototype() {
                   </div>
                 </div>
 
-                <div className="ptp-sheet" style={{ paddingTop: 14 }} onClick={(e) => e.stopPropagation()}>
+                <div className="ptp-sheet" style={{ paddingTop: 14, ...sheetSwipeStyle }} {...sheetSwipeHandlers} onClick={(e) => e.stopPropagation()}>
                   <div style={{ textAlign: 'center', fontSize: 14.5, fontWeight: 700, color: '#162238', marginBottom: 10 }}>分享至</div>
                   <div style={{ position: 'relative' }}>
                     <img src={HYBRID_ASSETS.shareBar} alt="微信 朋友圈 QQ 保存图片" style={{ display: 'block', width: '100%', height: 'auto', mixBlendMode: 'multiply' }} />
@@ -2394,7 +2500,7 @@ export default function PetTravelPrototype() {
 
               {screen === 'soloSearch' && (
                 <>
-                  <button type="button" className="ptp-dir-btn" onClick={() => { setFromIdx(toIdx); setToIdx(fromIdx); showToast('已互换出发与到达城市'); }}>互换起降城市</button>
+                  <button type="button" className="ptp-dir-btn" onClick={() => { setFromIdx(toIdx); setToIdx(fromIdx); setSwapCount((c) => c + 1); showToast('已互换出发与到达城市'); }}>互换起降城市</button>
                   <button
                     type="button"
                     className="ptp-dir-btn"
