@@ -2044,7 +2044,6 @@
   border-radius: 18px;
   overflow: hidden;
   background: #3c9dc4;
-  box-shadow: 0 22px 48px rgba(8, 22, 18, 0.48);
 }
 
 .ptp-poster-bg-img {
@@ -2313,6 +2312,8 @@
 }
 
 .ptp-sheet {
+  position: relative;
+  z-index: 2;
   background: #ffffff;
   border-radius: 20px 20px 0 0;
   max-height: 76%;
