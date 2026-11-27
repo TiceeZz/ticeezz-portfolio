@@ -246,6 +246,8 @@ export default function PetTravelPrototype() {
   // Tracking & Modals & Orders & Scroll Chrome
   const [trackStageIdx, setTrackStageIdx] = useState(2); // 0..4
   const [modal, setModal] = useState(null);
+  const [draftWeightKg, setDraftWeightKg] = useState(9.2);
+  const [draftAgeObj, setDraftAgeObj] = useState(AGE_OPTIONS[2]);
   const [breedTab, setBreedTab] = useState('dog');
   const [breedSearch, setBreedSearch] = useState('');
   const [breedAlert, setBreedAlert] = useState(null);
@@ -290,6 +292,18 @@ export default function PetTravelPrototype() {
 
   const fromCity = CITIES[fromIdx];
   const toCity = CITIES[toIdx];
+  const dateDayLabel = dateStr.split(' ')[0];
+  const dateWeekday = dateStr.includes('21') ? '周四' : '周三';
+  const selectedWeightLabel = WEIGHT_OPTIONS.find((w) => w.id === weightKey)?.label || '≤ 15kg';
+  const dynamicPickupSlots = useMemo(
+    () => PICKUP_SLOTS.map((s) => s.replace('5月20日', dateDayLabel)),
+    [dateDayLabel]
+  );
+  const breedCategoryLabel = useMemo(() => {
+    if (BREED_GROUPS.cat.some((b) => b.name === breed)) return '猫类';
+    if (BREED_GROUPS.other.some((b) => b.name === breed)) return '其他宠物';
+    return '犬类';
+  }, [breed]);
   const selectedFlight = useMemo(() => FLIGHTS.find((f) => f.id === selectedFlightId) || FLIGHTS[0], [selectedFlightId]);
 
   const filteredFlights = useMemo(() => {
@@ -390,14 +404,16 @@ export default function PetTravelPrototype() {
   const visibleBreeds = useMemo(() => {
     const q = breedSearch.trim();
     const pool = q ? [...BREED_GROUPS.dog, ...BREED_GROUPS.cat, ...BREED_GROUPS.other] : BREED_GROUPS[breedTab] || [];
-    return q ? pool.filter((b) => b.name.includes(q) || b.sub.includes(q)) : pool;
+    return q
+      ? pool.filter((b) => b.name.includes(q) || b.sub.includes(q) || (b.aliases && b.aliases.some((a) => a.includes(q))))
+      : pool;
   }, [breedTab, breedSearch]);
 
   const handleAutoFill = () => {
     setPetName('小航');
     setBreed('柯基犬');
     setAgeObj(AGE_OPTIONS[2]);
-    setPickupSlot(PICKUP_SLOTS[1]);
+    setPickupSlot(dynamicPickupSlots[1]);
     setPhotoUploaded(true);
     setVaccineUploaded(true);
     setContactName('阿童');
@@ -815,7 +831,12 @@ export default function PetTravelPrototype() {
                     <button
                       type="button"
                       className="ptp-line-row"
-                      onClick={() => setDateStr((d) => (d === '5月20日 明天' ? '5月21日 周四' : '5月20日 明天'))}
+                      onClick={() => {
+                        const nextDate = dateStr === '5月20日 明天' ? '5月21日 周四' : '5月20日 明天';
+                        setDateStr(nextDate);
+                        const nextDay = nextDate.split(' ')[0];
+                        setPickupSlot((prev) => (prev ? prev.replace(/5月2[01]日/, nextDay) : ''));
+                      }}
                     >
                       <span className="ptp-solo-ico-badge">
                         <svg width="14" height="14" viewBox="0 0 18 18" fill="none">
@@ -918,7 +939,7 @@ export default function PetTravelPrototype() {
                     <button type="button" className="ptp-nav-btn" onClick={() => showToast('航旅宠物专线 24h 在线')}>帮助</button>
                   </div>
                   <div className="ptp-meta-pill">
-                    {dateStr.split(' ')[0]} (周三) &nbsp;|&nbsp; 宠物含箱{WEIGHT_OPTIONS.find((w) => w.id === weightKey)?.label.replace(/\s+/g, '')} &nbsp;|&nbsp; {tripType === 'oneway' ? '单程货运' : '往返货运'}
+                    {dateDayLabel} ({dateWeekday}) &nbsp;|&nbsp; 宠物含箱{selectedWeightLabel.replace(/\s+/g, '')} &nbsp;|&nbsp; {tripType === 'oneway' ? '单程货运' : '往返货运'}
                   </div>
                 </div>
 
@@ -926,18 +947,23 @@ export default function PetTravelPrototype() {
                   {[
                     { id: 'all', label: '综合排序 ▾' },
                     { id: 'wide', label: '宽体机' },
-                    { id: 'mu', label: '东方航空 (2)' },
-                    { id: 'ca', label: '中国国航 (1)' },
-                  ].map((f) => (
-                    <button
-                      key={f.id}
-                      type="button"
-                      className={`ptp-fchip${(flightFilter === 'all' ? f.id === 'wide' : flightFilter === f.id) ? ' is-active' : ''}`}
-                      onClick={() => setFlightFilter(f.id === 'wide' && flightFilter === 'wide' ? 'all' : f.id)}
-                    >
-                      {f.label}
-                    </button>
-                  ))}
+                    { id: 'mu', label: `东方航空 (${FLIGHTS.filter((fl) => fl.airlineKey === 'mu').length})` },
+                    { id: 'ca', label: `中国国航 (${FLIGHTS.filter((fl) => fl.airlineKey === 'ca').length})` },
+                  ].map((f) => {
+                    const isChipActive = f.id !== 'all' && flightFilter === f.id;
+                    const isAllActive = f.id === 'all' && flightFilter === 'all';
+                    return (
+                      <button
+                        key={f.id}
+                        type="button"
+                        className={`ptp-fchip${isChipActive ? ' is-active' : ''}`}
+                        style={isAllActive ? { color: '#16221c', fontWeight: 500 } : undefined}
+                        onClick={() => setFlightFilter(f.id !== 'all' && flightFilter === f.id ? 'all' : f.id)}
+                      >
+                        {f.label}
+                      </button>
+                    );
+                  })}
                   <button
                     type="button"
                     className="ptp-fchip"
@@ -1049,7 +1075,7 @@ export default function PetTravelPrototype() {
                       <span>{selectedFlight.airline} {selectedFlight.code}</span>
                     </div>
                     <div style={{ fontSize: 11.5, opacity: 0.94, marginBottom: 9 }}>
-                      {dateStr.split(' ')[0]} (周三) &nbsp;|&nbsp; 宠物含箱 ≤ 15kg
+                      {dateDayLabel} ({dateWeekday}) &nbsp;|&nbsp; 宠物含箱 {selectedWeightLabel}
                     </div>
                     <div style={{ display: 'flex', gap: 7 }}>
                       <span style={{ fontSize: 10.5, padding: '2.5px 9px', borderRadius: 5, background: 'rgba(0,0,0,0.14)' }}>{selectedFlight.aircraft}</span>
@@ -1187,7 +1213,7 @@ export default function PetTravelPrototype() {
                     </div>
                     <div className="ptp-field">
                       <span className="ptp-field-l">昵称<em>*</em></span>
-                      <input className="ptp-inline-inp" value={petName} onChange={(e) => setPetName(e.target.value)} placeholder="宠物姓名" />
+                      <input className="ptp-inline-inp" maxLength={8} value={petName} onChange={(e) => setPetName(e.target.value)} placeholder="宠物姓名" />
                     </div>
                     <div className="ptp-field">
                       <span className="ptp-field-l">性别<em>*</em></span>
@@ -1207,13 +1233,13 @@ export default function PetTravelPrototype() {
                     </div>
                     <div className="ptp-field">
                       <span className="ptp-field-l">体重<em>*</em></span>
-                      <button type="button" className="ptp-field-v" onClick={() => setModal('weight')}>
+                      <button type="button" className="ptp-field-v" onClick={() => { setDraftWeightKg(weightKg); setModal('weight'); }}>
                         <span>{weightKg} kg</span><RightSvg />
                       </button>
                     </div>
                     <div className="ptp-field">
                       <span className={`ptp-field-l${!ageObj.eligible ? ' is-err' : ''}`}>年龄<em>*</em></span>
-                      <button type="button" className={`ptp-field-v${!ageObj.eligible ? ' is-err' : ''}`} onClick={() => setModal('age')}>
+                      <button type="button" className={`ptp-field-v${!ageObj.eligible ? ' is-err' : ''}`} onClick={() => { setDraftAgeObj(ageObj); setModal('age'); }}>
                         <span>{ageObj.label}</span><RightSvg color={!ageObj.eligible ? '#e45044' : '#9aa8a0'} />
                       </button>
                     </div>
@@ -1255,11 +1281,11 @@ export default function PetTravelPrototype() {
                     </div>
                     <div className="ptp-field">
                       <span className="ptp-field-l">联系人姓名<em>*</em></span>
-                      <input className="ptp-inline-inp" value={contactName} onChange={(e) => setContactName(e.target.value)} placeholder="提宠人姓名" />
+                      <input className="ptp-inline-inp" maxLength={12} value={contactName} onChange={(e) => setContactName(e.target.value)} placeholder="提宠人姓名" />
                     </div>
                     <div className="ptp-field">
                       <span className="ptp-field-l">联系电话<em>*</em></span>
-                      <input className="ptp-inline-inp" value={contactPhone} onChange={(e) => setContactPhone(e.target.value)} placeholder="提宠人手机号" />
+                      <input className="ptp-inline-inp" maxLength={15} value={contactPhone} onChange={(e) => setContactPhone(e.target.value)} placeholder="提宠人手机号" />
                     </div>
                   </div>
 
@@ -1815,13 +1841,24 @@ export default function PetTravelPrototype() {
                   <div style={{ position: 'relative', marginBottom: 10 }}>
                     <input
                       value={breedSearch}
-                      onChange={(e) => setBreedSearch(e.target.value)}
+                      onChange={(e) => { setBreedSearch(e.target.value); if (!e.target.value.trim()) setBreedAlert(null); }}
                       placeholder="搜索品种..."
                       style={{ width: '100%', height: 35, borderRadius: 10, border: 'none', background: '#f2f4f7', padding: '0 34px 0 12px', fontSize: 12.5, outline: 'none' }}
                     />
-                    <span style={{ position: 'absolute', right: 11, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', display: 'flex' }}>
-                      <SearchIconSvg />
-                    </span>
+                    {breedSearch ? (
+                      <button
+                        type="button"
+                        aria-label="清空搜索"
+                        onClick={() => { setBreedSearch(''); setBreedAlert(null); }}
+                        style={{ position: 'absolute', right: 9, top: '50%', transform: 'translateY(-50%)', display: 'flex', padding: 2 }}
+                      >
+                        <CloseCircleSvg />
+                      </button>
+                    ) : (
+                      <span style={{ position: 'absolute', right: 11, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', display: 'flex' }}>
+                        <SearchIconSvg />
+                      </span>
+                    )}
                   </div>
                   {!breedSearch && (
                     <div style={{ display: 'flex', gap: 18, borderBottom: '1px solid #eff2f0', marginBottom: 6 }}>
@@ -1845,7 +1882,11 @@ export default function PetTravelPrototype() {
                   )}
                   {breedAlert && <div className="ptp-err-strip">民航禁飞拦截：{breedAlert}</div>}
                   <div className="ptp-sheet-body">
-                    {visibleBreeds.map((b) => (
+                    {visibleBreeds.length === 0 ? (
+                      <div style={{ padding: '26px 8px', textAlign: 'center', fontSize: 12, color: '#8a9991' }}>
+                        未找到匹配「{breedSearch}」的品种
+                      </div>
+                    ) : visibleBreeds.map((b) => (
                       <button
                         key={b.name}
                         type="button"
@@ -1876,35 +1917,43 @@ export default function PetTravelPrototype() {
               </div>
             )}
 
-            {modal === 'weight' && (
-              <div className="ptp-mask" onClick={() => setModal(null)}>
-                <div className="ptp-sheet" onClick={(e) => e.stopPropagation()}>
-                  <div className="ptp-sheet-grab" />
-                  <div className="ptp-sheet-hd">
-                    <button type="button" style={{ fontSize: 12.5, color: '#84938b' }} onClick={() => setModal(null)}>取消</button>
-                    <span>设置宠物体重</span>
-                    <button type="button" style={{ fontSize: 12.5, color: '#249b59' }} onClick={() => setModal(null)}>确定</button>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 18, padding: '16px 0 20px' }}>
-                    <button
-                      type="button"
-                      style={{ width: 38, height: 38, borderRadius: 10, background: '#eef7f2', color: '#218e52', fontSize: 20, fontWeight: 700 }}
-                      onClick={() => { setCrateOverride(null); setWeightKg((w) => Math.max(1.5, Number((w - 1).toFixed(1)))); }}
-                    >−</button>
-                    <div style={{ textAlign: 'center', minWidth: 96 }}>
-                      <strong style={{ fontSize: 24, fontVariantNumeric: 'tabular-nums', color: '#16221c' }}>{weightKg} kg</strong>
-                      <div style={{ fontSize: 11, color: '#249b59', marginTop: 2 }}>自动匹配 {recommendedCrate}号箱</div>
+            {modal === 'weight' && (() => {
+              const draftCrate = draftWeightKg <= 6 ? 1 : draftWeightKg <= 15 ? 2 : 3;
+              const commitWeight = () => {
+                setWeightKg(draftWeightKg);
+                setCrateOverride(null);
+                setModal(null);
+              };
+              return (
+                <div className="ptp-mask" onClick={() => setModal(null)}>
+                  <div className="ptp-sheet" onClick={(e) => e.stopPropagation()}>
+                    <div className="ptp-sheet-grab" />
+                    <div className="ptp-sheet-hd">
+                      <button type="button" style={{ fontSize: 12.5, color: '#84938b' }} onClick={() => setModal(null)}>取消</button>
+                      <span>设置宠物体重</span>
+                      <button type="button" style={{ fontSize: 12.5, color: '#249b59' }} onClick={commitWeight}>确定</button>
                     </div>
-                    <button
-                      type="button"
-                      style={{ width: 38, height: 38, borderRadius: 10, background: '#eef7f2', color: '#218e52', fontSize: 20, fontWeight: 700 }}
-                      onClick={() => { setCrateOverride(null); setWeightKg((w) => Math.min(30, Number((w + 1).toFixed(1)))); }}
-                    >+</button>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 18, padding: '16px 0 20px' }}>
+                      <button
+                        type="button"
+                        style={{ width: 38, height: 38, borderRadius: 10, background: '#eef7f2', color: '#218e52', fontSize: 20, fontWeight: 700 }}
+                        onClick={() => setDraftWeightKg((w) => Math.max(1.5, Number((w - 1).toFixed(1))))}
+                      >−</button>
+                      <div style={{ textAlign: 'center', minWidth: 96 }}>
+                        <strong style={{ fontSize: 24, fontVariantNumeric: 'tabular-nums', color: '#16221c' }}>{draftWeightKg} kg</strong>
+                        <div style={{ fontSize: 11, color: '#249b59', marginTop: 2 }}>自动匹配 {draftCrate}号箱</div>
+                      </div>
+                      <button
+                        type="button"
+                        style={{ width: 38, height: 38, borderRadius: 10, background: '#eef7f2', color: '#218e52', fontSize: 20, fontWeight: 700 }}
+                        onClick={() => setDraftWeightKg((w) => Math.min(30, Number((w + 1).toFixed(1))))}
+                      >+</button>
+                    </div>
+                    <button type="button" className="ptp-btn-green-full" style={{ borderRadius: 12 }} onClick={commitWeight}>确认体重</button>
                   </div>
-                  <button type="button" className="ptp-btn-green-full" style={{ borderRadius: 12 }} onClick={() => setModal(null)}>确认体重</button>
                 </div>
-              </div>
-            )}
+              );
+            })()}
 
             {modal === 'age' && (
               <div className="ptp-mask" onClick={() => setModal(null)}>
@@ -1918,7 +1967,7 @@ export default function PetTravelPrototype() {
                   <div style={{ position: 'relative', marginBottom: 14 }}>
                     <div className="ptp-sheet-body" style={{ maxHeight: 174, padding: '8px 0' }}>
                       {AGE_OPTIONS.map((o) => {
-                        const active = ageObj.label === o.label;
+                        const active = draftAgeObj.label === o.label;
                         return (
                           <button
                             key={o.label}
@@ -1932,7 +1981,7 @@ export default function PetTravelPrototype() {
                               fontWeight: active ? 700 : 500,
                               color: active && !o.eligible ? '#d6453f' : active ? '#16221c' : '#a4aeb5',
                             }}
-                            onClick={() => setAgeObj(o)}
+                            onClick={() => setDraftAgeObj(o)}
                           >
                             {o.label}
                           </button>
@@ -1942,13 +1991,13 @@ export default function PetTravelPrototype() {
                     <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 22, background: 'linear-gradient(180deg, #ffffff 0%, rgba(255,255,255,0) 100%)', pointerEvents: 'none' }} />
                     <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 22, background: 'linear-gradient(0deg, #ffffff 0%, rgba(255,255,255,0) 100%)', pointerEvents: 'none' }} />
                   </div>
-                  <div style={{ borderRadius: 11, padding: '11px 12px', background: ageObj.eligible ? '#f8faf9' : '#fff4f3', border: `1px solid ${ageObj.eligible ? '#e6ece9' : '#f7d5d2'}`, fontSize: 11, lineHeight: 1.58, color: '#7b8781' }}>
-                    <strong style={{ display: 'block', fontSize: 12, marginBottom: 4, color: ageObj.eligible ? '#26a95f' : '#d6453f' }}>
-                      ● {ageObj.eligible ? '年龄符合客舱同行要求' : '超出航空适航年龄限制'}
+                  <div style={{ borderRadius: 11, padding: '11px 12px', background: draftAgeObj.eligible ? '#f8faf9' : '#fff4f3', border: `1px solid ${draftAgeObj.eligible ? '#e6ece9' : '#f7d5d2'}`, fontSize: 11, lineHeight: 1.58, color: '#7b8781' }}>
+                    <strong style={{ display: 'block', fontSize: 12, marginBottom: 4, color: draftAgeObj.eligible ? '#26a95f' : '#d6453f' }}>
+                      ● {draftAgeObj.eligible ? '年龄符合客舱同行要求' : '超出航空适航年龄限制'}
                     </strong>
-                    {ageObj.note}
+                    {draftAgeObj.note}
                   </div>
-                  <button type="button" className="ptp-btn-green-full" style={{ marginTop: 14, borderRadius: 12 }} onClick={() => setModal(null)}>确认选择</button>
+                  <button type="button" className="ptp-btn-green-full" style={{ marginTop: 14, borderRadius: 12 }} onClick={() => { setAgeObj(draftAgeObj); setModal(null); }}>确认选择</button>
                 </div>
               </div>
             )}
@@ -1999,7 +2048,7 @@ export default function PetTravelPrototype() {
                       style={{ width: '100%', height: 40, borderRadius: 11, border: '1px solid #e5eae7', background: '#ffffff', fontSize: 12, color: '#5c6b63', fontWeight: 600, marginTop: 2 }}
                       onClick={() => showToast('演示模式：已支持快速切换预置地址')}
                     >
-                      + 新增收货地址
+                      {modal === 'addrSend' ? '+ 新增发件地址' : '+ 新增收货地址'}
                     </button>
                   </div>
                   <button type="button" className="ptp-btn-green-full" style={{ borderRadius: 12 }} onClick={() => setModal(null)}>确认选择</button>
@@ -2015,7 +2064,7 @@ export default function PetTravelPrototype() {
                     <span>选择上门揽收时段</span>
                     <button type="button" style={{ fontSize: 12.5, color: '#84938b' }} onClick={() => setModal(null)}>关闭</button>
                   </div>
-                  {PICKUP_SLOTS.map((s) => (
+                  {dynamicPickupSlots.map((s) => (
                     <button
                       key={s}
                       type="button"
@@ -2048,7 +2097,7 @@ export default function PetTravelPrototype() {
                     </div>
                   </div>
                   <div className="ptp-fee-row"><span>检疫证编号</span><strong>NO.31010420260519088</strong></div>
-                  <div className="ptp-fee-row"><span>动物品种</span><strong>犬类（{breed}）</strong></div>
+                  <div className="ptp-fee-row"><span>动物品种</span><strong>{breedCategoryLabel}（{breed}）</strong></div>
                   <div className="ptp-fee-row"><span>有效期至</span><strong className="is-free">2026-05-23（有效）</strong></div>
                 </div>
               </div>
@@ -2278,7 +2327,7 @@ export default function PetTravelPrototype() {
                       <div className="ptp-poster-foot">
                         <div>
                           <div style={{ fontWeight: 500 }}>@TiceeZz</div>
-                          <div style={{ marginTop: 2 }}>2026/05/20 周三</div>
+                          <div style={{ marginTop: 2 }}>{dateStr.includes('21') ? '2026/05/21 周四' : '2026/05/20 周三'}</div>
                         </div>
                         <img src={HYBRID_ASSETS.posterQr} alt="航旅纵横小程序码" style={{ width: 42, height: 42, mixBlendMode: 'multiply' }} />
                       </div>
@@ -2436,7 +2485,7 @@ export default function PetTravelPrototype() {
             </div>
             <div className="ptp-tele-cell">
               <span>PET PROFILE</span>
-              <strong>{petName || '小航'} · {breedTouched ? breed : '中华田园犬'}</strong>
+              <strong>{petName || '小航'} · {screen === 'tracking' && !breedTouched ? '中华田园犬' : breed}</strong>
             </div>
             <div className="ptp-tele-cell">
               <span>SMART CRATE</span>
