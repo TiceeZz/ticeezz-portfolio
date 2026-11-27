@@ -48,6 +48,80 @@ const CopySvg = () => (
   </svg>
 );
 
+const CheckMiniSvg = ({ color = '#ffffff', size = 10, strokeWidth = 1.9 }) => (
+  <svg width={size} height={size} viewBox="0 0 12 12" fill="none" aria-hidden="true" style={{ flexShrink: 0, display: 'block' }}>
+    <path d="M2.2 6.2L4.8 8.8L9.8 3.4" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+const PlusMiniSvg = ({ color = 'currentColor', size = 16 }) => (
+  <svg width={size} height={size} viewBox="0 0 16 16" fill="none" aria-hidden="true" style={{ flexShrink: 0, display: 'block' }}>
+    <path d="M8 3.2V12.8M3.2 8H12.8" stroke={color} strokeWidth="1.5" strokeLinecap="round" />
+  </svg>
+);
+
+const CloseCircleSvg = () => (
+  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true" style={{ display: 'block' }}>
+    <circle cx="7" cy="7" r="7" fill="#7c878d" />
+    <path d="M4.6 4.6L9.4 9.4M9.4 4.6L4.6 9.4" stroke="#ffffff" strokeWidth="1.3" strokeLinecap="round" />
+  </svg>
+);
+
+const WarnTriSvg = ({ size = 11 }) => (
+  <svg width={size} height={size} viewBox="0 0 14 14" fill="none" aria-hidden="true" style={{ flexShrink: 0, display: 'block' }}>
+    <path d="M7 1.8L12.6 11.8H1.4L7 1.8Z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" />
+    <path d="M7 5.3V8.2M7 10.1V10.4" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" />
+  </svg>
+);
+
+const AlertCircleSvg = ({ bg = '#e34f47', type = 'bang' }) => (
+  <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true" style={{ flexShrink: 0, display: 'block', marginTop: 1 }}>
+    <circle cx="8" cy="8" r="7.5" fill={bg} />
+    {type === 'bang' ? (
+      <>
+        <path d="M8 4.4V8.9" stroke="#ffffff" strokeWidth="1.6" strokeLinecap="round" />
+        <circle cx="8" cy="11.5" r="0.95" fill="#ffffff" />
+      </>
+    ) : (
+      <>
+        <circle cx="8" cy="4.8" r="0.95" fill="#ffffff" />
+        <path d="M8 7.2V11.6" stroke="#ffffff" strokeWidth="1.6" strokeLinecap="round" />
+      </>
+    )}
+  </svg>
+);
+
+const DownTriSvg = ({ color = 'currentColor', size = 8 }) => (
+  <svg width={size} height={Math.round(size * 0.65)} viewBox="0 0 10 6.5" fill="none" aria-hidden="true" style={{ flexShrink: 0, display: 'inline-block', verticalAlign: 'middle' }}>
+    <path d="M1 1.2L5 5.4L9 1.2H1Z" fill={color} />
+  </svg>
+);
+
+const StageNodeSvg = ({ state }) => {
+  if (state === 'done') {
+    return (
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true" style={{ display: 'block' }}>
+        <circle cx="9" cy="9" r="7.2" fill="#33b96d" />
+        <path d="M5.7 9.2L7.9 11.4L12.4 6.7" stroke="#ffffff" strokeWidth="1.65" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    );
+  }
+  if (state === 'now') {
+    return (
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true" style={{ display: 'block' }}>
+        <circle cx="9" cy="9" r="8.8" fill="rgba(46, 182, 107, 0.16)" />
+        <circle cx="9" cy="9" r="6.3" fill="#ffffff" stroke="#2eb66b" strokeWidth="1.8" />
+        <circle cx="9" cy="9" r="3.0" fill="#2eb66b" />
+      </svg>
+    );
+  }
+  return (
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true" style={{ display: 'block' }}>
+      <circle cx="9" cy="9" r="6.6" fill="#ffffff" stroke="#cfd8d4" strokeWidth="1.5" />
+    </svg>
+  );
+};
+
 const CameraSvg = () => (
   <svg width="22" height="20" viewBox="0 0 24 22" fill="none" style={{ flexShrink: 0 }}>
     <rect x="2.2" y="5.5" width="19.6" height="13.5" rx="3.5" stroke="currentColor" strokeWidth="1.8" />
@@ -811,7 +885,7 @@ export default function PetTravelPrototype() {
                         <path d="M5.8 11.2L14.2 8.2L11.5 11.4L10.3 13.5L9.4 11.2L5.8 11.2Z" fill="#ffffff" />
                       </svg>
                       <span>{toCity.name}</span>
-                      <span style={{ fontSize: 10, opacity: 0.9 }}>▾</span>
+                      <DownTriSvg color="rgba(255,255,255,0.92)" size={8} />
                     </button>
                     <button type="button" className="ptp-nav-btn" onClick={() => showToast('航旅宠物专线 24h 在线')}>帮助</button>
                   </div>
@@ -1009,14 +1083,14 @@ export default function PetTravelPrototype() {
                   <div className="ptp-card">
                     <h4 className="ptp-sec-h">托运限制及健康要求</h4>
                     <div className="ptp-alert is-red">
-                      <span style={{ width: 15, height: 15, marginTop: 1, borderRadius: '50%', background: '#e34f47', color: '#fff', fontSize: 10, fontWeight: 800, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>!</span>
+                      <AlertCircleSvg bg="#e34f47" type="bang" />
                       <div>
                         <strong>严格禁飞品种</strong>
                         短鼻类猫犬（如法斗、巴哥、加菲猫、波斯猫等）由于高空易窒息，属于民航禁运品种，本方案不支持承运。
                       </div>
                     </div>
                     <div className="ptp-alert is-green">
-                      <span style={{ width: 15, height: 15, marginTop: 1, borderRadius: '50%', background: '#2eb66b', color: '#fff', fontSize: 10, fontWeight: 800, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>i</span>
+                      <AlertCircleSvg bg="#2eb66b" type="info" />
                       <div>
                         <strong>健康及适运状态</strong>
                         宠物年龄须在8周至10周岁内，处于非怀孕、非术后康复期。为了起飞安全，交接前4小时请务必让宠物保持断食。
@@ -1058,7 +1132,7 @@ export default function PetTravelPrototype() {
                   </div>
                   {!formScrolled && (
                     <div className="ptp-steps">
-                      <span className="is-on">✓ 选航班</span>
+                      <span className="is-on"><CheckMiniSvg color="#ffffff" size={11} strokeWidth={2.1} /> 选航班</span>
                       <i />
                       <span className="is-on"><span className="ptp-step-num">2</span>填信息</span>
                       <i />
@@ -1134,7 +1208,12 @@ export default function PetTravelPrototype() {
                         <RightSvg color={!pickupSlot ? '#e45044' : '#9aa8a0'} />
                       </button>
                     </div>
-                    {!pickupSlot && <div className="ptp-err-strip">△ 上门时间不能为空，请选择合理的上门揽收时段</div>}
+                    {!pickupSlot && (
+                      <div className="ptp-err-strip" style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                        <WarnTriSvg size={11} />
+                        <span>上门时间不能为空，请选择合理的上门揽收时段</span>
+                      </div>
+                    )}
                   </div>
 
                   <div className="ptp-card">
@@ -1179,8 +1258,9 @@ export default function PetTravelPrototype() {
                         </button>
                       ))}
                     </div>
-                    <div style={{ background: '#eaf8f0', color: '#279e5e', fontSize: 10.5, padding: '6px 9px', borderRadius: 8, textAlign: 'center' }}>
-                      ✓ 已根据宠物活体净重{weightKg}kg 自动匹配合规 {recommendedCrate}号航空箱规格
+                    <div style={{ background: '#eaf8f0', color: '#279e5e', fontSize: 10.5, padding: '6px 9px', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4 }}>
+                      <CheckMiniSvg color="#279e5e" size={11} strokeWidth={2} />
+                      <span>已根据宠物活体净重{weightKg}kg 自动匹配合规 {recommendedCrate}号航空箱规格</span>
                     </div>
                   </div>
 
@@ -1195,7 +1275,7 @@ export default function PetTravelPrototype() {
                         className={`ptp-upload-slot${photoUploaded ? ' is-ok' : ' is-miss'}`}
                         onClick={() => { setPhotoUploaded((v) => !v); showToast(photoUploaded ? '已移除合照' : '已上传宠物与航空箱合照'); }}
                       >
-                        <span style={{ fontSize: 16, color: photoUploaded ? '#249b59' : '#e45044' }}>{photoUploaded ? '✓' : '+'}</span>
+                        {photoUploaded ? <CheckMiniSvg color="#249b59" size={16} strokeWidth={2.1} /> : <PlusMiniSvg color="#e45044" size={16} />}
                         <strong>宠物与箱合照</strong>
                         <span
                           style={{
@@ -1214,7 +1294,9 @@ export default function PetTravelPrototype() {
 
                       <button type="button" className="ptp-upload-slot is-ocr" style={{ position: 'relative' }} onClick={() => setModal('ocr')}>
                         <div style={{ width: '100%', background: '#e3e8ec', padding: '14px 4px 12px', position: 'relative' }}>
-                          <span style={{ position: 'absolute', top: 5, right: 5, width: 13, height: 13, borderRadius: '50%', background: '#78857e', color: '#fff', fontSize: 9, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>×</span>
+                          <span style={{ position: 'absolute', top: 5, right: 5, display: 'inline-flex' }}>
+                            <CloseCircleSvg />
+                          </span>
                           <span style={{ fontSize: 10.5, color: '#8a959e' }}>[检疫证原件]</span>
                         </div>
                         <div style={{ width: '100%', padding: '5px 5px 7px', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 3 }}>
@@ -1228,7 +1310,7 @@ export default function PetTravelPrototype() {
                         className={`ptp-upload-slot${vaccineUploaded ? ' is-ok' : ''}`}
                         onClick={() => { setVaccineUploaded((v) => !v); showToast(vaccineUploaded ? '已取消疫苗本' : '疫苗本已核验'); }}
                       >
-                        <span style={{ fontSize: 16, color: vaccineUploaded ? '#249b59' : '#6c7c74' }}>{vaccineUploaded ? '✓' : '+'}</span>
+                        {vaccineUploaded ? <CheckMiniSvg color="#249b59" size={16} strokeWidth={2.1} /> : <PlusMiniSvg color="#6c7c74" size={16} />}
                         <strong>疫苗本原件</strong>
                         <span style={{ fontSize: 9.5, color: '#8a9991' }}>{vaccineUploaded ? '已核验' : '含狂犬贴纸'}</span>
                       </button>
@@ -1238,7 +1320,7 @@ export default function PetTravelPrototype() {
                   <div className="ptp-card">
                     <strong style={{ display: 'block', fontSize: 14, fontWeight: 600, marginBottom: 10 }}>增值服务 <span style={{ fontSize: 11.5, fontWeight: 400, color: '#7d8c84' }}>(可选)</span></strong>
                     <button type="button" className={`ptp-addon${addonInsurance ? ' is-active' : ''}`} onClick={() => setAddonInsurance((v) => !v)}>
-                      <span className={`ptp-chk${addonInsurance ? ' is-on' : ''}`}>{addonInsurance ? '✓' : ''}</span>
+                      <span className={`ptp-chk${addonInsurance ? ' is-on' : ''}`}>{addonInsurance ? <CheckMiniSvg color="#ffffff" size={10} strokeWidth={2.2} /> : null}</span>
                       <div style={{ flex: 1 }}>
                         <div style={{ fontSize: 13, fontWeight: 500, color: '#16221c' }}>宠运无忧综合险</div>
                         <div style={{ fontSize: 10.5, fontWeight: 400, color: '#7e8d85', marginTop: 2 }}>全程意外伤害与应急丢失保障，最高赔付 1 万元</div>
@@ -1246,7 +1328,7 @@ export default function PetTravelPrototype() {
                       <strong style={{ fontSize: 12.5, fontWeight: 500, color: '#2eb66b' }}>¥19</strong>
                     </button>
                     <button type="button" className={`ptp-addon${addonValuation ? ' is-active' : ''}`} onClick={() => setAddonValuation((v) => !v)}>
-                      <span className={`ptp-chk${addonValuation ? ' is-on' : ''}`}>{addonValuation ? '✓' : ''}</span>
+                      <span className={`ptp-chk${addonValuation ? ' is-on' : ''}`}>{addonValuation ? <CheckMiniSvg color="#ffffff" size={10} strokeWidth={2.2} /> : null}</span>
                       <div style={{ flex: 1 }}>
                         <div style={{ fontSize: 13, fontWeight: addonValuation ? 500 : 400, color: addonValuation ? '#16221c' : '#56645d' }}>全额保价服务</div>
                         <div style={{ fontSize: 10.5, fontWeight: 400, color: '#8a9891', marginTop: 2 }}>声明宠物实际估值，享独立保额超额全额赔付</div>
@@ -1396,14 +1478,12 @@ export default function PetTravelPrototype() {
                         height: 14,
                         borderRadius: '50%',
                         background: onlyValidOrders ? '#2eb66b' : '#d8dedb',
-                        color: '#ffffff',
                         display: 'inline-flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        fontSize: 9,
                       }}
                     >
-                      ✓
+                      <CheckMiniSvg color="#ffffff" size={9} strokeWidth={2.2} />
                     </span>
                     只看有效订单
                   </button>
@@ -1468,30 +1548,41 @@ export default function PetTravelPrototype() {
                         <span style={{ fontSize: 12.5, fontWeight: 500, marginRight: 2 }}>¥</span>
                         <span className="ptp-din-bold">613</span>
                       </div>
-                      <div style={{ fontSize: 10, color: '#8c9891', marginTop: 1 }}>明细 ▼</div>
+                      <div style={{ fontSize: 10, color: '#8c9891', marginTop: 1, display: 'inline-flex', alignItems: 'center', gap: 3 }}>
+                        <span>明细</span>
+                        <DownTriSvg color="#8c9891" size={7} />
+                      </div>
                     </button>
                   </div>
 
                   <div style={{ background: '#f7f8f9', borderRadius: 12, padding: '12px 12px 11px' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <strong style={{ fontSize: 12.5, color: '#18251e' }}>全流程追踪</strong>
-                      <button type="button" style={{ fontSize: 10.5, color: '#8c9a92' }} onClick={() => setModal('timeline')}>查看全部 ›</button>
+                      <button type="button" style={{ fontSize: 10.5, color: '#8c9a92', display: 'inline-flex', alignItems: 'center', gap: 2 }} onClick={() => setModal('timeline')}>
+                        <span>查看全部</span>
+                        <RightSvg color="#8c9a92" />
+                      </button>
                     </div>
                     <div className="ptp-stage-rail">
                       <div className="ptp-stage-track">
                         <div className="ptp-stage-track-fill" style={{ width: stagePct }} />
                       </div>
-                      {TRACKING_STAGES.map((st, idx) => (
-                        <button
-                          key={st.key}
-                          type="button"
-                          className={`ptp-stage-node${idx < trackStageIdx ? ' is-done' : ''}${idx === trackStageIdx ? ' is-now' : ''}`}
-                          onClick={() => setTrackStageIdx(idx)}
-                        >
-                          <span className="ptp-stage-dot">{idx < trackStageIdx ? '✓' : ''}</span>
-                          <span>{st.label}</span>
-                        </button>
-                      ))}
+                      {TRACKING_STAGES.map((st, idx) => {
+                        const nodeState = idx < trackStageIdx ? 'done' : idx === trackStageIdx ? 'now' : 'todo';
+                        return (
+                          <button
+                            key={st.key}
+                            type="button"
+                            className={`ptp-stage-node${nodeState === 'done' ? ' is-done' : ''}${nodeState === 'now' ? ' is-now' : ''}`}
+                            onClick={() => setTrackStageIdx(idx)}
+                          >
+                            <span className="ptp-stage-dot">
+                              <StageNodeSvg state={nodeState} />
+                            </span>
+                            <span>{st.label}</span>
+                          </button>
+                        );
+                      })}
                     </div>
                     <button
                       type="button"
@@ -1746,7 +1837,9 @@ export default function PetTravelPrototype() {
                         {b.banned ? (
                           <span style={{ fontSize: 10, padding: '2px 7px', borderRadius: 4, background: '#ffe9e8', color: '#df4b44', fontWeight: 700 }}>禁飞</span>
                         ) : breed === b.name ? (
-                          <span style={{ width: 18, height: 18, borderRadius: '50%', background: '#33b96e', color: '#fff', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: 11 }}>✓</span>
+                          <span style={{ width: 18, height: 18, borderRadius: '50%', background: '#33b96e', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <CheckMiniSvg color="#ffffff" size={11} strokeWidth={2.2} />
+                          </span>
                         ) : null}
                       </button>
                     ))}
@@ -1901,7 +1994,9 @@ export default function PetTravelPrototype() {
                       className={`ptp-addon${pickupSlot === s ? ' is-active' : ''}`}
                       onClick={() => { setPickupSlot(s); setModal(null); showToast('已选择上门揽收时段'); }}
                     >
-                      <span className={`ptp-chk${pickupSlot === s ? ' is-on' : ''}`} style={{ borderRadius: '50%' }}>{pickupSlot === s ? '✓' : ''}</span>
+                      <span className={`ptp-chk${pickupSlot === s ? ' is-on' : ''}`} style={{ borderRadius: '50%' }}>
+                        {pickupSlot === s ? <CheckMiniSvg color="#ffffff" size={10} strokeWidth={2.2} /> : null}
+                      </span>
                       <span style={{ fontSize: 12.5, fontWeight: 600 }}>{s}</span>
                     </button>
                   ))}
