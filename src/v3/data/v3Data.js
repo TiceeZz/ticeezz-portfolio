@@ -1,8 +1,8 @@
 import { honors } from '../../data/timeline';
 import { V3_CASE_STUDIES } from './v3CaseStudies';
 
-export const RESUME_PDF_HREF = '/pdf/Tong_Zongzhen_UX_AI_Resume_2026.pdf';
-export const RESUME_DOWNLOAD_NAME = '童宗震_UX与AI产品设计_简历_2026.pdf';
+export const RESUME_PDF_HREF = '/pdf/童宗震-AI复合型设计师-简历.pdf';
+export const RESUME_DOWNLOAD_NAME = '童宗震-AI复合型设计师-简历.pdf';
 
 export const V3_PROJECTS = V3_CASE_STUDIES.map((c) => ({
   num: c.num,
