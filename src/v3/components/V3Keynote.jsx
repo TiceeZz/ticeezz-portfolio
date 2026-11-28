@@ -2,13 +2,22 @@ import { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import useV3Reveal from '../useV3Reveal';
 import V3Magnetic from './V3Magnetic';
-import { KEYNOTE_PILLARS } from '../data/v3Data';
+import { KEYNOTE_CASES } from '../data/v3Data';
 
 export default function V3Keynote() {
-  const [activeIdx, setActiveIdx] = useState(0);
-  const revealRef = useV3Reveal(0.1);
+  const [caseIdx, setCaseIdx] = useState(0);
+  const [pillarIdx, setPillarIdx] = useState(0);
+  const revealRef = useV3Reveal(0.08);
   const tiltRef = useRef(null);
-  const current = KEYNOTE_PILLARS[activeIdx];
+
+  const activeCase = KEYNOTE_CASES[caseIdx] || KEYNOTE_CASES[0];
+  const pillars = activeCase.pillars;
+  const current = pillars[pillarIdx] || pillars[0];
+
+  const handleSelectCase = (nextIdx) => {
+    setCaseIdx(nextIdx);
+    setPillarIdx(0);
+  };
 
   const onStageMove = (e) => {
     const el = tiltRef.current;
@@ -16,8 +25,8 @@ export default function V3Keynote() {
     const rect = el.getBoundingClientRect();
     const px = (e.clientX - rect.left) / rect.width;
     const py = (e.clientY - rect.top) / rect.height;
-    const ry = (px - 0.5) * 10;
-    const rx = (0.5 - py) * 8;
+    const ry = (px - 0.5) * 8;
+    const rx = (0.5 - py) * 6;
     el.style.transform = `perspective(1000px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`;
     el.style.setProperty('--glare-x', `${(px * 100).toFixed(1)}%`);
     el.style.setProperty('--glare-y', `${(py * 100).toFixed(1)}%`);
@@ -30,26 +39,57 @@ export default function V3Keynote() {
   };
 
   return (
-    <div id="v3-keynote" className="v3-keynote">
+    <div id="v3-keynote" className="v3-keynote" data-keynote-case={activeCase.key}>
       <div ref={revealRef} className="v3-container v3-reveal">
+        {/* Dual-Flagship Co-Equal Selector: C-end Complex Flow + B-end AI Workbench */}
+        <div className="v3-keynote__switcher-head">
+          <span className="v3-kicker">01 / DUAL FLAGSHIPS · C 端复杂体验 × B 端 AI 工作台双代表作</span>
+        </div>
+
+        <div className="v3-keynote__dual-cards" role="tablist" aria-label="切换精选代表作拆解">
+          {KEYNOTE_CASES.map((item, idx) => {
+            const isSelected = idx === caseIdx;
+            return (
+              <button
+                key={item.key}
+                type="button"
+                role="tab"
+                aria-selected={isSelected}
+                className={`v3-keynote__case-card${isSelected ? ' is-active' : ''}`}
+                onClick={() => handleSelectCase(idx)}
+              >
+                <div className="v3-keynote__case-card-top">
+                  <span className="v3-keynote__case-num">{item.num}</span>
+                  <span className="v3-keynote__case-badge">{item.badge}</span>
+                  <span className="v3-keynote__case-state">
+                    {isSelected ? '当前拆解 ●' : '点击切换 →'}
+                  </span>
+                </div>
+                <strong className="v3-keynote__case-name">{item.title}</strong>
+                <p className="v3-keynote__case-brief">{item.cardBrief}</p>
+              </button>
+            );
+          })}
+        </div>
+
         <div className="v3-keynote__grid">
           <div className="v3-keynote__head">
-            <span className="v3-kicker">01 / FEATURED CASE · 2026</span>
+            <span className="v3-kicker">{activeCase.kicker}</span>
             <h2 className="v3-keynote__title">
-              航旅纵横 · 宠物出行
-              <span className="v3-title-sub-en">Pet Travel UX · Film & Live Prototype</span>
+              {activeCase.title}
+              <span className="v3-title-sub-en">{activeCase.enSub}</span>
             </h2>
           </div>
 
           <div className="v3-keynote__body">
             <div className="v3-pillar-list">
-              {KEYNOTE_PILLARS.map((p, i) => {
-                const isActive = i === activeIdx;
+              {pillars.map((p, i) => {
+                const isActive = i === pillarIdx;
                 return (
                   <button
-                    key={p.id}
+                    key={`${activeCase.key}-${p.id}`}
                     className={`v3-pillar-row${isActive ? ' is-active' : ''}`}
-                    onClick={() => setActiveIdx(i)}
+                    onClick={() => setPillarIdx(i)}
                     aria-pressed={isActive}
                   >
                     <div className="v3-pillar-row__top">
@@ -65,8 +105,9 @@ export default function V3Keynote() {
 
             <div className="v3-keynote__cta">
               <V3Magnetic>
-                <Link to="/v3/work/pettravel" className="v3-action-primary">
-                  <span>观看影片与体验交互原型</span>
+                <Link to={activeCase.href} className="v3-action-primary">
+                  <span className="v3-keynote__cta-desktop">{activeCase.ctaLabel}</span>
+                  <span className="v3-keynote__cta-mobile">{activeCase.mobileCtaLabel}</span>
                   <span className="v3-action-arrow">↗</span>
                 </Link>
               </V3Magnetic>
@@ -77,20 +118,20 @@ export default function V3Keynote() {
             <div className="v3-keynote__halo" aria-hidden="true" />
             <Link
               ref={tiltRef}
-              to="/v3/work/pettravel"
+              to={activeCase.href}
               onPointerMove={onStageMove}
               onPointerLeave={onStageLeave}
               className={`v3-keynote__stage-frame is-${current.stageKind}`}
-              aria-label={`查看 ${current.title} 完整界面方案`}
+              aria-label={`查看 ${activeCase.title} — ${current.title} 完整方案`}
             >
               <div className="v3-keynote__glare" aria-hidden="true" />
-              {KEYNOTE_PILLARS.map((p, idx) => (
+              {pillars.map((p, idx) => (
                 <img
-                  key={p.id}
+                  key={`${activeCase.key}-${p.id}`}
                   src={p.stageImg}
-                  alt={p.title}
-                  className={`v3-keynote__stage-img is-${p.stageKind}${idx === activeIdx ? ' is-active' : ''}`}
-                  loading={idx === 0 ? 'eager' : 'lazy'}
+                  alt={`${activeCase.title} · ${p.title}`}
+                  className={`v3-keynote__stage-img is-${p.stageKind}${idx === pillarIdx ? ' is-active' : ''}`}
+                  decoding="async"
                 />
               ))}
             </Link>
@@ -98,11 +139,11 @@ export default function V3Keynote() {
             <div className="v3-keynote__stage-caption">
               <span>{current.stageCaption}</span>
               <div className="v3-keynote__stage-dots" aria-hidden="true">
-                {KEYNOTE_PILLARS.map((p, idx) => (
+                {pillars.map((p, idx) => (
                   <button
-                    key={p.id}
-                    className={idx === activeIdx ? 'is-active' : ''}
-                    onClick={() => setActiveIdx(idx)}
+                    key={`${activeCase.key}-${p.id}`}
+                    className={idx === pillarIdx ? 'is-active' : ''}
+                    onClick={() => setPillarIdx(idx)}
                     aria-label={`切换到 ${p.title}`}
                   />
                 ))}

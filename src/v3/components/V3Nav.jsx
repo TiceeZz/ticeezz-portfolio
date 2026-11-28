@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { RESUME_PDF_HREF, RESUME_DOWNLOAD_NAME } from '../data/v3Data';
 
 const NAV_ITEMS = [
   { id: 'v3-keynote', label: '精选' },
@@ -158,6 +159,17 @@ export default function V3Nav({ theme, onThemeChange }) {
           </nav>
 
           <div className="v3-header__right">
+            <a
+              href={RESUME_PDF_HREF}
+              download={RESUME_DOWNLOAD_NAME}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="v3-nav-resume-btn"
+              title="下载童宗震 PDF 简历"
+            >
+              简历 PDF ↓
+            </a>
+
             <div className="v3-ver-wrap" ref={verRef}>
               <button
                 type="button"
@@ -278,8 +290,18 @@ export default function V3Nav({ theme, onThemeChange }) {
           </div>
 
           <div className="v3-drawer__footer">
-            <div className="v3-drawer__ed-label">快速联系</div>
+            <div className="v3-drawer__ed-label">简历与快速联系</div>
             <div className="v3-drawer__quick-contacts">
+              <a
+                href={RESUME_PDF_HREF}
+                download={RESUME_DOWNLOAD_NAME}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="v3-drawer__contact-pill is-resume"
+                onClick={() => setMenuOpen(false)}
+              >
+                下载 PDF 简历（2026 版） ↓
+              </a>
               <button
                 type="button"
                 className="v3-drawer__contact-pill"

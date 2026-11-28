@@ -2660,7 +2660,7 @@ body.is-v3-active[data-v3-theme='dark'] {
 
 .v3-work__highlights {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
   gap: 24px;
   padding: 26px 0;
   margin-bottom: 40px;
@@ -4908,5 +4908,369 @@ body.is-v3-active[data-v3-theme='dark'] {
 @media (max-width: 768px) {
   .v3-footer__editions {
     display: none;
+  }
+}
+
+/* ===== Strategic Portfolio Upgrades: Dual-Flagship Keynote, Exhibition Skip/Archive, Commercial Exp & PDF Resume ===== */
+.v3-nav-resume-btn {
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 13px;
+  border-radius: 999px;
+  border: 1px solid var(--blue);
+  background: var(--blue-soft);
+  color: var(--blue-text);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.v3-nav-resume-btn:hover {
+  background: var(--blue);
+  color: var(--on-blue);
+  transform: translateY(-1px);
+}
+
+.v3-drawer__contact-pill.is-resume {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: var(--on-blue);
+  font-weight: 600;
+}
+
+/* Dual-Flagship Keynote Selector */
+.v3-keynote__switcher-head {
+  margin-bottom: 14px;
+}
+
+.v3-keynote__switcher-head .v3-kicker {
+  margin-bottom: 0;
+}
+
+.v3-keynote__dual-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-bottom: 44px;
+}
+
+.v3-keynote__case-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 20px 24px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease, background 0.22s ease;
+}
+
+.v3-keynote__case-card:hover {
+  border-color: var(--line-strong);
+  transform: translateY(-2px);
+}
+
+.v3-keynote__case-card.is-active {
+  border-color: var(--blue);
+  background: linear-gradient(135deg, var(--blue-soft) 0%, var(--surface) 78%);
+  box-shadow: 0 14px 36px -22px rgba(0, 56, 255, 0.28);
+}
+
+.v3-keynote[data-keynote-case='veriframe'] {
+  --blue: #1e4d45;
+  --blue-hover: #163a34;
+  --blue-text: #1e4d45;
+  --blue-soft: rgba(30, 77, 69, 0.08);
+}
+
+.v3-root[data-v3-theme='dark'] .v3-keynote[data-keynote-case='veriframe'] {
+  --blue: #2b665c;
+  --blue-hover: #357a6e;
+  --blue-text: #9fc4b8;
+  --blue-soft: rgba(159, 196, 184, 0.14);
+}
+
+.v3-keynote__case-card-top {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.v3-keynote__case-num {
+  font-family: var(--f-mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--blue-text);
+}
+
+.v3-keynote__case-badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: var(--bg-alt);
+  border: 1px solid var(--line);
+  color: var(--ink-2);
+}
+
+.v3-keynote__case-state {
+  margin-left: auto;
+  font-family: var(--f-mono);
+  font-size: 11px;
+  color: var(--ink-3);
+}
+
+.v3-keynote__case-card.is-active .v3-keynote__case-state {
+  color: var(--blue-text);
+  font-weight: 600;
+}
+
+.v3-keynote__case-name {
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.v3-keynote__case-brief {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--ink-2);
+}
+
+.v3-keynote__cta-mobile {
+  display: none;
+}
+
+/* Exhibition Quick Skip & Archive Controls */
+.v3-exhibition__skip-btn {
+  height: 36px;
+  padding: 0 14px;
+  margin-left: 4px;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
+  color: var(--ink-2);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+
+.v3-exhibition__skip-btn:hover {
+  border-color: var(--blue);
+  color: var(--blue-text);
+  background: var(--blue-soft);
+}
+
+.v3-exhibition__bottom-right {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.v3-exhibition__sub-switch {
+  padding: 4px 11px;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
+  color: var(--blue-text);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.v3-exhibition__sub-switch:hover {
+  border-color: var(--blue);
+  background: var(--blue-soft);
+}
+
+.v3-exhibition__archive-more {
+  margin-top: 28px;
+}
+
+.v3-exhibition__archive-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 20px;
+  border-radius: 8px;
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
+  text-align: left;
+  cursor: pointer;
+}
+
+.v3-exhibition__archive-toggle div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.v3-exhibition__archive-toggle div span {
+  font-family: var(--f-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  color: var(--blue-text);
+}
+
+.v3-exhibition__archive-toggle div strong {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+/* Resume CTA & Upfront Commercial Experience in #v3-index */
+.v3-resume-cta-box {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.v3-resume-preview-link {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--blue-text);
+  border-bottom: 1px solid var(--line-strong);
+  padding-bottom: 2px;
+}
+
+.v3-resume-preview-link:hover {
+  border-bottom-color: var(--blue-text);
+}
+
+.v3-work-exp-block {
+  margin-bottom: 40px;
+}
+
+.v3-work-exp-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 16px;
+}
+
+.v3-work-exp-card {
+  padding: 22px 24px;
+  border-radius: 10px;
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
+  box-shadow: 0 12px 32px -24px rgba(11, 18, 34, 0.14);
+}
+
+.v3-work-exp-card__top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.v3-work-exp-card__title {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.v3-work-exp-card__title strong {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--ink);
+}
+
+.v3-work-exp-card__role {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ink-2);
+}
+
+.v3-work-exp-card__badge {
+  font-style: normal;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: var(--blue-soft);
+  color: var(--blue-text);
+  border: 1px solid var(--line);
+}
+
+.v3-work-exp-card__period {
+  font-family: var(--f-mono);
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--blue-text);
+}
+
+.v3-work-exp-card__bullets {
+  margin: 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 13.8px;
+  line-height: 1.78;
+  color: var(--ink-2);
+}
+
+.v3-work-exp-card__foot {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+
+.v3-timeline-head--sub {
+  margin-top: 8px;
+}
+
+@media (max-width: 860px) {
+  .v3-keynote__dual-cards {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+
+  .v3-keynote__case-card {
+    padding: 16px 18px;
+  }
+
+  .v3-keynote__cta-desktop {
+    display: none;
+  }
+
+  .v3-keynote__cta-mobile {
+    display: inline;
+  }
+}
+
+@media (max-width: 640px) {
+  .v3-nav-resume-btn {
+    display: none;
+  }
+
+  .v3-work-exp-card {
+    padding: 18px 16px;
+  }
+
+  .v3-work-exp-card__bullets {
+    font-size: 13.2px;
+    padding-left: 16px;
   }
 }

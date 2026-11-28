@@ -24,35 +24,35 @@ const CASE_CARDS = {
     meta: 'To B 大健康品牌视觉与合规工作台 · 2026',
     href: '/v3/work/veriframe',
   },
-  eclipse: {
-    num: '03',
-    title: 'Eclipse · 汉斯格雅',
-    meta: '智能硬件面板 + App 交互',
-    href: '/v3/work/eclipse',
-  },
   graduation: {
-    num: '04',
+    num: '03',
     title: '尊严的具现',
     meta: '智慧养老服务系统 · 硕士毕设',
     href: '/v3/work/graduation',
   },
-  vcrutch: {
+  seed: {
+    num: '04',
+    title: 'AHRC SEED 工作坊',
+    meta: '中英合作 · 双语报告与共创',
+    href: '/v3/work/seed',
+  },
+  eclipse: {
     num: '05',
+    title: 'Eclipse · 汉斯格雅',
+    meta: '智能硬件面板 + App 交互',
+    href: '/v3/work/eclipse',
+  },
+  vcrutch: {
+    num: '06',
     title: '医度 · Easygoing',
     meta: '无障碍就医 PSS 服务系统',
     href: '/v3/work/vcrutch',
   },
   fengjing: {
-    num: '06',
+    num: '07',
     title: '枫泾小院',
     meta: '品牌视觉与文创包装',
     href: '/v3/work/fengjing',
-  },
-  seed: {
-    num: '07',
-    title: 'AHRC SEED 工作坊',
-    meta: '中英合作 · 双语报告与共创',
-    href: '/v3/work/seed',
   },
   yimoji: {
     num: '08',

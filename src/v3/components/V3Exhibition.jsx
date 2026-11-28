@@ -3,22 +3,29 @@ import { Link } from 'react-router-dom';
 import useAsyncGSAP from '../../hooks/useAsyncGSAP';
 import { V3_PROJECTS } from '../data/v3Data';
 
+const CORE_COUNT = V3_PROJECTS.filter((p) => p.categoryGroup === 'core').length;
+const ARCHIVE_COUNT = V3_PROJECTS.filter((p) => p.categoryGroup === 'archive').length;
+
 const FILTERS = [
-  { id: 'all', cn: '全部', count: V3_PROJECTS.length },
   {
-    id: 'postgrad',
-    cn: '硕士 & 最新',
-    count: V3_PROJECTS.filter((p) => p.stageGroup === 'postgrad').length,
+    id: 'core',
+    cn: '精选 · UX & AI',
+    count: CORE_COUNT,
   },
   {
-    id: 'undergrad',
-    cn: '本科',
-    count: V3_PROJECTS.filter((p) => p.stageGroup === 'undergrad').length,
+    id: 'archive',
+    cn: '早期工业与空间探索',
+    count: ARCHIVE_COUNT,
+  },
+  {
+    id: 'all',
+    cn: '全部档案',
+    count: V3_PROJECTS.length,
   },
 ];
 
 export default function V3Exhibition() {
-  const [filter, setFilter] = useState('all');
+  const [filter, setFilter] = useState('core');
   const [progress, setProgress] = useState(0);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isDesktop, setIsDesktop] = useState(() =>
@@ -33,7 +40,7 @@ export default function V3Exhibition() {
 
   const items = useMemo(() => {
     if (filter === 'all') return V3_PROJECTS;
-    return V3_PROJECTS.filter((p) => p.stageGroup === filter);
+    return V3_PROJECTS.filter((p) => p.categoryGroup === filter);
   }, [filter]);
 
   useEffect(() => {
@@ -58,26 +65,27 @@ export default function V3Exhibition() {
     const ctx = gsap.context(() => {
       gsap.set(track, { x: 0, skewX: 0 });
       const getDistance = () => Math.max(0, track.scrollWidth - viewport.clientWidth);
-      const skewTo = gsap.quickTo(track, 'skewX', { duration: 0.38, ease: 'power3.out' });
-      const clampSkew = gsap.utils.clamp(-3.2, 3.2);
+      const skewTo = gsap.quickTo(track, 'skewX', { duration: 0.32, ease: 'power3.out' });
+      const clampSkew = gsap.utils.clamp(-2.6, 2.6);
       let skewResetTimer = null;
 
+      // Compact 0.62x scroll-scrub ratio so 6 curated works glide smoothly in ~1.6 screens instead of 8+ screens
       const tween = gsap.to(track, {
         x: () => -getDistance(),
         ease: 'none',
         scrollTrigger: {
           trigger: section,
           start: 'top top',
-          end: () => `+=${Math.max(400, getDistance() * 1.05)}`,
+          end: () => `+=${Math.max(360, Math.round(getDistance() * 0.62))}`,
           pin: true,
-          scrub: 0.65,
+          scrub: 0.45,
           anticipatePin: 1,
           invalidateOnRefresh: true,
           onUpdate: (self) => {
             setProgress(self.progress);
             track.style.setProperty('--pan-p', String(self.progress));
             const vel = self.getVelocity();
-            skewTo(clampSkew(vel / -420));
+            skewTo(clampSkew(vel / -460));
             clearTimeout(skewResetTimer);
             skewResetTimer = setTimeout(() => skewTo(0), 90);
             const idx = Math.min(
@@ -111,6 +119,25 @@ export default function V3Exhibition() {
     setActiveIndex(Math.min(items.length - 1, Math.round(p * (items.length - 1))));
   };
 
+  const handleFilterSwitch = (nextFilter) => {
+    setFilter(nextFilter);
+    if (isDesktop && sectionRef.current) {
+      const top = sectionRef.current.getBoundingClientRect().top + window.scrollY;
+      if (Math.abs(window.scrollY - top) > 120) {
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
+    }
+  };
+
+  const skipPastExhibition = () => {
+    const indexEl = document.getElementById('v3-index');
+    if (!indexEl) return;
+    document.documentElement.scrollLeft = 0;
+    document.body.scrollLeft = 0;
+    const targetTop = indexEl.getBoundingClientRect().top + window.scrollY - 60;
+    window.scrollTo({ top: targetTop, left: 0, behavior: 'smooth' });
+  };
+
   const jumpToCard = (idx) => {
     const clamped = Math.max(0, Math.min(items.length - 1, idx));
     if (isDesktop && stRef.current) {
@@ -131,19 +158,19 @@ export default function V3Exhibition() {
       <div className="v3-exhibition__shell">
         <div className="v3-exhibition__top">
           <div>
-            <span className="v3-kicker">02 / PROJECT EXHIBITION · 2018—2026</span>
+            <span className="v3-kicker">02 / CURATED EXHIBITION · 按时间倒序与求职主线分层</span>
             <h2 className="v3-exhibition__heading">作品展厅</h2>
           </div>
 
           <div className="v3-exhibition__controls">
-            <div className="v3-filter-tabs" role="tablist" aria-label="Filter projects">
+            <div className="v3-filter-tabs" role="tablist" aria-label="作品分组筛选">
               {FILTERS.map((f) => (
                 <button
                   key={f.id}
                   role="tab"
                   aria-selected={filter === f.id}
                   className={`v3-filter-tab${filter === f.id ? ' is-active' : ''}`}
-                  onClick={() => setFilter(f.id)}
+                  onClick={() => handleFilterSwitch(f.id)}
                 >
                   <span>{f.cn}</span>
                   <sup>{String(f.count).padStart(2, '0')}</sup>
@@ -156,7 +183,7 @@ export default function V3Exhibition() {
                 className="v3-arrow-btn"
                 onClick={() => jumpToCard(activeIndex - 1)}
                 disabled={activeIndex <= 0}
-                aria-label="Previous project"
+                aria-label="上一个作品"
               >
                 ←
               </button>
@@ -164,15 +191,22 @@ export default function V3Exhibition() {
                 className="v3-arrow-btn"
                 onClick={() => jumpToCard(activeIndex + 1)}
                 disabled={activeIndex >= items.length - 1}
-                aria-label="Next project"
+                aria-label="下一个作品"
               >
                 →
+              </button>
+              <button
+                type="button"
+                className="v3-exhibition__skip-btn"
+                onClick={skipPastExhibition}
+              >
+                跳过展厅 · 看履历 ↓
               </button>
             </div>
           </div>
         </div>
 
-        {/* Unobstructed Full-Bleed Gallery Track with Focus Depth & Image Parallax */}
+        {/* Unobstructed Full-Bleed Gallery Track */}
         <div
           ref={viewportRef}
           className="v3-exhibition__viewport"
@@ -181,7 +215,7 @@ export default function V3Exhibition() {
           <div ref={trackRef} className="v3-exhibition__track">
             {items.map((proj, idx) => (
               <Link
-                key={proj.num}
+                key={proj.slug}
                 to={proj.href}
                 className={`v3-work-plate${idx === activeIndex ? ' is-focused' : ''}`}
               >
@@ -210,6 +244,23 @@ export default function V3Exhibition() {
               </Link>
             ))}
           </div>
+
+          {/* Mobile secondary archive toggle right below the 6 UX & AI works */}
+          {!isDesktop && filter === 'core' && (
+            <div className="v3-container v3-exhibition__archive-more">
+              <button
+                type="button"
+                className="v3-exhibition__archive-toggle"
+                onClick={() => setFilter('archive')}
+              >
+                <div>
+                  <span>EARLY EXPLORATIONS · 2020—2023</span>
+                  <strong>展开早期品牌、工业与空间设计探索（{ARCHIVE_COUNT} 项）</strong>
+                </div>
+                <span aria-hidden="true">→</span>
+              </button>
+            </div>
+          )}
         </div>
 
         <div className="v3-exhibition__bottom">
@@ -231,7 +282,7 @@ export default function V3Exhibition() {
                 const isPassed = idx < activeIndex;
                 return (
                   <button
-                    key={proj.num}
+                    key={proj.slug}
                     type="button"
                     className={`v3-exhibition__node${isActive ? ' is-active' : ''}${isPassed ? ' is-passed' : ''}`}
                     style={{ left: `${pos}%` }}
@@ -249,9 +300,29 @@ export default function V3Exhibition() {
             </div>
           </div>
 
-          <span className="v3-exhibition__cue">
-            {isDesktop ? '滚轮横向浏览 →' : '左右滑动 →'}
-          </span>
+          <div className="v3-exhibition__bottom-right">
+            {filter === 'core' && (
+              <button
+                type="button"
+                className="v3-exhibition__sub-switch"
+                onClick={() => handleFilterSwitch('archive')}
+              >
+                早期工业与空间 ({ARCHIVE_COUNT}) →
+              </button>
+            )}
+            {filter === 'archive' && (
+              <button
+                type="button"
+                className="v3-exhibition__sub-switch"
+                onClick={() => handleFilterSwitch('core')}
+              >
+                ← 返回精选 UX &amp; AI
+              </button>
+            )}
+            <span className="v3-exhibition__cue">
+              {isDesktop ? '滚轮浏览' : '左右滑动'}
+            </span>
+          </div>
         </div>
       </div>
     </div>

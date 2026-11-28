@@ -26,8 +26,8 @@ export default function VeriframeBrandPlate() {
       <div className="vf-brand__grid">
         <div className="vf-brand__col">
           <p className="vf-brand__kicker">
-            <b>00</b>
-            <span>标志</span>
+            <b>BRAND GRAMMAR</b>
+            <span>视觉语法与图形推演</span>
           </p>
           <h2 className="vf-brand__heading">
             澄矩，
