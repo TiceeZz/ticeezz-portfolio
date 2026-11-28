@@ -194,7 +194,7 @@ export default function V3BeyondPage() {
                 <p className="v3-photo-series-desc">{PHOTO_SERIES[photoSeriesIdx].desc}</p>
               </div>
 
-              <div className="v3-work__gallery is-grid">
+              <div className="v3-work__gallery is-masonry">
                 {PHOTO_SERIES[photoSeriesIdx].images.map((src, i) => (
                   <button
                     key={src}
@@ -208,7 +208,9 @@ export default function V3BeyondPage() {
                     }
                   >
                     <img src={src} alt={`${PHOTO_SERIES[photoSeriesIdx].title} ${i + 1}`} loading={i < 4 ? 'eager' : 'lazy'} />
-                    <span className="v3-work__slide-idx">{String(i + 1).padStart(2, '0')}</span>
+                    <span className="v3-work__slide-idx">
+                      {String(i + 1).padStart(2, '0')} / {String(PHOTO_SERIES[photoSeriesIdx].images.length).padStart(2, '0')}
+                    </span>
                   </button>
                 ))}
               </div>

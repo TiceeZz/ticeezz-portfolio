@@ -1,37 +1,39 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { LuExternalLink } from 'react-icons/lu';
-import { VfIcon, VfMark } from './VfIcon';
 
 const NATIVE_WIDTH = 1440;
-const NATIVE_HEIGHT = 740;
+const NATIVE_HEIGHT = 760;
 const COMPACT_BREAKPOINT = 760;
-const ACCENT = 'var(--vf-accent, #1e4d45)';
 
 const STEPS = [
   {
     step: 'blocked',
-    icon: 'check',
+    num: '01',
+    shortLabel: '违规拦截',
     title: '违规拦截与证据链',
     desc: '4 处禁用词划线拦截，「28天」可绑 SGS 报告放行',
     mobilePreview: '/images/projects/veriframe/page_010.jpg',
   },
   {
     step: 'diff',
-    icon: 'diff',
+    num: '02',
+    shortLabel: '局部重绘',
     title: '异常背景局部重绘',
     desc: '仅重绘方案 C 背景，核验包装标签 0.00% 像素变化',
     mobilePreview: '/images/projects/veriframe/page_008.jpg',
   },
   {
     step: 'review',
-    icon: 'legal',
+    num: '03',
+    shortLabel: '法务只读',
     title: '法务只读版本审阅',
     desc: '锁定内容指纹，法务只读核验声明与功效引证',
     mobilePreview: '/images/projects/veriframe/page_012.jpg',
   },
   {
     step: 'approved',
-    icon: 'export',
+    num: '04',
+    shortLabel: '签发导出',
     title: '签署放行与三尺寸导出',
     desc: '签发合规放行单，一次解锁 1:1 / 3:4 / 16:9 成片',
     mobilePreview: '/images/projects/veriframe/page_013.jpg',
@@ -115,8 +117,8 @@ export default function VeriframeShowcaseEmbed() {
   };
 
   const isCompactFallback = boxWidth < COMPACT_BREAKPOINT;
-  // Fit sticky bars (~122px) + 4-step strip (~76px) + gap (14px) + chrome (36px) + 10px bottom margin inside 100vh
-  const availHeight = Math.max(420, winHeight - 258);
+  // Fit sticky bars (~114px) + window chrome (44px) + breathing room (24px) cleanly inside 100vh
+  const availHeight = Math.max(480, winHeight - 182);
   const scale = Math.min(1, boxWidth / NATIVE_WIDTH, availHeight / NATIVE_HEIGHT);
   const scaledWidth = Math.round(NATIVE_WIDTH * scale);
   const scaledHeight = Math.round(NATIVE_HEIGHT * scale);
@@ -124,66 +126,49 @@ export default function VeriframeShowcaseEmbed() {
 
   return (
     <div ref={rootRef} className="vf-embed" aria-label="Veriframe 澄矩 可操作的工作台">
-      <div className="vf-embed__head">
-        <div className="vf-embed__title">
-          <span className="vf-embed__live">
-            <span className="ptp-live-dot" aria-hidden="true" />
-            实时交互工作台 · 点击下方步骤可一键跳转状态
-          </span>
-          <strong>
-            <VfMark size={26} ink="currentColor" accent={ACCENT} />
-            四步跑通「像素锁定 → 证据链合规 → 法务签发」闭环
-          </strong>
-        </div>
-        <a
-          href="/veriframe/index.html"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="vf-embed__open"
-        >
-          <span>在新窗口全屏打开</span>
-          <LuExternalLink aria-hidden="true" />
-        </a>
-      </div>
-
-      <ol ref={stepsRef} className="vf-embed__steps" role="tablist" aria-label="快速切换工作台预设节点">
-        {STEPS.map(({ step, icon, title, desc }, i) => {
-          const isActive = activeStep === step;
-          return (
-            <li key={step} className={isActive ? 'is-active' : ''}>
-              <button
-                type="button"
-                role="tab"
-                aria-selected={isActive}
-                className={`vf-embed__step-btn ${isActive ? 'is-active' : ''}`}
-                onClick={() => sendPresetToIframe(step)}
-              >
-                <span className="vf-embed__step-icon">
-                  <VfIcon name={icon} size={22} strokeWidth={1.6} accent={ACCENT} />
-                </span>
-                <span className="vf-embed__step-text">
-                  <em>{String(i + 1).padStart(2, '0')}</em>
-                  <strong>{title}</strong>
-                  <span>{desc}</span>
-                </span>
-              </button>
-            </li>
-          );
-        })}
-      </ol>
-
       <div
+        ref={stepsRef}
         className="vf-embed__window"
         style={!isCompactFallback ? { maxWidth: `${scaledWidth}px`, margin: '0 auto', width: '100%' } : undefined}
       >
-        <div className="vf-embed__chrome" aria-hidden="true">
-          <span className="vf-embed__dots">
-            <i />
-            <i />
-            <i />
-          </span>
-          <span className="vf-embed__url">veriframe.workspace · 清眸生物 / 2026 护眼焕新季</span>
-          <span className="vf-embed__chrome-tag">支持画布就地改写与角色切换</span>
+        <div className="vf-embed__chrome">
+          <div className="vf-embed__chrome-left" aria-hidden="true">
+            <span className="vf-embed__dots">
+              <i />
+              <i />
+              <i />
+            </span>
+            <span className="vf-embed__url">veriframe.workspace</span>
+          </div>
+
+          <div className="vf-embed__presets" role="tablist" aria-label="快速切换工作台预设状态">
+            {STEPS.map(({ step, num, shortLabel }) => {
+              const isActive = activeStep === step;
+              return (
+                <button
+                  key={step}
+                  type="button"
+                  role="tab"
+                  aria-selected={isActive}
+                  className={`vf-embed__preset-pill${isActive ? ' is-active' : ''}`}
+                  onClick={() => sendPresetToIframe(step)}
+                >
+                  <em>{num}</em>
+                  <span>{shortLabel}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          <a
+            href="/veriframe/index.html"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="vf-embed__chrome-open"
+          >
+            <span>全屏打开</span>
+            <LuExternalLink aria-hidden="true" />
+          </a>
         </div>
 
         {isCompactFallback ? (

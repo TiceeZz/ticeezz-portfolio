@@ -1,14 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
 import { flushSync } from 'react-dom';
-
-const V3_FONT_URL =
-  'https://fonts.googleapis.com/css2?' +
-  'family=Inter:wght@300;400;500;600;700&' +
-  'family=JetBrains+Mono:wght@400;500&' +
-  'family=Noto+Sans+SC:wght@300;400;500;700;900&' +
-  'family=Satisfy&' +
-  'family=Syne:wght@700;800&' +
-  'display=swap';
+import '@fontsource/syne/latin-700.css';
+import '@fontsource/syne/latin-800.css';
+import '@fontsource-variable/geist/index.css';
+import '@fontsource-variable/geist-mono/index.css';
+import '@fontsource-variable/bodoni-moda/opsz-italic.css';
 
 export default function useV3Theme() {
   const [theme, setTheme] = useState(() => {
@@ -20,25 +16,17 @@ export default function useV3Theme() {
   });
 
   useEffect(() => {
-    const id = 'v3-google-fonts-sans-v5';
     [
       'v3-google-fonts',
       'v3-google-fonts-v2',
       'v3-google-fonts-clean',
       'v3-google-fonts-clean-v3',
       'v3-google-fonts-sans-v4',
+      'v3-google-fonts-sans-v5',
     ].forEach((old) => {
       const el = document.getElementById(old);
       if (el) el.remove();
     });
-
-    if (!document.getElementById(id)) {
-      const link = document.createElement('link');
-      link.id = id;
-      link.rel = 'stylesheet';
-      link.href = V3_FONT_URL;
-      document.head.appendChild(link);
-    }
 
     document.body.classList.add('is-v3-active');
     return () => {
@@ -64,7 +52,6 @@ export default function useV3Theme() {
         typeof window !== 'undefined' &&
         window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-      // Circular View Transition wave from pointer click origin
       if (
         typeof document !== 'undefined' &&
         typeof document.startViewTransition === 'function' &&
@@ -118,7 +105,6 @@ export default function useV3Theme() {
         return;
       }
 
-      // Graceful instant fallback for browsers without View Transitions
       document.documentElement.classList.add('v3-theme-switching');
       setTheme(next);
       requestAnimationFrame(() => {

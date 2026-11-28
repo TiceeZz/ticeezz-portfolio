@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import useV3Reveal from '../useV3Reveal';
-import { RESUME_PDF_HREF, RESUME_DOWNLOAD_NAME } from '../data/v3Data';
 
 export default function V3Footer() {
   const [copied, setCopied] = useState('');
@@ -43,18 +42,6 @@ export default function V3Footer() {
               <strong>TiceeZz</strong>
               <em>{copied === 'wechat' ? '已复制 ✓' : '复制'}</em>
             </button>
-
-            <a
-              href={RESUME_PDF_HREF}
-              download={RESUME_DOWNLOAD_NAME}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="v3-contact-line"
-            >
-              <span>PDF 简历</span>
-              <strong>童宗震 · AI 复合型设计师简历</strong>
-              <em>下载 ↓</em>
-            </a>
           </div>
         </div>
 
@@ -66,6 +53,10 @@ export default function V3Footer() {
             <span>/</span>
             <Link to="/v2">TiceeZz OS</Link>
           </div>
+        </div>
+
+        <div className="v3-footer__watermark" aria-hidden="true">
+          <span>TICEEZZ</span>
         </div>
       </div>
     </footer>

@@ -7,21 +7,9 @@ const CORE_COUNT = V3_PROJECTS.filter((p) => p.categoryGroup === 'core').length;
 const ARCHIVE_COUNT = V3_PROJECTS.filter((p) => p.categoryGroup === 'archive').length;
 
 const FILTERS = [
-  {
-    id: 'core',
-    cn: '精选 · UX & AI',
-    count: CORE_COUNT,
-  },
-  {
-    id: 'archive',
-    cn: '早期工业与空间探索',
-    count: ARCHIVE_COUNT,
-  },
-  {
-    id: 'all',
-    cn: '全部档案',
-    count: V3_PROJECTS.length,
-  },
+  { id: 'core', cn: '精选 · UX & AI', count: CORE_COUNT },
+  { id: 'archive', cn: '早期工业与空间探索', count: ARCHIVE_COUNT },
+  { id: 'all', cn: '全部档案', count: V3_PROJECTS.length },
 ];
 
 export default function V3Exhibition() {
@@ -69,7 +57,6 @@ export default function V3Exhibition() {
       const clampSkew = gsap.utils.clamp(-2.6, 2.6);
       let skewResetTimer = null;
 
-      // Compact 0.62x scroll-scrub ratio so 6 curated works glide smoothly in ~1.6 screens instead of 8+ screens
       const tween = gsap.to(track, {
         x: () => -getDistance(),
         ease: 'none',
@@ -158,7 +145,7 @@ export default function V3Exhibition() {
       <div className="v3-exhibition__shell">
         <div className="v3-exhibition__top">
           <div>
-            <span className="v3-kicker">02 / CURATED EXHIBITION · 按时间倒序与求职主线分层</span>
+            <span className="v3-kicker">02 / SELECTED WORKS</span>
             <h2 className="v3-exhibition__heading">作品展厅</h2>
           </div>
 
@@ -206,7 +193,6 @@ export default function V3Exhibition() {
           </div>
         </div>
 
-        {/* Unobstructed Full-Bleed Gallery Track */}
         <div
           ref={viewportRef}
           className="v3-exhibition__viewport"
@@ -245,7 +231,6 @@ export default function V3Exhibition() {
             ))}
           </div>
 
-          {/* Mobile secondary archive toggle right below the 6 UX & AI works */}
           {!isDesktop && filter === 'core' && (
             <div className="v3-container v3-exhibition__archive-more">
               <button

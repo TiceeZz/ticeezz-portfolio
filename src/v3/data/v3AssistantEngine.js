@@ -30,17 +30,17 @@ const CASE_CARDS = {
     meta: '智慧养老服务系统 · 硕士毕设',
     href: '/v3/work/graduation',
   },
-  seed: {
-    num: '04',
-    title: 'AHRC SEED 工作坊',
-    meta: '中英合作 · 双语报告与共创',
-    href: '/v3/work/seed',
-  },
   eclipse: {
-    num: '05',
+    num: '04',
     title: 'Eclipse · 汉斯格雅',
     meta: '智能硬件面板 + App 交互',
     href: '/v3/work/eclipse',
+  },
+  seed: {
+    num: '05',
+    title: 'AHRC SEED 工作坊',
+    meta: '中英合作 · 双语报告与共创',
+    href: '/v3/work/seed',
   },
   vcrutch: {
     num: '06',

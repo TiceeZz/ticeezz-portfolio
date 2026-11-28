@@ -1,18 +1,14 @@
 import { useEffect, useRef } from 'react';
 import useAsyncGSAP from '../../hooks/useAsyncGSAP';
 import useV3Reveal from '../useV3Reveal';
+import { MANIFESTO_WORKFLOW } from '../data/v3Data';
 
 const PHRASES = [
-  { text: '设计最终会交到人手上，', accent: false },
-  { text: '所以所有的推演，', accent: false },
-  { text: '都应该从人开始。', accent: true },
+  { text: '从人的真实处境出发去推演，', accent: false },
+  { text: '再亲手把交互与细节跑通，', accent: false },
+  { text: '让设计从图纸真正走到人手里。', accent: true },
 ];
 
-/**
- * Attitude manifesto interlude.
- * Desktop: scroll-scrubbed phrase illumination via GSAP.
- * Mobile / touch: crisp one-shot reveal so scrolling stays silky and text never stalls dim.
- */
 export default function V3Manifesto() {
   const sectionRef = useRef(null);
   const wordsRef = useRef([]);
@@ -63,7 +59,7 @@ export default function V3Manifesto() {
     <div ref={sectionRef} className="v3-manifesto">
       <div ref={revealRef} className="v3-container v3-manifesto__inner v3-reveal">
         <div className="v3-manifesto__eyebrow">
-          <span className="v3-kicker">DESIGN STANCE · 设计态度</span>
+          <span className="v3-kicker">DESIGN → PROTOTYPE → SHIP</span>
           <span className="v3-manifesto__rule" aria-hidden="true" />
         </div>
 
@@ -81,12 +77,16 @@ export default function V3Manifesto() {
           ))}
         </blockquote>
 
-        <div className="v3-manifesto__foot">
-          <span>以人为起点</span>
-          <i>/</i>
-          <span>尊重真实习惯</span>
-          <i>/</i>
-          <span>落回生活现场</span>
+        <div className="v3-manifesto__pillars">
+          {MANIFESTO_WORKFLOW.map((w) => (
+            <div key={w.num} className="v3-manifesto__pillar">
+              <div className="v3-manifesto__pillar-head">
+                <em>{w.num}</em>
+                <strong>{w.head}</strong>
+              </div>
+              <p>{w.body}</p>
+            </div>
+          ))}
         </div>
       </div>
     </div>

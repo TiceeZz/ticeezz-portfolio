@@ -224,7 +224,7 @@
 }
 
 .v3-root[data-v3-theme='dark'] .v3-ai-panel {
-  background: rgba(11, 18, 36, 0.88);
+  background: rgba(13, 21, 42, 0.97);
   box-shadow:
     var(--ice-edge),
     0 32px 84px rgba(0, 0, 0, 0.56),
@@ -232,7 +232,7 @@
 }
 
 .v3-root[data-v3-theme='light'] .v3-ai-panel {
-  background: rgba(252, 253, 255, 0.9);
+  background: rgba(255, 255, 255, 0.97);
 }
 
 @keyframes v3-ai-panel-in {
@@ -705,7 +705,7 @@
 @media (max-width: 640px) {
   .v3-ai-root {
     right: 16px;
-    bottom: 16px;
+    bottom: calc(16px + env(safe-area-inset-bottom, 0px));
   }
 
   .v3-ai-root[data-subpage='true'] {

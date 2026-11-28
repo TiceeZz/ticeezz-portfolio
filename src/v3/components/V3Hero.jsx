@@ -6,11 +6,10 @@ import V3Magnetic from './V3Magnetic';
 import { HERO_PLATES } from '../data/v3Data';
 
 const TICKER_ITEMS = [
-  { en: 'UX DESIGN', cn: '用户体验' },
-  { en: 'PRODUCT & PSS', cn: '产品与服务系统' },
-  { en: 'AI WORKFLOW', cn: 'AI 驱动设计' },
-  { en: 'SPATIAL & VISUAL', cn: '空间与视觉表达' },
-  { en: '2018 — 2026', cn: '作品档案' },
+  { en: 'UX & SERVICE DESIGN', cn: '复杂业务与服务系统' },
+  { en: 'AI-NATIVE PROTOTYPING', cn: '从方案推演到可运行原型' },
+  { en: 'PRODUCT ARCHITECTURE', cn: '产品定义与工程落地' },
+  { en: '2018 — 2026 ARCHIVE', cn: '上海 · 作品档案' },
 ];
 
 export default function V3Hero({ theme }) {
@@ -20,7 +19,7 @@ export default function V3Hero({ theme }) {
   useEffect(() => {
     const id = setInterval(() => {
       setActive((prev) => (prev + 1) % HERO_PLATES.length);
-    }, 5200);
+    }, 5600);
     return () => clearInterval(id);
   }, []);
 
@@ -88,25 +87,26 @@ export default function V3Hero({ theme }) {
             </h1>
 
             <div className="v3-hero__side v3-intro-rise v3-intro-rise--d2">
-              <span className="v3-hero__role">UX · PRODUCT · AI DESIGN</span>
+              <span className="v3-hero__role">AI-NATIVE PRODUCT &amp; UX DESIGNER</span>
               <p className="v3-hero__lead">
-                关注产品体验与服务流程，
-                <span style={{ display: 'inline-block' }}>结合 AI 工具把想法更快变成可触摸的方案。</span>
+                专注复杂业务体验与服务系统设计，结合 Claude Code、Cursor 与本地 ComfyUI 管线，把方案在早期直接推进至可交互原型与线上产品。
               </p>
               <div className="v3-hero__actions">
                 <V3Magnetic>
-                  <button className="v3-action-primary" onClick={() => scrollTo('v3-lineup')}>
-                    <span>进入作品展厅</span>
+                  <button className="v3-action-primary" onClick={() => scrollTo('v3-keynote')}>
+                    <span>阅读双代表作</span>
                     <span className="v3-action-arrow">→</span>
                   </button>
                 </V3Magnetic>
                 <div className="v3-hero__quick-cases" aria-label="双代表作直达">
                   <Link to="/v3/work/pettravel" className="v3-action-link">
-                    01 航旅纵横
+                    <em className="v3-ord-inline">01</em>
+                    <span>航旅纵横</span>
                   </Link>
                   <span className="v3-hero__case-sep" aria-hidden="true">/</span>
                   <Link to="/v3/work/veriframe" className="v3-action-link">
-                    02 Veriframe · 澄矩
+                    <em className="v3-ord-inline">02</em>
+                    <span>Veriframe · 澄矩</span>
                   </Link>
                 </div>
               </div>
@@ -166,9 +166,8 @@ export default function V3Hero({ theme }) {
         </div>
       </div>
 
-      {/* Bilingual Syne + Noto Sans SC Kinetic Ticker */}
       <div className="v3-hero-ticker" aria-hidden="true">
-        <KineticMarquee speed={44} direction={-1} velocityFactor={0.3} slowOnHover repeat={4}>
+        <KineticMarquee speed={42} direction={-1} velocityFactor={0.28} slowOnHover repeat={4}>
           {TICKER_ITEMS.map((item, idx) => (
             <span key={idx} className="v3-ticker__chunk">
               <span className="v3-ticker__en">{item.en}</span>

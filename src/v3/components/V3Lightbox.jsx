@@ -8,15 +8,28 @@ import { useState, useEffect, useRef, useCallback } from 'react';
  * - Double-click / double-tap or button toggle for 2x zoom + drag-to-pan
  */
 export default function V3Lightbox({ images, index, title, onClose, onIndexChange }) {
-  const [zoomed, setZoomed] = useState(false);
+  const [scale, setScale] = useState(1);
   const [pan, setPan] = useState({ x: 0, y: 0 });
   const [dragging, setDragging] = useState(false);
 
+  const zoomed = scale > 1.02;
   const dragStartRef = useRef({ px: 0, py: 0, ox: 0, oy: 0 });
-  const touchStartRef = useRef({ x: 0, y: 0, time: 0 });
+  const touchStartRef = useRef({ x: 0, y: 0, time: 0, multiTouch: false });
+  const pinchRef = useRef({ active: false, startDist: 0, startScale: 1 });
   const lastTapRef = useRef(0);
 
   const total = images?.length || 0;
+
+  const clampPan = useCallback((nx, ny, s) => {
+    if (s <= 1.02) return { x: 0, y: 0 };
+    const factor = (s - 1) * 0.52;
+    const limitX = Math.max(120, window.innerWidth * factor);
+    const limitY = Math.max(100, window.innerHeight * factor);
+    return {
+      x: Math.max(-limitX, Math.min(limitX, nx)),
+      y: Math.max(-limitY, Math.min(limitY, ny)),
+    };
+  }, []);
 
   const goPrev = useCallback(() => {
     if (total <= 1) return;
@@ -30,9 +43,10 @@ export default function V3Lightbox({ images, index, title, onClose, onIndexChang
 
   // Reset zoom whenever slide changes
   useEffect(() => {
-    setZoomed(false);
+    setScale(1);
     setPan({ x: 0, y: 0 });
     setDragging(false);
+    pinchRef.current.active = false;
   }, [index]);
 
   // Lock body scroll & bind keyboard
@@ -41,7 +55,7 @@ export default function V3Lightbox({ images, index, title, onClose, onIndexChang
     const onKey = (e) => {
       if (e.key === 'Escape') {
         if (zoomed) {
-          setZoomed(false);
+          setScale(1);
           setPan({ x: 0, y: 0 });
         } else {
           onClose();
@@ -58,16 +72,19 @@ export default function V3Lightbox({ images, index, title, onClose, onIndexChang
   }, [zoomed, onClose, goPrev, goNext]);
 
   const toggleZoom = useCallback(() => {
-    setZoomed((z) => {
-      if (z) setPan({ x: 0, y: 0 });
-      return !z;
+    setScale((prev) => {
+      if (prev > 1.02) {
+        setPan({ x: 0, y: 0 });
+        return 1;
+      }
+      return 2;
     });
   }, []);
 
-  // Pointer drag when zoomed in
+  // Pointer drag when zoomed in (single pointer only; yields cleanly to 2-finger pinch)
   const onPointerDown = (e) => {
-    if (!zoomed) return;
-    e.preventDefault();
+    if (!zoomed || pinchRef.current.active) return;
+    if (e.pointerType === 'mouse') e.preventDefault();
     e.currentTarget.setPointerCapture?.(e.pointerId);
     setDragging(true);
     dragStartRef.current = {
@@ -79,30 +96,57 @@ export default function V3Lightbox({ images, index, title, onClose, onIndexChang
   };
 
   const onPointerMove = (e) => {
-    if (!dragging || !zoomed) return;
+    if (!dragging || !zoomed || pinchRef.current.active) return;
     const dx = e.clientX - dragStartRef.current.px;
     const dy = e.clientY - dragStartRef.current.py;
-    const limitX = Math.max(160, window.innerWidth * 0.48);
-    const limitY = Math.max(160, window.innerHeight * 0.48);
-    setPan({
-      x: Math.max(-limitX, Math.min(limitX, dragStartRef.current.ox + dx)),
-      y: Math.max(-limitY, Math.min(limitY, dragStartRef.current.oy + dy)),
-    });
+    setPan(clampPan(dragStartRef.current.ox + dx, dragStartRef.current.oy + dy, scale));
   };
 
   const onPointerUp = () => {
     setDragging(false);
   };
 
-  // Touch swipe when not zoomed + double-tap to zoom
+  // Touch: 2-finger pinch-to-zoom (1x..3x) + 1-finger swipe when unzoomed + double-tap toggle
   const onTouchStart = (e) => {
-    if (e.touches.length !== 1) return;
-    const t = e.touches[0];
-    touchStartRef.current = { x: t.clientX, y: t.clientY, time: Date.now() };
+    if (e.touches.length === 2) {
+      const [a, b] = [e.touches[0], e.touches[1]];
+      const dist = Math.hypot(b.clientX - a.clientX, b.clientY - a.clientY);
+      pinchRef.current = { active: true, startDist: Math.max(20, dist), startScale: scale };
+      touchStartRef.current.multiTouch = true;
+      setDragging(false);
+      return;
+    }
+    if (e.touches.length === 1) {
+      const t = e.touches[0];
+      touchStartRef.current = { x: t.clientX, y: t.clientY, time: Date.now(), multiTouch: false };
+    }
+  };
+
+  const onTouchMove = (e) => {
+    if (e.touches.length === 2 && pinchRef.current.active) {
+      const [a, b] = [e.touches[0], e.touches[1]];
+      const dist = Math.hypot(b.clientX - a.clientX, b.clientY - a.clientY);
+      const nextScale = Math.max(
+        1,
+        Math.min(3, pinchRef.current.startScale * (dist / pinchRef.current.startDist))
+      );
+      setScale(nextScale);
+      if (nextScale <= 1.02) {
+        setPan({ x: 0, y: 0 });
+      } else {
+        setPan((prev) => clampPan(prev.x, prev.y, nextScale));
+      }
+    }
   };
 
   const onTouchEnd = (e) => {
-    if (e.changedTouches.length !== 1) return;
+    if (e.touches.length < 2 && pinchRef.current.active) {
+      pinchRef.current.active = false;
+      setScale((prev) => (prev < 1.08 ? 1 : prev));
+      if (scale < 1.08) setPan({ x: 0, y: 0 });
+      return;
+    }
+    if (touchStartRef.current.multiTouch || e.changedTouches.length !== 1) return;
     const t = e.changedTouches[0];
     const dx = t.clientX - touchStartRef.current.x;
     const dy = t.clientY - touchStartRef.current.y;
@@ -157,9 +201,10 @@ export default function V3Lightbox({ images, index, title, onClose, onIndexChang
       </div>
 
       <div
-        className={`v3-lightbox__stage${zoomed ? ' is-zoomed' : ''}${dragging ? ' is-dragging' : ''}`}
+        className={`v3-lightbox__stage${zoomed ? ' is-zoomed' : ''}${dragging || pinchRef.current.active ? ' is-dragging' : ''}`}
         onClick={(e) => e.stopPropagation()}
         onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
         onTouchEnd={onTouchEnd}
       >
         {total > 1 && (
@@ -187,7 +232,7 @@ export default function V3Lightbox({ images, index, title, onClose, onIndexChang
             draggable={false}
             style={{
               transform: zoomed
-                ? `translate3d(${pan.x}px, ${pan.y}px, 0) scale(2)`
+                ? `translate3d(${pan.x}px, ${pan.y}px, 0) scale(${scale.toFixed(3)})`
                 : 'translate3d(0, 0, 0) scale(1)',
             }}
           />
@@ -209,8 +254,8 @@ export default function V3Lightbox({ images, index, title, onClose, onIndexChang
         {typeof window !== 'undefined' &&
         (window.innerWidth < 768 || window.matchMedia('(pointer: coarse)').matches)
           ? zoomed
-            ? '单指拖拽查看细节 · 双击画面还原'
-            : '左右滑动切页 · 双击画面放大 2×'
+            ? '单指拖拽查看细节 · 双指或双击还原'
+            : '左右滑动切页 · 双指捏合或双击放大'
           : zoomed
             ? '拖拽查看细节 · 双击或按 Esc 还原'
             : '双击放大 2× · 支持左右滑动或方向键切页'}

@@ -3,11 +3,10 @@ import { Link } from 'react-router-dom';
 import useV3Reveal from '../useV3Reveal';
 import {
   DISCIPLINES,
+  CREDENTIAL_CARDS,
   WORK_EXPERIENCE,
   COMPACT_TIMELINE,
   RESUME_PDF_HREF,
-  RESUME_DOWNLOAD_NAME,
-  honors,
 } from '../data/v3Data';
 
 export default function V3Index() {
@@ -18,27 +17,16 @@ export default function V3Index() {
     <div id="v3-index" className="v3-index">
       <div ref={revealRef} className="v3-container v3-index__grid v3-reveal">
         <aside className="v3-index__aside">
-          <span className="v3-kicker">03 / EXPERIENCE, CAPABILITIES &amp; RESUME</span>
-          <h2 className="v3-index__heading">商业履历与方法</h2>
-
-          <div className="v3-resume-cta-box">
-            <a
-              href={RESUME_PDF_HREF}
-              download={RESUME_DOWNLOAD_NAME}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="v3-action-primary v3-resume-download-btn"
-            >
-              <span>下载 PDF 简历（2026 版）</span>
-              <span className="v3-action-arrow" aria-hidden="true">↓</span>
-            </a>
+          <span className="v3-kicker">03 / EXPERIENCE &amp; CREDENTIALS</span>
+          <div className="v3-index__head-row">
+            <h2 className="v3-index__heading">商业履历与背景</h2>
             <a
               href={RESUME_PDF_HREF}
               target="_blank"
               rel="noopener noreferrer"
-              className="v3-resume-preview-link"
+              className="v3-resume-inline-link"
             >
-              在线预览 A4 简历 ↗
+              查看完整 PDF 简历 ↗
             </a>
           </div>
 
@@ -55,23 +43,24 @@ export default function V3Index() {
           </div>
 
           <div className="v3-credentials">
-            <div className="v3-cred-row">
-              <span>教育背景</span>
-              <p>东华大学 艺术设计硕士（2022–2025） · 四川农业大学 产品设计学士（专业第 1 / 121）</p>
-            </div>
-            <div className="v3-cred-row">
-              <span>主要奖项与出版</span>
-              <p>{honors.join(' · ')} · 参编专著《AI 技术赋能居家养老服务实践》（独立撰写第 4、9 章）</p>
-            </div>
+            {CREDENTIAL_CARDS.map((card) => (
+              <div key={card.label} className="v3-cred-row">
+                <span>{card.label}</span>
+                <ul className="v3-cred-list">
+                  {card.items.map((line) => (
+                    <li key={line}>{line}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </div>
         </aside>
 
         <div className="v3-index__timeline">
-          {/* Upfront Real Commercial Experience Block */}
           <div className="v3-work-exp-block">
-            <div className="v3-timeline-head">
-              <span>时间</span>
-              <span>商业工作与独立实践 · WORK EXPERIENCE</span>
+            <div className="v3-subsec-head">
+              <span>工作与商业经历 · EXPERIENCE</span>
+              <em>COMMERCIAL</em>
             </div>
 
             <div className="v3-work-exp-list">
@@ -88,7 +77,10 @@ export default function V3Index() {
 
                   <ul className="v3-work-exp-card__bullets">
                     {job.bullets.map((b, i) => (
-                      <li key={i}>{b}</li>
+                      <li key={i}>
+                        <strong className="v3-work-exp-card__lead">{b.lead}</strong>
+                        {b.text}
+                      </li>
                     ))}
                   </ul>
 
@@ -104,10 +96,10 @@ export default function V3Index() {
             </div>
           </div>
 
-          {/* Selected Project & Academic Milestones */}
           <div className="v3-timeline-head v3-timeline-head--sub">
             <span>年份</span>
-            <span>重点项目与学术里程碑 · SELECTED MILESTONES</span>
+            <span>重点项目与学术里程碑 · SELECTED PROJECTS</span>
+            <span aria-hidden="true" />
           </div>
 
           {COMPACT_TIMELINE.map((item, idx) => {

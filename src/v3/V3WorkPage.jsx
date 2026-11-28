@@ -7,6 +7,7 @@ import V3PrismAssistant from './components/V3PrismAssistant';
 import PetTravelPrototype from './components/pet-proto/PetTravelPrototype';
 import VeriframeShowcaseEmbed from './components/VeriframeShowcaseEmbed';
 import VeriframeBrandPlate from './components/VeriframeBrandPlate';
+import { renderStyledMetric } from './components/V3Keynote';
 import { getV3CaseStudy } from './data/v3CaseStudies';
 import './v3.css';
 
@@ -139,6 +140,7 @@ export default function V3WorkPage() {
   const hasRichMediaFirst =
     visibleSections[0]?.type === 'prototype' || visibleSections[0]?.type === 'video';
   const protoSectionIdx = visibleSections.findIndex((s) => s.type === 'prototype');
+  const gallerySectionIdx = visibleSections.findIndex((s) => !s.type && s.images?.length > 0);
   const showControlsBar = !(isMobileViewport && visibleSections.length <= 1);
 
   if (!study) {
@@ -260,7 +262,7 @@ export default function V3WorkPage() {
             <div className="v3-work__highlights">
               {study.highlights.map((h) => (
                 <div key={h.label} className="v3-work__hl">
-                  <strong>{h.value}</strong>
+                  <strong>{renderStyledMetric(h.value)}</strong>
                   <span>{h.label}</span>
                 </div>
               ))}
@@ -340,10 +342,10 @@ export default function V3WorkPage() {
           {hasHiddenDesktopWorkbench && (
             <div className="v3-work__desktop-note" role="note">
               <div className="v3-work__desktop-note-copy">
-                <span>DESKTOP WORKBENCH · 桌面端专属交互</span>
-                <strong>手机端已直接展开 13 页完整设计推导</strong>
+                <span>DESKTOP WORKBENCH · 电脑端交互体验</span>
+                <strong>已展开 13 页设计推导（轻触画板支持双指放大）</strong>
                 <p>
-                  Veriframe 为面向桌面端设计、运营与法务协同的三栏工作台（1440×900 视口），不在手机小屏上塞入工作台试用。轻触下方任意画板可放大 2× 查看细节，完整交互建议在电脑浏览器打开。
+                  三栏实时工作台按桌面视口（1440×900）设计，可在电脑浏览器打开体验完整合规审签与多尺寸导出。
                 </p>
               </div>
               <button
@@ -351,14 +353,33 @@ export default function V3WorkPage() {
                 className="v3-work__desktop-note-btn"
                 onClick={copyDesktopLink}
               >
-                {copiedDesktopUrl ? '已复制案例链接 ✓' : '复制链接到电脑打开'}
+                {copiedDesktopUrl ? '已复制链接 ✓' : '复制电脑端体验链接'}
               </button>
             </div>
           )}
 
           {isPrototype ? (
             study.slug === 'veriframe' ? (
-              <VeriframeShowcaseEmbed />
+              <div className="v3-work__proto-stack">
+                <VeriframeShowcaseEmbed />
+                {gallerySectionIdx >= 0 && (
+                  <button
+                    type="button"
+                    className="v3-work__proto-bridge v3-work__derivation-bridge"
+                    onClick={() => handleTabChange(gallerySectionIdx)}
+                  >
+                    <div className="v3-work__proto-bridge-text">
+                      <span>DESIGN DERIVATION · 13 SLIDES + BRAND GRAMMAR</span>
+                      <strong>阅读背后 13 页完整产品与图形系统推导</strong>
+                      <p>从 200+ 商用出图交付痛点、双区像素锁合成管线、内容指纹状态机到「澄矩」视觉语法推演</p>
+                    </div>
+                    <span className="v3-work__proto-bridge-btn">
+                      <span>进入设计推导</span>
+                      <span aria-hidden="true">→</span>
+                    </span>
+                  </button>
+                )}
+              </div>
             ) : (
               <PetTravelPrototype />
             )
@@ -442,9 +463,9 @@ export default function V3WorkPage() {
           )}
         </div>
 
-        {/* Native responsive brand/logo derivation plate — presented after core product experience */}
-        {study.hasBrandPlate && (
-          <div className="v3-container v3-work__brand-outro">
+        {/* Native responsive brand/logo derivation plate — scoped strictly to the Design Derivation tab */}
+        {study.hasBrandPlate && !isPrototype && !isVideo && (
+          <div className={`v3-container v3-work__brand-outro is-${viewMode}`}>
             <VeriframeBrandPlate />
           </div>
         )}
