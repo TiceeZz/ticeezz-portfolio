@@ -5,17 +5,16 @@ import V3Magnetic from './V3Magnetic';
 import { KEYNOTE_CASES } from '../data/v3Data';
 
 export function renderStyledMetric(raw) {
-  const str = String(raw || '');
+  const str = String(raw || '').trim();
   const hasNumericLead = /([0-9]|< ?[0-9]+|SHA-256|3D)/.test(str);
 
   if (!hasNumericLead) {
-    const tokens = str.split(/(→|×)/g).filter(Boolean);
+    const tokens = str.split(/\s*(→|×)\s*/g).filter(Boolean);
     return tokens.map((token, i) => {
-      const trimmed = token.trim();
-      if (trimmed === '→' || trimmed === '×') {
+      if (token === '→' || token === '×') {
         return (
-          <span key={i} className="v3-metric-arrow" aria-hidden="true">
-            {trimmed}
+          <span key={i} className="v3-metric-arrow">
+            {` ${token} `}
           </span>
         );
       }
@@ -28,27 +27,27 @@ export function renderStyledMetric(raw) {
   }
 
   const parts =
-    str.match(/([0-9]+(?:[.–-][0-9]+)?%?|< ?[0-9]+|SHA-256|3D|→|×|[^\d→×]+)/g) || [str];
+    str.match(/(\s*(?:→|×)\s*|[0-9]+(?:[.–-][0-9]+)?%?|< ?[0-9]+|SHA-256|3D|[^\d→×]+)/g) || [str];
   return parts.map((token, i) => {
     const trimmed = token.trim();
-    if (!trimmed) return <span key={i}>{token}</span>;
+    if (!trimmed) return null;
     if (trimmed === '→' || trimmed === '×') {
       return (
-        <span key={i} className="v3-metric-arrow" aria-hidden="true">
-          {trimmed}
+        <span key={i} className="v3-metric-arrow">
+          {` ${trimmed} `}
         </span>
       );
     }
     if (/^([0-9]|<|SHA-256|3D)/.test(trimmed)) {
       return (
         <span key={i} className="v3-metric-num">
-          {token}
+          {trimmed}
         </span>
       );
     }
     return (
       <span key={i} className="v3-metric-unit">
-        {token}
+        {trimmed}
       </span>
     );
   });

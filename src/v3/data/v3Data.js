@@ -63,7 +63,7 @@ export const KEYNOTE_CASES = [
     metrics: [
       { value: '7 → 5 步', label: '核心预约路径精简' },
       { value: '10 屏原型', label: '完整状态与防错实操' },
-      { value: '全程可视', label: '高度/温氧/节点追踪' },
+      { value: '全程可视', label: '高度 · 温氧 · 节点追踪' },
     ],
     ctaLabel: '观看影片与体验交互原型',
     mobileCtaLabel: '观看 48s 演示影片与提案',
@@ -76,7 +76,7 @@ export const KEYNOTE_CASES = [
         focusTag: '入口分流',
         stageImg: '/images/projects/pet-travel/page_013.jpg',
         stageKind: 'board',
-        stageCaption: '01 / 随机飞舱位联动 · 提前透出三种运力状态',
+        stageCaption: '01 / 随机飞舱位联动 · 三种运力状态前置',
       },
       {
         id: '02',
@@ -85,7 +85,7 @@ export const KEYNOTE_CASES = [
         focusTag: '选择代替记忆',
         stageImg: '/images/projects/pet-travel/page_017.jpg',
         stageKind: 'board',
-        stageCaption: '02 / 表单防错设计 · 品种与月龄半屏校验弹窗',
+        stageCaption: '02 / 表单防错 · 品种检索与月龄校验弹窗',
       },
       {
         id: '03',
@@ -94,7 +94,7 @@ export const KEYNOTE_CASES = [
         focusTag: '透明追踪',
         stageImg: '/images/projects/pet-travel/page_020.jpg',
         stageKind: 'board',
-        stageCaption: '03 / 过程可视化 · 实时飞行地图与节点追踪',
+        stageCaption: '03 / 过程可视化 · 实时航迹与节点追踪',
       },
     ],
   },
@@ -121,7 +121,7 @@ export const KEYNOTE_CASES = [
         focusTag: '0.00% 篡改',
         stageImg: '/images/projects/veriframe/page_004.jpg',
         stageKind: 'board',
-        stageCaption: '01 / 三项关键架构取舍 · 确定性资产零重绘边界',
+        stageCaption: '01 / 架构取舍 · 确定性资产零重绘边界',
       },
       {
         id: '02',
@@ -130,7 +130,7 @@ export const KEYNOTE_CASES = [
         focusTag: '分级风控',
         stageImg: '/images/projects/veriframe/page_010.jpg',
         stageKind: 'board',
-        stageCaption: '02 / 画布划线词就地改写 · 兼顾法规底线与商业转化',
+        stageCaption: '02 / 划线词就地改写 · 挂载 SGS 证据链',
       },
       {
         id: '03',
@@ -139,7 +139,7 @@ export const KEYNOTE_CASES = [
         focusTag: '15 分钟闭环',
         stageImg: '/images/projects/veriframe/page_013.jpg',
         stageKind: 'board',
-        stageCaption: '03 / 分渠道独立校核口径 · 1:1 / 3:4 / 16:9 同屏导出',
+        stageCaption: '03 / 分渠道校核 · 1:1 / 3:4 / 16:9 直出',
       },
     ],
   },
