@@ -133,12 +133,11 @@ export default function V3Keynote() {
                   className={`v3-keynote__case-card${isSelected ? ' is-active' : ''}`}
                   onClick={() => handleSelectCase(idx)}
                 >
-                  <div className="v3-keynote__case-card-top">
+                  <div className="v3-keynote__case-card-row">
                     <span className="v3-keynote__case-num">{item.num}</span>
+                    <strong className="v3-keynote__case-name">{item.title}</strong>
                     <span className="v3-keynote__case-badge">{item.badge}</span>
                   </div>
-                  <strong className="v3-keynote__case-name">{item.title}</strong>
-                  <p className="v3-keynote__case-brief">{item.cardBrief}</p>
                 </button>
               );
             })}

@@ -6,10 +6,10 @@ import V3Magnetic from './V3Magnetic';
 import { HERO_PLATES } from '../data/v3Data';
 
 const TICKER_ITEMS = [
-  { en: 'UX & SERVICE DESIGN', cn: '复杂业务与服务系统' },
-  { en: 'AI-NATIVE PROTOTYPING', cn: '从方案推演到可运行原型' },
-  { en: 'PRODUCT ARCHITECTURE', cn: '产品定义与工程落地' },
-  { en: '2018 — 2026 ARCHIVE', cn: '上海 · 作品档案' },
+  'UX & SERVICE DESIGN',
+  'AI-NATIVE PROTOTYPING',
+  'PRODUCT ARCHITECTURE',
+  'SHANGHAI · 2018 — 2026',
 ];
 
 export default function V3Hero({ theme }) {
@@ -108,7 +108,7 @@ export default function V3Hero({ theme }) {
             <div className="v3-hero__side v3-intro-rise v3-intro-rise--d2">
               <span className="v3-hero__role">AI-NATIVE PRODUCT &amp; UX DESIGNER</span>
               <p className="v3-hero__lead">
-                专注复杂业务体验与服务系统设计，结合 Claude Code、Cursor 与本地 ComfyUI 管线，把方案在早期直接推进至可交互原型与线上产品。
+                聚焦复杂业务体验与服务系统设计，把推演直接推进至可交互产品。
               </p>
               <div className="v3-hero__actions">
                 <V3Magnetic>
@@ -189,11 +189,10 @@ export default function V3Hero({ theme }) {
 
       <div className="v3-hero-ticker" aria-hidden="true">
         <KineticMarquee speed={42} direction={-1} velocityFactor={0.28} slowOnHover repeat={4}>
-          {TICKER_ITEMS.map((item, idx) => (
+          {TICKER_ITEMS.map((label, idx) => (
             <span key={idx} className="v3-ticker__chunk">
-              <span className="v3-ticker__en">{item.en}</span>
-              <span className="v3-ticker__cn">{item.cn}</span>
-              <span className="v3-ticker__sep">/</span>
+              <span className="v3-ticker__en">{label}</span>
+              <span className="v3-ticker__sep">·</span>
             </span>
           ))}
         </KineticMarquee>

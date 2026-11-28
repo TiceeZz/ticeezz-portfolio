@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react';
 import useAsyncGSAP from '../../hooks/useAsyncGSAP';
 import useV3Reveal from '../useV3Reveal';
-import { MANIFESTO_WORKFLOW } from '../data/v3Data';
 
 const PHRASES = [
   { text: '从人的真实处境出发去推演，', accent: false },
@@ -76,18 +75,6 @@ export default function V3Manifesto() {
             </span>
           ))}
         </blockquote>
-
-        <div className="v3-manifesto__pillars">
-          {MANIFESTO_WORKFLOW.map((w) => (
-            <div key={w.num} className="v3-manifesto__pillar">
-              <div className="v3-manifesto__pillar-head">
-                <em>{w.num}</em>
-                <strong>{w.head}</strong>
-              </div>
-              <p>{w.body}</p>
-            </div>
-          ))}
-        </div>
       </div>
     </div>
   );

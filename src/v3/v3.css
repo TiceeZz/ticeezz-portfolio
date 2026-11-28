@@ -7040,3 +7040,140 @@ body.is-v3-active[data-v3-theme='dark'] {
     margin-bottom: 16px;
   }
 }
+
+/* 14. Homepage Editorial Decluttering & Breathing Room (Resting State) */
+.v3-keynote {
+  padding: 124px 0;
+}
+
+.v3-keynote__top-bar {
+  gap: 22px;
+  margin-bottom: 32px;
+}
+
+.v3-keynote__case-card {
+  padding: 15px 20px;
+}
+
+.v3-keynote__case-card-row {
+  width: 100%;
+  display: grid;
+  grid-template-columns: var(--ord-w) minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: var(--ord-gap);
+}
+
+.v3-keynote__case-name {
+  font-size: 16.5px;
+  font-weight: 700;
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.v3-keynote__case-badge {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+/* Progressive disclosure: only active pillar opens its summary on both desktop & mobile */
+.v3-pillar-row__summary {
+  display: none;
+  margin-top: 8px;
+}
+
+.v3-pillar-row.is-active .v3-pillar-row__summary {
+  display: block;
+}
+
+/* Manifesto: pure typographic pause with generous negative space */
+.v3-manifesto {
+  padding: clamp(104px, 11vw, 148px) 0;
+}
+
+.v3-manifesto__inner {
+  gap: 28px;
+}
+
+/* Index: calmer vertical air between experience cards and collapsed timeline */
+.v3-index {
+  padding: 132px 0;
+}
+
+.v3-disciplines {
+  margin-bottom: 38px;
+}
+
+.v3-work-exp-list {
+  gap: 20px;
+}
+
+.v3-timeline-head--sub {
+  margin-top: 32px;
+}
+
+@media (max-width: 959px) {
+  .v3-keynote,
+  .v3-index {
+    padding: 88px 0;
+  }
+
+  .v3-manifesto {
+    padding: 96px 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .v3-root {
+    --sec-py: 76px;
+  }
+
+  .v3-hero__body {
+    padding: 32px 0 30px;
+    gap: 26px;
+  }
+
+  .v3-keynote,
+  .v3-index {
+    padding: 76px 0;
+  }
+
+  .v3-manifesto {
+    padding: 84px 0;
+  }
+
+  .v3-keynote__dual-cards {
+    gap: 10px;
+  }
+
+  .v3-keynote__case-card {
+    padding: 13px 15px;
+  }
+
+  .v3-keynote__case-name {
+    font-size: 15px;
+  }
+
+  .v3-keynote__case-badge {
+    font-size: 10.5px;
+    padding: 0 8px;
+  }
+
+  .v3-exhibition__shell {
+    padding: 76px 0 80px;
+    gap: 28px;
+  }
+
+  .v3-exhibition__track {
+    gap: 40px;
+  }
+
+  .v3-index__grid {
+    gap: 52px;
+  }
+
+  .v3-timeline-head--sub {
+    margin-top: 28px;
+  }
+}

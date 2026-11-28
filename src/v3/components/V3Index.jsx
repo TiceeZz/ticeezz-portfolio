@@ -10,7 +10,7 @@ import {
 } from '../data/v3Data';
 
 export default function V3Index() {
-  const [openIdx, setOpenIdx] = useState(0);
+  const [openIdx, setOpenIdx] = useState(-1);
   const revealRef = useV3Reveal(0.08);
 
   return (
@@ -80,7 +80,7 @@ export default function V3Index() {
                   <ul className="v3-work-exp-card__bullets">
                     {job.bullets.map((b, i) => (
                       <li key={i}>
-                        <strong className="v3-work-exp-card__lead">{b.lead}</strong>
+                        {b.lead && <strong className="v3-work-exp-card__lead">{b.lead}</strong>}
                         {b.text}
                       </li>
                     ))}
