@@ -67,12 +67,14 @@ export default function V3Index() {
               {WORK_EXPERIENCE.map((job) => (
                 <article key={job.company} className="v3-work-exp-card">
                   <div className="v3-work-exp-card__top">
-                    <div className="v3-work-exp-card__title">
+                    <div className="v3-work-exp-card__head-line">
                       <strong>{job.company}</strong>
+                      <span className="v3-work-exp-card__period">{job.period}</span>
+                    </div>
+                    <div className="v3-work-exp-card__sub-line">
                       <span className="v3-work-exp-card__role">{job.role}</span>
                       <em className="v3-work-exp-card__badge">{job.badge}</em>
                     </div>
-                    <span className="v3-work-exp-card__period">{job.period}</span>
                   </div>
 
                   <ul className="v3-work-exp-card__bullets">
@@ -98,7 +100,10 @@ export default function V3Index() {
 
           <div className="v3-timeline-head v3-timeline-head--sub">
             <span>年份</span>
-            <span>重点项目与学术里程碑 · SELECTED PROJECTS</span>
+            <span>
+              重点项目与学术里程碑
+              <i className="v3-tl-head-en"> · SELECTED PROJECTS</i>
+            </span>
             <span aria-hidden="true" />
           </div>
 

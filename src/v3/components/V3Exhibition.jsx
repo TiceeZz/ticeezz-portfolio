@@ -7,9 +7,9 @@ const CORE_COUNT = V3_PROJECTS.filter((p) => p.categoryGroup === 'core').length;
 const ARCHIVE_COUNT = V3_PROJECTS.filter((p) => p.categoryGroup === 'archive').length;
 
 const FILTERS = [
-  { id: 'core', cn: '精选 · UX & AI', count: CORE_COUNT },
-  { id: 'archive', cn: '早期工业与空间探索', count: ARCHIVE_COUNT },
-  { id: 'all', cn: '全部档案', count: V3_PROJECTS.length },
+  { id: 'core', cn: '精选 · UX & AI', mobileCn: '精选 · UX & AI', count: CORE_COUNT },
+  { id: 'archive', cn: '早期工业与空间探索', mobileCn: '早期探索', count: ARCHIVE_COUNT },
+  { id: 'all', cn: '全部档案', mobileCn: '全部', count: V3_PROJECTS.length },
 ];
 
 export default function V3Exhibition() {
@@ -159,7 +159,8 @@ export default function V3Exhibition() {
                   className={`v3-filter-tab${filter === f.id ? ' is-active' : ''}`}
                   onClick={() => handleFilterSwitch(f.id)}
                 >
-                  <span>{f.cn}</span>
+                  <span className="v3-tab-label-desktop">{f.cn}</span>
+                  <span className="v3-tab-label-mobile">{f.mobileCn}</span>
                   <sup>{String(f.count).padStart(2, '0')}</sup>
                 </button>
               ))}

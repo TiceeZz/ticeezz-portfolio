@@ -6168,6 +6168,298 @@ body.is-v3-active[data-v3-theme='dark'] {
   }
 }
 
+/* 13. Mobile Editorial Typography Polish: Clean Hero Plate, Single-Line Exhibition Header & Comfortable Reading Rail */
+.v3-tab-label-mobile {
+  display: none;
+}
+
+.v3-tl-head-en {
+  font-style: normal;
+}
+
+.v3-work-exp-card__top {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.v3-work-exp-card__head-line {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.v3-work-exp-card__head-line strong {
+  font-size: 17px;
+  font-weight: 800;
+  line-height: 1.25;
+  color: var(--ink);
+}
+
+.v3-work-exp-card__sub-line {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+@media (max-width: 768px) {
+  /* Exhibition header: stack cleanly & guarantee single-line non-wrapping tabs */
+  .v3-exhibition__top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .v3-exhibition__heading {
+    white-space: nowrap;
+  }
+
+  .v3-exhibition__controls {
+    width: 100%;
+  }
+
+  .v3-exhibition .v3-filter-tabs {
+    width: 100%;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    scrollbar-width: none;
+    gap: 18px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .v3-exhibition .v3-filter-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .v3-filter-tab {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .v3-tab-label-desktop {
+    display: none;
+  }
+
+  .v3-tab-label-mobile {
+    display: inline;
+  }
+
+  /* 1) Hero Card: remove crowded 2-line sub-caption on mobile so artwork breathes */
+  .v3-plate__scrim {
+    background: linear-gradient(
+      to top,
+      rgba(6, 12, 26, 0.72) 0%,
+      rgba(6, 12, 26, 0.08) 32%,
+      transparent 52%
+    );
+  }
+
+  .v3-plate__img.is-device {
+    padding: 16px 16px 40px;
+  }
+
+  .v3-plate__caption {
+    left: 16px;
+    right: 16px;
+    bottom: 13px;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .v3-plate__num {
+    min-width: 0;
+    font-size: 16px;
+    padding-right: 10px;
+  }
+
+  .v3-plate__titles strong {
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  .v3-plate__titles span {
+    display: none;
+  }
+
+  .v3-plate__caption::after {
+    content: '↗';
+    margin-left: auto;
+    font-family: var(--f-mono);
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.82);
+    flex-shrink: 0;
+  }
+
+  /* 2) Manifesto: keep each statement strictly single-line & align pillar copy on 40px rail */
+  .v3-manifesto__quote {
+    font-size: clamp(18.5px, 5vw, 22px);
+    line-height: 1.58;
+    letter-spacing: -0.02em;
+  }
+
+  .v3-manifesto__pillar {
+    padding: 16px 18px;
+    gap: 6px;
+  }
+
+  .v3-manifesto__pillar p {
+    padding-left: var(--ord-indent);
+    font-size: 13px;
+    line-height: 1.68;
+  }
+
+  /* 3) Exhibition Cards: keep titles single-line & align subtitles cleanly under title rail */
+  .v3-exhibition__track {
+    gap: 32px;
+  }
+
+  .v3-work-plate {
+    gap: 11px;
+  }
+
+  .v3-work-plate__meta {
+    gap: 10px;
+  }
+
+  .v3-work-plate__left h3 {
+    font-size: 16.5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .v3-work-plate__left p {
+    padding-left: var(--ord-indent);
+    margin-top: 2px;
+    font-size: 12.5px;
+    line-height: 1.55;
+  }
+
+  /* 4) Index / Resume: unified 40px reading rail, comfortable credential spacing & clean timeline */
+  .v3-index__head-row {
+    align-items: baseline;
+    gap: 8px 16px;
+    margin-bottom: 20px;
+  }
+
+  .v3-discipline {
+    padding: 15px 0;
+  }
+
+  .v3-discipline p {
+    padding-left: var(--ord-indent);
+    margin-top: 4px;
+    font-size: 13px;
+    line-height: 1.68;
+  }
+
+  .v3-credentials {
+    gap: 20px;
+  }
+
+  .v3-cred-list {
+    gap: 9px;
+    padding-left: 22px;
+    font-size: 13px;
+    line-height: 1.68;
+  }
+
+  .v3-subsec-head em,
+  .v3-tl-head-en {
+    display: none;
+  }
+
+  .v3-work-exp-card {
+    padding: 18px 18px;
+  }
+
+  .v3-work-exp-card__head-line strong {
+    font-size: 16px;
+  }
+
+  .v3-work-exp-card__period {
+    font-size: 11.5px;
+    height: auto;
+  }
+
+  .v3-work-exp-card__role {
+    font-size: 13px;
+  }
+
+  .v3-work-exp-card__bullets {
+    padding-left: 0;
+    list-style: none;
+    gap: 10px;
+    font-size: 13px;
+    line-height: 1.72;
+  }
+
+  .v3-work-exp-card__bullets li {
+    position: relative;
+    padding-left: 12px;
+  }
+
+  .v3-work-exp-card__bullets li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 9px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--blue-text);
+    opacity: 0.7;
+  }
+
+  .v3-timeline-head {
+    grid-template-columns: 48px minmax(0, 1fr);
+    column-gap: 10px;
+    padding: 0 2px 12px;
+  }
+
+  .v3-tl-row__btn {
+    grid-template-columns: 48px minmax(0, 1fr) 18px;
+    align-items: baseline;
+    column-gap: 10px;
+    padding: 16px 2px;
+  }
+
+  .v3-tl-row__year {
+    font-size: 12.5px;
+  }
+
+  .v3-tl-row__title {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .v3-tl-row.is-open {
+    border-radius: 8px;
+    padding: 0 10px;
+    margin: 4px -10px;
+  }
+
+  .v3-tl-row__inner {
+    padding: 0 2px;
+  }
+
+  .v3-tl-row__desc {
+    font-size: 13px;
+    line-height: 1.74;
+    margin-bottom: 14px;
+  }
+}
+
 /* Keynote Pillar Rows: Eliminate +18px Active Jump & Lock All 3 Rows on One Vertical Rail */
 .v3-pillar-row,
 .v3-pillar-row.is-active {
@@ -6598,6 +6890,10 @@ body.is-v3-active[data-v3-theme='dark'] {
   }
 }
 
+.v3-work-exp-card__top {
+  align-items: stretch;
+}
+
 @media (max-width: 640px) {
   .v3-root {
     --sec-py: 64px;
@@ -6613,11 +6909,14 @@ body.is-v3-active[data-v3-theme='dark'] {
     padding: 15px 0;
   }
 
-  .v3-pillar-row__summary,
+  .v3-pillar-row__summary {
+    padding-left: 0;
+  }
+
   .v3-manifesto__pillar p,
   .v3-work-plate__left p,
   .v3-discipline p {
-    padding-left: 0;
+    padding-left: var(--ord-indent);
   }
 
   .v3-cred-row p,
@@ -6626,19 +6925,20 @@ body.is-v3-active[data-v3-theme='dark'] {
   }
 
   .v3-timeline-head {
-    grid-template-columns: 52px minmax(0, 1fr) 18px;
+    grid-template-columns: 48px minmax(0, 1fr);
     column-gap: 10px;
-    padding: 0 4px 12px;
+    padding: 0 2px 12px;
   }
 
   .v3-tl-row__btn {
-    grid-template-columns: 52px minmax(0, 1fr) 18px;
+    grid-template-columns: 48px minmax(0, 1fr) 18px;
+    align-items: baseline;
     column-gap: 10px;
-    padding: 16px 4px;
+    padding: 16px 2px;
   }
 
   .v3-tl-row__inner {
-    padding: 0 4px;
+    padding: 0 2px;
   }
 
   .v3-work__gallery.is-masonry {
