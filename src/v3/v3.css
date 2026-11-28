@@ -5953,9 +5953,11 @@ body.is-v3-active[data-v3-theme='dark'] {
   margin-right: auto;
 }
 
-.v3-work__brand-outro.is-stream .vf-brand__grid {
-  grid-template-columns: minmax(0, 1fr) minmax(236px, 288px) minmax(0, 1fr);
-  gap: clamp(24px, 2.8vw, 40px);
+@media (min-width: 1081px) {
+  .v3-work__brand-outro.is-stream .vf-brand__grid {
+    grid-template-columns: minmax(0, 1fr) minmax(236px, 288px) minmax(0, 1fr);
+    gap: clamp(24px, 2.8vw, 40px);
+  }
 }
 
 .vf-brand__kicker b,
