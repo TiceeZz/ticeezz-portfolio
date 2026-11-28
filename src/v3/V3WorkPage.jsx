@@ -1,4 +1,4 @@
-import { useState, useEffect, useLayoutEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useLayoutEffect, useCallback, useMemo, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import useDocumentTitle from '../hooks/useDocumentTitle';
 import useV3Theme from './useV3Theme';
@@ -60,8 +60,39 @@ export default function V3WorkPage() {
   const [tab, setTab] = useState(0);
   const [viewMode, setViewMode] = useState('stream');
   const [lightboxIdx, setLightboxIdx] = useState(null);
+  const [copiedDesktopUrl, setCopiedDesktopUrl] = useState(false);
+  const [isMobileViewport, setIsMobileViewport] = useState(() =>
+    typeof window !== 'undefined' ? window.matchMedia('(max-width: 899px)').matches : false
+  );
   const progressRef = useRef(null);
   const heroRef = useRef(null);
+
+  useEffect(() => {
+    const mql = window.matchMedia('(max-width: 899px)');
+    const onChange = (e) => setIsMobileViewport(e.matches);
+    setIsMobileViewport(mql.matches);
+    mql.addEventListener('change', onChange);
+    return () => mql.removeEventListener('change', onChange);
+  }, []);
+
+  const visibleSections = useMemo(
+    () => (study?.sections || []).filter((sec) => !(isMobileViewport && sec.desktopOnly)),
+    [study, isMobileViewport]
+  );
+  const hasHiddenDesktopWorkbench = Boolean(
+    isMobileViewport && study?.sections?.some((sec) => sec.desktopOnly)
+  );
+  const activeTab = Math.min(tab, Math.max(0, visibleSections.length - 1));
+
+  const copyDesktopLink = useCallback(() => {
+    const shareUrl =
+      typeof window !== 'undefined' && window.location.hostname !== '127.0.0.1' && window.location.hostname !== 'localhost'
+        ? window.location.href
+        : `https://ticeezz-portfolio.pages.dev/v3/work/${slug}`;
+    navigator.clipboard?.writeText(shareUrl).catch(() => {});
+    setCopiedDesktopUrl(true);
+    window.setTimeout(() => setCopiedDesktopUrl(false), 2200);
+  }, [slug]);
 
   const handleTabChange = useCallback((idx) => {
     setTab(idx);
@@ -99,15 +130,16 @@ export default function V3WorkPage() {
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
-  }, [slug, tab]);
+  }, [slug, activeTab]);
 
-  const currentSection = study?.sections?.[tab];
+  const currentSection = visibleSections[activeTab];
   const images = currentSection?.images || [];
   const isVideo = currentSection?.type === 'video';
   const isPrototype = currentSection?.type === 'prototype';
   const hasRichMediaFirst =
-    study?.sections?.[0]?.type === 'prototype' || study?.sections?.[0]?.type === 'video';
-  const protoSectionIdx = study?.sections?.findIndex((s) => s.type === 'prototype') ?? -1;
+    visibleSections[0]?.type === 'prototype' || visibleSections[0]?.type === 'video';
+  const protoSectionIdx = visibleSections.findIndex((s) => s.type === 'prototype');
+  const showControlsBar = !(isMobileViewport && visibleSections.length <= 1);
 
   if (!study) {
     return (
@@ -244,8 +276,8 @@ export default function V3WorkPage() {
             </div>
           )}
 
-          {/* Full-Width Cover Plate — skipped when a video or live prototype leads Tab 0 */}
-          {!hasRichMediaFirst && (
+          {/* Full-Width Cover Plate — skipped when a heroPlate, video, or live prototype leads */}
+          {!hasRichMediaFirst && !study.heroPlate && (
             <div className={`v3-work__cover${study.isDevicePlate ? ' is-device' : ''}`}>
               <img
                 src={study.cover}
@@ -256,53 +288,74 @@ export default function V3WorkPage() {
           )}
         </div>
 
-        {/* Sticky Section Controls: Tabs + Stream/Grid View Switch */}
-        <div className="v3-work__controls-wrap">
-          <div className="v3-container v3-work__controls">
-            <div className="v3-filter-tabs" role="tablist">
-              {study.sections.map((sec, idx) => {
-                const badge =
-                  sec.badge ||
-                  (sec.type === 'prototype'
-                    ? 'LIVE'
-                    : String(sec.type === 'video' ? sec.videos?.length || 0 : sec.images?.length || 0).padStart(2, '0'));
-                return (
-                  <button
-                    key={sec.label}
-                    role="tab"
-                    aria-selected={tab === idx}
-                    className={`v3-filter-tab${tab === idx ? ' is-active' : ''}`}
-                    onClick={() => handleTabChange(idx)}
-                  >
-                    {sec.type === 'prototype' && <span className="ptp-live-dot" aria-hidden="true" />}
-                    <span>{sec.label}</span>
-                    <sup>{badge}</sup>
-                  </button>
-                );
-              })}
-            </div>
-
-            {!isVideo && !isPrototype && images.length > 1 && (
-              <div className="v3-work__view-toggle" role="group" aria-label="视图模式">
-                <button
-                  className={viewMode === 'stream' ? 'is-active' : ''}
-                  onClick={() => setViewMode('stream')}
-                >
-                  沉浸长流
-                </button>
-                <button
-                  className={viewMode === 'grid' ? 'is-active' : ''}
-                  onClick={() => setViewMode('grid')}
-                >
-                  双列快览
-                </button>
+        {/* Sticky Section Controls: hidden on mobile when only a single section exists */}
+        {showControlsBar && (
+          <div className="v3-work__controls-wrap">
+            <div className="v3-container v3-work__controls">
+              <div className="v3-filter-tabs" role="tablist">
+                {visibleSections.map((sec, idx) => {
+                  const badge =
+                    sec.badge ||
+                    (sec.type === 'prototype'
+                      ? 'LIVE'
+                      : String(sec.type === 'video' ? sec.videos?.length || 0 : sec.images?.length || 0).padStart(2, '0'));
+                  return (
+                    <button
+                      key={sec.label}
+                      role="tab"
+                      aria-selected={activeTab === idx}
+                      className={`v3-filter-tab${activeTab === idx ? ' is-active' : ''}`}
+                      onClick={() => handleTabChange(idx)}
+                    >
+                      {sec.type === 'prototype' && <span className="ptp-live-dot" aria-hidden="true" />}
+                      <span>{sec.label}</span>
+                      <sup>{badge}</sup>
+                    </button>
+                  );
+                })}
               </div>
-            )}
+
+              {!isVideo && !isPrototype && images.length > 1 && (
+                <div className="v3-work__view-toggle" role="group" aria-label="视图模式">
+                  <button
+                    className={viewMode === 'stream' ? 'is-active' : ''}
+                    onClick={() => setViewMode('stream')}
+                  >
+                    沉浸长流
+                  </button>
+                  <button
+                    className={viewMode === 'grid' ? 'is-active' : ''}
+                    onClick={() => setViewMode('grid')}
+                  >
+                    双列快览
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Visual Presentation Area (Uncropped Natural Proportions / Live Prototype) */}
         <div className="v3-container v3-work__content">
+          {hasHiddenDesktopWorkbench && (
+            <div className="v3-work__desktop-note" role="note">
+              <div className="v3-work__desktop-note-copy">
+                <span>DESKTOP WORKBENCH · 桌面端专属交互</span>
+                <strong>手机端已直接展开 13 页完整设计推导</strong>
+                <p>
+                  Veriframe 为面向桌面端设计、运营与法务协同的三栏工作台（1440×900 视口），不在手机小屏上塞入工作台试用。轻触下方任意画板可放大 2× 查看细节，完整交互建议在电脑浏览器打开。
+                </p>
+              </div>
+              <button
+                type="button"
+                className="v3-work__desktop-note-btn"
+                onClick={copyDesktopLink}
+              >
+                {copiedDesktopUrl ? '已复制案例链接 ✓' : '复制链接到电脑打开'}
+              </button>
+            </div>
+          )}
+
           {isPrototype ? (
             study.slug === 'veriframe' ? (
               <VeriframeShowcaseEmbed />
@@ -313,9 +366,21 @@ export default function V3WorkPage() {
             <div className="v3-work__videos">
               {currentSection.videos.map((v, i) => (
                 <div key={i} className="v3-work__video-block">
-                  <div className="v3-work__video-head">
-                    <span>VIDEO {String(i + 1).padStart(2, '0')}</span>
-                    <h3>{v.title}</h3>
+                  <div className="v3-work__video-head v3-work__video-head--row">
+                    <div>
+                      <span>VIDEO {String(i + 1).padStart(2, '0')}</span>
+                      <h3>{v.title}</h3>
+                    </div>
+                    {v.externalUrl && (
+                      <a
+                        href={v.externalUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="v3-work__video-ext"
+                      >
+                        哔哩哔哩原片 ↗
+                      </a>
+                    )}
                   </div>
                   {v.src ? (
                     <V3WorkVideoPlayer src={v.src} poster={v.poster} title={v.title} />

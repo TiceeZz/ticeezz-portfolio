@@ -44,13 +44,15 @@ function PageLoader() {
 function AppShell() {
   const { pathname } = useLocation();
   const isStandalone = pathname === '/' || pathname.startsWith('/v2') || pathname.startsWith('/v3');
+  const isTouchDevice =
+    typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches;
   const [loading, setLoading] = useState(!isStandalone);
   const onLoadComplete = useCallback(() => setLoading(false), []);
 
   return (
     <CursorProvider>
-      {!isStandalone && <CursorDot />}
-      {!isStandalone && <CursorRing />}
+      {!isStandalone && !isTouchDevice && <CursorDot />}
+      {!isStandalone && !isTouchDevice && <CursorRing />}
       <ScrollRestoration />
       {!isStandalone && loading && <LoadingScreen onComplete={onLoadComplete} />}
       <Suspense fallback={<PageLoader />}>

@@ -65,10 +65,12 @@ const CASE_CARDS = {
 const REFERRAL_PITCH =
   '推荐一位兼具 C 端体验功底与 B 端 AI 产品落地能力的设计师童宗震（东华大学艺术设计硕士，现居上海随时到岗）：既做过航旅纵横全链路 UX 重构与 10 屏交互原型、新瞳眼科小程序改版与德国汉斯格雅软硬件协同，又基于 200+ 张商业出图经验独立定义并实现了大健康品牌 AI 视觉生产与合规工作台「Veriframe · 澄矩」（这个双主题作品集网站与两个完整可操作原型均由他独立设计并工程化落地）。作品集链接：https://ticeezz-portfolio.pages.dev';
 
-export function getWelcomePayload(pathname) {
+export function getWelcomePayload(pathname, isMobile = false) {
   if (pathname.startsWith('/v3/work/veriframe')) {
     return {
-      text: '你好，我是 **Prism**。\n\n你正在看 02 号案例 **Veriframe 澄矩**：给大健康品牌用的 AI 视觉生产与合规审核工作台，来自前公司用 ComfyUI 做商用素材的经验。上方可以直接操作：点画面上的红色下划线替换违规用语，修复方案 C 的背景，提交后切到法务点通过，再导出 PNG。',
+      text: isMobile
+        ? '你好，我是 **Prism**。\n\n你正在看 02 号案例 **Veriframe 澄矩**：面向大健康品牌的 AI 视觉生产与合规审核工作台，脱胎于前公司用 ComfyUI 落地 200+ 张商用素材的经验。当前手机端已直接展开 **13 页完整设计推导**（三栏桌面工作台建议在电脑端打开体验）。'
+        : '你好，我是 **Prism**。\n\n你正在看 02 号案例 **Veriframe 澄矩**：给大健康品牌用的 AI 视觉生产与合规审核工作台，来自前公司用 ComfyUI 做商用素材的经验。上方可以直接操作：点画面上的红色下划线替换违规用语，修复方案 C 的背景，提交后切到法务点通过，再导出 PNG。',
       suggestions: [
         '拆解「Veriframe 澄矩」解决了什么问题',
         '30 秒速览：核心优势与经历',

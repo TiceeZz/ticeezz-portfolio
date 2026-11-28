@@ -4,7 +4,7 @@ import { VfIcon, VfMark } from './VfIcon';
 
 const NATIVE_WIDTH = 1440;
 const NATIVE_HEIGHT = 740;
-const COMPACT_BREAKPOINT = 820;
+const COMPACT_BREAKPOINT = 760;
 const ACCENT = 'var(--vf-accent, #1e4d45)';
 
 const STEPS = [
@@ -196,19 +196,8 @@ export default function VeriframeShowcaseEmbed() {
             <div className="vf-embed__mobile-bar">
               <p>
                 <strong>{currentStepMeta.title}：</strong>
-                {currentStepMeta.desc}。点击上方四步卡片可切换节点图解，或打开响应式独立工作台直接体验交互。
+                {currentStepMeta.desc}。建议在桌面端宽屏窗口打开以体验完整三栏交互工作台。
               </p>
-              <div className="vf-embed__mobile-actions">
-                <a
-                  href={`/veriframe/index.html?preset=${activeStep}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="vf-embed__mobile-btn is-primary"
-                >
-                  <span>打开独立工作台体验</span>
-                  <LuExternalLink aria-hidden="true" />
-                </a>
-              </div>
             </div>
           </div>
         ) : (

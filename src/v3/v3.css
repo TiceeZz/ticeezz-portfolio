@@ -4812,3 +4812,101 @@ body.is-v3-active[data-v3-theme='dark'] {
 .v3-work__brand-outro .vf-brand {
   margin-top: 0;
 }
+
+/* ===== Mobile Curation: Desktop-Only Notice, Quick Contact Drawer, & Clean Footer ===== */
+.v3-work__desktop-note {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 18px 18px 20px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  border: 1px solid var(--line-strong);
+  background: linear-gradient(145deg, var(--blue-soft) 0%, var(--surface) 75%);
+}
+
+.v3-work__desktop-note-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.v3-work__desktop-note-copy span {
+  font-family: var(--f-mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--blue-text);
+}
+
+.v3-work__desktop-note-copy strong {
+  font-size: 15.5px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.v3-work__desktop-note-copy p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.72;
+  color: var(--ink-2);
+}
+
+.v3-work__desktop-note-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  padding: 0 15px;
+  border-radius: 6px;
+  border: 1px solid var(--blue);
+  background: var(--blue);
+  color: var(--on-blue);
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.v3-work__video-head--row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.v3-work__video-ext {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--blue-text);
+  border-bottom: 1px solid var(--line-strong);
+  padding-bottom: 2px;
+}
+
+.v3-drawer__quick-contacts {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.v3-drawer__contact-pill {
+  width: fit-content;
+  max-width: 100%;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 12.5px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .v3-footer__editions {
+    display: none;
+  }
+}

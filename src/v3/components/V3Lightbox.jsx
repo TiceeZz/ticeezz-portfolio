@@ -206,7 +206,14 @@ export default function V3Lightbox({ images, index, title, onClose, onIndexChang
       </div>
 
       <div className="v3-lightbox__hint" onClick={(e) => e.stopPropagation()}>
-        {zoomed ? '拖拽查看细节 · 双击或按 Esc 还原' : '双击放大 2× · 支持左右滑动或方向键切页'}
+        {typeof window !== 'undefined' &&
+        (window.innerWidth < 768 || window.matchMedia('(pointer: coarse)').matches)
+          ? zoomed
+            ? '单指拖拽查看细节 · 双击画面还原'
+            : '左右滑动切页 · 双击画面放大 2×'
+          : zoomed
+            ? '拖拽查看细节 · 双击或按 Esc 还原'
+            : '双击放大 2× · 支持左右滑动或方向键切页'}
       </div>
     </div>
   );

@@ -50,7 +50,8 @@ export default function V3PrismAssistant({ theme = 'light', onThemeChange }) {
   const [isStreaming, setIsStreaming] = useState(false);
   const [copiedKey, setCopiedKey] = useState('');
   const [messages, setMessages] = useState(() => {
-    const w = getWelcomePayload(location.pathname);
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 900;
+    const w = getWelcomePayload(location.pathname, isMobile);
     return [
       {
         id: 'welcome',
@@ -87,7 +88,8 @@ export default function V3PrismAssistant({ theme = 'light', onThemeChange }) {
   useEffect(() => {
     setMessages((prev) => {
       if (prev.length === 1 && prev[0].id === 'welcome') {
-        const w = getWelcomePayload(location.pathname);
+        const isMobile = typeof window !== 'undefined' && window.innerWidth < 900;
+        const w = getWelcomePayload(location.pathname, isMobile);
         return [{ id: 'welcome', role: 'bot', text: w.text, suggestions: w.suggestions }];
       }
       return prev;
@@ -101,16 +103,20 @@ export default function V3PrismAssistant({ theme = 'light', onThemeChange }) {
     }
   }, [messages, open]);
 
-  // Focus input & Esc key to close
+  // Focus input on desktop only (avoid popping up mobile virtual keyboard over welcome chips) & Esc key to close
   useEffect(() => {
     if (!open) return;
-    const t = setTimeout(() => inputRef.current?.focus(), 140);
+    const isDesktopPointer =
+      typeof window !== 'undefined' &&
+      window.innerWidth >= 768 &&
+      !window.matchMedia('(pointer: coarse)').matches;
+    const t = isDesktopPointer ? setTimeout(() => inputRef.current?.focus(), 140) : null;
     const onKey = (e) => {
       if (e.key === 'Escape') setOpen(false);
     };
     window.addEventListener('keydown', onKey);
     return () => {
-      clearTimeout(t);
+      if (t) clearTimeout(t);
       window.removeEventListener('keydown', onKey);
     };
   }, [open]);
@@ -232,7 +238,8 @@ export default function V3PrismAssistant({ theme = 'light', onThemeChange }) {
     clearTimeout(happyTimerRef.current);
     setIsStreaming(false);
     setMood('idle');
-    const w = getWelcomePayload(location.pathname);
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 900;
+    const w = getWelcomePayload(location.pathname, isMobile);
     setMessages([{ id: 'welcome', role: 'bot', text: w.text, suggestions: w.suggestions }]);
   }, [location.pathname]);
 

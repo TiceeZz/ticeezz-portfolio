@@ -40,8 +40,15 @@ export default function V3Nav({ theme, onThemeChange }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [verOpen, setVerOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('');
+  const [copiedContact, setCopiedContact] = useState('');
   const verRef = useRef(null);
   const progressRef = useRef(null);
+
+  const copyQuickContact = useCallback((key, val) => {
+    navigator.clipboard?.writeText(val).catch(() => {});
+    setCopiedContact(key);
+    window.setTimeout(() => setCopiedContact(''), 2000);
+  }, []);
 
   useEffect(() => {
     let prevScrolled = false;
@@ -271,12 +278,24 @@ export default function V3Nav({ theme, onThemeChange }) {
           </div>
 
           <div className="v3-drawer__footer">
-            <div className="v3-drawer__ed-label">其他版本</div>
-            <div className="v3-drawer__versions">
-              <Link to="/v2" onClick={() => setMenuOpen(false)}>v2 · TiceeZz OS ↗</Link>
-              <Link to="/v1" onClick={() => setMenuOpen(false)}>v1 · 初版网站 ↗</Link>
+            <div className="v3-drawer__ed-label">快速联系</div>
+            <div className="v3-drawer__quick-contacts">
+              <button
+                type="button"
+                className="v3-drawer__contact-pill"
+                onClick={() => copyQuickContact('email', '1027208320@qq.com')}
+              >
+                {copiedContact === 'email' ? '邮箱已复制 ✓' : '复制邮箱 · 1027208320@qq.com'}
+              </button>
+              <button
+                type="button"
+                className="v3-drawer__contact-pill"
+                onClick={() => copyQuickContact('wechat', 'TiceeZz')}
+              >
+                {copiedContact === 'wechat' ? '微信号已复制 ✓' : '复制微信 · TiceeZz'}
+              </button>
             </div>
-            <div className="v3-drawer__contact">1027208320@qq.com · SHANGHAI</div>
+            <div className="v3-drawer__contact">© 2026 TICEEZZ · SHANGHAI</div>
           </div>
         </div>
       </div>

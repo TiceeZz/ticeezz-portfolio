@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import { WindowManagerProvider, useWM } from './WindowManager';
 import Window from './Window';
 import Desktop from './Desktop';
@@ -119,6 +120,44 @@ export default function OSPage() {
     'TiceeZz OS | UX · Product · AI Design',
     'TiceeZz OS — 一台关于童宗震的虚拟电脑。Brutalist OS 风格交互作品集。'
   );
+  const [bypassMobileGate, setBypassMobileGate] = useState(false);
+  const [isMobile, setIsMobile] = useState(() =>
+    typeof window !== 'undefined' ? window.matchMedia('(max-width: 768px)').matches : false
+  );
+
+  useEffect(() => {
+    const mql = window.matchMedia('(max-width: 768px)');
+    const onChange = (e) => setIsMobile(e.matches);
+    setIsMobile(mql.matches);
+    mql.addEventListener('change', onChange);
+    return () => mql.removeEventListener('change', onChange);
+  }, []);
+
+  if (isMobile && !bypassMobileGate) {
+    return (
+      <div className="v2os-mobile-gate">
+        <div className="v2os-mobile-gate__card">
+          <div className="v2os-mobile-gate__kicker">▣ TICEEZZ OS · v2.0 ARCHIVE</div>
+          <h1>桌面端虚拟系统实验版</h1>
+          <p>
+            v2 版本将个人站设计为多窗口虚拟电脑系统（含窗口拖拽、右键菜单与命令行终端），更适合键鼠大屏体验。手机端推荐直接访问最新阅读版作品集（v3）。
+          </p>
+          <div className="v2os-mobile-gate__actions">
+            <Link to="/" className="v2os-mobile-gate__primary">
+              进入新版作品集 (v3) →
+            </Link>
+            <button
+              type="button"
+              className="v2os-mobile-gate__secondary"
+              onClick={() => setBypassMobileGate(true)}
+            >
+              仍在手机上预览 v2
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
   return (
     <WindowManagerProvider apps={APPS}>
       <OSShell />

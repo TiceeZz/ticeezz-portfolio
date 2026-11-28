@@ -55,7 +55,7 @@ export const V3_CASE_STUDIES = [
     heroMark: '/images/projects/veriframe/vf-mark.svg',
     hasBrandPlate: false,
     role: '产品定义 · 桌面工作台交互与视觉 · 前端实现',
-    desc: '在前公司用 ComfyUI 落地 200 多张大健康商用素材后，我发现真正的效率瓶颈不在出图本身，而在出图后的商业化交付：包装与标签字易被 AI 篡改、一处敏感词就可能触发《广告法》与社媒限流、设计运营法务在群里反复确认哪一版能发。Veriframe 将主图拆解为独立矢量文案、双区像素硬锁产品与 AI 场景三层；支持违规词就地替换与 SGS 功效检测报告证据链绑定；法务签署严格绑定内容指纹，改动即自动失效，签发后生成《广告素材合规放行单》并一次导出三端比例（单套商用素材全流程由以往 1–2 个工作日缩短至 15 分钟内闭环）。点击下方四步卡片即可直接联动体验完整闭环，或切至「设计推导」查看 13 页完整拆解。',
+    desc: '在前公司用 ComfyUI 落地 200 多张大健康商用素材后，我发现真正的效率瓶颈不在出图本身，而在出图后的商业化交付：包装与标签字易被 AI 篡改、一处敏感词就可能触发《广告法》与社媒限流、设计运营法务在群里反复确认哪一版能发。Veriframe 将主图拆解为独立矢量文案、双区像素硬锁产品与 AI 场景三层；支持违规词就地替换与 SGS 功效检测报告证据链绑定；法务签署严格绑定内容指纹，改动即自动失效，签发后生成《广告素材合规放行单》并一次导出三端比例（单套商用素材全流程由以往 1–2 个工作日缩短至 15 分钟内闭环）。',
     keywords: ['To B AI SaaS', '桌面工作台', '广告法与证据链', '可运行 MVP'],
     highlights: [
       { value: '0.00% 标签形变', label: '双区像素硬锁原图丝印，瓶身外缘保留环境光影过渡' },
@@ -64,7 +64,7 @@ export const V3_CASE_STUDIES = [
     ],
     defaultView: 'stream',
     sections: [
-      { label: '实时工作台', type: 'prototype', badge: 'LIVE' },
+      { label: '实时工作台', type: 'prototype', badge: 'LIVE', desktopOnly: true },
       { label: '设计推导', images: seq('/images/projects/veriframe', 1, 13) },
     ],
   },
@@ -91,6 +91,7 @@ export const V3_CASE_STUDIES = [
           {
             title: 'Eclipse · 月食概念影片',
             embedUrl: 'https://player.bilibili.com/player.html?bvid=BV1bo556hEEj&page=1&high_quality=1&autoplay=0',
+            externalUrl: 'https://www.bilibili.com/video/BV1bo556hEEj/',
           },
         ],
       },
@@ -119,10 +120,12 @@ export const V3_CASE_STUDIES = [
           {
             title: '「予热」交互演示',
             embedUrl: 'https://player.bilibili.com/player.html?bvid=BV1Uj556ZEvd&page=1&high_quality=1&autoplay=0',
+            externalUrl: 'https://www.bilibili.com/video/BV1Uj556ZEvd/',
           },
           {
             title: '「予热」产品展示',
             embedUrl: 'https://player.bilibili.com/player.html?bvid=BV1SL556bEuv&page=1&high_quality=1&autoplay=0',
+            externalUrl: 'https://www.bilibili.com/video/BV1SL556bEuv/',
           },
         ],
       },
