@@ -702,6 +702,23 @@
 }
 
 /* ── Mobile Adaptation ── */
+@media (max-width: 959px), (pointer: coarse) {
+  .v3-ai-fab {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: var(--surface);
+  }
+
+  .v3-ai-panel {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .v3-ai-root[data-open='false'] .v3-prism-mark__eye {
+    animation: none;
+  }
+}
+
 @media (max-width: 640px) {
   .v3-ai-root {
     right: 16px;

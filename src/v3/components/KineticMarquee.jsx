@@ -1,9 +1,9 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 /**
- * Velocity-reactive continuous horizontal marquee banner.
- * Reacts smoothly to page scroll velocity with spring damping,
- * supports opposing directions, hover slowdown, and reduced motion.
+ * Velocity-reactive continuous horizontal marquee banner on desktop,
+ * automatically switching to a zero-JS, GPU compositor-thread CSS animation
+ * on mobile / coarse-pointer devices (paused when offscreen) for 120fps scrolling.
  */
 export default function KineticMarquee({
   children,
@@ -20,15 +20,39 @@ export default function KineticMarquee({
   const trackRef = useRef(null);
   const groupRef = useRef(null);
   const hoverState = useRef(false);
+  const [isTouchMode] = useState(
+    () =>
+      typeof window !== 'undefined' &&
+      (window.matchMedia('(pointer: coarse)').matches || window.innerWidth < 960)
+  );
+  const [inView, setInView] = useState(true);
+
+  const effectiveRepeat = isTouchMode ? 2 : repeat;
 
   useEffect(() => {
+    const container = containerRef.current;
     const track = trackRef.current;
     const group = groupRef.current;
-    if (!track || !group) return;
+    if (!container || !track || !group) return undefined;
 
     const prefersReduced =
       typeof window !== 'undefined' &&
       window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (isTouchMode) {
+      const updateDuration = () => {
+        const w = group.getBoundingClientRect().width || 600;
+        const sec = Math.max(14, Math.round(w / Math.max(16, speed)));
+        track.style.setProperty('--marquee-dur', `${sec}s`);
+      };
+      updateDuration();
+      const io = new IntersectionObserver(
+        ([entry]) => setInView(entry.isIntersecting),
+        { threshold: 0.01 }
+      );
+      io.observe(container);
+      return () => io.disconnect();
+    }
 
     let rafId = 0;
     let lastTime = performance.now();
@@ -52,14 +76,13 @@ export default function KineticMarquee({
       },
       { threshold: 0.01 }
     );
-    if (containerRef.current) io.observe(containerRef.current);
+    io.observe(container);
 
     const onScroll = () => {
       if (!visible) return;
       const curr = window.scrollY;
       const delta = curr - lastScrollY;
       lastScrollY = curr;
-      // Clamp extreme jump deltas (e.g. anchor scroll)
       scrollVelocity = Math.max(-90, Math.min(90, delta));
     };
 
@@ -70,7 +93,6 @@ export default function KineticMarquee({
         const dt = Math.min((now - lastTime) / 1000, 0.05);
         lastTime = now;
 
-        // Decay scroll velocity smoothly
         scrollVelocity *= 0.9;
         smoothBoost += (scrollVelocity - smoothBoost) * 0.12;
 
@@ -103,17 +125,21 @@ export default function KineticMarquee({
       io.disconnect();
       window.removeEventListener('scroll', onScroll);
     };
-  }, [speed, direction, velocityFactor, pauseOnHover, slowOnHover]);
+  }, [isTouchMode, speed, direction, velocityFactor, pauseOnHover, slowOnHover]);
+
+  const touchClasses = isTouchMode
+    ? `is-css-marquee${direction > 0 ? ' is-reverse' : ''}${!inView ? ' is-paused' : ''}`
+    : '';
 
   return (
     <div
       ref={containerRef}
       className={`v3-marquee ${className}`}
-      onMouseEnter={() => { hoverState.current = true; }}
-      onMouseLeave={() => { hoverState.current = false; }}
+      onMouseEnter={!isTouchMode ? () => { hoverState.current = true; } : undefined}
+      onMouseLeave={!isTouchMode ? () => { hoverState.current = false; } : undefined}
     >
-      <div ref={trackRef} className={`v3-marquee__track ${trackClassName}`}>
-        {Array.from({ length: repeat }).map((_, idx) => (
+      <div ref={trackRef} className={`v3-marquee__track ${touchClasses} ${trackClassName}`}>
+        {Array.from({ length: effectiveRepeat }).map((_, idx) => (
           <div
             key={idx}
             ref={idx === 0 ? groupRef : undefined}

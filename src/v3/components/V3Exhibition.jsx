@@ -24,7 +24,7 @@ export default function V3Exhibition() {
   const viewportRef = useRef(null);
   const trackRef = useRef(null);
   const stRef = useRef(null);
-  const gst = useAsyncGSAP();
+  const gst = useAsyncGSAP(isDesktop);
 
   const items = useMemo(() => {
     if (filter === 'all') return V3_PROJECTS;
@@ -210,7 +210,8 @@ export default function V3Exhibition() {
                     src={proj.displayImg}
                     alt={proj.title}
                     className={`v3-work-plate__img${proj.isDevicePlate ? ' is-device' : ''}`}
-                    loading={idx < 3 ? 'eager' : 'lazy'}
+                    loading={idx < 2 ? 'eager' : 'lazy'}
+                    decoding="async"
                   />
                 </div>
 

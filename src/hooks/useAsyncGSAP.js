@@ -1,10 +1,15 @@
 import { useState, useEffect, useRef } from 'react';
 
-export default function useAsyncGSAP() {
+export default function useAsyncGSAP(enabled = true) {
   const [gst, setGst] = useState(null);
   const ref = useRef(null);
 
   useEffect(() => {
+    if (!enabled) return undefined;
+    if (ref.current) {
+      setGst(ref.current);
+      return undefined;
+    }
     let cancelled = false;
     (async () => {
       const [{ gsap }, { ScrollTrigger }] = await Promise.all([
@@ -17,8 +22,10 @@ export default function useAsyncGSAP() {
         setGst(ref.current);
       }
     })();
-    return () => { cancelled = true; };
-  }, []);
+    return () => {
+      cancelled = true;
+    };
+  }, [enabled]);
 
-  return gst;
+  return enabled ? gst : null;
 }

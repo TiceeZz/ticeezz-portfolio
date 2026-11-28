@@ -13,15 +13,14 @@ export default function V3Manifesto() {
   const sectionRef = useRef(null);
   const wordsRef = useRef([]);
   const revealRef = useV3Reveal(0.15);
-  const gst = useAsyncGSAP();
+  const isLightMotion =
+    typeof window !== 'undefined' &&
+    (window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+      window.matchMedia('(pointer: coarse)').matches ||
+      window.innerWidth < 960);
+  const gst = useAsyncGSAP(!isLightMotion);
 
   useEffect(() => {
-    if (!gst || !sectionRef.current) return;
-    const isLightMotion =
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
-      window.matchMedia('(pointer: coarse)').matches ||
-      window.innerWidth < 960;
-
     if (isLightMotion) {
       wordsRef.current.forEach((el) => {
         if (el) {
@@ -29,8 +28,9 @@ export default function V3Manifesto() {
           el.style.transform = 'none';
         }
       });
-      return;
+      return undefined;
     }
+    if (!gst || !sectionRef.current) return undefined;
 
     const { gsap } = gst;
     const ctx = gsap.context(() => {

@@ -53,8 +53,17 @@ export default function V3Nav({ theme, onThemeChange }) {
 
   useEffect(() => {
     let prevScrolled = false;
-    let prevActive = '';
-    const onScroll = () => {
+    let rafId = 0;
+    let maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+
+    const updateMaxScroll = () => {
+      maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+    };
+    const ro = new ResizeObserver(updateMaxScroll);
+    ro.observe(document.documentElement);
+
+    const applyScroll = () => {
+      rafId = 0;
       const y = window.scrollY;
       const nextScrolled = y > 24;
       if (nextScrolled !== prevScrolled) {
@@ -62,30 +71,51 @@ export default function V3Nav({ theme, onThemeChange }) {
         setScrolled(nextScrolled);
       }
       if (progressRef.current) {
-        const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-        const pct = Math.min(100, (y / max) * 100);
-        progressRef.current.style.width = `${pct.toFixed(1)}%`;
-      }
-
-      // Lightweight ScrollSpy (only triggers React state when section actually changes)
-      const probe = window.innerHeight * 0.36;
-      let nextActive = '';
-      for (let i = NAV_ITEMS.length - 1; i >= 0; i--) {
-        const el = document.getElementById(NAV_ITEMS[i].id);
-        if (!el) continue;
-        if (el.getBoundingClientRect().top <= probe) {
-          nextActive = NAV_ITEMS[i].id;
-          break;
-        }
-      }
-      if (nextActive !== prevActive) {
-        prevActive = nextActive;
-        setActiveSection(nextActive);
+        const ratio = Math.min(1, Math.max(0, y / maxScroll));
+        progressRef.current.style.transform = `scaleX(${ratio.toFixed(4)})`;
       }
     };
-    onScroll();
+
+    const onScroll = () => {
+      if (!rafId) {
+        rafId = requestAnimationFrame(applyScroll);
+      }
+    };
+
+    applyScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    window.addEventListener('resize', updateMaxScroll, { passive: true });
+
+    // Zero-reflow IntersectionObserver ScrollSpy (no getBoundingClientRect inside scroll!)
+    const visibleMap = new Map();
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          visibleMap.set(entry.target.id, entry.isIntersecting);
+        });
+        let nextActive = '';
+        for (let i = NAV_ITEMS.length - 1; i >= 0; i--) {
+          if (visibleMap.get(NAV_ITEMS[i].id)) {
+            nextActive = NAV_ITEMS[i].id;
+            break;
+          }
+        }
+        if (nextActive) setActiveSection(nextActive);
+      },
+      { rootMargin: '-28% 0px -56% 0px', threshold: 0 }
+    );
+    NAV_ITEMS.forEach((item) => {
+      const el = document.getElementById(item.id);
+      if (el) io.observe(el);
+    });
+
+    return () => {
+      if (rafId) cancelAnimationFrame(rafId);
+      ro.disconnect();
+      io.disconnect();
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', updateMaxScroll);
+    };
   }, []);
 
   useEffect(() => {

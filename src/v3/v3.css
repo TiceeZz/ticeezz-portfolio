@@ -20,13 +20,19 @@ html.v3-theme-switching *::after {
   z-index: 9999;
 }
 
-html:has(.v3-root),
-body.is-v3-active {
+html:has(.v3-root) {
+  scroll-behavior: auto;
   overflow-x: clip;
+  overflow-y: auto;
   max-width: 100%;
 }
 
 body.is-v3-active {
+  overflow-x: clip;
+  overflow-y: visible;
+  max-width: 100%;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
   cursor: auto;
 }
 
@@ -389,10 +395,12 @@ body.is-v3-active[data-v3-theme='dark'] {
   position: absolute;
   bottom: -1px;
   left: 0;
+  width: 100%;
   height: 2px;
   background: var(--prism-grad);
-  box-shadow: 0 0 10px rgba(92, 225, 255, 0.42);
-  transition: width 0.08s linear;
+  transform: scaleX(0);
+  transform-origin: left center;
+  will-change: transform;
 }
 
 .v3-header__inner {
@@ -6048,6 +6056,113 @@ body.is-v3-active[data-v3-theme='dark'] {
 
   .v3-root[data-case='veriframe'] .v3-work__content {
     padding-top: 16px;
+  }
+}
+
+/* 12. Mobile 120fps Compositor Pipeline, Native Touch Strip & GPU Filter De-escalation */
+@keyframes v3-css-marquee-left {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes v3-css-marquee-right {
+  from {
+    transform: translate3d(-50%, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.v3-marquee__track.is-css-marquee {
+  width: max-content;
+  will-change: transform;
+  animation: v3-css-marquee-left var(--marquee-dur, 24s) linear infinite;
+}
+
+.v3-marquee__track.is-css-marquee.is-reverse {
+  animation-name: v3-css-marquee-right;
+}
+
+.v3-marquee__track.is-css-marquee.is-paused {
+  animation-play-state: paused;
+}
+
+.v3-filmstrip-mobile {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  padding: 4px 20px 12px;
+}
+
+.v3-filmstrip-mobile::-webkit-scrollbar {
+  display: none;
+}
+
+.v3-filmstrip-mobile .v3-film-plate {
+  flex: 0 0 248px;
+  margin-right: 0;
+  scroll-snap-align: start;
+}
+
+@media (max-width: 959px), (pointer: coarse) {
+  .v3-ambient-canvas {
+    display: none;
+  }
+
+  .v3-header,
+  .v3-header.is-scrolled,
+  .v3-work__controls-wrap {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: var(--bg);
+  }
+
+  .v3-root[data-v3-theme='dark'] .v3-header,
+  .v3-root[data-v3-theme='dark'] .v3-header.is-scrolled,
+  .v3-root[data-v3-theme='dark'] .v3-work__controls-wrap {
+    background: var(--bg);
+  }
+
+  .v3-footer__watermark {
+    mask-image: none;
+    -webkit-mask-image: none;
+    opacity: 0.5;
+  }
+
+  .v3-hero__prism,
+  .v3-keynote__halo {
+    filter: none;
+    animation: none;
+    opacity: 0.16;
+  }
+
+  .v3-plate__img.is-device,
+  .v3-keynote__stage-img.is-device,
+  .v3-keynote__stage-img.is-device.is-active,
+  .v3-work-plate__img.is-device,
+  .v3-work__cover img.is-device {
+    filter: none;
+    animation: none;
+  }
+
+  .v3-keynote__stage-frame,
+  .v3-magnetic {
+    transform-style: flat;
+    will-change: auto;
+  }
+
+  .v3-work__slide:nth-child(n + 4) {
+    content-visibility: auto;
+    contain-intrinsic-size: 350px 197px;
   }
 }
 

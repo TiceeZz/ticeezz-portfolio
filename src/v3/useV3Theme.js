@@ -50,7 +50,9 @@ export default function useV3Theme() {
 
       const reduced =
         typeof window !== 'undefined' &&
-        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        (window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+          window.matchMedia('(pointer: coarse)').matches ||
+          window.innerWidth < 768);
 
       if (
         typeof document !== 'undefined' &&

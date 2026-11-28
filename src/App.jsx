@@ -1,11 +1,12 @@
 import { lazy, Suspense, useState, useCallback } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { CursorProvider } from './components/cursor/CursorContext';
-import CursorDot from './components/cursor/CursorDot';
-import CursorRing from './components/cursor/CursorRing';
 import ScrollRestoration from './components/ScrollRestoration';
-import LoadingScreen from './components/layout/LoadingScreen';
 import V3Page from './v3/V3Page';
+
+const CursorDot = lazy(() => import('./components/cursor/CursorDot'));
+const CursorRing = lazy(() => import('./components/cursor/CursorRing'));
+const LoadingScreen = lazy(() => import('./components/layout/LoadingScreen'));
 
 const Home = lazy(() => import('./pages/Home'));
 const Eclipse = lazy(() => import('./pages/Eclipse'));
@@ -51,10 +52,14 @@ function AppShell() {
 
   return (
     <CursorProvider>
-      {!isStandalone && !isTouchDevice && <CursorDot />}
-      {!isStandalone && !isTouchDevice && <CursorRing />}
+      {!isStandalone && (
+        <Suspense fallback={null}>
+          {!isTouchDevice && <CursorDot />}
+          {!isTouchDevice && <CursorRing />}
+          {loading && <LoadingScreen onComplete={onLoadComplete} />}
+        </Suspense>
+      )}
       <ScrollRestoration />
-      {!isStandalone && loading && <LoadingScreen onComplete={onLoadComplete} />}
       <Suspense fallback={<PageLoader />}>
         <Routes>
           <Route path="/" element={<V3Page />} />

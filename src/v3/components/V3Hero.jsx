@@ -14,13 +14,32 @@ const TICKER_ITEMS = [
 
 export default function V3Hero({ theme }) {
   const [active, setActive] = useState(0);
+  const heroRef = useRef(null);
   const swipeRef = useRef({ x: 0, y: 0, swiped: false });
 
   useEffect(() => {
+    let inView = true;
+    const el = heroRef.current;
+    const io =
+      el && typeof IntersectionObserver !== 'undefined'
+        ? new IntersectionObserver(
+            ([entry]) => {
+              inView = entry.isIntersecting;
+            },
+            { threshold: 0.05 }
+          )
+        : null;
+    if (io && el) io.observe(el);
+
     const id = setInterval(() => {
-      setActive((prev) => (prev + 1) % HERO_PLATES.length);
+      if (inView && !document.hidden) {
+        setActive((prev) => (prev + 1) % HERO_PLATES.length);
+      }
     }, 5600);
-    return () => clearInterval(id);
+    return () => {
+      clearInterval(id);
+      io?.disconnect();
+    };
   }, []);
 
   const current = HERO_PLATES[active];
@@ -66,7 +85,7 @@ export default function V3Hero({ theme }) {
   };
 
   return (
-    <div className="v3-hero" id="v3-top">
+    <div ref={heroRef} className="v3-hero" id="v3-top">
       <V3AmbientCanvas theme={theme} />
       <div className="v3-hero__ambient" aria-hidden="true" />
       <div className="v3-hero__prism" aria-hidden="true" />
@@ -133,6 +152,8 @@ export default function V3Hero({ theme }) {
                 alt={plate.title}
                 className={`v3-plate__img${plate.isDevicePlate ? ' is-device' : ''}${idx === active ? ' is-active' : ''}`}
                 loading={idx === 0 ? 'eager' : 'lazy'}
+                fetchPriority={idx === 0 ? 'high' : 'low'}
+                decoding={idx === 0 ? 'sync' : 'async'}
               />
             ))}
             <div className="v3-plate__scrim" />

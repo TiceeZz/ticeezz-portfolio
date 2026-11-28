@@ -211,6 +211,7 @@ export default function V3Keynote() {
                   src={p.stageImg}
                   alt={`${activeCase.title} · ${p.title}`}
                   className={`v3-keynote__stage-img is-${p.stageKind}${idx === pillarIdx ? ' is-active' : ''}`}
+                  loading={idx === pillarIdx ? 'eager' : 'lazy'}
                   decoding="async"
                 />
               ))}

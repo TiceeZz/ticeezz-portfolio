@@ -122,15 +122,37 @@ export default function V3WorkPage() {
   );
 
   useEffect(() => {
-    const onScroll = () => {
-      if (!progressRef.current) return;
-      const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-      const pct = Math.min(100, (window.scrollY / max) * 100);
-      progressRef.current.style.width = `${pct.toFixed(1)}%`;
+    let rafId = 0;
+    let maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+
+    const updateMax = () => {
+      maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
     };
-    onScroll();
+    const ro = new ResizeObserver(updateMax);
+    ro.observe(document.documentElement);
+
+    const applyProgress = () => {
+      rafId = 0;
+      if (!progressRef.current) return;
+      const ratio = Math.min(1, Math.max(0, window.scrollY / maxScroll));
+      progressRef.current.style.transform = `scaleX(${ratio.toFixed(4)})`;
+    };
+
+    const onScroll = () => {
+      if (!rafId) {
+        rafId = requestAnimationFrame(applyProgress);
+      }
+    };
+
+    applyProgress();
     window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    window.addEventListener('resize', updateMax, { passive: true });
+    return () => {
+      if (rafId) cancelAnimationFrame(rafId);
+      ro.disconnect();
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', updateMax);
+    };
   }, [slug, activeTab]);
 
   const currentSection = visibleSections[activeTab];
@@ -452,7 +474,8 @@ export default function V3WorkPage() {
                   <img
                     src={src}
                     alt={`${study.title} — ${i + 1}`}
-                    loading={i < 3 ? 'eager' : 'lazy'}
+                    loading={i < 2 ? 'eager' : 'lazy'}
+                    decoding="async"
                   />
                   <span className="v3-work__slide-idx">
                     {String(i + 1).padStart(2, '0')} / {String(images.length).padStart(2, '0')}
